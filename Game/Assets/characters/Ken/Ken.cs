@@ -351,7 +351,7 @@ public class Ken : Character {
         };
 
         var jumpFrames = new List<FrameData> {
-            new FrameData(14720, 0, 0, new List<GenericBox> { airPuxbox, new GenericBox(1, 99, 85, 149, 155)}),
+            new FrameData(14720, 0, 0, new List<GenericBox> { airPuxbox, new GenericBox(1, 99, 85, 149, 155)}, "golpe_2"),
             new FrameData(14721, 0, 0, new List<GenericBox> { airPuxbox, new GenericBox(1, 99, 85, 149, 155)}),
             new FrameData(14722, 0, 0, new List<GenericBox> { airPuxbox, new GenericBox(1, 99, 85, 149, 155)}),
             new FrameData(14723, 0, 0, new List<GenericBox> { airPuxbox, new GenericBox(1, 99, 85, 149, 155)}),
@@ -383,8 +383,18 @@ public class Ken : Character {
             new FrameData(14742, 0, 0, new List<GenericBox> { pushbox, new GenericBox(1, 119, 78, 137, 93), new GenericBox(1, 95, 89, 142, 125), new GenericBox(1, 109, 126, 152, 158), new GenericBox(1, 109, 159, 138, 194) }),
         };
 
-        var JumpBackward = new List<FrameData>(jumpForward);
-        JumpBackward.Reverse();
+        var JumpBackward = new List<FrameData> {
+            new FrameData(14741, 0, 0, new List<GenericBox> { airPuxbox, new GenericBox(1, 119, 80, 138, 98), new GenericBox(1, 93, 94, 140, 124), new GenericBox(1, 107, 123, 149, 185) }, "golpe_2"),
+            new FrameData(14740, 0, 0, new List<GenericBox> { airPuxbox, new GenericBox(1, 114, 82, 135, 99), new GenericBox(1, 93, 90, 137, 125), new GenericBox(1, 107, 115, 155, 144), new GenericBox(1, 120, 143, 152, 191) }),
+            new FrameData(14739, 0, 0, new List<GenericBox> { airPuxbox, new GenericBox(1, 84, 91, 136, 141), new GenericBox(1, 136, 107, 162, 168) }),
+            new FrameData(14738, 0, 0, new List<GenericBox> { airPuxbox, new GenericBox(1, 88, 96, 149, 145) }),
+            new FrameData(14737, 0, 0, new List<GenericBox> { airPuxbox, new GenericBox(1, 90, 97, 147, 148) }),
+            new FrameData(14736, 0, 0, new List<GenericBox> { airPuxbox, new GenericBox(1, 96, 99, 153, 149) }),
+            new FrameData(14735, 0, 0, new List<GenericBox> { airPuxbox, new GenericBox(1, 93, 104, 155, 147) }),
+            new FrameData(14734, 0, 0, new List<GenericBox> { airPuxbox, new GenericBox(1, 144, 115, 164, 138), new GenericBox(1, 95, 101, 152, 150) }),
+            new FrameData(14733, 0, 0, new List<GenericBox> { airPuxbox, new GenericBox(1, 149, 96, 165, 113), new GenericBox(1, 102, 97, 158, 145), new GenericBox(1, 95, 145, 124, 180) }),
+            new FrameData(14732, 0, 0, new List<GenericBox> { airPuxbox, new GenericBox(1, 126, 82, 143, 99), new GenericBox(1, 96, 95, 144, 123), new GenericBox(1, 105, 123, 155, 158), new GenericBox(1, 101, 156, 135, 190) })
+        };
 
         var crouchingInFrames = new List<FrameData> {
             new FrameData(14696, 0, 0, new List<GenericBox> { pushbox, new GenericBox(1, 102, 99, 143, 154), new GenericBox(1, 132, 105, 156, 134), new GenericBox(1, 94, 101, 130, 122), new GenericBox(1, 117, 89, 140, 107), new GenericBox(1, 90, 137, 158, 195), pushbox }),

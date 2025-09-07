@@ -7,22 +7,6 @@ using UI_space;
 using System.Diagnostics;
 using Character_Space;
 
-// ----- Game States -----
-// 0 - Intro
-// 1 - Main Screen
-// 2 - Select Character
-// 3 - Battle
-
-// ----- Sub States -----
-// 0 - Battle Intro
-// 1 - Round Start
-// 2 - Battling
-// 3 - Round End
-
-// ----- Screen Infos -----
-// True Size: 1280x720
-// View Size: 384x216
-
 public static class Program {
     // Winner index
     public const int Drawn = 0;
@@ -79,6 +63,7 @@ public static class Program {
     public static Shader colorTinterShader;
     public static Shader colorFillShader;
     public static Shader hueChange;
+    public static Shader crtFilter;
 
     // Data
     private static List<Stage> stages;
@@ -114,6 +99,7 @@ public static class Program {
         colorTinterShader = new Shader(null, null, "Assets/shaders/color_tinter.frag");
         colorFillShader = new Shader(null, null, "Assets/shaders/color_fill.frag");
         hueChange = new Shader(null, null, "Assets/shaders/hue_change.frag");
+        crtFilter = new Shader(null, null, "Assets/shaders/crt.frag");
 
         // Carregamento de texturas de fontes
         UI.Instance.LoadFonts();

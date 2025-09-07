@@ -9,6 +9,7 @@ public static class Config {
 
     public static bool Fullscreen = true;
     public static bool Vsync = false;
+    public static bool Crt_Filter = true;
 
     // Battle
     public static int round_length = 90;
@@ -71,6 +72,7 @@ public static class Config {
         {
             Fullscreen,
             Vsync,
+            Crt_Filter,
             input_window_time,
             parry_advantage,
             parry_window,
@@ -93,6 +95,7 @@ public static class Config {
 
             Fullscreen = configData.Fullscreen;
             Vsync = configData.Vsync;
+            Crt_Filter = configData.Crt_Filter;
             input_window_time = configData.input_window_time;
             parry_advantage = configData.parry_advantage;
             parry_window = configData.parry_window;
@@ -110,6 +113,7 @@ public static class Config {
     private class ConfigData {
         public bool Fullscreen { get; set; }
         public bool Vsync { get; set; }
+        public bool Crt_Filter { get; set; }
         public int input_window_time { get; set; }
         public int parry_advantage { get; set; }
         public int parry_window { get; set; }

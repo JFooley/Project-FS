@@ -4480,4 +4480,5 @@ D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\character
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\controls.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\random.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\settings_bg.png
+d:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\crt.frag
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\config.json

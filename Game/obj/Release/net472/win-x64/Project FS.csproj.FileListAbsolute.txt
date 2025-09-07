@@ -4481,3 +4481,4 @@ D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\controls.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\random.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\settings_bg.png
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\shaders\crt.frag
