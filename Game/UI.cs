@@ -10,6 +10,7 @@ namespace UI_space {
         public int counter = 0;
 
         // Clocks
+        public bool blink30Hz = true;
         public bool blink10Hz = true;
         public bool blink4Hz = true;
         public bool blink2Hz = true;
@@ -50,6 +51,7 @@ namespace UI_space {
 
         public void Update() {
             this.counter = this.counter <= 60 ? this.counter + 1 : 1;
+            this.blink30Hz = this.counter % (60/30) == 0 ? this.blink30Hz = !this.blink30Hz : this.blink30Hz;
             this.blink10Hz = this.counter % (60/10) == 0 ? this.blink10Hz = !this.blink10Hz : this.blink10Hz;
             this.blink4Hz = this.counter % (60/4) == 0 ? this.blink4Hz = !this.blink4Hz : this.blink4Hz;
             this.blink2Hz = this.counter % (60/2) == 0 ? this.blink2Hz = !this.blink2Hz : this.blink2Hz;

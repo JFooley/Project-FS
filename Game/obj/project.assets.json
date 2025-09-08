@@ -879,7 +879,7 @@
         }
       }
     },
-    ".NETFramework,Version=v4.7.2/win-x64": {
+    ".NETFramework,Version=v4.7.2/win7-x64": {
       "CSFML/2.6.1": {
         "type": "package",
         "native": {
@@ -2088,7 +2088,7 @@
       }
     },
     "runtimes": {
-      "win-x64": {
+      "win7-x64": {
         "#import": []
       }
     }

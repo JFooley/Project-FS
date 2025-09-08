@@ -77,9 +77,9 @@ public abstract class Character : Object_Space.Object {
     public Color LightTint = new Color(255, 255, 255, 255);
 
     // Combat logic infos
-    public bool notActing => this.State.not_acting && !this.State.low && !this.State.air && !this.onAir;
-    public bool notActingLow => this.State.not_acting && this.State.low && !this.State.air && !this.onAir;
-    public bool notActingAir => this.State.not_acting && !this.State.low && this.State.air && this.onAir;
+    public bool notActing => this.State.not_busy && !this.State.low && !this.State.air && !this.onAir;
+    public bool notActingLow => this.State.not_busy && this.State.low && !this.State.air && !this.onAir;
+    public bool notActingAir => this.State.not_busy && !this.State.low && this.State.air && this.onAir;
     public bool notActingAll => notActing || notActingAir || notActingLow;
 
     public bool onHit => this.State.on_hit;
@@ -154,7 +154,7 @@ public abstract class Character : Object_Space.Object {
         temp_sprite.Color = this.LightTint;
 
         // Render tracing
-        if (this.State.doTrace) {
+        if (this.State.trace) {
             Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
 
             for (int i = 0; i < 3; i++) {
@@ -169,7 +169,7 @@ public abstract class Character : Object_Space.Object {
         } else LastSprites = new Sprite[3];
 
         // Render current sprite
-        if (this.State.doGlow) {
+        if (this.State.glow && UI.Instance.blink30Hz) {
             Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
             Program.window.Draw(temp_sprite, new RenderStates(Program.hueChange));
         } else Program.window.Draw(temp_sprite);
@@ -231,7 +231,7 @@ public abstract class Character : Object_Space.Object {
             }
             UI.Instance.DrawText(this.CurrentFrameIndex.ToString(), this.body.Position.X - Camera.Instance.X, this.body.Position.Y - Camera.Instance.Y - 135, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
             UI.Instance.DrawText(this.CurrentState, this.body.Position.X - Camera.Instance.X, this.body.Position.Y - Camera.Instance.Y - 125, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-            UI.Instance.DrawText(this.State.not_acting ? "waiting" : "busy", this.body.Position.X - Camera.Instance.X, this.body.Position.Y - Camera.Instance.Y - 115, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+            UI.Instance.DrawText(this.State.not_busy ? "waiting" : "busy", this.body.Position.X - Camera.Instance.X, this.body.Position.Y - Camera.Instance.Y - 115, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
         }
     }
     public override void Animate() {

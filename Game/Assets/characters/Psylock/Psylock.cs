@@ -275,14 +275,14 @@ public class Psylock : Character {
 
         // States
         var states = new Dictionary<string, State> {
-            { "Idle", new State(idleFrames, "Idle", 20, not_acting: true)},
+            { "Idle", new State(idleFrames, "Idle", 20, not_busy: true)},
             { "OnBlock", new State(idleFrames, "Idle", 20, change_on_end: false, loop: false, on_block: true)},
             { "OnBlockLow", new State(idleFrames, "Crouching", 20, change_on_end: false, loop: false, on_block: true, low: true)},
             { "OnHit", new State(onHitFrames, "Idle", 20, change_on_end: false, loop: false, on_hit: true)},
             { "OnHitLow", new State(onHitLowFrames, "OnHitLow", 20,  change_on_end: false, loop: false, on_hit: true, low: true)},
             { "Airboned", new State(idleFrames, "Falling", 30, change_on_ground: true, change_on_end: false, loop: false, air: true, on_hit: true)},
-            { "Parry", new State(idleFrames, "Idle", 30, priority: 6, not_acting: true, doGlow: true)},
-            { "AirParry", new State(idleFrames, "JumpFalling", 30, priority: 6, not_acting: true, low: true, doGlow: true)},
+            { "Parry", new State(idleFrames, "Idle", 30, priority: 6, not_busy: true, glow: true)},
+            { "AirParry", new State(idleFrames, "JumpFalling", 30, priority: 6, not_busy: true, low: true, glow: true)},
 
             // Normals
             { "AAttack", new State(AFrames, "Idle", 30, priority: 0)},
@@ -293,15 +293,15 @@ public class Psylock : Character {
             { "AltCAttack", new State(BackCFrames, "Idle", 20, priority: 3)},
 
             // Movement
-            { "WalkingForward", new State(walkingForwardFrames, "WalkingForward", 30, not_acting: true)},
-            { "WalkingBackward", new State(walkingBackwardFrames, "WalkingBackward", 20, not_acting: true)},
+            { "WalkingForward", new State(walkingForwardFrames, "WalkingForward", 30, not_busy: true)},
+            { "WalkingBackward", new State(walkingBackwardFrames, "WalkingBackward", 20, not_busy: true)},
             { "DashForward", new State(dashForwardFrames, "Idle", 20)},
             { "DashBackward", new State(dashBackwardFrames, "Idle", 20)},
-            { "Crouching", new State(crouchingFrames, "Crouching", 4, not_acting: true, low: true)},
-            { "Jump", new State(jumpFrames, "JumpFalling", 20, not_acting: true, air: true)},
-            { "JumpForward", new State(jumpFrames, "JumpFalling", 20, not_acting: true, air: true)},
-            { "JumpBackward", new State(jumpFrames, "JumpFalling", 20, not_acting: true, air: true)},
-            { "JumpFalling", new State(jumpFallingFrames, "Idle", 20, not_acting: true, air: true, change_on_end: false, change_on_ground: true)},
+            { "Crouching", new State(crouchingFrames, "Crouching", 4, not_busy: true, low: true)},
+            { "Jump", new State(jumpFrames, "JumpFalling", 20, not_busy: true, air: true)},
+            { "JumpForward", new State(jumpFrames, "JumpFalling", 20, not_busy: true, air: true)},
+            { "JumpBackward", new State(jumpFrames, "JumpFalling", 20, not_busy: true, air: true)},
+            { "JumpFalling", new State(jumpFallingFrames, "Idle", 20, not_busy: true, air: true, change_on_end: false, change_on_ground: true)},
 
             // Other
             { "Falling", new State(idleFrames, "OnGround", 30, can_be_hit: false)},
