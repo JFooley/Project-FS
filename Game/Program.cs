@@ -6,6 +6,7 @@ using Stage_Space;
 using UI_space;
 using System.Diagnostics;
 using Character_Space;
+using Data_space;
 
 public static class Program {
     // Winner index
@@ -68,6 +69,7 @@ public static class Program {
     // Data
     private static List<Stage> stages;
     private static List<Character> characters;
+    public static Dictionary<string, Texture> visuals = new Dictionary<string, Texture>();
     private static Fireball fb = new Fireball();
     private static Hitspark hs = new Hitspark();
     private static Particle pt = new Particle();
@@ -75,13 +77,22 @@ public static class Program {
     public static void Main() {  
         Config.LoadFromFile();
         
-        // Necessary infos
+        // Set initial states
         game_state = Intro;
         sub_state = Intro;
+        
+        // Carregamento de texturas gerais
+        try {
+            DataManagement.LoadTexturesFromFile("Assets/ui/visuals.dat", visuals);
+        } catch (Exception e) {
+            DataManagement.LoadTexturesFromPath("Assets/ui", visuals);
+            DataManagement.SaveTexturesToFile("Assets/ui/visuals.dat", visuals);
+        }
+        UI.Instance.LoadFonts();
 
         // Crie uma janela
         if (Config.Fullscreen == true) window = new RenderWindow(new VideoMode(VideoMode.DesktopMode.Width, VideoMode.DesktopMode.Height), Config.GameTitle, Styles.None);
-        else window = new RenderWindow(new VideoMode(Config.RenderWidth*3, Config.RenderHeight*3), Config.GameTitle, Styles.Default);
+        else window = new RenderWindow(new VideoMode(Config.RenderWidth * 3, Config.RenderHeight * 3), Config.GameTitle, Styles.Default);
         window.Closed += (sender, e) => window.Close();
         window.SetFramerateLimit(Config.Framerate);
         window.SetVerticalSyncEnabled(Config.Vsync);
@@ -101,9 +112,6 @@ public static class Program {
         hueChange = new Shader(null, null, "Assets/shaders/hue_change.frag");
         crtFilter = new Shader(null, null, "Assets/shaders/crt.frag");
 
-        // Carregamento de texturas de fontes
-        UI.Instance.LoadFonts();
-        
         // Carregamento dos personagens
         characters = new List<Character> {
             new Ken(),
@@ -112,7 +120,7 @@ public static class Program {
 
         // Carregamento dos stages
         stages = new List<Stage> {
-            new Stage("Random", "Assets/ui/random.png"),
+            new Stage("Random", visuals["random"]),
             new BurningDojo(),
             new MidnightDuel(),
             new NightAlley(),
@@ -120,24 +128,24 @@ public static class Program {
             new RindoKanDojo(),
             new TheSavana(),
             new JapanFields(),
-            new Stage("Settings", "Assets/ui/settings.png"),
+            new Stage("Settings", visuals["settings"]),
         };
         stage = stages[0];
 
-        // Visuals
-        Sprite main_bg = new Sprite(new Texture("Assets/ui/title.png"));
-        Sprite settings_bg = new Sprite(new Texture("Assets/ui/settings_bg.png"));
-        Sprite char_bg = new Sprite(new Texture("Assets/ui/bgchar.png"));
+        // Sprites
+        Sprite main_bg = new Sprite(visuals["title"]);
+        Sprite settings_bg = new Sprite(visuals["settings_bg"]);
+        Sprite char_bg = new Sprite(visuals["bgchar"]);
         Sprite stage_bg = new Sprite();
 
-        Sprite frame = new Sprite(new Texture("Assets/ui/frame.png"));
-        Sprite fade90 = new Sprite(new Texture("Assets/ui/90fade.png"));
-        Sprite controls = new Sprite(new Texture("Assets/ui/controls.png"));
+        Sprite frame = new Sprite(visuals["frame"]);
+        Sprite fade90 = new Sprite(visuals["90fade"]);
+        Sprite controls = new Sprite(visuals["controls"]);
 
-        Sprite fight_logo = new Sprite(new Texture("Assets/ui/fight.png"));
-        Sprite timesup_logo = new Sprite(new Texture("Assets/ui/timesup.png"));
-        Sprite KO_logo = new Sprite(new Texture("Assets/ui/ko.png"));
-        Sprite fslogo = new Sprite(new Texture("Assets/ui/fs.png"));
+        Sprite fight_logo = new Sprite(visuals["fight"]);
+        Sprite timesup_logo = new Sprite(visuals["timesup"]);
+        Sprite KO_logo = new Sprite(visuals["ko"]);
+        Sprite fslogo = new Sprite(visuals["fs"]);
 
         Sprite sprite_A = new Sprite(characters[pointer_charA].thumb);
         Sprite sprite_B = new Sprite(characters[pointer_charB].thumb);
@@ -550,24 +558,24 @@ public static class Program {
         foreach (var character in characters)
         {
             if (character.GetType() == typeof(Character)) continue;
-            character.LoadSpriteImages();
+            character.LoadTextures();
             character.LoadSounds();
         }
 
         foreach (var stage in stages)
         {
             if (stage.GetType() == typeof(Stage)) continue;
-            stage.LoadSpriteImages();
+            stage.LoadTextures();
             stage.LoadSounds();
         }
 
-        fb.LoadSpriteImages();
+        fb.LoadTextures();
         fb.LoadSounds();
 
-        hs.LoadSpriteImages();
+        hs.LoadTextures();
         hs.LoadSounds();
 
-        pt.LoadSpriteImages();
+        pt.LoadTextures();
         pt.LoadSounds();
 
         loading = false;

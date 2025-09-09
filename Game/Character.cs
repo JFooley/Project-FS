@@ -462,75 +462,48 @@ public abstract class Character : Object_Space.Object {
         this.facing = facing;
     }
    
-    // Visuals load
-    public void LoadSpriteImages() {
+    // Loads
+    public void LoadTextures() {
         string currentDirectory = Directory.GetCurrentDirectory();
-        string fullPath = Path.Combine(currentDirectory, this.folderPath);
+        string full_path = Path.Combine(currentDirectory, this.folderPath);
         
         // Verifica se o diretório existe
-        if (!System.IO.Directory.Exists(fullPath)) {
-            throw new System.IO.DirectoryNotFoundException($"O diretório {fullPath} não foi encontrado.");
+        if (!System.IO.Directory.Exists(full_path)) {
+            throw new System.IO.DirectoryNotFoundException($"O diretório {full_path} não foi encontrado.");
         }
 
         // Verifica se o arquivo binário existe, senão, carrega as texturas e cria ele
-        string datpath = Path.Combine(fullPath, "visuals.dat");
-        if (System.IO.File.Exists(datpath)) {
-            textures = DataManagement.LoadTextures(datpath);
-            
-        } else {
-            // Obtém todos os arquivos no diretório especificado
-            string[] files = System.IO.Directory.GetFiles(fullPath);
-            foreach (string file in files) {
-                // Tenta carregar a textura
-                Texture texture = new Texture(file);
-                
-                // Obtém o nome do arquivo sem a extensão
-                string fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(file);
-                
-                // Usa o nome do arquivo sem extensão como chave no dicionário
-                textures[fileNameWithoutExtension] = texture;
-            }
-
-            // Salva o arquivo binário
-            DataManagement.SaveTextures(datpath, textures);
+        string dat_path = Path.Combine(full_path, "visuals.dat");
+        try {
+            DataManagement.LoadTexturesFromFile(dat_path, this.textures);
+        } catch (Exception e) {
+            DataManagement.LoadTexturesFromPath(full_path, this.textures);
+            DataManagement.SaveTexturesToFile(dat_path, this.textures);
         }
     }
-    public void UnloadSpriteImages() {
+    public void UnloadTextures() {
         foreach (var image in textures.Values)
         {
             image.Dispose(); // Free the memory used by the image
         }
         textures.Clear(); // Clear the dictionary
     }
-
-    // Sounds load
     public void LoadSounds() {
         string currentDirectory = Directory.GetCurrentDirectory();
-        string fullSoundPath = Path.Combine(currentDirectory, this.soundFolderPath);
+        string full_sound_path = Path.Combine(currentDirectory, this.soundFolderPath);
 
         // Verifica se o diretório existe
-        if (!System.IO.Directory.Exists(fullSoundPath)) {
-            throw new System.IO.DirectoryNotFoundException($"O diretório {fullSoundPath} não foi encontrado.");
+        if (!System.IO.Directory.Exists(full_sound_path)) {
+            throw new System.IO.DirectoryNotFoundException($"O diretório {full_sound_path} não foi encontrado.");
         }
 
-        // Verifica se o arquivo binário existe, senão, carrega as texturas e cria ele
-        string datpath = Path.Combine(fullSoundPath, "sounds.dat");
-        if (System.IO.File.Exists(datpath)) {
-            sounds = DataManagement.LoadSounds(datpath);
-            
-        } else {
-            // Obtém todos os arquivos no diretório especificado
-            string[] files = System.IO.Directory.GetFiles(fullSoundPath);
-            foreach (string file in files) {
-                // Obtém o nome do arquivo sem a extensão
-                string fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(file);
-
-                // Adiciona no dicionário
-                sounds[fileNameWithoutExtension] = new SoundBuffer(file);
-            }
-
-            // Salva o arquivo binário
-            DataManagement.SaveSounds(datpath, sounds);
+        // Verifica se o arquivo binário existe, senão, carrega os sons e cria ele
+        string dat_path = Path.Combine(full_sound_path, "sounds.dat");
+        try {
+            DataManagement.LoadSoundsFromFile(dat_path, this.sounds);
+        } catch (Exception e) {
+            DataManagement.LoadSoundsFromPath(full_sound_path, this.sounds);
+            DataManagement.SaveSoundsToFile(dat_path, this.sounds);
         }
     }
     public void UnloadSounds() {
@@ -563,7 +536,7 @@ public abstract class Character : Object_Space.Object {
     public virtual void Load() {}
     public override void Unload() {
         this.UnloadSounds();
-        this.UnloadSpriteImages();
+        this.UnloadTextures();
     }
 }
 

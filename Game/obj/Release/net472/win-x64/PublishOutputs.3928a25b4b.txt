@@ -1,6 +1,3 @@
-D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\characters\Default\Sprites\shadow0.png
-D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\characters\Default\Sprites\shadow1.png
-D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\characters\Default\Sprites\shadow2.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\characters\Ken\sounds\dash.wav
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\characters\Ken\sounds\golpe_1.mp3
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\characters\Ken\sounds\golpe_2.mp3
@@ -1652,6 +1649,7 @@ D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publis
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\fonts\files\atlas.xcf
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\fonts\files\text.txt
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\fonts\font1.png
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\fonts\fonts.dat
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\fonts\icons.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\icon.ico
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\misc\anim_maker.py
@@ -1659,6 +1657,8 @@ D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publis
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\misc\cleandats.bat
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\misc\colider_creator.py
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\misc\content_mover.py
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\misc\files\hud.xcf
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\misc\files\Regua.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\misc\framedata_list_creator.py
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\misc\gif_to_png.py
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\misc\mirror_png.py
@@ -2200,8 +2200,6 @@ D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publis
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\bgchar.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\controls.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\fight.png
-D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\files\hud.xcf
-D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\files\Regua.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\frame.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\fs.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\hud.png
@@ -2209,8 +2207,12 @@ D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publis
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\random.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\settings.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\settings_bg.png
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\shadow0.png
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\shadow1.png
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\shadow2.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\timesup.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\title.png
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\ui\visuals.dat
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Project FS.exe
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Project FS.exe.config
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Project FS.pdb

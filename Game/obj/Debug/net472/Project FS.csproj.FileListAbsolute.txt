@@ -2246,9 +2246,6 @@ D:\GABRIEL\Repositórios\Fighting Game CS\Game\bin\Debug\net472\Assets\stages\NY
 D:\GABRIEL\Repositórios\Fighting Game CS\Game\bin\Debug\net472\Assets\stages\Rindo-Kan Dojo\sprites\visuals.dat
 D:\GABRIEL\Repositórios\Fighting Game CS\Game\bin\Debug\net472\Assets\stages\The Midnight Duel\sprites\visuals.dat
 D:\GABRIEL\Repositórios\Fighting Game CS\Game\bin\Debug\net472\Assets\stages\The Savana\sprites\visuals.dat
-D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Default\Sprites\shadow0.png
-D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Default\Sprites\shadow1.png
-D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Default\Sprites\shadow2.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\sounds\dash.wav
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\sounds\golpe_1.mp3
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\sounds\golpe_2.mp3
@@ -4412,8 +4409,6 @@ D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Th
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\90fade.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\bgchar.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\fight.png
-D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\files\hud.xcf
-D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\files\Regua.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\frame.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\fs.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\hud.png
@@ -4482,3 +4477,10 @@ D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\random
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\settings_bg.png
 d:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\crt.frag
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\config.json
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\misc\files\hud.xcf
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\misc\files\Regua.png
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\shadow0.png
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\shadow1.png
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\shadow2.png
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\ui\visuals.dat
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\fonts\fonts.dat

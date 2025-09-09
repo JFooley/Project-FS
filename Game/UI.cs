@@ -1,3 +1,4 @@
+using Data_space;
 using SFML.Graphics;
 using SFML.System;
 using Stage_Space;
@@ -27,14 +28,16 @@ namespace UI_space {
         public SFML.Graphics.Color bar_life = new SFML.Graphics.Color(240, 220, 20);
         public SFML.Graphics.Color bar_super = new SFML.Graphics.Color(5, 110, 150);
         public SFML.Graphics.Color bar_super_full = new SFML.Graphics.Color(0, 185, 255);
-        
+
         // visuals
-        Sprite hud = new Sprite(new Texture("Assets/ui/hud.png"));
+        Sprite hud;
         private Dictionary<string, Dictionary<char, Sprite>> font_textures;
         private string superBarMsg = "max aura";
 
-        private UI() {
+        private UI()
+        {
             this.font_textures = new Dictionary<string, Dictionary<char, Sprite>>();
+            this.hud = new Sprite(Program.visuals["hud"]);
         }
 
         public static UI Instance
@@ -59,7 +62,7 @@ namespace UI_space {
         }
 
         // Loads
-        public void LoadCharacterSprites(float size, string textureName) {
+        public void LoadFontSprites(float size, string textureName) {
             Dictionary<char, Sprite> characterSprites = new Dictionary<char, Sprite>(); // Cria grupo de sprites
             foreach (char c in BitmapFont.characters) {
                 Sprite sprite = BitmapFont.GetCharacterSprite(c, size, textureName);
@@ -203,39 +206,25 @@ namespace UI_space {
         }
         
         public void LoadFonts() {
-            BitmapFont.Load("default medium", "Assets/fonts/default medium.png");
-            BitmapFont.Load("default medium grad", "Assets/fonts/default medium grad.png");
-            BitmapFont.Load("default medium white", "Assets/fonts/default medium white.png");
-            BitmapFont.Load("default medium red", "Assets/fonts/default medium red.png");
-            BitmapFont.Load("default medium click", "Assets/fonts/default medium click.png");
-            BitmapFont.Load("default medium hover", "Assets/fonts/default medium hover.png");
+            BitmapFont.Load();
+            BitmapFont.Rename("font1", "1");
 
-            BitmapFont.Load("default small", "Assets/fonts/default small.png");
-            BitmapFont.Load("default small grad", "Assets/fonts/default small grad.png");
-            BitmapFont.Load("default small white", "Assets/fonts/default small white.png");
-            BitmapFont.Load("default small red", "Assets/fonts/default small red.png");
-            BitmapFont.Load("default small click", "Assets/fonts/default small click.png");
-            BitmapFont.Load("default small hover", "Assets/fonts/default small hover.png");
+            UI.Instance.LoadFontSprites(32, "default medium");
+            UI.Instance.LoadFontSprites(32, "default medium grad");
+            UI.Instance.LoadFontSprites(32, "default medium white");
+            UI.Instance.LoadFontSprites(32, "default medium red");
+            UI.Instance.LoadFontSprites(32, "default medium click");
+            UI.Instance.LoadFontSprites(32, "default medium hover");
 
-            BitmapFont.Load("1", "Assets/fonts/font1.png");
-            BitmapFont.Load("icons", "Assets/fonts/icons.png");
+            UI.Instance.LoadFontSprites(32, "default small");
+            UI.Instance.LoadFontSprites(32, "default small grad");
+            UI.Instance.LoadFontSprites(32, "default small white");
+            UI.Instance.LoadFontSprites(32, "default small red");
+            UI.Instance.LoadFontSprites(32, "default small click");
+            UI.Instance.LoadFontSprites(32, "default small hover");
 
-            UI.Instance.LoadCharacterSprites(32, "default medium");
-            UI.Instance.LoadCharacterSprites(32, "default medium grad");
-            UI.Instance.LoadCharacterSprites(32, "default medium white");
-            UI.Instance.LoadCharacterSprites(32, "default medium red");
-            UI.Instance.LoadCharacterSprites(32, "default medium click");
-            UI.Instance.LoadCharacterSprites(32, "default medium hover");
-
-            UI.Instance.LoadCharacterSprites(32, "default small");
-            UI.Instance.LoadCharacterSprites(32, "default small grad");
-            UI.Instance.LoadCharacterSprites(32, "default small white");
-            UI.Instance.LoadCharacterSprites(32, "default small red");
-            UI.Instance.LoadCharacterSprites(32, "default small click");
-            UI.Instance.LoadCharacterSprites(32, "default small hover");
-
-            UI.Instance.LoadCharacterSprites(32, "1");
-            UI.Instance.LoadCharacterSprites(32, "icons");
+            UI.Instance.LoadFontSprites(32, "1");
+            UI.Instance.LoadFontSprites(32, "icons");
         }
     }
 
@@ -259,11 +248,26 @@ namespace UI_space {
         private const int Columns = 10;  // Número de colunas
         private const int Rows = 10;     // Número de linhas
 
-        public static void Load(string textureName, string textureFile)
-        {
-            // Carrega a textura do atlas e a associa a um nome
-            Texture texture = new Texture(textureFile);
-            textures[textureName] = texture;
+        public static void Load() {
+            string currentDirectory = Directory.GetCurrentDirectory();
+            string full_path = Path.Combine(currentDirectory, "Assets/fonts");
+            if (!System.IO.Directory.Exists(full_path))
+                throw new System.IO.DirectoryNotFoundException($"O diretório {full_path} não foi encontrado.");
+
+            try
+            {
+                DataManagement.LoadTexturesFromFile("Assets/fonts/fonts.dat", BitmapFont.textures);
+            }
+            catch (Exception e)
+            {
+                DataManagement.LoadTexturesFromPath("Assets/fonts", BitmapFont.textures);
+                DataManagement.SaveTexturesToFile("Assets/fonts/fonts.dat", BitmapFont.textures);
+            }
+        }
+
+        public static void Rename(string old_name, string new_name) {
+            textures[new_name] = textures[old_name];
+            textures.Remove(old_name);
         }
 
         public static Sprite GetCharacterSprite(char character, float size, string textureName)

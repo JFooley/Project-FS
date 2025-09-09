@@ -83,8 +83,7 @@ namespace Stage_Space {
 
         // Visual info
         public Color AmbientLight = new Color(255, 255, 255, 255);
-        private Sprite fade90 = new Sprite(new Texture("Assets/ui/90fade.png"));
-        private Texture[] shadows;
+        private Sprite fade90 = new Sprite(Program.visuals["90fade"]);
         private Sprite shadow;
 
         public Stage(string name, int floorLine, int length, int height, string spritesFolderPath, string soundFolderPath, string thumbPath) {
@@ -109,9 +108,9 @@ namespace Stage_Space {
             this.timer = new Stopwatch();
             this.matchTimer = new Stopwatch();
         }
-        public Stage(string name, string thumbPath) {
+        public Stage(string name, Texture thumb) {
             this.name = name;
-            this.thumb = new Sprite(new Texture(thumbPath));
+            this.thumb = new Sprite(thumb);
         }
 
         // Behaviour
@@ -339,7 +338,7 @@ namespace Stage_Space {
         // Visuals
         public void DrawShadow(Character char_obj) {
             if (char_obj.shadow_size != -1) {
-                this.shadow.Texture = this.shadows[char_obj.shadow_size];
+                this.shadow.Texture = Program.visuals["shadow" + char_obj.shadow_size];
                 this.shadow.Position = new Vector2f(char_obj.body.Position.X - this.shadow.GetLocalBounds().Width/2, this.floorLine - this.shadow.GetLocalBounds().Height/2 - 55 );
                 this.shadow.Color = this.AmbientLight;
                 Program.window.Draw(this.shadow);
@@ -566,90 +565,54 @@ namespace Stage_Space {
             this.character_A = null;
             this.character_B = null;
         }
-        public bool LoadSpriteImages() {
+        public void LoadTextures() {
             string currentDirectory = Directory.GetCurrentDirectory();
-            string fullPath = Path.Combine(currentDirectory, this.spritesFolderPath);
+            string full_path = Path.Combine(currentDirectory, this.spritesFolderPath);
 
             // Verifica se o diretório existe
-            if (!System.IO.Directory.Exists(fullPath)) {
-                return false;
+            if (!System.IO.Directory.Exists(full_path)) {
+                throw new System.IO.DirectoryNotFoundException($"O diretório {full_path} não foi encontrado.");
             }
 
-            // Load shadows textures
-            this.shadows = new Texture[3];
-            for (int i = 0; i < 3; i++) {
-                this.shadows[i] = new Texture("Assets/characters/Default/Sprites/shadow" + i + ".png");
-            }
-            this.shadow = new Sprite(this.shadows[0]);
+            // Load shadows textures            
+            this.shadow = new Sprite(Program.visuals["shadow1"]);
 
             // Verifica se o arquivo binário existe, senão, carrega as texturas e cria ele
-            string datpath = Path.Combine(fullPath, "visuals.dat");
-            if (System.IO.File.Exists(datpath)) {
-                this.textures = DataManagement.LoadTextures(datpath);
-                
-            } else {
-                // Obtém todos os arquivos no diretório especificado
-                string[] files = System.IO.Directory.GetFiles(fullPath);
-                foreach (string file in files) {
-                    // Tenta carregar a textura
-                    Texture texture = new Texture(file);
-                    
-                    // Obtém o nome do arquivo sem a extensão
-                    string fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(file);
-                    
-                    // Usa o nome do arquivo sem extensão como chave no dicionário
-                    this.textures[fileNameWithoutExtension] = texture;
-                }
-
-                // Salva o arquivo binário
-                DataManagement.SaveTextures(datpath, this.textures);
+            string dat_path = Path.Combine(full_path, "visuals.dat");
+            try {
+                DataManagement.LoadTexturesFromFile(dat_path, this.textures);
+            } catch (Exception e) {
+                DataManagement.LoadTexturesFromPath(full_path, this.textures);
+                DataManagement.SaveTexturesToFile(dat_path, this.textures);
             }
-
-            return true;
         }
-        public void UnloadSpriteImages() {
+        public void UnloadTextures() {
             foreach (var image in this.textures.Values)
             {
                 image.Dispose(); // Free the memory used by the image
             }
             this.textures.Clear(); // Clear the dictionary
         }
-        public bool LoadSounds() {
+        public void LoadSounds() {
             string currentDirectory = Directory.GetCurrentDirectory();
-            string fullSoundPath = Path.Combine(currentDirectory, this.soundFolderPath);
+            string full_sound_path = Path.Combine(currentDirectory, this.soundFolderPath);
 
             // Verifica se o diretório existe
-            if (!System.IO.Directory.Exists(fullSoundPath)) {
-                return false;
+            if (!System.IO.Directory.Exists(full_sound_path)) {
+                throw new System.IO.DirectoryNotFoundException($"O diretório {full_sound_path} não foi encontrado.");
             }
 
-            // Verifica se o arquivo binário existe, senão, carrega as texturas e cria ele
-            string datpath = Path.Combine(fullSoundPath, "sounds.dat");
-            if (System.IO.File.Exists(datpath)) {
-                this.sounds = DataManagement.LoadSounds(datpath);
-                
-            } else {
-                // Obtém todos os arquivos no diretório especificado
-                string[] files = System.IO.Directory.GetFiles(fullSoundPath);
-                foreach (string file in files) {
-                    // Tenta carregar a textura
-                    var buffer = new SoundBuffer(file);
-                    
-                    // Obtém o nome do arquivo sem a extensão
-                    string fileNameWithoutExtension = System.IO.Path.GetFileNameWithoutExtension(file);
-
-                    // Adiciona no dicionário
-                    this.sounds[fileNameWithoutExtension] = buffer;
-                } 
-
-                // Salva o arquivo binário
-                DataManagement.SaveSounds(datpath, this.sounds);
+            // Verifica se o arquivo binário existe, senão, carrega os sons e cria ele
+            string dat_path = Path.Combine(full_sound_path, "sounds.dat");
+            try {
+                DataManagement.LoadSoundsFromFile(dat_path, this.sounds);
+            } catch (Exception e) {
+                DataManagement.LoadSoundsFromPath(full_sound_path, this.sounds);
+                DataManagement.SaveSoundsToFile(dat_path, this.sounds);
             }
 
             // setta a musica
             this.music = new Sound(sounds["music"]);
-            
-            return true;
         }
         public void UnloadSounds() {
             this.StopMusic();

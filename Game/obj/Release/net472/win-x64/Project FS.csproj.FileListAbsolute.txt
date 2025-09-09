@@ -2246,9 +2246,6 @@ D:\GABRIEL\Repositórios\Fighting Game CS\Game\bin\Release\net472\win-x64\Assets
 D:\GABRIEL\Repositórios\Fighting Game CS\Game\bin\Release\net472\win-x64\Assets\stages\Rindo-Kan Dojo\sprites\visuals.dat
 D:\GABRIEL\Repositórios\Fighting Game CS\Game\bin\Release\net472\win-x64\Assets\stages\The Midnight Duel\sprites\visuals.dat
 D:\GABRIEL\Repositórios\Fighting Game CS\Game\bin\Release\net472\win-x64\Assets\stages\The Savana\sprites\visuals.dat
-D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Default\Sprites\shadow0.png
-D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Default\Sprites\shadow1.png
-D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Default\Sprites\shadow2.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Ken\sounds\dash.wav
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Ken\sounds\golpe_1.mp3
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Ken\sounds\golpe_2.mp3
@@ -4423,8 +4420,6 @@ D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\90fade.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\bgchar.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\fight.png
-D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\files\hud.xcf
-D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\files\Regua.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\frame.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\fs.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\hud.png
@@ -4482,3 +4477,10 @@ D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\random.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\settings_bg.png
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\shaders\crt.frag
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\fonts\fonts.dat
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\misc\files\hud.xcf
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\misc\files\Regua.png
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\shadow0.png
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\shadow1.png
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\shadow2.png
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\ui\visuals.dat

@@ -2,8 +2,10 @@ using SFML.Audio;
 using SFML.Graphics;
 
 namespace Data_space {
-    public static class DataManagement {
-        public static void SaveTextures(string fileName, Dictionary<string, Texture> textures) {
+    public static class DataManagement
+    {
+        public static void SaveTexturesToFile(string fileName, Dictionary<string, Texture> textures)
+        {
             using (var stream = new FileStream(fileName, FileMode.Create))
             using (var writer = new BinaryWriter(stream))
             {
@@ -13,11 +15,11 @@ namespace Data_space {
                 {
                     writer.Write(kvp.Key);
                     Image image = kvp.Value.CopyToImage();
-                    
+
                     // Escreve dimensões
                     writer.Write(image.Size.X);
                     writer.Write(image.Size.Y);
-                    
+
                     // Obtém pixels como byte array (sempre RGBA no SFML)
                     byte[] pixels = image.Pixels;
                     writer.Write(pixels.Length);
@@ -25,8 +27,9 @@ namespace Data_space {
                 }
             }
         }
-        public static Dictionary<string, Texture> LoadTextures(string fileName) {
-            var textures = new Dictionary<string, Texture>();
+        public static Dictionary<string, Texture> LoadTexturesFromFile(string fileName, Dictionary<string, Texture> existingTextures = null)
+        {
+            var textures = existingTextures ?? new Dictionary<string, Texture>();
 
             using (var stream = new FileStream(fileName, FileMode.Open))
             using (var reader = new BinaryReader(stream))
@@ -43,7 +46,7 @@ namespace Data_space {
 
                     // Cria imagem - SFML sempre usa RGBA para Image
                     Image image = new Image(width, height);
-                    
+
                     // Copia os dados pixel a pixel
                     for (uint y = 0; y < height; y++)
                     {
@@ -64,24 +67,42 @@ namespace Data_space {
 
             return textures;
         }
+        public static Dictionary<string, Texture> LoadTexturesFromPath(string directoryPath, Dictionary<string, Texture> existingTextures = null)
+        {
+            Dictionary<string, Texture> textures = existingTextures ?? new Dictionary<string, Texture>();
+            string[] files = Directory.GetFiles(directoryPath);
 
-        public static void SaveSounds(string fileName, Dictionary<string, SoundBuffer> sounds) {
+            foreach (string file in files)
+            {
+                string extension = Path.GetExtension(file).ToLower();
+                if (extension == ".png" || extension == ".jpg" || extension == ".jpeg" || extension == ".bmp")
+                {
+                    string key = Path.GetFileNameWithoutExtension(file);
+                    textures[key] = new Texture(file);
+                }
+            }
+
+            return textures;
+        }
+
+        public static void SaveSoundsToFile(string fileName, Dictionary<string, SoundBuffer> sounds)
+        {
             using (FileStream fs = new FileStream(fileName, FileMode.Create))
             using (BinaryWriter writer = new BinaryWriter(fs))
             {
                 writer.Write(sounds.Count); // Escreve quantos sons serão salvos
-                
+
                 foreach (var pair in sounds)
                 {
                     // Salva o nome do som
                     writer.Write(pair.Key);
-                    
+
                     // Obtém os dados brutos do SoundBuffer
                     SoundBuffer buffer = pair.Value;
                     short[] samples = buffer.Samples;
                     byte[] sampleBytes = new byte[samples.Length * 2];
                     Buffer.BlockCopy(samples, 0, sampleBytes, 0, sampleBytes.Length);
-                    
+
                     // Escreve os metadados e dados do áudio
                     writer.Write(buffer.SampleRate);
                     writer.Write((byte)buffer.ChannelCount);
@@ -90,14 +111,15 @@ namespace Data_space {
                 }
             }
         }
-        public static Dictionary<string, SoundBuffer> LoadSounds(string fileName) {
-            Dictionary<string, SoundBuffer> loadedSounds = new Dictionary<string, SoundBuffer>();
-            
+        public static Dictionary<string, SoundBuffer> LoadSoundsFromFile(string fileName, Dictionary<string, SoundBuffer> existingSounds = null)
+        {
+            Dictionary<string, SoundBuffer> loadedSounds = existingSounds ?? new Dictionary<string, SoundBuffer>();
+
             using (FileStream fs = new FileStream(fileName, FileMode.Open))
             using (BinaryReader reader = new BinaryReader(fs))
             {
                 int soundCount = reader.ReadInt32();
-                
+
                 for (int i = 0; i < soundCount; i++)
                 {
                     string soundName = reader.ReadString();
@@ -105,18 +127,35 @@ namespace Data_space {
                     byte channels = reader.ReadByte();
                     int dataLength = reader.ReadInt32();
                     byte[] audioData = reader.ReadBytes(dataLength);
-                    
+
                     // Reconstrói o SoundBuffer
                     short[] samples = new short[dataLength / 2];
                     Buffer.BlockCopy(audioData, 0, samples, 0, dataLength);
                     SoundBuffer buffer = new SoundBuffer(samples, channels, sampleRate);
-                    
+
                     // Cria o Sound e adiciona ao dicionário
                     loadedSounds[soundName] = buffer;
                 }
             }
-            
+
             return loadedSounds;
+        }
+        public static Dictionary<string, SoundBuffer> LoadSoundsFromPath(string directoryPath, Dictionary<string, SoundBuffer> existingSounds = null)
+        {
+            Dictionary<string, SoundBuffer> sounds = existingSounds ?? new Dictionary<string, SoundBuffer>();
+            string[] files = Directory.GetFiles(directoryPath);
+
+            foreach (string file in files)
+            {
+                string extension = Path.GetExtension(file).ToLower();
+                if (extension == ".wav" || extension == ".ogg" || extension == ".flac" || extension == ".mp3")
+                {
+                    string key = Path.GetFileNameWithoutExtension(file);
+                    sounds[key] = new SoundBuffer(file);
+                }
+            }
+
+            return sounds;
         }
     }
 }
