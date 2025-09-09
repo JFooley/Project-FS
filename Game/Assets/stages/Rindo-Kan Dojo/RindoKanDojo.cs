@@ -4,7 +4,7 @@ using Animation_Space;
 
 public class RindoKanDojo : Stage {
     public RindoKanDojo()
-        : base("Rindo-Kan Dojo", 496, 895, 475, "Assets/stages/Rindo-Kan Dojo/sprites", "Assets/stages/Rindo-Kan Dojo/sound", "Assets/stages/Rindo-Kan Dojo/thumb.png")
+        : base("Rindo-Kan Dojo", 496, 895, 475, "Assets/stages/Rindo-Kan Dojo", Program.thumbs["kan_thumb"])
     {
         this.AmbientLight = new SFML.Graphics.Color(255, 255, 240, 255);
     }

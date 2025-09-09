@@ -12,10 +12,10 @@ public class Particle : Character {
     public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
 
     public Particle(string initialState, float startX, float startY, int facing, Stage stage = null)
-        : base("Particle", initialState, startX, startY, "Assets/particles/sprites/Particle", "Assets/particles/sounds/Particle", stage) {
+        : base("Particle", initialState, startX, startY, "Assets/particles/Particle", stage) {
             this.facing = facing;
         }
-    public Particle() : base("Particle", "", 0, 0, "Assets/particles/sprites/Particle", "Assets/particles/sounds/Particle", null) {}
+    public Particle() : base("Particle", "", 0, 0, "Assets/particles/Particle", null) {}
 
     public override void Load() {
         // Animations
@@ -184,9 +184,9 @@ public class Particle : Character {
     }
     
     public override void DoBehave() {        
-        if (this.State.post_state == "Remove" && this.CurrentAnimation.ended) {
+        if (this.state.post_state == "Remove" && this.current_animation.ended) {
             this.remove = true;
-            this.CurrentAnimation.Reset();
+            this.current_animation.Reset();
         }
     }
 }

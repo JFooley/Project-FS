@@ -12,8 +12,7 @@ namespace Stage_Space {
     public class Stage {
         // Basic Infos
         public string name = "";
-        public string spritesFolderPath;
-        public string soundFolderPath;
+        public string folder_path;
         public Sprite thumb;
 
         // Debug infos
@@ -28,11 +27,11 @@ namespace Stage_Space {
         // Battle Info
         public List<Character> OnSceneCharacters = new List<Character> {};
         public List<Character> OnSceneCharactersSorted => this.OnSceneCharacters
-                .OrderByDescending(x => x.State.priority)
+                .OrderByDescending(x => x.state.priority)
                 .ThenBy(x => Program.random.Next())
                 .ToList();
         public List<Character> OnSceneCharactersRender => this.OnSceneCharacters
-                .OrderBy(x => x.State.priority)
+                .OrderBy(x => x.state.priority)
                 .ToList();
         public List<Character> OnSceneParticles = new List<Character> {};
         public List<Character> newCharacters = new List<Character> {};
@@ -86,15 +85,14 @@ namespace Stage_Space {
         private Sprite fade90 = new Sprite(Program.visuals["90fade"]);
         private Sprite shadow;
 
-        public Stage(string name, int floorLine, int length, int height, string spritesFolderPath, string soundFolderPath, string thumbPath) {
+        public Stage(string name, int floorLine, int length, int height, string folder_path, Texture thumb) {
             this.name = name;
             this.floorLine = floorLine;
             this.length = length;
             this.height = height;
             this.start_point_A = (int) ((length / 2) - 100);
             this.start_point_B = (int) ((length / 2) + 100);
-            this.spritesFolderPath = spritesFolderPath;
-            this.soundFolderPath = soundFolderPath;
+            this.folder_path = folder_path;
             this.rounds_A = 0;
             this.rounds_B = 0;
             this.CurrentState = "Default";
@@ -103,7 +101,7 @@ namespace Stage_Space {
             this.fireball = new Fireball("Default", 1, 0, 0, 0, 1, this);
             this.particle = new Particle("Default", 0, 0, 1, this);
 
-            this.thumb = new Sprite(new Texture(thumbPath));
+            this.thumb = new Sprite(thumb);
 
             this.timer = new Stopwatch();
             this.matchTimer = new Stopwatch();
@@ -114,24 +112,28 @@ namespace Stage_Space {
         }
 
         // Behaviour
-        public void Update() {
-            if (!this.character_A.onHit) this.character_B.comboCounter = 0;
-            if (!this.character_B.onHit) this.character_A.comboCounter = 0;
+        public void Update()
+        {
+            if (!this.character_A.on_hit) this.character_B.combo_counter = 0;
+            if (!this.character_B.on_hit) this.character_A.combo_counter = 0;
 
             // Pause
             if (InputManager.Instance.Key_down("Start") && Program.sub_state == Program.Battling) this.Pause();
 
             // Render stage sprite
-            if (this.textures.ContainsKey(this.CurrentSprite)) {
+            if (this.textures.ContainsKey(this.CurrentSprite))
+            {
                 Sprite temp_sprite = new Sprite(this.textures[this.CurrentSprite]);
-                temp_sprite.Position = new Vector2f (0, 0);
+                temp_sprite.Position = new Vector2f(0, 0);
                 Program.window.Draw(temp_sprite);
             }
 
             // Advance to the next frame
             CurrentAnimation.AdvanceFrame();
-            if (this.CurrentAnimation.ended && state.change_on_end) {
-                if (states.ContainsKey(this.state.post_state)) {
+            if (this.CurrentAnimation.ended && state.change_on_end)
+            {
+                if (states.ContainsKey(this.state.post_state))
+                {
                     this.LastState = this.CurrentState;
                     this.CurrentState = this.state.post_state;
                     if (CurrentState != LastState) this.states[LastState].animation.Reset();
@@ -142,7 +144,8 @@ namespace Stage_Space {
             if (!this.pause) this.PlayMusic();
 
             // Render 
-            foreach (Character char_object in this.OnSceneCharactersRender) {
+            foreach (Character char_object in this.OnSceneCharactersRender)
+            {
                 this.DrawShadow(char_object);
                 char_object.Render(this.show_boxs);
             }
@@ -161,7 +164,7 @@ namespace Stage_Space {
             this.OnSceneParticles.RemoveAll(obj => obj.remove);
             this.OnSceneParticles.AddRange(this.newParticles);
             this.newParticles.Clear();
-            
+
             // Render Pause menu and Traning assets
             if (this.training_mode) this.TrainingMode();
             if (this.pause) this.PauseScreen();
@@ -184,11 +187,11 @@ namespace Stage_Space {
             
             // Keep characters facing each other
             if (this.character_A.body.Position.X < this.character_B.body.Position.X) {
-                if (this.character_A.notActing) this.character_A.facing = 1;
-                if (this.character_B.notActing) this.character_B.facing = -1;
+                if (this.character_A.not_acting) this.character_A.facing = 1;
+                if (this.character_B.not_acting) this.character_B.facing = -1;
             } else {
-                if (this.character_A.notActing) this.character_A.facing = -1;
-                if (this.character_B.notActing) this.character_B.facing = 1;
+                if (this.character_A.not_acting) this.character_A.facing = -1;
+                if (this.character_B.not_acting) this.character_B.facing = 1;
             }
             
             this.DoSpecialBehaviour();
@@ -200,19 +203,19 @@ namespace Stage_Space {
             UI.Instance.DrawText("training mode", 0, 70, spacing: Config.spacing_small, size: 1f, textureName: "default small white");
 
             // Show life points
-            UI.Instance.DrawText(this.character_A.LifePoints.X.ToString(), -18, -Config.RenderHeight/2, spacing: Config.spacing_small, size: 1f, alignment: "right", textureName: "default small white");
-            UI.Instance.DrawText(this.character_B.LifePoints.X.ToString(), 18, -Config.RenderHeight/2, spacing: Config.spacing_small, size: 1f, alignment: "left", textureName: "default small white");
-            UI.Instance.DrawText((this.character_A.LifePoints.Y - this.character_A.LifePoints.X).ToString(), -Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, size: 1f, alignment: "left", textureName: "default small red");
-            UI.Instance.DrawText((this.character_B.LifePoints.Y - this.character_B.LifePoints.X).ToString(), Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, size: 1f, alignment: "right", textureName: "default small red");
+            UI.Instance.DrawText(this.character_A.life_points.X.ToString(), -18, -Config.RenderHeight/2, spacing: Config.spacing_small, size: 1f, alignment: "right", textureName: "default small white");
+            UI.Instance.DrawText(this.character_B.life_points.X.ToString(), 18, -Config.RenderHeight/2, spacing: Config.spacing_small, size: 1f, alignment: "left", textureName: "default small white");
+            UI.Instance.DrawText((this.character_A.life_points.Y - this.character_A.life_points.X).ToString(), -Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, size: 1f, alignment: "left", textureName: "default small red");
+            UI.Instance.DrawText((this.character_B.life_points.Y - this.character_B.life_points.X).ToString(), Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, size: 1f, alignment: "right", textureName: "default small red");
 
             // Reset frames
-            if (this.character_A.hitstopCounter == 0 && this.character_B.hitstopCounter == 0) this.reset_frames += 1;
+            if (this.character_A.hitstop_counter == 0 && this.character_B.hitstop_counter == 0) this.reset_frames += 1;
 
             // Block after hit
-            if (this.character_B.StunFrames > 0) {
+            if (this.character_B.stun_frames > 0) {
                 if (this.block == 1) this.character_B.blocking = true;
                 this.reset_frames = 0;
-            } else if (this.character_A.StunFrames > 0) {
+            } else if (this.character_A.stun_frames > 0) {
                 if (this.block == 1) this.character_A.blocking = true;
                 this.reset_frames = 0;
             }
@@ -226,25 +229,25 @@ namespace Stage_Space {
             // Reset chars life, stun and super bar
             if (this.reset_frames >= Config.reset_frames)
             {
-                if (this.character_B.notActingAll)
+                if (this.character_B.not_acting_all)
                 {
                     if (this.block != 2) this.character_B.blocking = false;
                     if (this.refil_life)
                     {
-                        this.character_B.LifePoints.X = this.character_B.LifePoints.Y;
-                        this.character_B.DizzyPoints.X = this.character_B.DizzyPoints.Y;
+                        this.character_B.life_points.X = this.character_B.life_points.Y;
+                        this.character_B.dizzy_points.X = this.character_B.dizzy_points.Y;
                     }
-                    if (this.refil_super) this.character_B.SuperPoints.X = this.character_B.SuperPoints.Y;
+                    if (this.refil_super) this.character_B.aura_points.X = this.character_B.aura_points.Y;
                 }
-                if (this.character_A.notActingAll)
+                if (this.character_A.not_acting_all)
                 {
                     if (this.block != 2)this.character_A.blocking = false;
                     if (this.refil_life)
                     {
-                        this.character_A.LifePoints.X = this.character_A.LifePoints.Y;
-                        this.character_A.DizzyPoints.X = this.character_A.DizzyPoints.Y;
+                        this.character_A.life_points.X = this.character_A.life_points.Y;
+                        this.character_A.dizzy_points.X = this.character_A.dizzy_points.Y;
                     }
-                    if (this.refil_super) this.character_A.SuperPoints.X = this.character_A.SuperPoints.Y;
+                    if (this.refil_super) this.character_A.aura_points.X = this.character_A.aura_points.Y;
                 }
                 this.reset_frames = Config.reset_frames;
             }
@@ -352,21 +355,21 @@ namespace Stage_Space {
             bool doEnd = false;
 
             if (this.round_time == 0) {
-                if (character_A.LifePoints.X <= character_B.LifePoints.X) {
+                if (character_A.life_points.X <= character_B.life_points.X) {
                     this.rounds_B += 1;
                     doEnd = true;
                 } 
-                if (character_A.LifePoints.X >= character_B.LifePoints.X) {
+                if (character_A.life_points.X >= character_B.life_points.X) {
                     this.rounds_A += 1;
                     doEnd = true;
                 } 
             }
 
-            if (character_A.LifePoints.X <= 0 && character_A.CurrentState == "OnGround") {
+            if (character_A.life_points.X <= 0 && character_A.current_state == "OnGround") {
                 this.rounds_B += 1;
                 doEnd = true;
             }
-            if (character_B.LifePoints.X <= 0 && character_B.CurrentState == "OnGround") {
+            if (character_B.life_points.X <= 0 && character_B.current_state == "OnGround") {
                 this.rounds_A += 1;
                 doEnd = true;
             }
@@ -410,15 +413,15 @@ namespace Stage_Space {
 
                 switch (amount) {
                     case "Light":
-                        character.hitstopCounter = Config.hit_stop_time * 1/2;
+                        character.hitstop_counter = Config.hit_stop_time * 1/2;
                         break;
 
                     case "Medium":
-                        character.hitstopCounter = Config.hit_stop_time * 2/3;
+                        character.hitstop_counter = Config.hit_stop_time * 2/3;
                         break;
 
                     case "Heavy":
-                        character.hitstopCounter = Config.hit_stop_time;
+                        character.hitstop_counter = Config.hit_stop_time;
                         break;
 
                     default:
@@ -444,7 +447,7 @@ namespace Stage_Space {
             }
         }
         public void StopFor(int frame_amount) {
-            foreach (var entity in this.OnSceneCharacters) entity.hitstopCounter = frame_amount;
+            foreach (var entity in this.OnSceneCharacters) entity.hitstop_counter = frame_amount;
         }
 
         // Round Time
@@ -469,21 +472,21 @@ namespace Stage_Space {
         public void SetChars(Character char_A, Character char_B) {
             this.character_A = char_A;
             this.character_A.facing = 1;
-            this.character_A.playerIndex = 1;
+            this.character_A.player_index = 1;
 
             this.character_B = char_B;
             this.character_B.facing = -1;
-            this.character_B.playerIndex = 2;
+            this.character_B.player_index = 2;
 
-            this.character_A.floorLine = this.floorLine;
-            this.character_B.floorLine = this.floorLine;
+            this.character_A.floor_line = this.floorLine;
+            this.character_B.floor_line = this.floorLine;
             this.character_A.body.Position.X = this.start_point_A;
             this.character_B.body.Position.X = this.start_point_B;
             this.character_A.stage = this;
             this.character_B.stage = this;
 
-            this.character_A.LightTint = this.AmbientLight;
-            this.character_B.LightTint = this.AmbientLight;
+            this.character_A.light_tint = this.AmbientLight;
+            this.character_B.light_tint = this.AmbientLight;
 
             this.OnSceneCharacters = new List<Character> {this.character_A, this.character_B};
             this.LockPlayers();
@@ -567,14 +570,14 @@ namespace Stage_Space {
         }
         public void LoadTextures() {
             string currentDirectory = Directory.GetCurrentDirectory();
-            string full_path = Path.Combine(currentDirectory, this.spritesFolderPath);
+            string full_path = Path.Combine(currentDirectory, this.folder_path, "sprites");
 
             // Verifica se o diretório existe
             if (!System.IO.Directory.Exists(full_path)) {
                 throw new System.IO.DirectoryNotFoundException($"O diretório {full_path} não foi encontrado.");
             }
 
-            // Load shadows textures            
+            // Set shadow            
             this.shadow = new Sprite(Program.visuals["shadow1"]);
 
             // Verifica se o arquivo binário existe, senão, carrega as texturas e cria ele
@@ -595,7 +598,7 @@ namespace Stage_Space {
         }
         public void LoadSounds() {
             string currentDirectory = Directory.GetCurrentDirectory();
-            string full_sound_path = Path.Combine(currentDirectory, this.soundFolderPath);
+            string full_sound_path = Path.Combine(currentDirectory, this.folder_path, "sound");
 
             // Verifica se o diretório existe
             if (!System.IO.Directory.Exists(full_sound_path)) {
@@ -622,8 +625,20 @@ namespace Stage_Space {
             }
             this.sounds.Clear(); 
         }
+        public static void LoadThumbs() {
+            if (!System.IO.Directory.Exists("Assets/stages")) {
+                throw new System.IO.DirectoryNotFoundException($"O diretório {"Assets/stages"} não foi encontrado.");
+            }
+            
+            try {
+                DataManagement.LoadTexturesFromFile("Assets/data/stage_thumbs.dat", Program.thumbs);
+            } catch (Exception e) {
+                foreach (string characterDir in Directory.GetDirectories("Assets/stages")) DataManagement.LoadTexturesFromPath(characterDir, Program.thumbs);
+                DataManagement.SaveTexturesToFile("Assets/data/stage_thumbs.dat", Program.thumbs);
+            }
+        }
 
-        public virtual void LoadStage() {}
+        public virtual void LoadStage() { }
         public void UnloadStage() {
             this.ResetMatch();
             this.ResetRoundTime();

@@ -143,47 +143,47 @@ namespace UI_space {
 
             // Character A
             // Draw lifebar A
-            var lifeA_scale = stage.character_A.LifePoints.X * 150 / stage.character_A.LifePoints.Y;
+            var lifeA_scale = stage.character_A.life_points.X * 150 / stage.character_A.life_points.Y;
             var lifeA = Math.Max(Math.Min(lifeA_scale, 150), 0);
-            if (stage.character_B.comboCounter == 0) this.graylife_A = lifeA > this.graylife_A ? this.graylife_A = lifeA : (int) (this.graylife_A + (lifeA - this.graylife_A) * 0.01);
+            if (stage.character_B.combo_counter == 0) this.graylife_A = lifeA > this.graylife_A ? this.graylife_A = lifeA : (int) (this.graylife_A + (lifeA - this.graylife_A) * 0.01);
             this.DrawRectangle(-180 + (150 - this.graylife_A), -95, this.graylife_A, 8, this.bar_graylife);
-            this.DrawRectangle(-180 + (150 - lifeA), -95, lifeA, 8, stage.character_A.LifePoints.X == stage.character_A.LifePoints.Y ? this.bar_fulllife : this.bar_life);
+            this.DrawRectangle(-180 + (150 - lifeA), -95, lifeA, 8, stage.character_A.life_points.X == stage.character_A.life_points.Y ? this.bar_fulllife : this.bar_life);
 
             // Draw Super bar A
-            var superA_scale = stage.character_A.SuperPoints.X * 119 / stage.character_A.SuperPoints.Y;
+            var superA_scale = stage.character_A.aura_points.X * 119 / stage.character_A.aura_points.Y;
             var superA = Math.Max(Math.Min(superA_scale, 119), 0);
             this.DrawRectangle(-180 + (119 - superA), 97, superA, 4, this.bar_super);
-            if (stage.character_A.SuperPoints.X >= stage.character_A.SuperPoints.Y/2) {
-                var control = stage.character_A.SuperPoints.X == stage.character_A.SuperPoints.Y ? this.blink10Hz : true;
+            if (stage.character_A.aura_points.X >= stage.character_A.aura_points.Y/2) {
+                var control = stage.character_A.aura_points.X == stage.character_A.aura_points.Y ? this.blink10Hz : true;
                 if (control) this.DrawRectangle(-180 + (119 - superA), 97, superA, 4, this.bar_super_full);
             }
-            if (stage.character_A.SuperPoints.X == stage.character_A.SuperPoints.Y && this.blink2Hz) this.DrawText(this.superBarMsg, -193, 75, spacing: Config.spacing_medium, alignment: "left", textureName: "default small");
+            if (stage.character_A.aura_points.X == stage.character_A.aura_points.Y && this.blink2Hz) this.DrawText(this.superBarMsg, -193, 75, spacing: Config.spacing_medium, alignment: "left", textureName: "default small");
             
             // Draw Stun bar A
-            var stunA_scale = ( stage.character_A.DizzyPoints.Y - stage.character_A.DizzyPoints.X) * 150 / stage.character_A.DizzyPoints.Y;
+            var stunA_scale = ( stage.character_A.dizzy_points.Y - stage.character_A.dizzy_points.X) * 150 / stage.character_A.dizzy_points.Y;
             var stunA = Math.Max(Math.Min(stunA_scale, 150), 0);
             this.DrawRectangle(-180 + (150 - stunA), -86, stunA, 1, this.bar_graylife);
 
             // Character B
             // Draw lifebar B
-            var lifeB_scale = stage.character_B.LifePoints.X * 150 / stage.character_B.LifePoints.Y;
+            var lifeB_scale = stage.character_B.life_points.X * 150 / stage.character_B.life_points.Y;
             var lifeB = Math.Max(Math.Min(lifeB_scale, 150), 0);
-            if (stage.character_A.comboCounter == 0) this.graylife_B = lifeB > this.graylife_B ? this.graylife_B = lifeB : (int) (this.graylife_B + (lifeB - this.graylife_B) * 0.01);
+            if (stage.character_A.combo_counter == 0) this.graylife_B = lifeB > this.graylife_B ? this.graylife_B = lifeB : (int) (this.graylife_B + (lifeB - this.graylife_B) * 0.01);
             this.DrawRectangle(30, -95, this.graylife_B, 8, this.bar_graylife);
-            this.DrawRectangle(30, -95, lifeB, 8, stage.character_B.LifePoints.X == stage.character_B.LifePoints.Y ? this.bar_fulllife : this.bar_life);
+            this.DrawRectangle(30, -95, lifeB, 8, stage.character_B.life_points.X == stage.character_B.life_points.Y ? this.bar_fulllife : this.bar_life);
             
             // Draw Super bar B
-            var superB_scale = stage.character_B.SuperPoints.X * 119 / stage.character_B.SuperPoints.Y;
+            var superB_scale = stage.character_B.aura_points.X * 119 / stage.character_B.aura_points.Y;
             var superB = Math.Max(Math.Min(superB_scale, 119), 0);
             this.DrawRectangle(61, 97, superB, 4, this.bar_super);
-            if (stage.character_B.SuperPoints.X >= stage.character_B.SuperPoints.Y/2) {
-                var control = stage.character_B.SuperPoints.X == stage.character_B.SuperPoints.Y ? this.blink10Hz : true;
+            if (stage.character_B.aura_points.X >= stage.character_B.aura_points.Y/2) {
+                var control = stage.character_B.aura_points.X == stage.character_B.aura_points.Y ? this.blink10Hz : true;
                 if (control) this.DrawRectangle(61, 97, superB, 4, this.bar_super_full);
             }
-            if (stage.character_B.SuperPoints.X == stage.character_B.SuperPoints.Y && this.blink2Hz) this.DrawText(this.superBarMsg, 193, 75, spacing: Config.spacing_medium, alignment: "right", textureName: "default small");
+            if (stage.character_B.aura_points.X == stage.character_B.aura_points.Y && this.blink2Hz) this.DrawText(this.superBarMsg, 193, 75, spacing: Config.spacing_medium, alignment: "right", textureName: "default small");
 
             // Draw Stun bar B
-            var stunB_scale = ( stage.character_B.DizzyPoints.Y - stage.character_B.DizzyPoints.X) * 150 / stage.character_B.DizzyPoints.Y;
+            var stunB_scale = ( stage.character_B.dizzy_points.Y - stage.character_B.dizzy_points.X) * 150 / stage.character_B.dizzy_points.Y;
             var stunB = Math.Max(Math.Min(stunB_scale, 150), 0);
             this.DrawRectangle(30, -86, stunB, 1, this.bar_graylife);
             
@@ -194,8 +194,8 @@ namespace UI_space {
             UI.Instance.DrawText(stage.character_B.name, 194, -95, spacing: Config.spacing_small, size: 1f, alignment: "right", textureName: "default small white");
 
             // Draw Combo text
-            if (stage.character_A.comboCounter > 1) this.DrawText("Combo " + stage.character_A.comboCounter, -190, -80, spacing: -23, alignment: "left", size: 1f, textureName: "default medium white");
-            if (stage.character_B.comboCounter > 1) this.DrawText("Combo " + stage.character_B.comboCounter, 190, -80, spacing: -23, alignment: "right", size: 1f, textureName: "default medium white");
+            if (stage.character_A.combo_counter > 1) this.DrawText("Combo " + stage.character_A.combo_counter, -190, -80, spacing: -23, alignment: "left", size: 1f, textureName: "default medium white");
+            if (stage.character_B.combo_counter > 1) this.DrawText("Combo " + stage.character_B.combo_counter, 190, -80, spacing: -23, alignment: "right", size: 1f, textureName: "default medium white");
 
             // Draw time
             this.DrawText("" + Math.Max(stage.round_time, 0), 0, -106, alignment: "center", spacing: -8, size: 1f, textureName: "1");

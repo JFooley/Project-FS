@@ -18,18 +18,16 @@ public class Ken : Character {
 
     // Constructors
     public Ken(string initialState, int startX, int startY, Stage stage)
-        : base("Ken", initialState, startX, startY, "Assets/characters/Ken/sprites", "Assets/characters/Ken/sounds", stage)
+        : base("Ken", initialState, startX, startY, "Assets/characters/Ken", stage)
     {
-        this.LifePoints = new Vector2i(1000, 1000);
-        this.DizzyPoints = new Vector2i(500, 500);
-        this.SuperPoints = new Vector2i(0, 100);
+        this.life_points = new Vector2i(1000, 1000);
+        this.dizzy_points = new Vector2i(500, 500);
+        this.aura_points = new Vector2i(0, 100);
 
         this.dash_speed = 8;
         this.move_speed = 3;
     }
-    public Ken() : base("Ken", "", 0, 0, "Assets/characters/Ken/sprites", "Assets/characters/Ken/sounds", null) {
-        this.thumb = new Texture("Assets/characters/Ken/thumb.png");
-    }
+    public Ken() : base("Ken", "Assets/characters/Ken", Program.thumbs["ken_thumb"]) { }
     
     public override void Load() {
         // Hurtboxes
@@ -801,49 +799,49 @@ public class Ken : Character {
     public override void DoBehave() {
         if (this.behave == false) return;
 
-        if ((this.CurrentState == "WalkingForward" || this.CurrentState == "WalkingBackward") & !InputManager.Instance.Key_hold("Left", player: this.playerIndex, facing: this.facing) & !InputManager.Instance.Key_hold("Right", player: this.playerIndex, facing: this.facing)) {
+        if ((this.current_state == "WalkingForward" || this.current_state == "WalkingBackward") & !InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) & !InputManager.Instance.Key_hold("Right", player: this.player_index, facing: this.facing)) {
             this.ChangeState("Idle");
         }
 
         // Crouching
-        if (InputManager.Instance.Key_hold("Down", player: this.playerIndex, facing: this.facing) && !InputManager.Instance.Key_hold("Up", player: this.playerIndex, facing: this.facing) && this.notActing) {
+        if (InputManager.Instance.Key_hold("Down", player: this.player_index, facing: this.facing) && !InputManager.Instance.Key_hold("Up", player: this.player_index, facing: this.facing) && this.not_acting) {
             this.ChangeState("CrouchingIn");
         }
-        if (this.CurrentState == "Crouching" && !InputManager.Instance.Key_hold("Down", player: this.playerIndex, facing: this.facing)) {
+        if (this.current_state == "Crouching" && !InputManager.Instance.Key_hold("Down", player: this.player_index, facing: this.facing)) {
             this.ChangeState("Idle");
         }
 
         // Dashing
-        if (InputManager.Instance.Key_sequence_press("Right Right", 10, flexEntry: false, flexTransition: false, player: this.playerIndex, facing: this.facing) && this.canDash) {
+        if (InputManager.Instance.Key_sequence_press("Right Right", 10, flexEntry: false, flexTransition: false, player: this.player_index, facing: this.facing) && this.can_dash) {
             this.ChangeState("DashForward");
         } 
-        else if (InputManager.Instance.Key_sequence_press("Left Left", 10, flexEntry: false, flexTransition: false, player: this.playerIndex, facing: this.facing) && this.canDash) {
+        else if (InputManager.Instance.Key_sequence_press("Left Left", 10, flexEntry: false, flexTransition: false, player: this.player_index, facing: this.facing) && this.can_dash) {
             this.ChangeState("DashBackward");
         }
 
         // Walking
-        if (InputManager.Instance.Key_hold("Left", player: this.playerIndex, facing: this.facing) && !InputManager.Instance.Key_hold("Right", player: this.playerIndex, facing: this.facing) && (this.CurrentState == "Idle" || this.CurrentState == "WalkingForward" || this.CurrentState == "WalkingBackward")) {
+        if (InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) && !InputManager.Instance.Key_hold("Right", player: this.player_index, facing: this.facing) && (this.current_state == "Idle" || this.current_state == "WalkingForward" || this.current_state == "WalkingBackward")) {
             this.ChangeState("WalkingBackward");
-        } else if (InputManager.Instance.Key_hold("Right", player: this.playerIndex, facing: this.facing) && !InputManager.Instance.Key_hold("Left", player: this.playerIndex, facing: this.facing) && (this.CurrentState == "Idle" || this.CurrentState == "WalkingBackward" || this.CurrentState == "WalkingForward")) {
+        } else if (InputManager.Instance.Key_hold("Right", player: this.player_index, facing: this.facing) && !InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) && (this.current_state == "Idle" || this.current_state == "WalkingBackward" || this.current_state == "WalkingForward")) {
             this.ChangeState("WalkingForward");
         }
 
         // Jumps
-        if (this.notActing && this.CurrentFrameIndex > 0 && InputManager.Instance.Key_hold("Up", player: this.playerIndex, facing: this.facing) && !InputManager.Instance.Key_hold("Left", player: this.playerIndex, facing: this.facing) && InputManager.Instance.Key_hold("Right", player: this.playerIndex, facing: this.facing)) {
+        if (this.not_acting && this.current_frame_index > 0 && InputManager.Instance.Key_hold("Up", player: this.player_index, facing: this.facing) && !InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) && InputManager.Instance.Key_hold("Right", player: this.player_index, facing: this.facing)) {
             this.ChangeState("JumpForward");
-        } else if (this.CurrentState == "JumpForward" && this.CurrentFrameIndex == 1) {
+        } else if (this.current_state == "JumpForward" && this.current_frame_index == 1) {
             this.SetVelocity(
                 X: this.move_speed + 1, 
                 Y: this.jump_hight);
         } 
-        else if (this.notActing && this.CurrentFrameIndex > 0 && InputManager.Instance.Key_hold("Up", player: this.playerIndex, facing: this.facing) && InputManager.Instance.Key_hold("Left", player: this.playerIndex, facing: this.facing) && !InputManager.Instance.Key_hold("Right", player: this.playerIndex, facing: this.facing)) {
+        else if (this.not_acting && this.current_frame_index > 0 && InputManager.Instance.Key_hold("Up", player: this.player_index, facing: this.facing) && InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) && !InputManager.Instance.Key_hold("Right", player: this.player_index, facing: this.facing)) {
             this.ChangeState("JumpBackward");
-        } else if (this.CurrentState == "JumpBackward" && this.CurrentFrameIndex == 1) {
+        } else if (this.current_state == "JumpBackward" && this.current_frame_index == 1) {
             this.SetVelocity(
                 X: -(this.move_speed + 1), 
                 Y: this.jump_hight);
         }
-        else if (this.notActing && this.CurrentFrameIndex > 0 && InputManager.Instance.Key_hold("Up", player: this.playerIndex, facing: this.facing)) {
+        else if (this.not_acting && this.current_frame_index > 0 && InputManager.Instance.Key_hold("Up", player: this.player_index, facing: this.facing)) {
             this.ChangeState("Jump");
             this.SetVelocity(
                 X: 0, 
@@ -851,54 +849,54 @@ public class Ken : Character {
         }
 
         // Super
-        if (InputManager.Instance.Key_sequence_press("Down Down RB", 10, player: this.playerIndex, facing: this.facing) && (this.notActing || this.notActingLow || (this.hasHit && (this.CurrentState == "CloseMP" || this.CurrentState.Contains("Shory") || this.CurrentState == "LowLightK"))) && Character.CheckSuperPoints(this, 100)) {
+        if (InputManager.Instance.Key_sequence_press("Down Down RB", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || (this.has_hit && (this.current_state == "CloseMP" || this.current_state.Contains("Shory") || this.current_state == "LowLightK"))) && Character.CheckSuperPoints(this, 100)) {
             Character.UseSuperPoints(this, 100);
             this.ChangeState("SA1");
             this.SA_flag = false;
 
-        } else if (this.CurrentState == "SA1" && this.CurrentFrameIndex == 3 && this.has_frame_change) {
+        } else if (this.current_state == "SA1" && this.current_frame_index == 3 && this.has_frame_change) {
             this.stage.spawnParticle("SALighting", this.body.Position.X, this.body.Position.Y, X_offset: 50, Y_offset: -120, facing: this.facing);
             this.stage.StopFor(54);
             
-        } else if (this.CurrentState == "SA1" && this.CurrentAnimation.on_last_frame && this.SA_flag) {
+        } else if (this.current_state == "SA1" && this.current_animation.on_last_frame && this.SA_flag) {
             this.ChangeState("SA1_tail");
 
-        } else if (this.CurrentState == "SA1_tail" && this.CurrentFrameIndex == 3 && this.has_frame_change ) {
+        } else if (this.current_state == "SA1_tail" && this.current_frame_index == 3 && this.has_frame_change ) {
             this.AddVelocity(
                 X: 1, 
                 Y: 150);
         }
 
-        if (InputManager.Instance.Key_sequence_press("C C Right A D", 10, player: this.playerIndex, facing: this.facing) && this.notActing && (this.LifePoints.X / this.LifePoints.Y <= 0.5f && Character.CheckSuperPoints(this, 100))) {
+        if (InputManager.Instance.Key_sequence_press("C C Right A D", 10, player: this.player_index, facing: this.facing) && this.not_acting && (this.life_points.X / this.life_points.Y <= 0.5f && Character.CheckSuperPoints(this, 100))) {
             this.ChangeState("Shungoku");
             Character.UseSuperPoints(this, 100);
             this.stage.spawnParticle("SABlink", this.body.Position.X, this.body.Position.Y, Y_offset: -140, facing: this.facing);
             this.stage.StopFor(68);
-        } else if (this.CurrentState == "Shungoku" && this.CurrentAnimation.current_frame_index == 0) {
+        } else if (this.current_state == "Shungoku" && this.current_animation.current_frame_index == 0) {
             this.SetVelocity(
                 X: 8f, 
                 Y: 0);
         }
 
         // Shorys
-        if (InputManager.Instance.Key_sequence_press("Right Down Right C", 10, player: this.playerIndex, facing: this.facing) && (this.notActing || this.notActingLow || this.hasHit && (this.CurrentState == "MediumP" || this.CurrentState == "LightP" || this.CurrentState == "CloseMP" || this.CurrentState == "LowLightK" || this.CurrentState == "LowMediumP"))) {
+        if (InputManager.Instance.Key_sequence_press("Right Down Right C", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || this.has_hit && (this.current_state == "MediumP" || this.current_state == "LightP" || this.current_state == "CloseMP" || this.current_state == "LowLightK" || this.current_state == "LowMediumP"))) {
             this.ChangeState("LightShory");
-        } else if (this.CurrentState == "LightShory" && this.CurrentFrameIndex == 4 && this.has_frame_change) {
+        } else if (this.current_state == "LightShory" && this.current_frame_index == 4 && this.has_frame_change) {
             this.AddVelocity(
                 X: 1.6f, 
                 Y: 43);
         } 
-        if (InputManager.Instance.Key_sequence_press("Right Down Right D", 10, player: this.playerIndex, facing: this.facing) && (this.notActing || this.notActingLow || this.hasHit && this.CurrentState == "LowMediumP" )) {
+        if (InputManager.Instance.Key_sequence_press("Right Down Right D", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || this.has_hit && this.current_state == "LowMediumP" )) {
             this.ChangeState("HeavyShory");
-        } else if (this.CurrentState == "HeavyShory" && this.CurrentFrameIndex == 7 && this.has_frame_change) {
+        } else if (this.current_state == "HeavyShory" && this.current_frame_index == 7 && this.has_frame_change) {
             this.AddVelocity(
                 X: 2.4f, 
                 Y: 80);
         } 
-        if (InputManager.Instance.Key_sequence_press("Right Down Right RB", 10, player: this.playerIndex, facing: this.facing) && (this.notActing || this.notActingLow || this.hasHit && this.CurrentState == "LowMediumP" ) && Character.CheckSuperPoints(this, 50)) {
+        if (InputManager.Instance.Key_sequence_press("Right Down Right RB", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || this.has_hit && this.current_state == "LowMediumP" ) && Character.CheckSuperPoints(this, 50)) {
             Character.UseSuperPoints(this, 50);
             this.ChangeState("ShoryEX");
-        } else if (this.CurrentState == "ShoryEX" && this.CurrentFrameIndex == 7 && this.has_frame_change) {
+        } else if (this.current_state == "ShoryEX" && this.current_frame_index == 7 && this.has_frame_change) {
             this.AddVelocity(
                 X: 2.4f, 
                 Y: 100);
@@ -906,90 +904,90 @@ public class Ken : Character {
 
         // Haduken
         if (this.current_fireball != null && this.current_fireball.remove) this.current_fireball = null;
-        if (this.current_fireball == null && InputManager.Instance.Key_sequence_press("Down Right C", 10, player: this.playerIndex, facing: this.facing) && ((this.notActing || this.notActingLow) || (this.hasHit && (this.CurrentState == "MediumP" || this.CurrentState == "LightP" || this.CurrentState == "LowLightK")))) {
+        if (this.current_fireball == null && InputManager.Instance.Key_sequence_press("Down Right C", 10, player: this.player_index, facing: this.facing) && ((this.not_acting || this.not_acting_low) || (this.has_hit && (this.current_state == "MediumP" || this.current_state == "LightP" || this.current_state == "LowLightK")))) {
             this.ChangeState("LightHaduken");
-        } else if (this.CurrentState == "LightHaduken" && this.CurrentFrameIndex == 3 && this.CurrentAnimation.frame_counter == 0) {
-            this.current_fireball = stage.spawnFireball("Ken1", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.playerIndex, X_offset: 25);
+        } else if (this.current_state == "LightHaduken" && this.current_frame_index == 3 && this.current_animation.frame_counter == 0) {
+            this.current_fireball = stage.spawnFireball("Ken1", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, X_offset: 25);
         } 
-        if (this.current_fireball == null && InputManager.Instance.Key_sequence_press("Down Right D", 10, player: this.playerIndex, facing: this.facing) && (this.notActing || this.notActingLow)) {
+        if (this.current_fireball == null && InputManager.Instance.Key_sequence_press("Down Right D", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low)) {
             this.ChangeState("HeavyHaduken");
-        } else if (this.CurrentState == "HeavyHaduken" && this.CurrentFrameIndex == 4 && this.CurrentAnimation.frame_counter == 0) {
-            this.current_fireball = stage.spawnFireball("Ken2", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.playerIndex, X_offset: 25);
+        } else if (this.current_state == "HeavyHaduken" && this.current_frame_index == 4 && this.current_animation.frame_counter == 0) {
+            this.current_fireball = stage.spawnFireball("Ken2", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, X_offset: 25);
         }
-        if (this.current_fireball == null && InputManager.Instance.Key_sequence_press("Down Right RB", 10, player: this.playerIndex, facing: this.facing) && (this.notActing || this.notActingLow) && Character.CheckSuperPoints(this, 50)) {
+        if (this.current_fireball == null && InputManager.Instance.Key_sequence_press("Down Right RB", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low) && Character.CheckSuperPoints(this, 50)) {
             Character.UseSuperPoints(this, 50);
             this.ChangeState("HadukenEX");
-        } else if (this.CurrentState == "HadukenEX" && this.CurrentFrameIndex == 4 && this.CurrentAnimation.frame_counter == 0) {
-            this.current_fireball = stage.spawnFireball("Ken3", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.playerIndex, life_points: 2, X_offset: 25);
+        } else if (this.current_state == "HadukenEX" && this.current_frame_index == 4 && this.current_animation.frame_counter == 0) {
+            this.current_fireball = stage.spawnFireball("Ken3", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, life_points: 2, X_offset: 25);
         }
 
         // Tatso
-        if (InputManager.Instance.Key_sequence_press("Down Left A", 10, player: this.playerIndex, facing: this.facing) && (this.notActing || this.notActingLow || (this.hasHit && this.CurrentState == "LowLightK"))) {
+        if (InputManager.Instance.Key_sequence_press("Down Left A", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || (this.has_hit && this.current_state == "LowLightK"))) {
             this.ChangeState("LightTatso");
             this.SetVelocity(Y: 5);
-        } else if (this.CurrentState == "LightTatso") {
+        } else if (this.current_state == "LightTatso") {
             this.AddVelocity(Y: 0.5f, raw_set: true);
 
-        } else if (InputManager.Instance.Key_sequence_press("Down Left B", 10, player: this.playerIndex, facing: this.facing) && (this.notActing || this.notActingLow || (this.hasHit && this.CurrentState == "LowLightK"))) {
+        } else if (InputManager.Instance.Key_sequence_press("Down Left B", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || (this.has_hit && this.current_state == "LowLightK"))) {
             this.ChangeState("HeavyTatso");
             this.SetVelocity(Y: 5);
-        } else if (this.CurrentState == "HeavyTatso") {
+        } else if (this.current_state == "HeavyTatso") {
             this.AddVelocity(Y: 0.55f, raw_set: true);
 
-        } else if (InputManager.Instance.Key_sequence_press("Down Left RB", 10, player: this.playerIndex, facing: this.facing) && (this.notActing || this.notActingLow || (this.hasHit && this.CurrentState == "LowLightK")) && Character.CheckSuperPoints(this, 50)) {
+        } else if (InputManager.Instance.Key_sequence_press("Down Left RB", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || (this.has_hit && this.current_state == "LowLightK")) && Character.CheckSuperPoints(this, 50)) {
             Character.UseSuperPoints(this, 50);
             this.ChangeState("TatsoEX");
             this.SetVelocity(Y: 5);
-        } else if (this.CurrentState == "TatsoEX") {
+        } else if (this.current_state == "TatsoEX") {
             this.AddVelocity(Y: 0.5f, raw_set: true);
         }
         
         // Air tatso
-        if ((InputManager.Instance.Key_sequence_press("Down Left B", 10, player: this.playerIndex, facing: this.facing) || InputManager.Instance.Key_sequence_press("Down Left A", 10, player: this.playerIndex, facing: this.facing)) && this.notActingAir) {
+        if ((InputManager.Instance.Key_sequence_press("Down Left B", 10, player: this.player_index, facing: this.facing) || InputManager.Instance.Key_sequence_press("Down Left A", 10, player: this.player_index, facing: this.facing)) && this.not_acting_air) {
             this.ChangeState("AirTatso");
             this.PlaySound("tatso");
-        } else if (InputManager.Instance.Key_sequence_press("Down Left RB", 10, player: this.playerIndex, facing: this.facing) && this.notActingAir && Character.CheckSuperPoints(this, 50)) {
+        } else if (InputManager.Instance.Key_sequence_press("Down Left RB", 10, player: this.player_index, facing: this.facing) && this.not_acting_air && Character.CheckSuperPoints(this, 50)) {
             Character.UseSuperPoints(this, 50);
             this.ChangeState("AirTatsoEX");
             this.PlaySound("tatso");
         } 
 
         // Normals
-        if (InputManager.Instance.Key_sequence_press("D", Config.hit_stop_time, player: this.playerIndex, facing: this.facing) && this.hasHit && this.CurrentState == "LightP") {
+        if (InputManager.Instance.Key_sequence_press("D", Config.hit_stop_time, player: this.player_index, facing: this.facing) && this.has_hit && this.current_state == "LightP") {
             this.SetVelocity();
             this.ChangeState("CloseMP");
-        } else if (InputManager.Instance.Key_press("B", player: this.playerIndex, facing: this.facing) && InputManager.Instance.Key_hold("Left", player: this.playerIndex, facing: this.facing) && this.notActing && !this.crounching) {
+        } else if (InputManager.Instance.Key_press("B", player: this.player_index, facing: this.facing) && InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) && this.not_acting && !this.crounching) {
             this.ChangeState("BackMediumK");
-        } else if (InputManager.Instance.Key_press("D", player: this.playerIndex, facing: this.facing) && InputManager.Instance.Key_hold("Left", player: this.playerIndex, facing: this.facing) && (this.notActing || (this.hasHit && this.CurrentState == "CloseMP"))) {
+        } else if (InputManager.Instance.Key_press("D", player: this.player_index, facing: this.facing) && InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) && (this.not_acting || (this.has_hit && this.current_state == "CloseMP"))) {
             this.ChangeState("BackMediumP");
         } 
 
-        if (this.notActingLow) {
-            if (InputManager.Instance.Key_press("C", player: this.playerIndex, facing: this.facing)) this.ChangeState("LowLightP");
-            else if (InputManager.Instance.Key_press("A", player: this.playerIndex, facing: this.facing)) this.ChangeState("LowLightK");
-            else if (InputManager.Instance.Key_press("D", player: this.playerIndex, facing: this.facing)) this.ChangeState("LowMediumP");
-            else if (InputManager.Instance.Key_press("B", player: this.playerIndex, facing: this.facing)) this.ChangeState("LowMediumK");
-        } else if (this.notActing) {
-            if (InputManager.Instance.Key_press("C", player: this.playerIndex, facing: this.facing)) this.ChangeState("LightP");     
-            else if (InputManager.Instance.Key_press("A", player: this.playerIndex, facing: this.facing)) this.ChangeState("LightK");     
-            else if (InputManager.Instance.Key_press("D", player: this.playerIndex, facing: this.facing)) this.ChangeState("MediumP");     
-            else if (InputManager.Instance.Key_press("B", player: this.playerIndex, facing: this.facing) ) this.ChangeState("MediumK");
-        } else if (this.notActingAir) {
-            if (InputManager.Instance.Key_press("C", player: this.playerIndex, facing: this.facing)) this.ChangeState("AirLightP");
-            else if (InputManager.Instance.Key_press("A", player: this.playerIndex, facing: this.facing)) this.ChangeState("AirLightK");
-            else if (InputManager.Instance.Key_press("D", player: this.playerIndex, facing: this.facing)) this.ChangeState("AirMediumP");
-            else if (InputManager.Instance.Key_press("B", player: this.playerIndex, facing: this.facing)) this.ChangeState("AirMediumK");
+        if (this.not_acting_low) {
+            if (InputManager.Instance.Key_press("C", player: this.player_index, facing: this.facing)) this.ChangeState("LowLightP");
+            else if (InputManager.Instance.Key_press("A", player: this.player_index, facing: this.facing)) this.ChangeState("LowLightK");
+            else if (InputManager.Instance.Key_press("D", player: this.player_index, facing: this.facing)) this.ChangeState("LowMediumP");
+            else if (InputManager.Instance.Key_press("B", player: this.player_index, facing: this.facing)) this.ChangeState("LowMediumK");
+        } else if (this.not_acting) {
+            if (InputManager.Instance.Key_press("C", player: this.player_index, facing: this.facing)) this.ChangeState("LightP");     
+            else if (InputManager.Instance.Key_press("A", player: this.player_index, facing: this.facing)) this.ChangeState("LightK");     
+            else if (InputManager.Instance.Key_press("D", player: this.player_index, facing: this.facing)) this.ChangeState("MediumP");     
+            else if (InputManager.Instance.Key_press("B", player: this.player_index, facing: this.facing) ) this.ChangeState("MediumK");
+        } else if (this.not_acting_air) {
+            if (InputManager.Instance.Key_press("C", player: this.player_index, facing: this.facing)) this.ChangeState("AirLightP");
+            else if (InputManager.Instance.Key_press("A", player: this.player_index, facing: this.facing)) this.ChangeState("AirLightK");
+            else if (InputManager.Instance.Key_press("D", player: this.player_index, facing: this.facing)) this.ChangeState("AirMediumP");
+            else if (InputManager.Instance.Key_press("B", player: this.player_index, facing: this.facing)) this.ChangeState("AirMediumK");
         }
     }
     
     public override int ImposeBehavior(Character target, bool parried = false) {
         int hit = -1;
 
-        if (parried && this.State.can_be_parried) {
+        if (parried && this.state.can_be_parried) {
             return Character.PARRY;
         } 
 
-        switch (this.CurrentState) {
+        switch (this.current_state) {
             case "LightP":
                 Character.Push(target: target, self: this, "Light");
                 if (target.isBlocking()) {
@@ -1212,7 +1210,7 @@ public class Ken : Character {
 
                 } else {
                     hit = Character.HIT;
-                    if (this.CurrentFrameIndex >= 6) {
+                    if (this.current_frame_index >= 6) {
                         target.Stun(this, 0, airbone: true);
                         Character.Push(target: target, self: this, "Heavy", Y_amount: 120f, airbone: true);
 
@@ -1232,7 +1230,7 @@ public class Ken : Character {
 
                 } else {
                     hit = Character.HIT;
-                    if (this.CurrentFrameIndex >= 6) {
+                    if (this.current_frame_index >= 6) {
                         target.Stun(this, 0, airbone: true);
                         Character.Push(target: target, self: this, "Heavy", Y_amount: 120f, airbone: true);
 
@@ -1337,9 +1335,9 @@ public class Ken : Character {
                     hit = Character.HIT;
                     target.Stun(this, 5, airbone: true);
 
-                    if (this.CurrentFrameIndex < 6) {
+                    if (this.current_frame_index < 6) {
                         Character.Push(target: target, self: this, "Light", X_amount: 1, Y_amount: 150, airbone: true);
-                    } else if (this.CurrentFrameIndex >= 13) {
+                    } else if (this.current_frame_index >= 13) {
                         Character.Push(target: target, self: this, "Heavy", Y_amount: 80, airbone: true);
                     }
 

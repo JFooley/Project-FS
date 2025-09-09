@@ -70,6 +70,7 @@ public static class Program {
     private static List<Stage> stages;
     private static List<Character> characters;
     public static Dictionary<string, Texture> visuals = new Dictionary<string, Texture>();
+    public static Dictionary<string, Texture> thumbs = new Dictionary<string, Texture>();
     private static Fireball fb = new Fireball();
     private static Hitspark hs = new Hitspark();
     private static Particle pt = new Particle();
@@ -83,11 +84,13 @@ public static class Program {
         
         // Carregamento de texturas gerais
         try {
-            DataManagement.LoadTexturesFromFile("Assets/ui/visuals.dat", visuals);
+            DataManagement.LoadTexturesFromFile("Assets/data/visuals.dat", visuals);
         } catch (Exception e) {
             DataManagement.LoadTexturesFromPath("Assets/ui", visuals);
-            DataManagement.SaveTexturesToFile("Assets/ui/visuals.dat", visuals);
+            DataManagement.SaveTexturesToFile("Assets/data/visuals.dat", visuals);
         }
+        Stage.LoadThumbs();
+        Character.LoadThumbs();
         UI.Instance.LoadFonts();
 
         // Crie uma janela
@@ -129,6 +132,7 @@ public static class Program {
             new TheSavana(),
             new JapanFields(),
             new Stage("Settings", visuals["settings"]),
+            new Stage("Exit game", visuals["exit"]),
         };
         stage = stages[0];
 
@@ -209,6 +213,8 @@ public static class Program {
                     if (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")) {
                         if (stages[pointer].name == "Settings")
                             ChangeState(Settings);
+                        else if (stages[pointer].name == "Exit game")
+                            window.Close();
                         else {
                             if (stages[pointer].name == "Random")
                                 pointer = Program.random.Next(1, stages.Count() - 2);
@@ -318,7 +324,7 @@ public static class Program {
                             stage.SetMusicVolume();
                             stage.StopRoundTime();
                             stage.ResetTimer();
-                            if (stage.character_A.CurrentState == "Idle" && stage.character_B.CurrentState == "Idle")
+                            if (stage.character_A.current_state == "Idle" && stage.character_B.current_state == "Idle")
                             { // Espera até a animação de intro finalizar
                                 sub_state = RoundStart;
                             }
@@ -353,7 +359,7 @@ public static class Program {
                         case RoundEnd: // Fim de round
                             if (stage.GetTimerValue() < 3)
                             {
-                                if (stage.character_A.LifePoints.X <= 0 || stage.character_B.LifePoints.X <= 0)
+                                if (stage.character_A.life_points.X <= 0 || stage.character_B.life_points.X <= 0)
                                 {
                                     KO_logo.Position = new Vector2f(Program.camera.X - 75, Program.camera.Y - 54);
                                     window.Draw(KO_logo);

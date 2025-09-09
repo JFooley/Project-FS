@@ -12,13 +12,13 @@ public class Fireball : Character {
     public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
 
     public Fireball(string initialState, int life_points, float startX, float startY, int team, int facing, Stage stage)
-        : base("Fireball", initialState, startX, startY, "Assets/particles/sprites/Fireball", "Assets/particles/sounds/Fireball", stage, 1) {
-            this.playerIndex = team;
+        : base("Fireball", initialState, startX, startY, "Assets/particles/Fireball", stage, 1) {
+            this.player_index = team;
             this.facing = facing;
-            this.LifePoints = new Vector2i(life_points, 0);
+            this.life_points = new Vector2i(life_points, 0);
             this.shadow_size = 0;
         }
-    public Fireball() : base("Fireball", "", 0, 0, "Assets/particles/sprites/Fireball", "Assets/particles/sounds/Fireball", null, 1) {}
+    public Fireball() : base("Fireball", "", 0, 0, "Assets/particles/Fireball", null, 1) {}
 
     public override void Load() {
         // Animations
@@ -71,17 +71,17 @@ public class Fireball : Character {
 
     public override void DoBehave() {
         base.DoBehave();
-        if (this.State.post_state == "Remove" && this.CurrentAnimation.ended) {
+        if (this.state.post_state == "Remove" && this.current_animation.ended) {
             this.remove = true;
-            this.CurrentAnimation.Reset();
+            this.current_animation.Reset();
         }
 
-        if (Math.Abs(Program.camera.X - this.VisualPosition.X) > Config.RenderWidth) this.remove = true;  
+        if (Math.Abs(Program.camera.X - this.visual_position.X) > Config.RenderWidth) this.remove = true;  
         
-        switch (this.CurrentState) {
+        switch (this.current_state) {
             case "Ken1":
                 this.SetVelocity(X: 4);
-                if (this.LifePoints.X <= 0) {
+                if (this.life_points.X <= 0) {
                     this.ChangeState("KenExit");
                     this.SetVelocity(raw_set: true);
                     break;
@@ -90,7 +90,7 @@ public class Fireball : Character {
 
             case "Ken2":
                 this.SetVelocity(X: 5);
-                if (this.LifePoints.X <= 0) {
+                if (this.life_points.X <= 0) {
                     this.ChangeState("KenExit");
                     this.SetVelocity(raw_set: true);
                     break;
@@ -99,7 +99,7 @@ public class Fireball : Character {
             
             case "Ken3":
                 this.SetVelocity(X: 6);
-                if (this.LifePoints.X <= 0) {
+                if (this.life_points.X <= 0) {
                     this.ChangeState("KenExit");
                     this.SetVelocity(raw_set: true);
                     break;
@@ -118,24 +118,24 @@ public class Fireball : Character {
     public override int ImposeBehavior(Character target, bool parried = false) {
         int hit = -1;
 
-        if (this.LifePoints.X <= 0) return hit;
+        if (this.life_points.X <= 0) return hit;
 
-        if (parried && this.State.can_be_parried) {
-            this.LifePoints.X -= 1;
-            this.hasHit = true;
+        if (parried && this.state.can_be_parried) {
+            this.life_points.X -= 1;
+            this.has_hit = true;
             return Character.PARRY;
         }
 
         if (target.name == "Fireball") {
-            target.LifePoints.X -= 1;
-            this.LifePoints.X -= 1;
-            this.hasHit = true;
+            target.life_points.X -= 1;
+            this.life_points.X -= 1;
+            this.has_hit = true;
             return hit;
         };
 
-        switch (this.CurrentState) {
+        switch (this.current_state) {
             case "Ken1":
-                this.LifePoints.X -= 1;
+                this.life_points.X -= 1;
                 this.SetVelocity(raw_set: true);
 
                 if (target.isBlocking()) {
@@ -149,12 +149,12 @@ public class Fireball : Character {
                     target.Stun(this, 30, force: true);
                 }
 
-                if (this.playerIndex == 0) Character.GetSuperPoints(target: target, self: stage.character_A, hit);
+                if (this.player_index == 0) Character.GetSuperPoints(target: target, self: stage.character_A, hit);
                 else Character.GetSuperPoints(target: target, self: stage.character_B, hit);
                 break;
 
             case "Ken2":
-                this.LifePoints.X -= 1;
+                this.life_points.X -= 1;
                 this.SetVelocity(raw_set: true);
 
                 if (target.isBlocking()) {
@@ -168,12 +168,12 @@ public class Fireball : Character {
                     target.Stun(this, 30, force: true);
                 }
 
-                if (this.playerIndex == 0) Character.GetSuperPoints(target: target, self: stage.character_A, hit);
+                if (this.player_index == 0) Character.GetSuperPoints(target: target, self: stage.character_A, hit);
                 else Character.GetSuperPoints(target: target, self: stage.character_B, hit);
                 break;
             
             case "Ken3":
-                this.LifePoints.X -= 1;
+                this.life_points.X -= 1;
                 this.SetVelocity(raw_set: true);
 
                 if (target.isBlocking()) {
@@ -187,7 +187,7 @@ public class Fireball : Character {
                     target.Stun(this, 30, force: true);
                 }
 
-                if (this.playerIndex == 0) Character.GetSuperPoints(target: target, self: stage.character_A, hit);
+                if (this.player_index == 0) Character.GetSuperPoints(target: target, self: stage.character_A, hit);
                 else Character.GetSuperPoints(target: target, self: stage.character_B, hit);
                 break;
 

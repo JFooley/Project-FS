@@ -5,7 +5,7 @@ using Animation_Space;
 public class NYCSubway : Stage {
     
     public NYCSubway()
-        : base("NYC Subway", 528, 912, 512, "Assets/stages/NYC Subway/sprites", "Assets/stages/NYC Subway/sound", "Assets/stages/NYC Subway/thumb.png")
+        : base("NYC Subway", 528, 912, 512, "Assets/stages/NYC Subway", Program.thumbs["subway_thumb"])
     {
 
     }

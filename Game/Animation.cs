@@ -136,14 +136,14 @@ namespace Animation_Space {
 
         // Get methods
         public Vector2f getRealA(Character charA) {
-            float X = charA.facing == -1 ? charA.VisualPosition.X - this.pB.X + this.quadsize : charA.VisualPosition.X + this.pA.X;
-            float Y = charA.VisualPosition.Y + this.pA.Y;
+            float X = charA.facing == -1 ? charA.visual_position.X - this.pB.X + this.quadsize : charA.visual_position.X + this.pA.X;
+            float Y = charA.visual_position.Y + this.pA.Y;
 
             return new Vector2f(X, Y);
         }
         public Vector2f getRealB(Character charA) {
-            float X = charA.facing == -1 ? charA.VisualPosition.X - this.pA.X + this.quadsize : charA.VisualPosition.X + this.pB.X;
-            float Y = charA.VisualPosition.Y + this.pB.Y;
+            float X = charA.facing == -1 ? charA.visual_position.X - this.pA.X + this.quadsize : charA.visual_position.X + this.pB.X;
+            float Y = charA.visual_position.Y + this.pB.Y;
 
             return new Vector2f(X, Y);
         } 

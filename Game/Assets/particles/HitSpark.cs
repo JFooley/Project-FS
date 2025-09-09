@@ -11,10 +11,10 @@ public class Hitspark : Character {
     public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
 
     public Hitspark(string initialState, float startX, float startY, int facing, Stage stage = null)
-        : base("Hitspark", initialState, startX, startY, "Assets/particles/sprites/Hitspark", "Assets/particles/sounds/Hitspark", stage) {
+        : base("Hitspark", initialState, startX, startY, "Assets/particles/Hitspark", stage) {
             this.facing = facing;
         }
-    public Hitspark() : base("Hitspark", "", 0, 0, "Assets/particles/sprites/Hitspark", "Assets/particles/sounds/Hitspark", null) {}
+    public Hitspark() : base("Hitspark", "", 0, 0, "Assets/particles/Hitspark", null) {}
 
     public override void Load() {
         // Animations
@@ -91,9 +91,9 @@ public class Hitspark : Character {
     }
 
     public override void DoBehave() {        
-        if (this.State.post_state == "Remove" && this.CurrentAnimation.ended) {
+        if (this.state.post_state == "Remove" && this.current_animation.ended) {
             this.remove = true;
-            this.CurrentAnimation.Reset();
+            this.current_animation.Reset();
         }
     }
 }

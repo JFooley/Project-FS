@@ -4,7 +4,7 @@ using Animation_Space;
 
 public class NightAlley : Stage {
     public NightAlley()
-        : base("Night Alley", 409, 640, 384, "Assets/stages/Night Alley/sprites", "Assets/stages/Night Alley/sound", "Assets/stages/Night Alley/thumb.png")
+        : base("Night Alley", 409, 640, 384, "Assets/stages/Night Alley", Program.thumbs["alley_thumb"])
     {
         this.AmbientLight = new SFML.Graphics.Color(210, 210, 255, 255);
     }

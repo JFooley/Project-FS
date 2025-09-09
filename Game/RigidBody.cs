@@ -33,11 +33,11 @@ public class RigidBody {
     }
 
     private void CheckGravity(Character player) {
-        if (this.Position.Y < player.floorLine) {
+        if (this.Position.Y < player.floor_line) {
             this.Velocity.Y += this.gravidade;
         } else {
             this.Velocity.Y = 0;
-            this.Position.Y = player.floorLine;
+            this.Position.Y = player.floor_line;
         }
     }
 

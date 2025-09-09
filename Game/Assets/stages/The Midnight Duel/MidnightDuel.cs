@@ -4,7 +4,7 @@ using Animation_Space;
 
 public class MidnightDuel : Stage {
     public MidnightDuel()
-        : base("The Midnight Duel", 362, 800, 336, "Assets/stages/The Midnight Duel/sprites", "Assets/stages/The Midnight Duel/sound", "Assets/stages/The Midnight Duel/thumb.png")
+        : base("The Midnight Duel", 362, 800, 336, "Assets/stages/The Midnight Duel", Program.thumbs["duel_thumb"])
     {
         this.AmbientLight = new SFML.Graphics.Color(210, 210, 255, 255);
     }
