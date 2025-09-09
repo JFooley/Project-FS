@@ -3,7 +3,7 @@
   <PropertyGroup>
     <ApplicationIcon>Assets/icon.ico</ApplicationIcon>
     <LangVersion>10.0</LangVersion> 
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net472</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
     <ImplicitUsings>enable</ImplicitUsings>
@@ -19,10 +19,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="assets\**\*">
+    <None Update="Assets\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Remove="**\*.png" />
+    <None Remove="**\*.jpg" />
+    <None Remove="**\*.xcf" />
+    <None Remove="**\*.wav" />
+    <None Remove="**\*.mp3" />
+    <None Remove="**\misc\*" />
   </ItemGroup>
 
   
