@@ -27,7 +27,8 @@
     <None Remove="**\*.xcf" />
     <None Remove="**\*.wav" />
     <None Remove="**\*.mp3" />
-    <None Remove="**\misc\*" />
+    <None Remove="**\*.py" />
+    <None Remove="**\misc" />
   </ItemGroup>
 
   

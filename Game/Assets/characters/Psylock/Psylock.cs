@@ -269,7 +269,7 @@ public class Psylock : Character {
         };
 
         // States
-        var states = new Dictionary<string, State> {
+        this.states = new Dictionary<string, State> {
             { "Idle", new State(idleFrames, "Idle", 20, not_busy: true)},
             { "OnBlock", new State(idleFrames, "Idle", 20, change_on_end: false, loop: false, on_block: true)},
             { "OnBlockLow", new State(idleFrames, "Crouching", 20, change_on_end: false, loop: false, on_block: true, low: true)},
@@ -307,8 +307,6 @@ public class Psylock : Character {
             // Bonus 
             { "Intro", new State(introFrames, "Idle", 10, can_be_hit: false)},
         };
-
-        this.states = states;
     }
     public override void DoBehave() {
         if (this.behave == false) return;

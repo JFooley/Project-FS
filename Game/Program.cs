@@ -7,6 +7,7 @@ using UI_space;
 using System.Diagnostics;
 using Character_Space;
 using Data_space;
+using System.Windows.Forms;
 
 public static class Program {
     // Winner index
@@ -53,6 +54,7 @@ public static class Program {
 
     // Aux
     private static int pointer = 0;
+    private static int controls_pointer = 0;
     private static string charA_selected = null;
     private static string charB_selected = null;
     private static int pointer_charA = 0;
@@ -144,7 +146,6 @@ public static class Program {
 
         Sprite frame = new Sprite(visuals["frame"]);
         Sprite fade90 = new Sprite(visuals["90fade"]);
-        Sprite controls = new Sprite(visuals["controls"]);
 
         Sprite fight_logo = new Sprite(visuals["fight"]);
         Sprite timesup_logo = new Sprite(visuals["timesup"]);
@@ -161,14 +162,11 @@ public static class Program {
             camera.Update();
             frametimer.Restart();
 
-            switch (game_state)
-            {
+            switch (game_state) {
                 case Intro:
                     if (UI.Instance.counter % 20 == 0) pointer = pointer < 3 ? pointer + 1 : 0;
                     fslogo.Position = new Vector2f(10, 139);
 
-                    window.Draw(controls);
-                    // window.Draw(fade90);
                     window.Draw(fslogo);
 
                     UI.Instance.DrawText(string.Concat(Enumerable.Repeat(".", pointer)), -122, 68, alignment: "left", spacing: -24);
@@ -205,6 +203,9 @@ public static class Program {
                     UI.Instance.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
                     UI.Instance.DrawText("Return", -182, 67, spacing: Config.spacing_small, alignment: "left", textureName: InputManager.Instance.Key_hold("LB") ? "default small click" : "default small");
 
+                    UI.Instance.DrawText("F", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
+                    UI.Instance.DrawText("Controls", 182, 67, spacing: Config.spacing_small, alignment: "right", textureName: InputManager.Instance.Key_hold("RB") ? "default small click" : "default small");
+
                     if (InputManager.Instance.Key_down("Left"))
                         pointer = pointer <= 0 ? stages.Count - 1 : pointer - 1;
                     else if (InputManager.Instance.Key_down("Right"))
@@ -222,7 +223,9 @@ public static class Program {
                             ChangeState(SelectChar);
                         }
                         pointer = 0;
-                    } else if (InputManager.Instance.Key_up("LB")) ChangeState(MainMenu);
+                    }
+                    else if (InputManager.Instance.Key_up("LB")) ChangeState(MainMenu);
+                    else if (InputManager.Instance.Key_up("RB")) ChangeState(Controls);
                     break;
 
                 case SelectChar:
@@ -267,6 +270,9 @@ public static class Program {
                     UI.Instance.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
                     UI.Instance.DrawText("Return", -182, 67, spacing: Config.spacing_small, alignment: "left", textureName: InputManager.Instance.Key_hold("LB") ? "default small click" : "default small");
 
+                    UI.Instance.DrawText("F", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
+                    UI.Instance.DrawText("Controls", 182, 67, spacing: Config.spacing_small, alignment: "right", textureName: InputManager.Instance.Key_hold("RB") ? "default small click" : "default small");
+
                     // Chose option A
                     if (InputManager.Instance.Key_down("Left", player: 1) && charA_selected == null)
                         pointer_charA = pointer_charA <= 0 ? characters.Count - 1 : pointer_charA - 1;
@@ -286,12 +292,12 @@ public static class Program {
                         charB_selected = characters[pointer_charB].name;
                     
                     // Return option
-                    if (InputManager.Instance.Key_up("LB"))
-                    {
+                    if (InputManager.Instance.Key_up("LB")) {
                         charB_selected = null;
                         charA_selected = null;
                         ChangeState(SelectStage);
                     }
+                    else if (InputManager.Instance.Key_up("RB")) ChangeState(Controls);
 
                     // Ends when chars are selected
                     if (charA_selected != null && charB_selected != null && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
@@ -538,9 +544,16 @@ public static class Program {
 
                 case Controls:
                     if (Camera.GetInstance().isLocked) Camera.Instance.UnlockCamera();
-                    window.Draw(controls);
+                    window.Draw(new Sprite(visuals["controls_" + controls_pointer]));
+
+                    UI.Instance.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
+                    UI.Instance.DrawText("Return", -182, 67, spacing: Config.spacing_small, alignment: "left", textureName: InputManager.Instance.Key_hold("LB") ? "default small click" : "default small");
 
                     if (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")) {
+                        controls_pointer = controls_pointer < 1 ? controls_pointer + 1 : 0;
+                    }
+
+                    if (InputManager.Instance.Key_up("LB")){
                         if (return_state == Battle) Camera.Instance.LockCamera();
                         ChangeState(return_state);
                     }

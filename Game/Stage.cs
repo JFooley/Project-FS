@@ -626,10 +626,6 @@ namespace Stage_Space {
             this.sounds.Clear(); 
         }
         public static void LoadThumbs() {
-            if (!System.IO.Directory.Exists("Assets/stages")) {
-                throw new System.IO.DirectoryNotFoundException($"O diretório {"Assets/stages"} não foi encontrado.");
-            }
-            
             try {
                 DataManagement.LoadTexturesFromFile("Assets/data/stage_thumbs.dat", Program.thumbs);
             } catch (Exception e) {

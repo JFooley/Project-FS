@@ -540,10 +540,6 @@ public abstract class Character : Object_Space.Object {
         }
     }
     public static void LoadThumbs() {
-        if (!System.IO.Directory.Exists("Assets/characters")) {
-            throw new System.IO.DirectoryNotFoundException($"O diretório {"Assets/characters"} não foi encontrado.");
-        }
-        
         try {
             DataManagement.LoadTexturesFromFile("Assets/data/character_thumbs.dat", Program.thumbs);
         } catch (Exception e) {
