@@ -544,16 +544,17 @@ public static class Program {
 
                 case Controls:
                     if (Camera.GetInstance().isLocked) Camera.Instance.UnlockCamera();
+                    window.Draw(new Sprite(visuals["frame"]));
                     window.Draw(new Sprite(visuals["controls_" + controls_pointer]));
 
                     UI.Instance.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
                     UI.Instance.DrawText("Return", -182, 67, spacing: Config.spacing_small, alignment: "left", textureName: InputManager.Instance.Key_hold("LB") ? "default small click" : "default small");
 
-                    if (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")) {
-                        controls_pointer = controls_pointer < 1 ? controls_pointer + 1 : 0;
-                    }
+                    if (InputManager.Instance.Key_up("Left")) controls_pointer = controls_pointer < 1 ? controls_pointer + 1 : 0;
+                    else if (InputManager.Instance.Key_up("Right")) controls_pointer = controls_pointer > 0 ? controls_pointer - 1 : 1;
 
-                    if (InputManager.Instance.Key_up("LB")){
+                    if (InputManager.Instance.Key_up("LB"))
+                    {
                         if (return_state == Battle) Camera.Instance.LockCamera();
                         ChangeState(return_state);
                     }
