@@ -100,7 +100,7 @@ public class Ken : Character {
         };
 
         var parryFrames = new List<FrameData> {
-            new FrameData("15032", 0.0f, 0.0f, new List<GenericBox> { pushbox, new GenericBox(1, 95, 95, 155, 195)}),
+            new FrameData("15032", 0.0f, 0.0f, new List<GenericBox> { pushbox, new GenericBox(1, 95, 95, 155, 195)}, "golpe_grito_4"),
             new FrameData("15032", 0.0f, 0.0f, new List<GenericBox> { pushbox, new GenericBox(1, 95, 95, 155, 195)}),
             new FrameData("15032", 0.0f, 0.0f, new List<GenericBox> { pushbox, new GenericBox(1, 95, 95, 155, 195)}),
             new FrameData("15033", 0.0f, 0.0f, new List<GenericBox> { pushbox, new GenericBox(1, 95, 95, 155, 195)}),
@@ -337,8 +337,8 @@ public class Ken : Character {
 
         var dashBackwardFrames = new List<FrameData> {
             new FrameData(14774,   0, 0, new List<GenericBox> { pushbox, new GenericBox(1, 95, 95, 155, 195)}),
-            new FrameData(14775, -15, 0, new List<GenericBox> { pushbox, new GenericBox(1, 95, 95, 155, 195)}),
-            new FrameData(14776,  -5, 0, new List<GenericBox> { pushbox, new GenericBox(1, 95, 95, 155, 195)}),
+            new FrameData(14775, -8, 0, new List<GenericBox> { pushbox, new GenericBox(1, 95, 95, 155, 195)}),
+            new FrameData(14776,  -8, 0, new List<GenericBox> { pushbox, new GenericBox(1, 95, 95, 155, 195)}),
             new FrameData(14777,   0, 0, new List<GenericBox> { pushbox, new GenericBox(1, 95, 95, 155, 195)}),
             new FrameData(14778,   0, 0, new List<GenericBox> { pushbox, new GenericBox(1, 95, 95, 155, 195)}),
         };

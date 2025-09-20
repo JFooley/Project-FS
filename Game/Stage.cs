@@ -313,6 +313,7 @@ namespace Stage_Space {
         // Spawns
         public void spawnParticle(String state, float X, float Y, int facing = 1, int X_offset = 0, int Y_offset = 0) {
             var par = new Particle(state, X + X_offset * facing, Y + Y_offset, facing);
+            par.ChangeState(state, reset: true);
             par.states = this.particle.states;
             this.newParticles.Add(par);
         }
@@ -328,11 +329,13 @@ namespace Stage_Space {
                 return;
             }
             var hs = new Hitspark(state, X + X_offset * facing, Y + Y_offset, facing);
+            hs.ChangeState(state, reset: true);
             hs.states = this.spark.states;
             this.newParticles.Add(hs);
         }
         public Fireball spawnFireball(string state, float X, float Y, int facing, int team, int life_points = 1, int X_offset = 10, int Y_offset = 0) {        
             var fb = new Fireball(state, life_points, X + X_offset * facing, Y + Y_offset, team, facing, this);
+            fb.ChangeState(state, reset: true);
             fb.states = this.fireball.states;
             this.newCharacters.Add(fb);
             return fb;
@@ -629,8 +632,10 @@ namespace Stage_Space {
             try {
                 DataManagement.LoadTexturesFromFile("Assets/data/stage_thumbs.dat", Program.thumbs);
             } catch (Exception e) {
-                foreach (string characterDir in Directory.GetDirectories("Assets/stages")) DataManagement.LoadTexturesFromPath(characterDir, Program.thumbs);
-                DataManagement.SaveTexturesToFile("Assets/data/stage_thumbs.dat", Program.thumbs);
+                var temp_dict = new Dictionary<string, Texture> { };
+                foreach (string characterDir in Directory.GetDirectories("Assets/stages")) DataManagement.LoadTexturesFromPath(characterDir, temp_dict);
+                DataManagement.SaveTexturesToFile("Assets/data/stage_thumbs.dat", temp_dict);
+                foreach (var item in temp_dict) Program.thumbs[item.Key] = item.Value;
             }
         }
 

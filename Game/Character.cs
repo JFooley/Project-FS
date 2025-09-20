@@ -418,15 +418,15 @@ public abstract class Character : Object_Space.Object {
     }
     
     // Auxiliar methods
-    public void ChangeState(string newState, bool reset = false) {
-        if (this.life_points.X <= 0 && this.current_state == "OnGround" && !reset) return;
+    public void ChangeState(string new_state, bool reset = false, int variation = 0) {
+        if (this.life_points.X <= 0 && !Program.stage.training_mode && this.current_state == "OnGround" && !reset) return;
 
-        if (newState == "Parry" && this.on_air) newState = "AirParry";
+        if (new_state == "Parry" && this.on_air) new_state = "AirParry";
 
         this.last_state = this.current_state;
-        if (states.ContainsKey(newState)) {
-            if (current_state != newState || reset) this.current_animation.Reset();
-            this.current_state = newState;
+        if (states.ContainsKey(new_state)) {
+            if (current_state != new_state || reset) this.current_animation.Reset();
+            this.current_state = new_state;
             this.has_hit = false;
         }
 
@@ -543,8 +543,10 @@ public abstract class Character : Object_Space.Object {
         try {
             DataManagement.LoadTexturesFromFile("Assets/data/character_thumbs.dat", Program.thumbs);
         } catch (Exception e) {
-            foreach (string characterDir in Directory.GetDirectories("Assets/characters")) DataManagement.LoadTexturesFromPath(characterDir, Program.thumbs);
-            DataManagement.SaveTexturesToFile("Assets/data/character_thumbs.dat", Program.thumbs);
+            var temp_dict = new Dictionary<string, Texture> { };
+            foreach (string characterDir in Directory.GetDirectories("Assets/characters")) DataManagement.LoadTexturesFromPath(characterDir, temp_dict);
+            DataManagement.SaveTexturesToFile("Assets/data/character_thumbs.dat", temp_dict);
+            foreach (var item in temp_dict) Program.thumbs[item.Key] = item.Value;
         }
     }
     public virtual void Load() { }

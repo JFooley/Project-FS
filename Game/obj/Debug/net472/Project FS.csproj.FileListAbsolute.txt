@@ -2304,3 +2304,5 @@ D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Th
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Midnight Duel\sprites\visuals.dat
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Savana\sound\sounds.dat
 D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Savana\sprites\visuals.dat
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Training Stage\sound\sounds.dat
+D:\GABRIEL\Repositórios\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Training Stage\sprites\visuals.dat

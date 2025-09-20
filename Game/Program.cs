@@ -63,10 +63,10 @@ public static class Program {
     public static double last_frame_time = 0;
 
     // Shaders
-    public static Shader colorTinterShader;
-    public static Shader colorFillShader;
-    public static Shader hueChange;
-    public static Shader crtFilter;
+    public static Shader colorTinterShader = new Shader(null, null, "Assets/shaders/color_tinter.frag");
+    public static Shader colorFillShader = new Shader(null, null, "Assets/shaders/color_fill.frag");
+    public static Shader hueChange = new Shader(null, null, "Assets/shaders/hue_change.frag");
+    public static Shader crtFilter = new Shader(null, null, "Assets/shaders/crt.frag");
 
     // Data
     private static List<Stage> stages;
@@ -96,7 +96,7 @@ public static class Program {
         UI.Instance.LoadFonts();
 
         // Crie uma janela
-        if (Config.Fullscreen == true) window = new RenderWindow(new VideoMode(VideoMode.DesktopMode.Width, VideoMode.DesktopMode.Height), Config.GameTitle, Styles.None);
+        if (Config.Fullscreen == true) window = new RenderWindow(new VideoMode(VideoMode.DesktopMode.Width, VideoMode.DesktopMode.Height), Config.GameTitle, Styles.Fullscreen);
         else window = new RenderWindow(new VideoMode(Config.RenderWidth * 3, Config.RenderHeight * 3), Config.GameTitle, Styles.Default);
         window.Closed += (sender, e) => window.Close();
         window.SetFramerateLimit(Config.Framerate);
@@ -110,12 +110,6 @@ public static class Program {
         InputManager.Initialize(autoDetectDevice: true);
         camera = Camera.GetInstance(window);
         frametimer = new Stopwatch();
-
-        // Carregamento de shaders
-        colorTinterShader = new Shader(null, null, "Assets/shaders/color_tinter.frag");
-        colorFillShader = new Shader(null, null, "Assets/shaders/color_fill.frag");
-        hueChange = new Shader(null, null, "Assets/shaders/hue_change.frag");
-        crtFilter = new Shader(null, null, "Assets/shaders/crt.frag");
 
         // Carregamento dos personagens
         characters = new List<Character> {
@@ -133,6 +127,7 @@ public static class Program {
             new RindoKanDojo(),
             new TheSavana(),
             new JapanFields(),
+            new TrainingStage(),
             new Stage("Settings", visuals["settings"]),
             new Stage("Exit game", visuals["exit"]),
         };
@@ -290,7 +285,7 @@ public static class Program {
 
                     if (InputManager.Instance.Key_down("A", player: 2) || InputManager.Instance.Key_down("B", player: 2) || InputManager.Instance.Key_down("C", player: 2) || InputManager.Instance.Key_down("D", player: 2))
                         charB_selected = characters[pointer_charB].name;
-                    
+
                     // Return option
                     if (InputManager.Instance.Key_up("LB")) {
                         charB_selected = null;

@@ -4,8 +4,7 @@ using SFML.Graphics;
 namespace Data_space {
     public static class DataManagement
     {
-        public static void SaveTexturesToFile(string fileName, Dictionary<string, Texture> textures)
-        {
+        public static void SaveTexturesToFile(string fileName, Dictionary<string, Texture> textures) {
             using (var stream = new FileStream(fileName, FileMode.Create))
             using (var writer = new BinaryWriter(stream))
             {
@@ -27,8 +26,7 @@ namespace Data_space {
                 }
             }
         }
-        public static Dictionary<string, Texture> LoadTexturesFromFile(string fileName, Dictionary<string, Texture> existingTextures = null)
-        {
+        public static Dictionary<string, Texture> LoadTexturesFromFile(string fileName, Dictionary<string, Texture> existingTextures = null) {
             var textures = existingTextures ?? new Dictionary<string, Texture>();
 
             using (var stream = new FileStream(fileName, FileMode.Open))
@@ -67,8 +65,7 @@ namespace Data_space {
 
             return textures;
         }
-        public static Dictionary<string, Texture> LoadTexturesFromPath(string directoryPath, Dictionary<string, Texture> existingTextures = null)
-        {
+        public static Dictionary<string, Texture> LoadTexturesFromPath(string directoryPath, Dictionary<string, Texture> existingTextures = null) {
             Dictionary<string, Texture> textures = existingTextures ?? new Dictionary<string, Texture>();
             string[] files = Directory.GetFiles(directoryPath);
 
@@ -85,8 +82,7 @@ namespace Data_space {
             return textures;
         }
 
-        public static void SaveSoundsToFile(string fileName, Dictionary<string, SoundBuffer> sounds)
-        {
+        public static void SaveSoundsToFile(string fileName, Dictionary<string, SoundBuffer> sounds) {
             using (FileStream fs = new FileStream(fileName, FileMode.Create))
             using (BinaryWriter writer = new BinaryWriter(fs))
             {

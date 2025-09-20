@@ -194,8 +194,8 @@ namespace UI_space {
             UI.Instance.DrawText(stage.character_B.name, 194, -95, spacing: Config.spacing_small, size: 1f, alignment: "right", textureName: "default small white");
 
             // Draw Combo text
-            if (stage.character_A.combo_counter > 1) this.DrawText("Combo " + stage.character_A.combo_counter, -190, -80, spacing: -23, alignment: "left", size: 1f, textureName: "default medium white");
-            if (stage.character_B.combo_counter > 1) this.DrawText("Combo " + stage.character_B.combo_counter, 190, -80, spacing: -23, alignment: "right", size: 1f, textureName: "default medium white");
+            if (stage.character_A.combo_counter > 1) this.DrawText(stage.character_A.combo_counter + " hits", -190, -80, spacing: -23, alignment: "left", size: 1f, textureName: "default medium white");
+            if (stage.character_B.combo_counter > 1) this.DrawText(stage.character_B.combo_counter + " hits", 190, -80, spacing: -23, alignment: "right", size: 1f, textureName: "default medium white");
 
             // Draw time
             this.DrawText("" + Math.Max(stage.round_time, 0), 0, -106, alignment: "center", spacing: -8, size: 1f, textureName: "1");
