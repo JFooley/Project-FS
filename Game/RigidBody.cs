@@ -5,7 +5,7 @@ public class RigidBody {
     public Vector2f LastPosition;
     public Vector2f Position;
     public Vector2f Velocity;
-    public Vector2f Force;
+    public Vector2f Acceleration;
     public int force_frames = 0;
     private float gravidade = Config.gravity;
     private float atrito => gravidade * 0.5F;
@@ -18,12 +18,12 @@ public class RigidBody {
         this.LastPosition = Position;
 
         if (this.force_frames <= 0) {
-            this.Force.X = 0;
-            this.Force.Y = 0;
+            this.Acceleration.X = 0;
+            this.Acceleration.Y = 0;
         } else this.force_frames -= 1;
 
-        this.Velocity.X += this.Force.X;
-        this.Velocity.Y += this.Force.Y;
+        this.Velocity.X += this.Acceleration.X;
+        this.Velocity.Y += this.Acceleration.Y;
 
         this.Position.X += this.Velocity.X;
         this.Position.Y += this.Velocity.Y;
@@ -68,14 +68,14 @@ public class RigidBody {
     }
 
     public void SetForce(Character player, float X = 0, float Y = 0, int T = 0, bool keep_X = false, bool keep_Y = false) {
-        this.Force.X = keep_X ? this.Force.X : X * player.facing;
-        this.Force.Y = keep_Y ? this.Force.Y : -Y;
+        this.Acceleration.X = keep_X ? this.Acceleration.X : X * player.facing;
+        this.Acceleration.Y = keep_Y ? this.Acceleration.Y : -Y;
         this.force_frames = T;
     }
 
     public void AddForce(Character player, float X = 0, float Y = 0, int T = 0) {
-        this.Force.X += X * player.facing;
-        this.Force.Y += -Y;
+        this.Acceleration.X += X * player.facing;
+        this.Acceleration.Y += -Y;
         this.force_frames += T;
     }
 
