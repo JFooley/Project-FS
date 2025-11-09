@@ -1,0 +1,51 @@
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\characters\Ken\sounds\sounds.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\characters\Ken\sprites\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\characters\Psylock\sounds\sounds.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\characters\Psylock\sprites\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\config.json
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\data\character_thumbs.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\data\stage_thumbs.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\data\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\fonts\files\text.txt
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\fonts\fonts.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\icon.ico
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\particles\Fireball\sounds\sounds.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\particles\Fireball\sprites\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\particles\Hitspark\sounds\sounds.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\particles\Hitspark\sprites\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\particles\Particle\sounds\sounds.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\particles\Particle\sprites\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\shaders\color_fill.frag
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\shaders\color_tinter.frag
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\shaders\crt.frag
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\shaders\hue_change.frag
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\Burning Dojo\sound\sounds.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\Burning Dojo\sprites\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\Japan Fields\sound\sounds.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\Japan Fields\sprites\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\Night Alley\sound\sounds.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\Night Alley\sprites\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\NYC Subway\sound\sounds.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\NYC Subway\sprites\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\Rindo-Kan Dojo\sound\sounds.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\Rindo-Kan Dojo\sprites\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\The Midnight Duel\sound\sounds.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\The Midnight Duel\sprites\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\The Savana\sound\sounds.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\The Savana\sprites\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\Training Stage\sound\sounds.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\stages\Training Stage\sprites\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Project FS.exe
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Project FS.exe.config
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Project FS.pdb
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Newtonsoft.Json.dll
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\SFML.Audio.dll
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\SFML.Graphics.dll
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\SFML.System.dll
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\SFML.Window.dll
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\System.Windows.Forms.dll
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\csfml-audio.dll
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\csfml-graphics.dll
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\csfml-system.dll
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\csfml-window.dll
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\openal32.dll

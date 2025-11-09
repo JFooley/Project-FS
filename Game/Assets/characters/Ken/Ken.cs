@@ -897,7 +897,7 @@ public class Ken : Character {
                 X: 2.4f, 
                 Y: 80);
         } 
-        if (InputManager.Instance.Key_sequence_press("Right Down Right RB", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || this.has_hit && this.current_state == "LowMediumP" ) && Character.CheckSuperPoints(this, 50)) {
+        if (InputManager.Instance.Key_sequence_press("Right Down Right RB", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || this.has_hit && (this.current_state == "LowMediumP" || this.current_state == "LowLightK")) && Character.CheckSuperPoints(this, 50)) {
             Character.UseSuperPoints(this, 50);
             this.ChangeState("ShoryEX");
         } else if (this.current_state == "ShoryEX" && this.current_frame_index == 7 && this.has_frame_change) {
@@ -1000,7 +1000,7 @@ public class Ken : Character {
                 } else {
                     hit = Character.HIT;
                     Character.Damage(target: target, self: this, 13, 50);
-                    target.Stun(this, 5);
+                    target.Stun(this, 6);
                 }
                 Character.GetSuperPoints(target, this, hit);
                 break;
@@ -1013,7 +1013,7 @@ public class Ken : Character {
                 } else {
                     hit = Character.HIT;
                     Character.Damage(target: target, self: this, 13, 50);
-                    target.Stun(this, 5);
+                    target.Stun(this, 6);
                 }
                 Character.GetSuperPoints(target, this, hit);
                 break;

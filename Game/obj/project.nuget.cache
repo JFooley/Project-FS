@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "Q+c9KhIIBgQ=",
+  "dgSpecHash": "Asp0IKTHzrQ=",
   "success": true,
-  "projectFilePath": "D:\\GABRIEL\\Repositórios\\CS Fighting Game\\Game\\Project FS.csproj",
+  "projectFilePath": "D:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\gabri\\.nuget\\packages\\csfml\\2.6.1\\csfml.2.6.1.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\microsoft.netframework.referenceassemblies\\1.0.3\\microsoft.netframework.referenceassemblies.1.0.3.nupkg.sha512",

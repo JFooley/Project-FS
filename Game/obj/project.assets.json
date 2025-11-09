@@ -879,7 +879,7 @@
         }
       }
     },
-    ".NETFramework,Version=v4.7.2/win-x64": {
+    ".NETFramework,Version=v4.7.2/win7-x64": {
       "CSFML/2.6.1": {
         "type": "package",
         "native": {
@@ -2021,11 +2021,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\GABRIEL\\Repositórios\\CS Fighting Game\\Game\\Project FS.csproj",
+      "projectUniqueName": "D:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj",
       "projectName": "Project FS",
-      "projectPath": "D:\\GABRIEL\\Repositórios\\CS Fighting Game\\Game\\Project FS.csproj",
+      "projectPath": "D:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj",
       "packagesPath": "C:\\Users\\gabri\\.nuget\\packages\\",
-      "outputPath": "D:\\GABRIEL\\Repositórios\\CS Fighting Game\\Game\\obj\\",
+      "outputPath": "D:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\gabri\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -2088,7 +2088,7 @@
       }
     },
     "runtimes": {
-      "win-x64": {
+      "win7-x64": {
         "#import": []
       }
     }
