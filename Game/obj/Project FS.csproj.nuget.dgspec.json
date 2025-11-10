@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj": {}
+    "D:\\GABRIEL\\Repos\\CS Fighting Game\\game\\Project FS.csproj": {}
   },
   "projects": {
-    "D:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj": {
+    "D:\\GABRIEL\\Repos\\CS Fighting Game\\game\\Project FS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj",
+        "projectUniqueName": "D:\\GABRIEL\\Repos\\CS Fighting Game\\game\\Project FS.csproj",
         "projectName": "Project FS",
-        "projectPath": "D:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj",
+        "projectPath": "D:\\GABRIEL\\Repos\\CS Fighting Game\\game\\Project FS.csproj",
         "packagesPath": "C:\\Users\\gabri\\.nuget\\packages\\",
-        "outputPath": "D:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\obj\\",
+        "outputPath": "D:\\GABRIEL\\Repos\\CS Fighting Game\\game\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\gabri\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -74,7 +74,7 @@
         }
       },
       "runtimes": {
-        "win7-x64": {
+        "win-x64": {
           "#import": []
         }
       }

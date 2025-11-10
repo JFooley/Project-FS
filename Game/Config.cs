@@ -11,6 +11,8 @@ public static class Config {
     public static bool Vsync = false;
     public static bool Crt_Filter = true;
 
+    public static int Language = 0;
+
     // Battle
     public static int round_length = 90;
     public const int default_round_length = 90;
@@ -82,7 +84,8 @@ public static class Config {
             _effect_volume,
             round_length,
             hit_stop_time,
-            max_rounds
+            max_rounds,
+            Language
         };
 
         string jsonString = JsonConvert.SerializeObject(configData, Formatting.Indented);
@@ -106,8 +109,10 @@ public static class Config {
             round_length = configData.round_length;
             hit_stop_time = configData.hit_stop_time;
             max_rounds = configData.max_rounds;
+            Language = configData.Language;
         } else {
             Console.WriteLine("Config file not found. Using default settings.");
+            Config.SaveToFile(filePath);
         }
     }
     private class ConfigData {
@@ -124,5 +129,6 @@ public static class Config {
         public int round_length { get; set; }
         public int hit_stop_time { get; set; }
         public int max_rounds { get; set; }
+        public int Language { get; set; }
     }
 }

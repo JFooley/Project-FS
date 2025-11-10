@@ -7,6 +7,7 @@ using UI_space;
 using System.Diagnostics;
 using Character_Space;
 using Data_space;
+using Language_space;
 using System.Windows.Forms;
 
 public static class Program {
@@ -177,7 +178,7 @@ public static class Program {
                 case MainMenu:
                     window.Draw(main_bg);
                     UI.Instance.DrawText("by JFooley", 0, 76, spacing: Config.spacing_small - 1, textureName: "default small");
-                    if (UI.Instance.blink2Hz || InputManager.Instance.Key_hold("Start")) UI.Instance.DrawText("press start", 0, 50, spacing: Config.spacing_medium, size: 1f, textureName: InputManager.Instance.Key_hold("Start") ? "default medium click" : "default medium white");
+                    if (UI.Instance.blink2Hz || InputManager.Instance.Key_hold("Start")) UI.Instance.DrawText(Language.GetText("press start"), 0, 50, spacing: Config.spacing_medium, size: 1f, textureName: InputManager.Instance.Key_hold("Start") ? "default medium click" : "default medium white");
 
                     if (InputManager.Instance.Key_up("Start"))
                     {
@@ -191,15 +192,15 @@ public static class Program {
                     window.Draw(frame);
 
                     // draw texts
-                    UI.Instance.DrawText(stages[pointer].name, 0, -80, spacing: Config.spacing_medium, textureName: InputManager.Instance.Key_hold("A") || InputManager.Instance.Key_hold("B") || InputManager.Instance.Key_hold("C") || InputManager.Instance.Key_hold("D") ? "default medium click" : "default medium white");
+                    UI.Instance.DrawText(Language.GetText(stages[pointer].name), 0, -80, spacing: Config.spacing_medium, textureName: InputManager.Instance.Key_hold("A") || InputManager.Instance.Key_hold("B") || InputManager.Instance.Key_hold("C") || InputManager.Instance.Key_hold("D") ? "default medium click" : "default medium white");
                     UI.Instance.DrawText(Program.player1_wins.ToString(), -Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "left");
                     UI.Instance.DrawText(Program.player2_wins.ToString(), Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "right");
 
                     UI.Instance.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
-                    UI.Instance.DrawText("Return", -182, 67, spacing: Config.spacing_small, alignment: "left", textureName: InputManager.Instance.Key_hold("LB") ? "default small click" : "default small");
+                    UI.Instance.DrawText(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", textureName: InputManager.Instance.Key_hold("LB") ? "default small click" : "default small");
 
                     UI.Instance.DrawText("F", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
-                    UI.Instance.DrawText("Controls", 182, 67, spacing: Config.spacing_small, alignment: "right", textureName: InputManager.Instance.Key_hold("RB") ? "default small click" : "default small");
+                    UI.Instance.DrawText(Language.GetText("Controls"), 182, 67, spacing: Config.spacing_small, alignment: "right", textureName: InputManager.Instance.Key_hold("RB") ? "default small click" : "default small");
 
                     if (InputManager.Instance.Key_down("Left"))
                         pointer = pointer <= 0 ? stages.Count - 1 : pointer - 1;
@@ -207,12 +208,12 @@ public static class Program {
                         pointer = pointer >= stages.Count - 1 ? 0 : pointer + 1;
 
                     if (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")) {
-                        if (stages[pointer].name == "Settings")
+                        if (stages[pointer].name == "Settings") // TODO: traduzir
                             ChangeState(Settings);
-                        else if (stages[pointer].name == "Exit game")
+                        else if (stages[pointer].name == "Exit game") // TODO: traduzir
                             window.Close();
                         else {
-                            if (stages[pointer].name == "Random")
+                            if (stages[pointer].name == "Random") // TODO: traduzir
                                 pointer = Program.random.Next(1, stages.Count() - 2);
                             Program.stage = stages[pointer];
                             ChangeState(SelectChar);
@@ -263,10 +264,10 @@ public static class Program {
                     UI.Instance.DrawText(characters[pointer_charB].name, +77, 45, spacing: Config.spacing_small, textureName: "default small");
 
                     UI.Instance.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
-                    UI.Instance.DrawText("Return", -182, 67, spacing: Config.spacing_small, alignment: "left", textureName: InputManager.Instance.Key_hold("LB") ? "default small click" : "default small");
+                    UI.Instance.DrawText(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", textureName: InputManager.Instance.Key_hold("LB") ? "default small click" : "default small");
 
                     UI.Instance.DrawText("F", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
-                    UI.Instance.DrawText("Controls", 182, 67, spacing: Config.spacing_small, alignment: "right", textureName: InputManager.Instance.Key_hold("RB") ? "default small click" : "default small");
+                    UI.Instance.DrawText(Language.GetText("Controls"), 182, 67, spacing: Config.spacing_small, alignment: "right", textureName: InputManager.Instance.Key_hold("RB") ? "default small click" : "default small");
 
                     // Chose option A
                     if (InputManager.Instance.Key_down("Left", player: 1) && charA_selected == null)
@@ -344,7 +345,7 @@ public static class Program {
                                 fight_logo.Position = new Vector2f(Program.camera.X - 89, Program.camera.Y - 54);
                                 window.Draw(fight_logo);
                             }
-                            else UI.Instance.DrawText("Ready?", 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
+                            else UI.Instance.DrawText(Language.GetText("Ready")+"?", 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
 
                             break;
 
@@ -406,13 +407,13 @@ public static class Program {
                     window.Draw(fade90);
 
                     string winner_text;
-                    if (winner == Program.Drawn) winner_text = "Drawn";
-                    else winner_text = "Player " + winner + " wins";
+                    if (winner == Program.Drawn) winner_text = Language.GetText("Drawn");
+                    else winner_text = Language.GetText("Player") + " " + winner + " " + Language.GetText("Wins");
 
                     UI.Instance.DrawText(winner_text, 0, -100, spacing: Config.spacing_medium, size: 1f, textureName: "default medium");
-                    UI.Instance.DrawText("Rematch", 0, 0, spacing: Config.spacing_medium, size: 1f, textureName: pointer == 0 ? "default medium hover" : "default medium");
-                    UI.Instance.DrawText("Change stage", 0, 20, spacing: Config.spacing_medium, size: 1f, textureName: pointer == 1 ? "default medium hover" : "default medium");
-                    UI.Instance.DrawText("Exit game", 0, 40, spacing: Config.spacing_medium, size: 1f, textureName: pointer == 2 ? "default medium red" : "default medium");
+                    UI.Instance.DrawText(Language.GetText("Rematch"), 0, 0, spacing: Config.spacing_medium, size: 1f, textureName: pointer == 0 ? "default medium hover" : "default medium");
+                    UI.Instance.DrawText(Language.GetText("Change stage"), 0, 20, spacing: Config.spacing_medium, size: 1f, textureName: pointer == 1 ? "default medium hover" : "default medium");
+                    UI.Instance.DrawText(Language.GetText("Exit game"), 0, 40, spacing: Config.spacing_medium, size: 1f, textureName: pointer == 2 ? "default medium red" : "default medium");
 
                     // Change option
                     if (InputManager.Instance.Key_down("Up") && pointer > 0)
@@ -443,37 +444,41 @@ public static class Program {
                     Camera.Instance.UnlockCamera();
                     window.Draw(settings_bg);
 
-                    UI.Instance.DrawText("Settings", -80, -107, spacing: Config.spacing_medium);
+                    UI.Instance.DrawText(Language.GetText("Settings"), -80, -107, spacing: Config.spacing_medium);
                     //0
-                    UI.Instance.DrawText("Main volume", -170, -74, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 0 ? "default small hover" : "default small");
+                    UI.Instance.DrawText(Language.GetText("Main volume"), -170, -74, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 0 ? "default small hover" : "default small");
                     UI.Instance.DrawText("< " + Config.Main_Volume.ToString() + "% >", 0, -74, spacing: Config.spacing_small, textureName: pointer == 0 ? "default small red" : "default small");
                     //1
-                    UI.Instance.DrawText("Music volume", -170, -64, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 1 ? "default small hover" : "default small");
+                    UI.Instance.DrawText(Language.GetText("Music volume"), -170, -64, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 1 ? "default small hover" : "default small");
                     UI.Instance.DrawText("< " + Config._music_volume.ToString() + "% >", 0, -64, spacing: Config.spacing_small, textureName: pointer == 1 ? "default small red" : "default small");
                     //2
-                    UI.Instance.DrawText("V-sync", -170, -54, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 2 ? "default small hover" : "default small");
-                    UI.Instance.DrawText("< " + (Config.Vsync ? "on" : "off") + " >", 0, -54, spacing: Config.spacing_small, textureName: pointer == 2 ? "default small red" : "default small");
+                    UI.Instance.DrawText(Language.GetText("V-sync"), -170, -54, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 2 ? "default small hover" : "default small");
+                    UI.Instance.DrawText("< " + (Config.Vsync ? Language.GetText("on") : Language.GetText("off")) + " >", 0, -54, spacing: Config.spacing_small, textureName: pointer == 2 ? "default small red" : "default small");
                     //3
-                    UI.Instance.DrawText("Window mode", -170, -44, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 3 ? "default small hover" : "default small");
-                    UI.Instance.DrawText("< " + (Config.Fullscreen ? "Fullscreen" : "Windowed") + " >", 0, -44, spacing: Config.spacing_small, textureName: pointer == 3 ? "default small red" : "default small");
+                    UI.Instance.DrawText(Language.GetText("Window mode"), -170, -44, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 3 ? "default small hover" : "default small");
+                    UI.Instance.DrawText("< " + (Config.Fullscreen ? Language.GetText("Fullscreen") : Language.GetText("Windowed")) + " >", 0, -44, spacing: Config.spacing_small, textureName: pointer == 3 ? "default small red" : "default small");
                     //4
-                    UI.Instance.DrawText("Round Length", -170, -34, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 4 ? "default small hover" : "default small");
-                    UI.Instance.DrawText("< " + (Config.round_length == Config.default_round_length ? "Default (" + Config.default_round_length + "s)" : Config.round_length + "s") + " >", 0, -34, spacing: Config.spacing_small, textureName: pointer == 4 ? "default small red" : "default small");
+                    UI.Instance.DrawText(Language.GetText("Round Length"), -170, -34, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 4 ? "default small hover" : "default small");
+                    UI.Instance.DrawText("< " + (Config.round_length == Config.default_round_length ? Language.GetText("Default") + " (" + Config.default_round_length + "s)" : Config.round_length + "s") + " >", 0, -34, spacing: Config.spacing_small, textureName: pointer == 4 ? "default small red" : "default small");
                     //5
-                    UI.Instance.DrawText("Match", -170, -24, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 5 ? "default small hover" : "default small");
-                    UI.Instance.DrawText("< " + (Config.max_rounds == Config.default_max_rounds ? "Default (FT" + Config.default_max_rounds + ")" : "First to " + Config.max_rounds.ToString()) + " >", 0, -24, spacing: Config.spacing_small, textureName: pointer == 5 ? "default small red" : "default small");
+                    UI.Instance.DrawText(Language.GetText("Match"), -170, -24, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 5 ? "default small hover" : "default small");
+                    UI.Instance.DrawText("< " + (Config.max_rounds == Config.default_max_rounds ? Language.GetText("Default") + " (FT" + Config.default_max_rounds + ")" : Language.GetText("First to") + " " + Config.max_rounds.ToString()) + " >", 0, -24, spacing: Config.spacing_small, textureName: pointer == 5 ? "default small red" : "default small");
                     //6
-                    UI.Instance.DrawText("Hitstop", -170, -14, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 6 ? "default small hover" : "default small");
-                    UI.Instance.DrawText("< " + (Config.hit_stop_time == Config.default_hit_stop_time ? "Default" : Config.hit_stop_time + " frames") + " >", 0, -14, spacing: Config.spacing_small, textureName: pointer == 6 ? "default small red" : "default small");
+                    UI.Instance.DrawText(Language.GetText("Hitstop"), -170, -14, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 6 ? "default small hover" : "default small");
+                    UI.Instance.DrawText("< " + (Config.hit_stop_time == Config.default_hit_stop_time ? Language.GetText("Default") : Config.hit_stop_time + " " + Language.GetText("frames")) + " >", 0, -14, spacing: Config.spacing_small, textureName: pointer == 6 ? "default small red" : "default small");
                     //7
-                    UI.Instance.DrawText("Input window", -170, -04, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 7 ? "default small hover" : "default small");
-                    UI.Instance.DrawText("< " + (Config.input_window_time == Config.default_input_window_time ? "Default" : Config.input_window_time + " frames") + " >", 0, -04, spacing: Config.spacing_small, textureName: pointer == 7 ? "default small red" : "default small");
+                    UI.Instance.DrawText(Language.GetText("Input window"), -170, -04, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 7 ? "default small hover" : "default small");
+                    UI.Instance.DrawText("< " + (Config.input_window_time == Config.default_input_window_time ? Language.GetText("Default") : Config.input_window_time + " " + Language.GetText("frames")) + " >", 0, -04, spacing: Config.spacing_small, textureName: pointer == 7 ? "default small red" : "default small");
+                    //8
+                    UI.Instance.DrawText(Language.GetText("Language"), -170, 6, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 8 ? "default small hover" : "default small");
+                    UI.Instance.DrawText("< " + Language.GetText(Language.supported[Config.Language]) + " >", 0, 6, spacing: Config.spacing_small, textureName: pointer == 8 ? "default small red" : "default small");
+
 
                     // Change option 
                     if (InputManager.Instance.Key_down("Up"))
-                        pointer = pointer <= 0 ? 7 : pointer - 1;
+                        pointer = pointer <= 0 ? 8 : pointer - 1;
                     else if (InputManager.Instance.Key_down("Down"))
-                        pointer = pointer >= 7 ? 0 : pointer + 1;
+                        pointer = pointer >= 8 ? 0 : pointer + 1;
 
                     // Do option
                     if (pointer == 0)
@@ -524,10 +529,15 @@ public static class Program {
                         if (InputManager.Instance.Key_down("Left") && Config.input_window_time > 1) Config.input_window_time -= 1;
                         else if (InputManager.Instance.Key_down("Right")) Config.input_window_time += 1;
                     }
+                    else if (pointer == 8)
+                    {
+                        if (InputManager.Instance.Key_down("Left") && Config.Language > 0) Config.Language -= 1;
+                        else if (InputManager.Instance.Key_down("Right") && Config.Language < Language.LANGUAGE_COUNT - 1) Config.Language += 1;
+                    }
 
                     // Return option
                     UI.Instance.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
-                    UI.Instance.DrawText("Return", -182, 67, spacing: Config.spacing_small, alignment: "left", textureName: InputManager.Instance.Key_hold("LB") ? "default small click" : "default small");
+                    UI.Instance.DrawText(Language.GetText("save and exit"), -182, 67, spacing: Config.spacing_small, alignment: "left", textureName: InputManager.Instance.Key_hold("LB") ? "default small click" : "default small");
 
                     if (InputManager.Instance.Key_up("LB")) {
                         Config.SaveToFile();
@@ -543,7 +553,7 @@ public static class Program {
                     window.Draw(new Sprite(visuals["controls_" + controls_pointer]));
 
                     UI.Instance.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
-                    UI.Instance.DrawText("Return", -182, 67, spacing: Config.spacing_small, alignment: "left", textureName: InputManager.Instance.Key_hold("LB") ? "default small click" : "default small");
+                    UI.Instance.DrawText(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", textureName: InputManager.Instance.Key_hold("LB") ? "default small click" : "default small");
 
                     if (InputManager.Instance.Key_up("Left")) controls_pointer = controls_pointer < 1 ? controls_pointer + 1 : 0;
                     else if (InputManager.Instance.Key_up("Right")) controls_pointer = controls_pointer > 0 ? controls_pointer - 1 : 1;

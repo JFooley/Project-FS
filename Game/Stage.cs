@@ -7,6 +7,7 @@ using UI_space;
 using Input_Space;
 using System.Diagnostics;
 using Data_space;
+using Language_space;
 
 namespace Stage_Space {
     public class Stage {
@@ -257,18 +258,18 @@ namespace Stage_Space {
             Program.window.Draw(fade90);
 
             // Draw options
-            UI.Instance.DrawText("Pause", 0, -75, size: 1f, spacing: Config.spacing_medium, textureName: "default medium");
-            UI.Instance.DrawText("Settings", 0, -45, spacing: Config.spacing_medium, textureName: this.pause_pointer == 0 ? "default medium hover" : "default medium");
-            UI.Instance.DrawText("Controls", 0, -30, spacing: Config.spacing_medium, textureName: this.pause_pointer == 1 ? "default medium hover" : "default medium");
-            UI.Instance.DrawText("Training mode", 0, -15, spacing: Config.spacing_medium, textureName: this.pause_pointer == 2 ? "default medium hover" : "default medium");
+            UI.Instance.DrawText(Language.GetText("Pause"), 0, -75, size: 1f, spacing: Config.spacing_medium, textureName: "default medium");
+            UI.Instance.DrawText(Language.GetText("Settings"), 0, -45, spacing: Config.spacing_medium, textureName: this.pause_pointer == 0 ? "default medium hover" : "default medium");
+            UI.Instance.DrawText(Language.GetText("Controls"), 0, -30, spacing: Config.spacing_medium, textureName: this.pause_pointer == 1 ? "default medium hover" : "default medium");
+            UI.Instance.DrawText(Language.GetText("Training"), 0, -15, spacing: Config.spacing_medium, textureName: this.pause_pointer == 2 ? "default medium hover" : "default medium");
             if (training_mode) {
-                UI.Instance.DrawText("Reset characters", 0, 0, spacing: Config.spacing_small, textureName: this.pause_pointer == 3 ? "default small hover" : "default small");
-                UI.Instance.DrawText("Show hitboxes", 0, 10, spacing: Config.spacing_small, textureName: this.pause_pointer == 4 ? "default small hover" : "default small");
-                UI.Instance.DrawText(block switch { 0 => "Block: never", 1 => "Block: after hit", 2 => "Block: always", _ => "Block: Error"}, 0, 20, spacing: Config.spacing_small, textureName: this.pause_pointer == 5 ? "default small hover" : "default small");
-                UI.Instance.DrawText(refil_life ? "Life: refil" : "Life: keep", 0, 30, spacing: Config.spacing_small, textureName: this.pause_pointer == 6 ? "default small hover" : "default small");
-                UI.Instance.DrawText(refil_super ? "Super: refil" : "Super: keep", 0, 40, spacing: Config.spacing_small, textureName: this.pause_pointer == 7 ? "default small hover" : "default small");
+                UI.Instance.DrawText(Language.GetText("Reset Characters"), 0, 0, spacing: Config.spacing_small, textureName: this.pause_pointer == 3 ? "default small hover" : "default small");
+                UI.Instance.DrawText(Language.GetText("Show hitboxes"), 0, 10, spacing: Config.spacing_small, textureName: this.pause_pointer == 4 ? "default small hover" : "default small");
+                UI.Instance.DrawText(block switch { 0 => Language.GetText("Block") + ": " + Language.GetText("Never"), 1 => Language.GetText("Block") + ": " + Language.GetText("After hit"), 2 => Language.GetText("Block") + ": " + Language.GetText("Always"), _ => Language.GetText("Block") + ": " + Language.GetText("Error")}, 0, 20, spacing: Config.spacing_small, textureName: this.pause_pointer == 5 ? "default small hover" : "default small");
+                UI.Instance.DrawText(refil_life ? Language.GetText("Life") + ": " + Language.GetText("Refil") : Language.GetText("Life") + ": " + Language.GetText("Keep"), 0, 30, spacing: Config.spacing_small, textureName: this.pause_pointer == 6 ? "default small hover" : "default small");
+                UI.Instance.DrawText(refil_super ? Language.GetText("Super") + ": " + Language.GetText("Refil") : Language.GetText("Super") + ": " + Language.GetText("Keep"), 0, 40, spacing: Config.spacing_small, textureName: this.pause_pointer == 7 ? "default small hover" : "default small");
             }
-            UI.Instance.DrawText("End match", 0, 70, spacing: Config.spacing_medium, textureName: this.pause_pointer == 8 ? "default medium red" : "default medium");
+            UI.Instance.DrawText(Language.GetText("End match"), 0, 70, spacing: Config.spacing_medium, textureName: this.pause_pointer == 8 ? "default medium red" : "default medium");
 
             // Change option 
             if (InputManager.Instance.Key_down("Up") && this.pause_pointer > 0) {
