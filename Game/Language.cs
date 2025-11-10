@@ -52,7 +52,8 @@ namespace Language_space {
             {"round length", new List<string> {"Round length", "Duração da rodada"}},
             {"on", new List<string> {"On", "Ligado"}},
             {"off", new List<string> {"Off", "Desligado"}},
-            {"save and exit", new List<string> {"Save and exit", "Salvar e sair"}}
+            {"save and exit", new List<string> {"Save and exit", "Salvar e sair"}},
+            {"parry", new List<string> {"Parry", "Parry"}},
         };
 
         // Method to get text by id

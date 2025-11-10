@@ -21,6 +21,7 @@ namespace Stage_Space {
         public bool pause = false;
         public bool show_boxs = false;
         public int block = 0; // 0 - never, 1 - after hit, 2 - always
+        public int parry = 0; // 0 - never, 1 - always
         public bool refil_life = true;
         public bool refil_super = true;
         public int reset_frames = 0;
@@ -212,7 +213,8 @@ namespace Stage_Space {
             // Reset frames
             if (this.character_A.hitstop_counter == 0 && this.character_B.hitstop_counter == 0) this.reset_frames += 1;
 
-            // Block after hit
+            // Block 
+            // After hit
             if (this.character_B.stun_frames > 0) {
                 if (this.block == 1) this.character_B.blocking = true;
                 this.reset_frames = 0;
@@ -220,11 +222,25 @@ namespace Stage_Space {
                 if (this.block == 1) this.character_A.blocking = true;
                 this.reset_frames = 0;
             }
-
-            // Block allways
+            // Allways
             if (this.block == 2) {
                 this.character_A.blocking = true;
                 this.character_B.blocking = true;
+            }
+
+            // Parry 
+            // After hit
+            if (this.character_B.stun_frames > 0) {
+                if (this.parry == 1) this.character_B.parring = true;
+                this.reset_frames = 0;
+            } else if (this.character_A.stun_frames > 0) {
+                if (this.parry == 1) this.character_A.parring = true;
+                this.reset_frames = 0;
+            }
+            // Allways
+            if (this.parry == 2) {
+                this.character_A.parring = true;
+                this.character_B.parring = true;
             }
 
             // Reset chars life, stun and super bar
@@ -233,6 +249,7 @@ namespace Stage_Space {
                 if (this.character_B.not_acting_all)
                 {
                     if (this.block != 2) this.character_B.blocking = false;
+                    if (this.parry != 2) this.character_B.parring = false;
                     if (this.refil_life)
                     {
                         this.character_B.life_points.X = this.character_B.life_points.Y;
@@ -242,7 +259,8 @@ namespace Stage_Space {
                 }
                 if (this.character_A.not_acting_all)
                 {
-                    if (this.block != 2)this.character_A.blocking = false;
+                    if (this.block != 2) this.character_A.blocking = false;
+                    if (this.parry != 2) this.character_A.parring = false;
                     if (this.refil_life)
                     {
                         this.character_A.life_points.X = this.character_A.life_points.Y;
@@ -266,18 +284,19 @@ namespace Stage_Space {
                 UI.Instance.DrawText(Language.GetText("Reset Characters"), 0, 0, spacing: Config.spacing_small, textureName: this.pause_pointer == 3 ? "default small hover" : "default small");
                 UI.Instance.DrawText(Language.GetText("Show hitboxes"), 0, 10, spacing: Config.spacing_small, textureName: this.pause_pointer == 4 ? "default small hover" : "default small");
                 UI.Instance.DrawText(block switch { 0 => Language.GetText("Block") + ": " + Language.GetText("Never"), 1 => Language.GetText("Block") + ": " + Language.GetText("After hit"), 2 => Language.GetText("Block") + ": " + Language.GetText("Always"), _ => Language.GetText("Block") + ": " + Language.GetText("Error")}, 0, 20, spacing: Config.spacing_small, textureName: this.pause_pointer == 5 ? "default small hover" : "default small");
-                UI.Instance.DrawText(refil_life ? Language.GetText("Life") + ": " + Language.GetText("Refil") : Language.GetText("Life") + ": " + Language.GetText("Keep"), 0, 30, spacing: Config.spacing_small, textureName: this.pause_pointer == 6 ? "default small hover" : "default small");
-                UI.Instance.DrawText(refil_super ? Language.GetText("Super") + ": " + Language.GetText("Refil") : Language.GetText("Super") + ": " + Language.GetText("Keep"), 0, 40, spacing: Config.spacing_small, textureName: this.pause_pointer == 7 ? "default small hover" : "default small");
+                UI.Instance.DrawText(parry switch { 0 => Language.GetText("Parry") + ": " + Language.GetText("Never"), 1 => Language.GetText("Parry") + ": " + Language.GetText("After hit"), 2 => Language.GetText("Parry") + ": " + Language.GetText("Always"), _ => Language.GetText("Parry") + ": " + Language.GetText("Error")}, 0, 30, spacing: Config.spacing_small, textureName: this.pause_pointer == 6 ? "default small hover" : "default small");
+                UI.Instance.DrawText(refil_life ? Language.GetText("Life") + ": " + Language.GetText("Refil") : Language.GetText("Life") + ": " + Language.GetText("Keep"), 0, 40, spacing: Config.spacing_small, textureName: this.pause_pointer == 7 ? "default small hover" : "default small");
+                UI.Instance.DrawText(refil_super ? Language.GetText("Super") + ": " + Language.GetText("Refil") : Language.GetText("Super") + ": " + Language.GetText("Keep"), 0, 50, spacing: Config.spacing_small, textureName: this.pause_pointer == 8 ? "default small hover" : "default small");
             }
-            UI.Instance.DrawText(Language.GetText("End match"), 0, 70, spacing: Config.spacing_medium, textureName: this.pause_pointer == 8 ? "default medium red" : "default medium");
+            UI.Instance.DrawText(Language.GetText("End match"), 0, 70, spacing: Config.spacing_medium, textureName: this.pause_pointer == 9 ? "default medium red" : "default medium");
 
             // Change option 
             if (InputManager.Instance.Key_down("Up") && this.pause_pointer > 0) {
                 this.pause_pointer -= 1;
-                if (!training_mode && this.pause_pointer < 8 && this.pause_pointer > 2) this.pause_pointer = 2;
-            } else if (InputManager.Instance.Key_down("Down") && this.pause_pointer < 8) {
+                if (!training_mode && this.pause_pointer < 9 && this.pause_pointer > 2) this.pause_pointer = 2;
+            } else if (InputManager.Instance.Key_down("Down") && this.pause_pointer < 9) {
                 this.pause_pointer += 1;
-                if (!training_mode && this.pause_pointer < 8 && this.pause_pointer > 2) this.pause_pointer = 8;
+                if (!training_mode && this.pause_pointer < 9 && this.pause_pointer > 2) this.pause_pointer = 9;
             }
 
             // Do option
@@ -294,10 +313,12 @@ namespace Stage_Space {
             else if (this.pause_pointer == 5 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
                 this.block = block >= 2 ? 0 : block + 1;
             else if (this.pause_pointer == 6 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
-                this.refil_life = !this.refil_life;
+                this.parry = parry >= 2 ? 0 : parry + 1;
             else if (this.pause_pointer == 7 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
-                this.refil_super = !this.refil_super;
+                this.refil_life = !this.refil_life;
             else if (this.pause_pointer == 8 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
+                this.refil_super = !this.refil_super;
+            else if (this.pause_pointer == 9 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
             {
                 this.Pause();
                 Program.winner = Program.Drawn;
