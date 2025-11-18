@@ -8,6 +8,17 @@ namespace Language_space {
 
         // texts
         private static Dictionary<string, List<string>> texts = new Dictionary<string, List<string>>() { // English, Portuguese
+            {"max aura", new List<string> {"Max Aura", "Aura Maxima"}},
+            {"burning dojo", new List<string> {"Burning Dojo", "Dojo em Chamas"}},
+            {"the midnight duel", new List<string> {"The Midnight Duel", "O Duelo da Meia-Noite"}},
+            {"japan fields", new List<string> {"Japan Fields", "Campos do Japao"}},
+            {"training stage", new List<string> {"Training Stage", "Estagio de Treinamento"}},
+            {"night alley", new List<string> {"Night Alley", "Beco Noturno"}},
+            {"nyc subway", new List<string> {"NYC Subway", "Metro de NYC"}},
+            {"rindo-kan dojo", new List<string> {"Rindo-Kan Dojo", "Dojo Rindo-Kan"}},
+            {"the savana", new List<string> {"The Savana", "A Savana"}},
+            {"victory", new List<string> {"Victory", "Vitoria"}},
+            {"defeat", new List<string> {"Defeat", "Derrota"}},
             {"error", new List<string> {"Error", "Erro"}},
             {"press start", new List<string> {"Press start", "Pressione start"}},
             {"return", new List<string> {"Return", "Voltar"}},

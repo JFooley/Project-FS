@@ -26,6 +26,8 @@ public static class Program {
     public const int PostBattle = 6;
     public const int Settings = 7;
     public const int Controls = 8;
+    public const int AccessibilityMenu = 9;
+    public const int Credits = 10;
 
     // Battle States
     public const int RoundStart = 1;
@@ -67,7 +69,6 @@ public static class Program {
     public static Shader colorTinterShader = new Shader(null, null, "Assets/shaders/color_tinter.frag");
     public static Shader colorFillShader = new Shader(null, null, "Assets/shaders/color_fill.frag");
     public static Shader hueChange = new Shader(null, null, "Assets/shaders/hue_change.frag");
-    public static Shader crtFilter = new Shader(null, null, "Assets/shaders/crt.frag");
 
     // Data
     private static List<Stage> stages;
@@ -94,7 +95,7 @@ public static class Program {
         }
         Stage.LoadThumbs();
         Character.LoadThumbs();
-        UI.Instance.LoadFonts();
+        UI.Instance.Load();
 
         // Crie uma janela
         if (Config.Fullscreen == true) window = new RenderWindow(new VideoMode(VideoMode.DesktopMode.Width, VideoMode.DesktopMode.Height), Config.GameTitle, Styles.Fullscreen);
@@ -232,6 +233,8 @@ public static class Program {
                     sprite_B.Texture = characters[pointer_charB].thumb;
 
                     // Draw Shadows
+                    colorFillShader.SetUniform("fillColor", new SFML.Graphics.Glsl.Vec3(0, 0, 0));
+
                     sprite_A.Scale = new Vector2f(1f, 1f);
                     sprite_A.Position = new Vector2f(Camera.Instance.X - 81 - sprite_A.GetLocalBounds().Width / 2, Camera.Instance.Y - 20 - sprite_A.GetLocalBounds().Height / 2);
                     window.Draw(sprite_A, new RenderStates(colorFillShader));
@@ -558,11 +561,16 @@ public static class Program {
                     if (InputManager.Instance.Key_up("Left")) controls_pointer = controls_pointer < 1 ? controls_pointer + 1 : 0;
                     else if (InputManager.Instance.Key_up("Right")) controls_pointer = controls_pointer > 0 ? controls_pointer - 1 : 1;
 
-                    if (InputManager.Instance.Key_up("LB"))
-                    {
+                    if (InputManager.Instance.Key_up("LB")) {
                         if (return_state == Battle) Camera.Instance.LockCamera();
                         ChangeState(return_state);
                     }
+                    break;
+
+                case AccessibilityMenu:
+                    break;
+
+                case Credits:
                     break;
             }
 
