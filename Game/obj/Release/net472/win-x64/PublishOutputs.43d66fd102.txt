@@ -9,6 +9,8 @@ D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\fonts\files\text.txt
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\fonts\fonts.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\icon.ico
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\languages\EN.json
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\languages\PT.json
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\particles\Fireball\sounds\sounds.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\particles\Fireball\sprites\visuals.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\particles\Hitspark\sounds\sounds.dat

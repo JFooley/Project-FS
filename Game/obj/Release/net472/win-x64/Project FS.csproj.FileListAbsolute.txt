@@ -2365,3 +2365,5 @@ D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\stages\
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\stages\The Savana\sprites\visuals.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\stages\Training Stage\sound\sounds.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\stages\Training Stage\sprites\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\languages\EN.json
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\languages\PT.json

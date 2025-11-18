@@ -22,7 +22,6 @@ public static class Config {
     public const int default_max_rounds = 2;
     public static int input_window_time = 4;
     public const int default_input_window_time = 4;
-
     public static int parry_advantage = 2;
     public static int parry_window = 10;
 

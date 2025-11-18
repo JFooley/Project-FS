@@ -1,76 +1,55 @@
+using Newtonsoft.Json;
+
 namespace Language_space {
     public static class Language {
-        // Language indices
-        public static readonly string[] supported = { "English", "Portuguese" };
-        public static int LANGUAGE_COUNT = supported.Length;
-        public const int LANGUAGE_ENGLISH = 0;
-        public const int LANGUAGE_PORTUGUESE = 1;
+        public static string[] Supported { get; private set; } = Array.Empty<string>();
+        public static string[] LanguageCodes { get; private set; } = Array.Empty<string>();
+        
+        private static List<Dictionary<string, string>> _languageData = new();
 
-        // texts
-        private static Dictionary<string, List<string>> texts = new Dictionary<string, List<string>>() { // English, Portuguese
-            {"max aura", new List<string> {"Max Aura", "Aura Maxima"}},
-            {"burning dojo", new List<string> {"Burning Dojo", "Dojo em Chamas"}},
-            {"the midnight duel", new List<string> {"The Midnight Duel", "O Duelo da Meia-Noite"}},
-            {"japan fields", new List<string> {"Japan Fields", "Campos do Japao"}},
-            {"training stage", new List<string> {"Training Stage", "Estagio de Treinamento"}},
-            {"night alley", new List<string> {"Night Alley", "Beco Noturno"}},
-            {"nyc subway", new List<string> {"NYC Subway", "Metro de NYC"}},
-            {"rindo-kan dojo", new List<string> {"Rindo-Kan Dojo", "Dojo Rindo-Kan"}},
-            {"the savana", new List<string> {"The Savana", "A Savana"}},
-            {"victory", new List<string> {"Victory", "Vitoria"}},
-            {"defeat", new List<string> {"Defeat", "Derrota"}},
-            {"error", new List<string> {"Error", "Erro"}},
-            {"press start", new List<string> {"Press start", "Pressione start"}},
-            {"return", new List<string> {"Return", "Voltar"}},
-            {"controls", new List<string> {"Controls", "Controles"}},
-            {"settings", new List<string> {"Settings", "Configuracoes"}},
-            {"random", new List<string> {"Random", "Aleatorio"}},
-            {"player", new List<string> {"Player", "Jogador"}},
-            {"wins", new List<string> {"Wins", "Vence"}},
-            {"drawn", new List<string> {"Drawn", "Empate"}},
-            {"rematch", new List<string> {"Rematch", "Revanche" }},
-            {"change stage", new List<string> {"Change stage", "Mudar estagio"}},
-            {"ready", new List<string> {"Ready", "Pronto"}},
-            {"exit game", new List<string> {"Exit game", "Sair do jogo"}},
-            {"pause", new List<string> {"Pause", "Pausa"}},
-            {"training", new List<string> {"Training", "Treinamento"}},
-            {"reset characters", new List<string> {"Reset Characters", "Resetar Personagens"}},
-            {"show hitboxes", new List<string> {"Show hitboxes", "Mostrar hitboxes"}},
-            {"block", new List<string> {"Block", "Bloquear"}},
-            {"never", new List<string> {"Never", "Nunca"}},
-            {"after hit", new List<string> {"After hit", "Apos acerto"}},
-            {"always", new List<string> {"Always", "Sempre"}},
-            {"super", new List<string> {"Super", "Super"}},
-            {"refil", new List<string> {"Refil", "Recarregar"}},
-            {"keep", new List<string> {"Keep", "Manter"}},
-            {"end match", new List<string> {"End match", "Finalizar partida"}},
-            {"life", new List<string> {"Life", "Vida"}},
-            {"frames", new List<string> {"frames", "frames"}},
-            {"default", new List<string> {"Default", "Padrao"}},
-            {"hitstop", new List<string> {"Hitstop", "Hitstop"}},
-            {"input window", new List<string> {"Input window", "Janela de input"}},
-            {"window mode", new List<string> {"Window mode", "Modo de janela"}},
-            {"fullscreen", new List<string> {"Fullscreen", "Tela cheia"}},
-            {"borderless", new List<string> {"Borderless", "Sem bordas"}},
-            {"windowed", new List<string> {"Windowed", "Janela"}},
-            {"language", new List<string> {"Language", "Idioma"}},
-            {"english", new List<string> {"English", "Ingles"}},
-            {"portuguese", new List<string> {"Portuguese", "Portugues"}},
-            {"main volume", new List<string> {"Main volume", "Volume principal"}},
-            {"music volume", new List<string> {"Music volume", "Volume da musica"}},
-            {"sfx volume", new List<string> {"SFX volume", "Volume dos efeitos"}},
-            {"match", new List<string> {"Match", "Partida"}},
-            {"round length", new List<string> {"Round length", "Duração da rodada"}},
-            {"on", new List<string> {"On", "Ligado"}},
-            {"off", new List<string> {"Off", "Desligado"}},
-            {"save and exit", new List<string> {"Save and exit", "Salvar e sair"}},
-            {"parry", new List<string> {"Parry", "Parry"}},
-        };
+        public static void Initialize() {
+            LoadAllLanguages();
+        }
 
-        // Method to get text by id
+        private static void LoadAllLanguages() {
+            var languagesDir = "Assets/languages";
+            if (!Directory.Exists(languagesDir)) {
+                Console.WriteLine($"Diretório de idiomas não encontrado: {languagesDir}");
+                return;
+            }
+
+            var languageFiles = Directory.GetFiles(languagesDir, "*.json");
+            var supportedList = new List<string>();
+            var codeList = new List<string>();
+            var languageDataList = new List<Dictionary<string, string>>();
+
+            foreach (var file in languageFiles) {
+                try {
+                    var jsonContent = File.ReadAllText(file);
+                    var languageData = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonContent);
+
+                    if (languageData == null || !languageData.ContainsKey("_language") || !languageData.ContainsKey("_code")) {
+                        Console.WriteLine($"Arquivo de idioma inválido: {file}");
+                        continue;
+                    }
+
+                    supportedList.Add(languageData["_language"]);
+                    codeList.Add(languageData["_code"]);
+                    languageDataList.Add(languageData);
+
+                } catch (Exception ex) {
+                    Console.WriteLine($"Erro ao carregar idioma {file}: {ex.Message}");
+                }
+            }
+
+            Supported = supportedList.ToArray();
+            LanguageCodes = codeList.ToArray();
+            _languageData = languageDataList;            
+        }
+
         public static string GetText(string text) {
             try {
-                return texts[text.ToLower()][Config.Language];
+                return _languageData[Config.Language][text.ToLower()];
             } catch (KeyNotFoundException) {
                 return text;
             }

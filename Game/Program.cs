@@ -109,6 +109,7 @@ public static class Program {
         window.SetView(view);
 
         // Inicializações
+        Language.Initialize();
         InputManager.Initialize(autoDetectDevice: true);
         camera = Camera.GetInstance(window);
         frametimer = new Stopwatch();
@@ -474,7 +475,7 @@ public static class Program {
                     UI.Instance.DrawText("< " + (Config.input_window_time == Config.default_input_window_time ? Language.GetText("Default") : Config.input_window_time + " " + Language.GetText("frames")) + " >", 0, -04, spacing: Config.spacing_small, textureName: pointer == 7 ? "default small red" : "default small");
                     //8
                     UI.Instance.DrawText(Language.GetText("Language"), -170, 6, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 8 ? "default small hover" : "default small");
-                    UI.Instance.DrawText("< " + Language.GetText(Language.supported[Config.Language]) + " >", 0, 6, spacing: Config.spacing_small, textureName: pointer == 8 ? "default small red" : "default small");
+                    UI.Instance.DrawText("< " + Language.GetText(Language.Supported[Config.Language]) + " >", 0, 6, spacing: Config.spacing_small, textureName: pointer == 8 ? "default small red" : "default small");
 
 
                     // Change option 
@@ -535,7 +536,7 @@ public static class Program {
                     else if (pointer == 8)
                     {
                         if (InputManager.Instance.Key_down("Left") && Config.Language > 0) Config.Language -= 1;
-                        else if (InputManager.Instance.Key_down("Right") && Config.Language < Language.LANGUAGE_COUNT - 1) Config.Language += 1;
+                        else if (InputManager.Instance.Key_down("Right") && Config.Language < Language.Supported.Length - 1) Config.Language += 1;
                     }
 
                     // Return option
