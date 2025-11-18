@@ -715,6 +715,9 @@ public class Ken : Character {
             new FrameData(15283, 0, 0, new List<GenericBox> { new GenericBox(2, 103, 91, 144, 163), new GenericBox(1, 118, 80, 135, 94), new GenericBox(1, 103, 92, 148, 153) }, hasHit: false),
             new FrameData(15284, 0, 0, new List<GenericBox> { new GenericBox(2, 105, 90, 149, 151), new GenericBox(1, 114, 81, 132, 95), new GenericBox(1, 104, 89, 150, 151) }),
             new FrameData(15285, 0, 0, new List<GenericBox> { new GenericBox(1, 96, 91, 139, 140), new GenericBox(1, 106, 77, 127, 94), new GenericBox(1, 140, 99, 181, 128), new GenericBox(2, 95, 90, 141, 142), new GenericBox(0, 180, 86, 209, 113), new GenericBox(0, 164, 99, 183, 118) }),
+        };
+
+        var SA1_exit = new List<FrameData> {
             new FrameData(15286, 0, 0, new List<GenericBox> { new GenericBox(0, 188, 93, 206, 110), new GenericBox(0, 164, 98, 188, 118), new GenericBox(1, 110, 81, 129, 95), new GenericBox(1, 97, 92, 143, 139), new GenericBox(1, 143, 102, 174, 126), new GenericBox(2, 97, 91, 143, 140) }),
             new FrameData(15287, 0, 0, new List<GenericBox> { new GenericBox(2, 99, 91, 144, 142), new GenericBox(1, 108, 81, 126, 94), new GenericBox(1, 99, 90, 145, 142), new GenericBox(1, 145, 101, 169, 132) }),
             new FrameData(15288, 0, 0, new List<GenericBox> { new GenericBox(1, 102, 92, 147, 146), new GenericBox(1, 114, 80, 133, 96), new GenericBox(2, 102, 91, 147, 146) }),
@@ -773,10 +776,11 @@ public class Ken : Character {
             { "CrouchingIn", new State(crouchingInFrames, "Crouching", 60, not_busy: true, low: true)},
             { "Crouching", new State(crouchingFrames, "Crouching", 4, not_busy: true, low: true)},
             // Super
-            { "SA1", new State(SA1, "MediumK", 60, 4, trace: true)},
-            { "SA1_tail", new State(SA1_tail, "JumpFalling", 30, 4, trace: true, air: true)},
-            { "Shungoku", new State(Shungoku, "Idle", 10, 5, hitstop: "None", trace: true, can_be_parried: false)},
-            { "Shungoku_End", new State(idleFrames, "Idle", 10, 5, hitstop: "None")},
+            { "SA1", new State(SA1, "MediumK", 60, 4, trace: true, drama_wait: true)},
+            { "SA1_tail", new State(SA1_tail, "SA1_exit", 30, 4, trace: true, air: true, drama_wait: true)},
+            { "SA1_exit", new State(SA1_exit, "JumpFalling", 20, 4)},
+            { "Shungoku", new State(Shungoku, "Idle", 10, 5, hitstop: "None", trace: true, can_be_parried: false, drama_wait: true)},
+            { "Shungoku_End", new State(idleFrames, "Idle", 10, 5, hitstop: "None", drama_wait: true)},
             // Specials
             { "LightShory", new State(lightShoryFrames, "ShoryFalling", 30, 3, hitstop: "Heavy", air: true)},
             { "HeavyShory", new State(heavyShoryFrames, "ShoryFalling", 30, 3, hitstop: "Heavy", air: true)},

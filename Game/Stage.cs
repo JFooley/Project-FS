@@ -388,16 +388,22 @@ namespace Stage_Space {
                     this.rounds_A += 1;
                     doEnd = true;
                 } 
+
+                return doEnd;
             }
 
-            if (character_A.life_points.X <= 0 && character_A.current_state == "OnGround") {
+            if (character_A.life_points.X <= 0 && !character_B.state.drama_wait) {
                 this.rounds_B += 1;
                 doEnd = true;
+                // Spawn efeito de hit do KO
             }
-            if (character_B.life_points.X <= 0 && character_B.current_state == "OnGround") {
+            if (character_B.life_points.X <= 0 && !character_A.state.drama_wait) {
                 this.rounds_A += 1;
                 doEnd = true;
+                // Spawn efeito de hit do KO
             }
+            
+            if (doEnd) this.StopFor(Config.last_hit_stop_time);
 
             return doEnd;
         }
@@ -473,6 +479,9 @@ namespace Stage_Space {
         }
         public void StopFor(int frame_amount) {
             foreach (var entity in this.OnSceneCharacters) entity.hitstop_counter = frame_amount;
+        }
+        public bool MustWait() {
+            return this.character_A.state.drama_wait || this.character_B.state.drama_wait;
         }
 
         // Round Time

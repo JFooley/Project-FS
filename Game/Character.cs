@@ -283,12 +283,12 @@ public abstract class Character : Object_Space.Object {
                 this.ChangeState("Sweeped", reset: true);
                 return;
 
-            } else if (airbone || this.life_points.X <= 0 || this.current_state == "Airboned") {
+            } else if (airbone || (this.life_points.X <= 0 && !Program.stage.MustWait())|| this.current_state == "Airboned") {
                 this.facing = -enemy.facing;
                 this.ChangeState("Airboned", reset: true);
                 this.stun_frames = 0;
 
-                if (this.life_points.X <= 0) this.SetVelocity(X: -Config.heavy_pushback, Y: 10);
+                if (this.life_points.X <= 0) this.SetVelocity(X: -Config.heavy_pushback, Y: 50);
                 return;
 
             } else if (this.crounching) {

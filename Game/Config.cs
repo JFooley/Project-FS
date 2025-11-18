@@ -64,6 +64,7 @@ public static class Config {
     public const float gravity = 2450f / (Framerate*Framerate);
     public const int corner_limit = 125;
     public const int camera_height = 140;
+    public const int last_hit_stop_time = 30;
 
     // Text
     public const int spacing_small = -26; 
