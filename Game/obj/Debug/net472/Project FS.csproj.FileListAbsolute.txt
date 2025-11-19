@@ -2335,6 +2335,8 @@ D:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.csproj.Up2Dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.exe
 D:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.pdb
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\config.json
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\languages\EN.json
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\languages\PT.json
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\sounds\sounds.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\sprites\visuals.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Psylock\sounds\sounds.dat
@@ -2365,6 +2367,3 @@ D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Savana
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Savana\sprites\visuals.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Training Stage\sound\sounds.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Training Stage\sprites\visuals.dat
-D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\languages\EN.json
-D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\languages\PT.json
-D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\languages\ES.json

@@ -414,6 +414,9 @@ public static class Program {
                     if (winner == Program.Drawn) winner_text = Language.GetText("Drawn");
                     else winner_text = Language.GetText("Player") + " " + winner + " " + Language.GetText("Wins");
 
+                    UI.Instance.DrawText(Program.player1_wins.ToString(), -Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "left");
+                    UI.Instance.DrawText(Program.player2_wins.ToString(), Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "right");
+                    
                     UI.Instance.DrawText(winner_text, 0, -100, spacing: Config.spacing_medium, size: 1f, textureName: "default medium");
                     UI.Instance.DrawText(Language.GetText("Rematch"), 0, 0, spacing: Config.spacing_medium, size: 1f, textureName: pointer == 0 ? "default medium hover" : "default medium");
                     UI.Instance.DrawText(Language.GetText("Change stage"), 0, 20, spacing: Config.spacing_medium, size: 1f, textureName: pointer == 1 ? "default medium hover" : "default medium");
