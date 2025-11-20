@@ -45,6 +45,7 @@ namespace Stage_Space {
         public Vector2f last_pos_B => character_B.body.LastPosition;
         public int rounds_A;
         public int rounds_B;
+        public int round => rounds_A + rounds_B + 1;
         public int elapsed_time => this.matchTimer.Elapsed.Seconds;
         public int round_time => elapse_time ? Config.round_length - (int) matchTimer.Elapsed.TotalSeconds : Config.round_length;
         public double raw_round_time => elapse_time ? Config.round_length - this.matchTimer.Elapsed.TotalMilliseconds/1000 : Config.round_length;
@@ -565,7 +566,7 @@ namespace Stage_Space {
         // Music
         public void SetMusicVolume(float amount = -1) {
             if (amount == -1) amount = Config.Music_Volume;
-            this.music.Volume = amount * (Config.Main_Volume / 100);
+            this.music.Volume = amount * (Config.Music_Volume / 100);
         }
         public void StopMusic() {
             this.music.Stop();

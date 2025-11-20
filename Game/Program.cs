@@ -98,7 +98,7 @@ public static class Program {
         UI.Instance.Load();
 
         // Crie uma janela
-        if (Config.Fullscreen == true) window = new RenderWindow(new VideoMode(VideoMode.DesktopMode.Width, VideoMode.DesktopMode.Height), Config.GameTitle, Styles.Fullscreen);
+        if (Config.Fullscreen == true) window = new RenderWindow(VideoMode.DesktopMode, Config.GameTitle, Styles.Fullscreen);
         else window = new RenderWindow(new VideoMode(Config.RenderWidth * 3, Config.RenderHeight * 3), Config.GameTitle, Styles.Default);
         window.Closed += (sender, e) => window.Close();
         window.SetFramerateLimit(Config.Framerate);
@@ -324,32 +324,30 @@ public static class Program {
                 case Battle:
                     stage.Update();
 
-                    switch (sub_state)
-                    {
+                    switch (sub_state) {
                         case Intro:
                             stage.SetMusicVolume();
                             stage.StopRoundTime();
                             stage.ResetTimer();
-                            if (stage.character_A.current_state == "Idle" && stage.character_B.current_state == "Idle")
-                            { // Espera até a animação de intro finalizar
+                            if (stage.character_A.current_state == "Idle" && stage.character_B.current_state == "Idle") 
                                 sub_state = RoundStart;
-                            }
                             break;
 
                         case RoundStart: // Inicia a round
-                            if (stage.CheckTimer(2))
+                            if (stage.CheckTimer(3))
                             {
                                 stage.ResetRoundTime();
                                 stage.StartRoundTime();
                                 stage.ReleasePlayers();
                                 sub_state = Battling;
                             }
-                            else if (stage.CheckTimer(1))
+                            else if (stage.CheckTimer(2))
                             {
                                 fight_logo.Position = new Vector2f(Program.camera.X - 89, Program.camera.Y - 54);
                                 window.Draw(fight_logo);
                             }
-                            else UI.Instance.DrawText(Language.GetText("Ready")+"?", 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
+                            else if (stage.CheckTimer(1)) UI.Instance.DrawText(Language.GetText("Ready")+"?", 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
+                            else UI.Instance.DrawText(Language.GetText("Round") + " " + stage.round, 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
 
                             break;
 
@@ -394,7 +392,6 @@ public static class Program {
 
                         case MatchEnd: // Fim da partida
                             camera.Reset();
-                            stage.StopMusic();
                             stage.ResetMatch();
                             stage.ResetPlayers(force: true, total_reset: true);
 
@@ -402,13 +399,13 @@ public static class Program {
                             ChangeState(PostBattle);
                             break;
 
-                    }
-
-                    break;
+                    } break;
 
                 case PostBattle:
                     window.Draw(stage.thumb);
                     window.Draw(fade90);
+
+                    stage.music.Volume = Math.Max(0, stage.music.Volume - 0.5f);
 
                     string winner_text;
                     if (winner == Program.Drawn) winner_text = Language.GetText("Drawn");
@@ -439,6 +436,7 @@ public static class Program {
                     }
                     else if (pointer == 1 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
                     { // MENU 
+                        stage.StopMusic();
                         stage.UnloadStage();
                         ChangeState(SelectStage);
                     }
@@ -507,7 +505,7 @@ public static class Program {
                     {
                         Config.Fullscreen = !Config.Fullscreen;
                         window.Close();
-                        if (Config.Fullscreen == true) window = new RenderWindow(new VideoMode(VideoMode.DesktopMode.Width, VideoMode.DesktopMode.Height), Config.GameTitle, Styles.None);
+                        if (Config.Fullscreen == true) window = new RenderWindow(VideoMode.DesktopMode, Config.GameTitle, Styles.Fullscreen);
                         else window = new RenderWindow(new VideoMode(Config.RenderWidth * 3, Config.RenderHeight * 3), Config.GameTitle, Styles.Default);
                         window.Closed += (sender, e) => window.Close();
                         window.SetFramerateLimit(Config.Framerate);

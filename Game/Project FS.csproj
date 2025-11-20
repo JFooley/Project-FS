@@ -3,7 +3,7 @@
   <PropertyGroup>
     <ApplicationIcon>Assets/icon.ico</ApplicationIcon>
     <LangVersion>10.0</LangVersion> 
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net472</TargetFramework>
     <PlatformTarget>x64</PlatformTarget>
     <ImplicitUsings>enable</ImplicitUsings>

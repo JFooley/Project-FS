@@ -1,5 +1,5 @@
 {
-  "Fullscreen": true,
+  "Fullscreen": false,
   "Vsync": true,
   "Crt_Filter": true,
   "input_window_time": 4,
@@ -11,6 +11,6 @@
   "_effect_volume": 100.0,
   "round_length": 90,
   "hit_stop_time": 12,
-  "max_rounds": 3,
-  "Language": 0
+  "max_rounds": 2,
+  "Language": 1
 }
