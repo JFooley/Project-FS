@@ -85,7 +85,8 @@ public abstract class Character : Object_Space.Object {
     public bool on_air => this.body.Position.Y < this.floor_line;
     public bool crounching => this.state.low;
 
-    public bool can_parry => (not_acting_all && parring) || InputManager.Instance.Key_press("Right", input_window: 10, player: this.player_index, facing: this.facing) && not_acting_all && !this.isBlocking();
+    // public bool can_parry => (not_acting_all && parring) || InputManager.Instance.Key_press("Right", input_window: 5, player: this.player_index, facing: this.facing) && not_acting_all;
+    public bool can_parry => (not_acting_all && parring) || InputManager.Instance.Key_press("Left", input_window: 5, player: this.player_index, facing: this.facing) && not_acting_all;
     public bool can_dash => not_acting && !this.state.is_parry;
     public bool has_hit = false; 
 
