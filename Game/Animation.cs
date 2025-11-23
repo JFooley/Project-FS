@@ -8,77 +8,78 @@ namespace Animation_Space {
         public List<string> SimpleFrames { get; private set; }
 
         // logic
-        public int current_frame_index;
+        public int anim_frame_index;
+        public int logic_frame_index;
         public bool on_last_frame = false;
         public bool ended = false;
         public bool playing_sound = false;
 
         // infos
-        public int anim_size;
+        public int lenght;
         public bool loop;
         public int framerate;
-        public int screen_framerate => Config.Framerate;
-        public int frame_counter;
 
         public Animation(List<FrameData> frames, int framerate = 30, bool loop = true) {
             this.Frames = frames;
-            this.current_frame_index = 0;
-            this.anim_size = Frames.Count() - 1;
+            this.anim_frame_index = 0;
+            this.lenght = (Frames.Count() - 1) * (Config.Framerate / framerate);
             this.loop = loop;
             this.framerate = framerate;
-            this.frame_counter = 0;
+            this.logic_frame_index = 0;
         }
 
         public Animation(List<string> SimpleFrames, int framerate = 30) {
             this.SimpleFrames = SimpleFrames;
-            this.current_frame_index = 0;
-            this.anim_size = SimpleFrames.Count() - 1;
+            this.anim_frame_index = 0;
+            this.lenght = (SimpleFrames.Count() - 1) * (Config.Framerate / framerate);
             this.loop = true;
             this.framerate = framerate;
-            this.frame_counter = 0;
+            this.logic_frame_index = 0;
         }
 
         public FrameData GetCurrentFrame() {
-            return this.Frames[current_frame_index];
+            if (anim_frame_index > Frames.Count() - 1) return this.Frames.Last();
+            else return this.Frames[anim_frame_index];
         }
 
         public string GetCurrentSimpleFrame() {
-            return this.SimpleFrames[current_frame_index];
+            if (anim_frame_index > SimpleFrames.Count() - 1) return this.SimpleFrames.Last();
+            else return this.SimpleFrames[anim_frame_index];
         }
 
         public bool AdvanceFrame() {
             // Reset when needed
             if (this.ended && this.loop) this.Reset();
 
-            frame_counter++;
+            logic_frame_index++;
 
-            // Check if it's time to advance a frame
-            if (frame_counter >= screen_framerate / framerate) {
+
+            // Check if it's on last frame
+            if (logic_frame_index == lenght) this.on_last_frame = true;
+            else this.on_last_frame = false;
+
+            // Check if animation has ended
+            if (logic_frame_index > lenght) {
+                this.ended = true;
+                logic_frame_index -= 1;
+                return false; 
+
+            } else this.ended = false;
+
+            // Passa um frame de animação
+            if (logic_frame_index % (Config.Framerate / framerate) == 0) {
+                anim_frame_index++; 
                 playing_sound = false;
-                frame_counter = 0; 
-                current_frame_index++; 
-
-                // Check if it's on last frame
-                if (current_frame_index == anim_size) this.on_last_frame = true;
-                else this.on_last_frame = false;
                 
-                // Check if animation has ended
-                if (current_frame_index > anim_size) {
-                    this.ended = true;
-                    this.current_frame_index -= 1;
-                    this.frame_counter = 0;
-
-                } else this.ended = false;
-                
-                return true; // frame change
+                return true; 
             }
 
-            return false; // frame don't change
+            return false; 
         }
 
         public void Reset() {
-            current_frame_index = 0;
-            frame_counter = 0;
+            anim_frame_index = 0;
+            logic_frame_index = 0;
             on_last_frame = false;
             playing_sound = false;
             ended = false;
@@ -89,8 +90,7 @@ namespace Animation_Space {
         public const int HITBOX = 0;
         public const int HURTBOX = 1;
         public const int PUSHBOX = 2;
-        public const int PARRYBOX = 3;
-        public const int GRABBOX = 4;
+        public const int GRABBOX = 3;
 
         public Vector2f pA;
         public Vector2f pB;
@@ -98,7 +98,7 @@ namespace Animation_Space {
         public float width;
         public float height;
 
-        public int type; // 0 Hitbox, 1 Hurtbox, 2 Pushbox, 3 ParryBox, 4 Grabbox, <0 Animation Anchor
+        public int type; // 0 Hitbox, 1 Hurtbox, 2 Pushbox, 3 Grabbox
         public int quadsize = 250;
 
         public GenericBox(int type, int x1, int y1, int x2, int y2) {   

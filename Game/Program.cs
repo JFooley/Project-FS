@@ -117,7 +117,6 @@ public static class Program {
         // Carregamento dos personagens
         characters = new List<Character> {
             new Ken(),
-            new Psylock(),
         };
 
         // Carregamento dos stages
@@ -180,7 +179,7 @@ public static class Program {
                 case MainMenu:
                     window.Draw(main_bg);
                     UI.Instance.DrawText("by JFooley", 0, 76, spacing: Config.spacing_small - 1, textureName: "default small");
-                    if (UI.Instance.blink2Hz || InputManager.Instance.Key_hold("Start")) UI.Instance.DrawText(Language.GetText("press start"), 0, 50, spacing: Config.spacing_medium, size: 1f, textureName: InputManager.Instance.Key_hold("Start") ? "default medium click" : "default medium white");
+                    if (UI.Instance.blink2Hz || InputManager.Instance.Key_hold("Start")) UI.Instance.DrawText(Language.GetText("press start"), 0, 50, spacing: Config.spacing_medium, textureName: InputManager.Instance.Key_hold("Start") ? "default medium click" : "default medium white");
 
                     if (InputManager.Instance.Key_up("Start"))
                     {
@@ -414,10 +413,10 @@ public static class Program {
                     UI.Instance.DrawText(Program.player1_wins.ToString(), -Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "left");
                     UI.Instance.DrawText(Program.player2_wins.ToString(), Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "right");
                     
-                    UI.Instance.DrawText(winner_text, 0, -100, spacing: Config.spacing_medium, size: 1f, textureName: "default medium");
-                    UI.Instance.DrawText(Language.GetText("Rematch"), 0, 0, spacing: Config.spacing_medium, size: 1f, textureName: pointer == 0 ? "default medium hover" : "default medium");
-                    UI.Instance.DrawText(Language.GetText("Change stage"), 0, 20, spacing: Config.spacing_medium, size: 1f, textureName: pointer == 1 ? "default medium hover" : "default medium");
-                    UI.Instance.DrawText(Language.GetText("Exit game"), 0, 40, spacing: Config.spacing_medium, size: 1f, textureName: pointer == 2 ? "default medium red" : "default medium");
+                    UI.Instance.DrawText(winner_text, 0, -100, spacing: Config.spacing_medium, textureName: "default medium");
+                    UI.Instance.DrawText(Language.GetText("Rematch"), 0, 0, spacing: Config.spacing_medium, textureName: pointer == 0 ? "default medium hover" : "default medium");
+                    UI.Instance.DrawText(Language.GetText("Change stage"), 0, 20, spacing: Config.spacing_medium, textureName: pointer == 1 ? "default medium hover" : "default medium");
+                    UI.Instance.DrawText(Language.GetText("Exit game"), 0, 40, spacing: Config.spacing_medium, textureName: pointer == 2 ? "default medium red" : "default medium");
 
                     // Change option
                     if (InputManager.Instance.Key_down("Up") && pointer > 0)

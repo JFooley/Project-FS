@@ -60,9 +60,9 @@ public class Fireball : Character {
 
         // States
         var animations = new Dictionary<string, State> {
-            {"Ken1", new State(KenFireballFrames, "Ken1", 20, 7)},
-            {"Ken2", new State(KenFireballFrames, "Ken2", 20, 7)},
-            {"Ken3", new State(KenFireballFrames, "Ken3", 30, 7, glow: true)},
+            {"Ken1", new State(KenFireballFrames, "Ken1", 20, 7, can_harm: true)},
+            {"Ken2", new State(KenFireballFrames, "Ken2", 20, 7, can_harm: true)},
+            {"Ken3", new State(KenFireballFrames, "Ken3", 30, 7, glow: true, can_harm: true)},
             {"KenExit", new State(KenFireballFinal, "Remove", 30, 7)},
         };
 
@@ -115,36 +115,25 @@ public class Fireball : Character {
         }
     }
 
-    public override int ImposeBehavior(Character target, bool parried = false) {
-        int hit = -1;
-
-        if (this.life_points.X <= 0) return hit;
-
-        if (parried && this.state.can_be_parried) {
-            this.life_points.X -= 1;
-            this.has_hit = true;
-            return Character.PARRY;
-        }
+    public override int ImposeBehavior(Character target) {
+        int hit = Character.NOTHING;
 
         if (target.name == "Fireball") {
             target.life_points.X -= 1;
-            this.life_points.X -= 1;
-            this.has_hit = true;
-            return hit;
+            return Character.HIT;
         };
 
         switch (this.current_state) {
             case "Ken1":
-                this.life_points.X -= 1;
                 this.SetVelocity(raw_set: true);
 
                 if (target.isBlocking()) {
-                    hit = 0;
+                    hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 0);
                     target.BlockStun(this, 20, force: true);
 
                 } else {
-                    hit = 1;
+                    hit = Character.HIT;
                     Character.Damage(target: target, self: this, 63, 48);
                     target.Stun(this, 30, force: true);
                 }
@@ -154,16 +143,15 @@ public class Fireball : Character {
                 break;
 
             case "Ken2":
-                this.life_points.X -= 1;
                 this.SetVelocity(raw_set: true);
 
                 if (target.isBlocking()) {
-                    hit = 0;
+                    hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 0);
                     target.BlockStun(this, 20, force: true);
 
                 } else {
-                    hit = 1;
+                    hit = Character.HIT;
                     Character.Damage(target: target, self: this, 125, 78);
                     target.Stun(this, 30, force: true);
                 }
@@ -173,17 +161,16 @@ public class Fireball : Character {
                 break;
             
             case "Ken3":
-                this.life_points.X -= 1;
                 this.SetVelocity(raw_set: true);
 
                 if (target.isBlocking()) {
-                    hit = 0;
+                    hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 0);
                     target.BlockStun(this, 20, force: true);
 
                 } else {
-                    hit = 1;
-                    Character.Damage(target: target, self: this, 125, 78);
+                    hit = Character.HIT;
+                    Character.Damage(target: target, self: this, 80, 60);
                     target.Stun(this, 30, force: true);
                 }
 
@@ -196,6 +183,11 @@ public class Fireball : Character {
                 break;
         }
         return hit;
+    }
+
+    public override int DefineColisionType(Character target) {
+        this.life_points.X -= 1;
+        return base.DefineColisionType(target);
     }
 
 

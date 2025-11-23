@@ -16,6 +16,8 @@ public class Ken : Character {
     private int tatso_speed = 4;
     private Fireball current_fireball;
 
+    private Random rand = new Random();
+
     // Constructors
     public Ken(string initialState, int startX, int startY, Stage stage)
         : base("Ken", initialState, startX, startY, "Assets/characters/Ken", stage)
@@ -26,8 +28,7 @@ public class Ken : Character {
 
         this.dash_speed = 8;
         this.move_speed = 3;
-    }
-    public Ken() : base("Ken", "Assets/characters/Ken", Program.thumbs["ken_thumb"]) { }
+    } public Ken() : base("Ken", "Assets/characters/Ken", Program.thumbs["ken_thumb"]) { }
     
     public override void Load() {
         // Hurtboxes
@@ -739,19 +740,19 @@ public class Ken : Character {
         // States
         this.states = new Dictionary<string, State> {
             // Basic
-            { "Idle", new State(idleFrames, "Idle", 20, not_busy: true)},
-            { "OnBlock", new State(OnBlockFrames, "OnBlock", 20, change_on_end: false, loop: false, on_block: true)}, 
-            { "OnBlockLow", new State(OnBlockLowFrames, "OnBlockLow", 20, change_on_end: false, loop: false, low: true, on_block: true)},
-            { "OnHit", new State(OnHitFrames, "OnHit", 30, change_on_end: false, loop: false, on_hit: true)},
-            { "OnHitLow", new State(OnHitLowFrames, "OnHitLow", 30, change_on_end: false, loop: false, low: true, on_hit: true)},
-            { "Airboned", new State(AirbonedFrames, "Falling", 15, change_on_ground: true, change_on_end: false, loop: false, air: true, on_hit: true)},
-            { "Parry", new State(parryFrames, "Idle", 60, 6, loop: false, glow: true, not_busy: true, is_parry: true)},
-            { "AirParry", new State(airParryFrames, "JumpFalling", 60, 6, loop: false, glow: true, not_busy: true, air: true, is_parry: true)},
+            { "Idle", new State(idleFrames, "Idle", 15, not_busy: true)},
+            { "OnBlock", new State(OnBlockFrames, "Idle", 20, on_block: true)}, 
+            { "OnBlockLow", new State(OnBlockLowFrames, "Crouching", 20, low: true, on_block: true)},
+            { "OnHit", new State(OnHitFrames, "Idle", 30, on_hit: true)},
+            { "OnHitLow", new State(OnHitLowFrames, "Crouching", 30, low: true, on_hit: true)},
+            { "Airboned", new State(AirbonedFrames, "Falling", 15, change_on_ground: true, air: true, on_hit: true)},
+            { "Parry", new State(parryFrames, "Idle", 60, 6, glow: true, is_parry: true)},
+            { "AirParry", new State(airParryFrames, "JumpFalling", 60, 6, glow: true, air: true, is_parry: true)},
             // Normals
-            { "LightP", new State(LPFrames, "Idle", 30, 0)},
-            { "LowLightP", new State(lowLPFrames, "Crouching", 30, 0, low: true)},
+            { "LightP", new State(LPFrames, "Idle", 20, 0)},
+            { "LowLightP", new State(lowLPFrames, "Crouching", 20, 0, low: true)},
             { "AirLightP", new State(airLPFrames, "Idle", 20, 0, change_on_end: false, change_on_ground: true, loop: false, air: true)},
-            { "LightK", new State(LKFrames, "Idle", 30, 0)},
+            { "LightK", new State(LKFrames, "Idle", 20, 0)},
             { "LowLightK", new State(lowLKFrames, "Crouching", 20, 1, hitstop: "Medium", low: true)},
             { "AirLightK", new State(airLKFrames, "Idle", 20, 0, change_on_end: false, change_on_ground: true, loop: false, air: true)},
             { "MediumP", new State(MPFrames, "Idle", 20, 1, hitstop: "Medium")},
@@ -807,6 +808,9 @@ public class Ken : Character {
     public override void DoBehave() {
         if (this.behave == false) return;
 
+        // REMOVE THIS LINE FOR FINAL BUILD
+        if (InputManager.Instance.Key_down("Select", player: this.player_index)) this.BotEnabled = !this.BotEnabled;
+
         if ((this.current_state == "WalkingForward" || this.current_state == "WalkingBackward") & !InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) & !InputManager.Instance.Key_hold("Right", player: this.player_index, facing: this.facing)) {
             this.ChangeState("Idle");
         }
@@ -835,21 +839,21 @@ public class Ken : Character {
         }
 
         // Jumps
-        if (this.not_acting && this.current_frame_index > 0 && InputManager.Instance.Key_hold("Up", player: this.player_index, facing: this.facing) && !InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) && InputManager.Instance.Key_hold("Right", player: this.player_index, facing: this.facing)) {
+        if (this.not_acting && this.current_anim_frame_index > 0 && InputManager.Instance.Key_hold("Up", player: this.player_index, facing: this.facing) && !InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) && InputManager.Instance.Key_hold("Right", player: this.player_index, facing: this.facing)) {
             this.ChangeState("JumpForward");
-        } else if (this.current_state == "JumpForward" && this.current_frame_index == 1) {
+        } else if (this.current_state == "JumpForward" && this.current_anim_frame_index == 1) {
             this.SetVelocity(
                 X: this.move_speed + 1, 
                 Y: this.jump_hight);
         } 
-        else if (this.not_acting && this.current_frame_index > 0 && InputManager.Instance.Key_hold("Up", player: this.player_index, facing: this.facing) && InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) && !InputManager.Instance.Key_hold("Right", player: this.player_index, facing: this.facing)) {
+        else if (this.not_acting && this.current_anim_frame_index > 0 && InputManager.Instance.Key_hold("Up", player: this.player_index, facing: this.facing) && InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) && !InputManager.Instance.Key_hold("Right", player: this.player_index, facing: this.facing)) {
             this.ChangeState("JumpBackward");
-        } else if (this.current_state == "JumpBackward" && this.current_frame_index == 1) {
+        } else if (this.current_state == "JumpBackward" && this.current_anim_frame_index == 1) {
             this.SetVelocity(
                 X: -(this.move_speed + 1), 
                 Y: this.jump_hight);
         }
-        else if (this.not_acting && this.current_frame_index > 0 && InputManager.Instance.Key_hold("Up", player: this.player_index, facing: this.facing)) {
+        else if (this.not_acting && this.current_anim_frame_index > 0 && InputManager.Instance.Key_hold("Up", player: this.player_index, facing: this.facing)) {
             this.ChangeState("Jump");
             this.SetVelocity(
                 X: 0, 
@@ -862,14 +866,14 @@ public class Ken : Character {
             this.ChangeState("SA1");
             this.SA_flag = false;
 
-        } else if (this.current_state == "SA1" && this.current_frame_index == 3 && this.has_frame_change) {
+        } else if (this.current_state == "SA1" && this.current_anim_frame_index == 3 && this.has_frame_change) {
             this.stage.spawnParticle("SALighting", this.body.Position.X, this.body.Position.Y, X_offset: 50, Y_offset: -120, facing: this.facing);
             this.stage.StopFor(54);
             
         } else if (this.current_state == "SA1" && this.current_animation.on_last_frame && this.SA_flag) {
             this.ChangeState("SA1_tail");
 
-        } else if (this.current_state == "SA1_tail" && this.current_frame_index == 3 && this.has_frame_change ) {
+        } else if (this.current_state == "SA1_tail" && this.current_anim_frame_index == 3 && this.has_frame_change ) {
             this.AddVelocity(
                 X: 1, 
                 Y: 150);
@@ -880,7 +884,7 @@ public class Ken : Character {
             Character.UseSuperPoints(this, 100);
             this.stage.spawnParticle("SABlink", this.body.Position.X, this.body.Position.Y, Y_offset: -140, facing: this.facing);
             this.stage.StopFor(68);
-        } else if (this.current_state == "Shungoku" && this.current_animation.current_frame_index == 0) {
+        } else if (this.current_state == "Shungoku" && this.current_animation.anim_frame_index == 0) {
             this.SetVelocity(
                 X: 8f, 
                 Y: 0);
@@ -889,14 +893,14 @@ public class Ken : Character {
         // Shorys
         if (InputManager.Instance.Key_sequence_press("Right Down Right C", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || this.has_hit && (this.current_state == "MediumP" || this.current_state == "LightP" || this.current_state == "CloseMP" || this.current_state == "LowLightK" || this.current_state == "LowMediumP"))) {
             this.ChangeState("LightShory");
-        } else if (this.current_state == "LightShory" && this.current_frame_index == 4 && this.has_frame_change) {
+        } else if (this.current_state == "LightShory" && this.current_anim_frame_index == 4 && this.has_frame_change) {
             this.AddVelocity(
                 X: 1.6f, 
                 Y: 43);
         } 
         if (InputManager.Instance.Key_sequence_press("Right Down Right D", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || this.has_hit && this.current_state == "LowMediumP" )) {
             this.ChangeState("HeavyShory");
-        } else if (this.current_state == "HeavyShory" && this.current_frame_index == 7 && this.has_frame_change) {
+        } else if (this.current_state == "HeavyShory" && this.current_anim_frame_index == 7 && this.has_frame_change) {
             this.AddVelocity(
                 X: 2.4f, 
                 Y: 80);
@@ -904,7 +908,7 @@ public class Ken : Character {
         if (InputManager.Instance.Key_sequence_press("Right Down Right RB", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || this.has_hit && (this.current_state == "LowMediumP" || this.current_state == "LowLightK")) && Character.CheckSuperPoints(this, 50)) {
             Character.UseSuperPoints(this, 50);
             this.ChangeState("ShoryEX");
-        } else if (this.current_state == "ShoryEX" && this.current_frame_index == 7 && this.has_frame_change) {
+        } else if (this.current_state == "ShoryEX" && this.current_anim_frame_index == 7 && this.has_frame_change) {
             this.AddVelocity(
                 X: 2.4f, 
                 Y: 100);
@@ -914,18 +918,18 @@ public class Ken : Character {
         if (this.current_fireball != null && this.current_fireball.remove) this.current_fireball = null;
         if (this.current_fireball == null && InputManager.Instance.Key_sequence_press("Down Right C", 10, player: this.player_index, facing: this.facing) && ((this.not_acting || this.not_acting_low) || (this.has_hit && (this.current_state == "MediumP" || this.current_state == "LightP" || this.current_state == "LowLightK")))) {
             this.ChangeState("LightHaduken");
-        } else if (this.current_state == "LightHaduken" && this.current_frame_index == 3 && this.current_animation.frame_counter == 0) {
+        } else if (this.current_state == "LightHaduken" && this.current_anim_frame_index == 3 && this.current_fireball == null) {
             this.current_fireball = stage.spawnFireball("Ken1", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, X_offset: 25);
         } 
         if (this.current_fireball == null && InputManager.Instance.Key_sequence_press("Down Right D", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low)) {
             this.ChangeState("HeavyHaduken");
-        } else if (this.current_state == "HeavyHaduken" && this.current_frame_index == 4 && this.current_animation.frame_counter == 0) {
+        } else if (this.current_state == "HeavyHaduken" && this.current_anim_frame_index == 4 && this.current_fireball == null) {
             this.current_fireball = stage.spawnFireball("Ken2", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, X_offset: 25);
         }
         if (this.current_fireball == null && InputManager.Instance.Key_sequence_press("Down Right RB", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low) && Character.CheckSuperPoints(this, 50)) {
             Character.UseSuperPoints(this, 50);
             this.ChangeState("HadukenEX");
-        } else if (this.current_state == "HadukenEX" && this.current_frame_index == 4 && this.current_animation.frame_counter == 0) {
+        } else if (this.current_state == "HadukenEX" && this.current_anim_frame_index == 4 && this.current_fireball == null) {
             this.current_fireball = stage.spawnFireball("Ken3", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, life_points: 2, X_offset: 25);
             this.PlaySound("EX");
         }
@@ -954,10 +958,12 @@ public class Ken : Character {
         // Air tatso
         if ((InputManager.Instance.Key_sequence_press("Down Left B", 10, player: this.player_index, facing: this.facing) || InputManager.Instance.Key_sequence_press("Down Left A", 10, player: this.player_index, facing: this.facing)) && this.not_acting_air) {
             this.ChangeState("AirTatso");
+            this.PlaySound("tatso");
         } else if (InputManager.Instance.Key_sequence_press("Down Left RB", 10, player: this.player_index, facing: this.facing) && this.not_acting_air && Character.CheckSuperPoints(this, 50)) {
             Character.UseSuperPoints(this, 50);
             this.ChangeState("AirTatsoEX");
-            this.PlaySound("EX");            
+            this.PlaySound("EX");
+            this.PlaySound("tatso");            
         } 
 
         // Normals
@@ -988,12 +994,8 @@ public class Ken : Character {
         }
     }
     
-    public override int ImposeBehavior(Character target, bool parried = false) {
+    public override int ImposeBehavior(Character target) {
         int hit = -1;
-
-        if (parried && this.state.can_be_parried) {
-            return Character.PARRY;
-        } 
 
         switch (this.current_state) {
             case "LightP":
@@ -1131,9 +1133,10 @@ public class Ken : Character {
                 if (target.isBlockingLow()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -14);
+
                 } else {
                     hit = Character.HIT;
-                    Character.Damage(target: target, self: this, 130, 235);
+                    Character.Damage(target: target, self: this, 110, 200);
                     target.Stun(target, 0, sweep: true);
                 }
                 Character.GetSuperPoints(target, this, hit, self_amount: 16);
@@ -1188,7 +1191,7 @@ public class Ken : Character {
 
                 } else {
                     hit = Character.HIT;
-                    Character.Damage(target: target, self: this, 107, 110);
+                    Character.Damage(target: target, self: this, 80, 100);
                     target.Stun(this, 0);
                 }
                 Character.GetSuperPoints(target, this, hit);
@@ -1197,14 +1200,14 @@ public class Ken : Character {
             case "LightShory":
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
-                    target.BlockStun(this, -17);
+                    target.BlockStun(this, -10);
                     Character.Push(target: target, self: this, "Light", X_amount: 4.8f);
 
                 } else {
                     hit = Character.HIT;
                     target.Stun(this, 0, airbone: true);
                     Character.Push(target: target, self: this, "Light", X_amount: 4.8f, Y_amount: 110f, airbone: true);
-                    Character.Damage(target: target, self: this, 100, 160);
+                    Character.Damage(target: target, self: this, 80, 160);
                 }
 
                 Character.GetSuperPoints(target, this, hit);
@@ -1213,12 +1216,12 @@ public class Ken : Character {
             case "HeavyShory":
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
-                    target.BlockStun(this, -10);
+                    target.BlockStun(this, -17);
                     Character.Push(target: target, self: this, "Heavy");
 
                 } else {
                     hit = Character.HIT;
-                    if (this.current_frame_index >= 6) {
+                    if (this.current_anim_frame_index >= 6) {
                         target.Stun(this, 0, airbone: true);
                         Character.Push(target: target, self: this, "Heavy", Y_amount: 120f, airbone: true);
 
@@ -1238,7 +1241,7 @@ public class Ken : Character {
 
                 } else {
                     hit = Character.HIT;
-                    if (this.current_frame_index >= 6) {
+                    if (this.current_anim_frame_index >= 6) {
                         target.Stun(this, 0, airbone: true);
                         Character.Push(target: target, self: this, "Heavy", Y_amount: 120f, airbone: true);
 
@@ -1343,9 +1346,9 @@ public class Ken : Character {
                     hit = Character.HIT;
                     target.Stun(this, 5, airbone: true);
 
-                    if (this.current_frame_index < 6) {
+                    if (this.current_anim_frame_index < 6) {
                         Character.Push(target: target, self: this, "Light", X_amount: 1, Y_amount: 150, airbone: true);
-                    } else if (this.current_frame_index >= 13) {
+                    } else if (this.current_anim_frame_index >= 13) {
                         Character.Push(target: target, self: this, "Heavy", Y_amount: 80, airbone: true);
                     }
 
@@ -1375,5 +1378,276 @@ public class Ken : Character {
         }
 
         return hit;
+    }
+
+    // AI
+    public override void SelectMovement(FightState state) {
+        if (state.enemyDistance < 0.3f) {
+            var choise = this.rand.Next(0, 20);
+            if (choise == 0 && state.onCorner) { 
+                this.BOT.EnqueueMove("Up Right", 5);
+            } else if (choise <= 2) { 
+                this.BOT.EnqueueMove("Left", 10);
+            } else if (choise <= 5) {
+                this.BOT.EnqueueMove("Left", 20);
+                this.BOT.EnqueueMove("Right", 10);
+            } else if (choise == 10) {
+                this.BOT.EnqueueMove("Right *", 2);
+                this.BOT.EnqueueMove("*", 2);
+                this.BOT.EnqueueMove("Right *", 2);
+            } else
+                this.BOT.EnqueueMove("", 60);
+
+        } else if (state.enemyDistance < 0.7f) {
+            var choise = this.rand.Next(0, 20);
+            if (choise == 0) {
+                this.BOT.EnqueueMove("Up Right", 5);
+            } else if (choise <= 2) { 
+                this.BOT.EnqueueMove("Right", 20);
+            } else if (choise <= 4) { 
+                this.BOT.EnqueueMove("Right", 20);
+                this.BOT.EnqueueMove("Down", 10);
+            } else if (choise <= 6) { 
+                this.BOT.EnqueueMove("Left", 10);
+            } else if (choise <= 8) { 
+                this.BOT.EnqueueMove("Left", 10);
+                this.BOT.EnqueueMove("Down", 10);
+                this.BOT.EnqueueMove("Right", 20);   
+            } else if (choise <= 10) {
+                this.BOT.EnqueueMove("Left", 10);
+                this.BOT.EnqueueMove("Right", 30);
+            } else 
+                this.BOT.EnqueueMove("", 30);
+
+        } else {
+            var choise = this.rand.Next(0, 10);
+            if (choise == 1) { 
+                this.BOT.EnqueueMove("Down", 20);
+            } else if (choise < 6) {
+                this.BOT.EnqueueMove("Right", 20);
+            } else 
+                this.BOT.EnqueueMove("", 30);
+        } 
+
+    }
+    public override void SelectAction(FightState state) {
+        if (state.enemyChangedSide) this.BOT.actionQueue.Clear();
+        if (this.state.busy && !this.on_hit && !this.state.on_block && !this.state.on_parry) return;
+        if (state.enemyIsDead) return;
+
+        if (this.on_hit || this.state.on_block || (state.enemyIsAttacking && state.enemyDistance < 0.7f)) { // Block
+            if (state.enemyIsCrouching) this.BOT.EnqueueAction("Left Down *", this.rand.Next(20, 40));
+            else this.BOT.EnqueueAction("Left *", this.rand.Next(20, 40));
+
+            return;
+        }
+        
+        if (this.state.on_parry) { // Parry
+            if (this.rand.Next(0, 2) == 0) { // Punish
+                this.BOT.EnqueueAction("C", 2);
+                this.BOT.EnqueueAction("D", 2);
+
+                var choise = this.rand.Next(0, 4);
+                if (choise == 0) { // Path: BackMP
+                    this.BOT.EnqueueAction("Left", 3);
+                    this.BOT.EnqueueAction("Left D", 5);
+
+                } else if (choise == 1) { // Path: Light Shoryuken
+                    this.BOT.EnqueueAction("Right", 5);
+                    this.BOT.EnqueueAction("Down", 5);
+                    this.BOT.EnqueueAction("Right", 5);
+                    this.BOT.EnqueueAction("C", 1);
+
+                } else if (choise == 3 && Character.CheckSuperPoints(this, 100)) { // Path: Super Art 1
+                    this.BOT.EnqueueAction("Down", 3);
+                    this.BOT.EnqueueAction("", 3);
+                    this.BOT.EnqueueAction("Down", 3);
+                    this.BOT.EnqueueAction("RB", 3);
+                }
+            }
+            return;
+        } 
+        
+        if (state.enemyIsAirborne && !state.enemyIsOnHit) { // Anti air
+            var choise = this.rand.Next(0, 2);
+            if (choise == 0 && this.state.not_busy) { // Shoryuken
+                this.BOT.EnqueueAction("Right", 5);
+                this.BOT.EnqueueAction("Down", 5);
+                this.BOT.EnqueueAction("Right", 5);
+                this.BOT.EnqueueAction("C", 5);
+            } 
+
+        } else if (this.state.air) { // Air
+            var choise = this.rand.Next(0, 4);
+
+            if (choise == 0) {
+                this.BOT.EnqueueAction("A", 3);
+            } else if (choise == 1) {
+                this.BOT.EnqueueAction("B", 3);
+            } else if (choise == 2) {
+                this.BOT.EnqueueAction("D", 3);
+            } else {
+                this.BOT.EnqueueAction("Down", 5);
+                this.BOT.EnqueueAction("Left", 5);
+
+                if (Character.CheckSuperPoints(this, 50))
+                    this.BOT.EnqueueAction("RB", 1);
+                else
+                    this.BOT.EnqueueAction("A", 1);
+            }
+            
+        } else if (state.enemyDistance < 0.3f) { // Close range
+            var choise = this.rand.Next(0, 10);
+            
+            if (this.rand.Next(0, 3) == 0 && choise <= 8) {
+                this.BOT.EnqueueAction("Right", 3);
+                this.BOT.EnqueueAction("", 2);
+                this.BOT.EnqueueAction("Right", 3);
+            }
+
+            if (choise < 3) { // Target combo
+                this.BOT.EnqueueAction("C", 3);
+                this.BOT.EnqueueAction("D", 3);
+                this.BOT.EnqueueAction("", 3);
+
+                choise = this.rand.Next(0, 4);
+                if (choise == 0) { // Path: BackMP
+                    this.BOT.EnqueueAction("Left", 3);
+                    this.BOT.EnqueueAction("Left D", 5);
+
+                } else if (choise == 1) { // Path: Light Shoryuken
+                    this.BOT.EnqueueAction("Right", 5);
+                    this.BOT.EnqueueAction("Down", 5);
+                    this.BOT.EnqueueAction("Right", 5);
+                    this.BOT.EnqueueAction("C", 1);
+
+                } else if (Character.CheckSuperPoints(this, 100)) { // Path: Super Art 1
+                    this.BOT.EnqueueAction("Down", 3);
+                    this.BOT.EnqueueAction("", 3);
+                    this.BOT.EnqueueAction("Down", 3);
+                    this.BOT.EnqueueAction("RB", 3);
+                }
+
+            } else if (choise < 6) { // Low LK
+                this.BOT.EnqueueAction("Down", 3);
+                this.BOT.EnqueueAction("Down A", 3);
+                this.BOT.EnqueueAction("", 3);
+
+                choise = this.rand.Next(0, 10);
+                if (choise == 0) { // Path: Light Tatso
+                    this.BOT.EnqueueAction("Down", 3);
+                    this.BOT.EnqueueAction("Left", 3);
+                    this.BOT.EnqueueAction("A", 3);
+
+                } else if (choise == 1 && Character.CheckSuperPoints(this, 50)) { // Path: EX Tatso
+                    this.BOT.EnqueueAction("Down", 3);
+                    this.BOT.EnqueueAction("Left", 3);
+                    this.BOT.EnqueueAction("RB", 3);
+
+                } else if (choise == 3) { // Path: Light Shoryuken
+                    this.BOT.EnqueueAction("Right", 3);
+                    this.BOT.EnqueueAction("Down", 3);
+                    this.BOT.EnqueueAction("Right", 3);
+                    this.BOT.EnqueueAction("C", 3);
+
+                } else if (Character.CheckSuperPoints(this, 100)) { // Path: Super Art 1
+                    this.BOT.EnqueueAction("Down", 3);
+                    this.BOT.EnqueueAction("", 3);
+                    this.BOT.EnqueueAction("Down", 3);
+                    this.BOT.EnqueueAction("RB", 3);
+
+                }
+
+            } else if (choise == 6) { // Sweep
+                this.BOT.EnqueueAction("Down", 5);
+                this.BOT.EnqueueAction("Down B", 5);
+
+            } else if (choise == 7) { // Light Shory
+                this.BOT.EnqueueAction("Right", 5);
+                this.BOT.EnqueueAction("Down", 5);
+                this.BOT.EnqueueAction("Right", 5);
+                this.BOT.EnqueueAction("C", 1);
+
+            } else if (choise == 8) { // Tatso                
+                this.BOT.EnqueueAction("Down", 5);
+                this.BOT.EnqueueAction("Left", 5);
+
+                choise = this.rand.Next(0, 10);
+                if (choise == 0 && Character.CheckSuperPoints(this, 50)) this.BOT.EnqueueAction("RB", 1);
+                else if (choise < 4) this.BOT.EnqueueAction("B", 1);
+                else this.BOT.EnqueueAction("A", 1);
+
+            } else if (choise == 9) { // Normals
+                choise = this.rand.Next(0, 4);
+                if (choise == 0) this.BOT.EnqueueAction("A", 3);
+                else if (choise == 1) this.BOT.EnqueueAction("B", 3);
+                else if (choise == 1) this.BOT.EnqueueAction("C", 3);
+                else this.BOT.EnqueueAction("D", 3);
+            }
+            
+        } else if (state.enemyDistance < 0.45f) { // Mid range
+            var choise = this.rand.Next(0, 25);
+            if (choise < 3) { // Medium kick
+                this.BOT.EnqueueAction("B", 1);
+            } else if (choise < 5) { // Low LK
+                this.BOT.EnqueueAction("Right", 20);
+                this.BOT.EnqueueAction("Down A", 2);
+
+                if (this.rand.Next(0, 10) < 3) { // Follow up with Tatso
+                    choise = this.rand.Next(0, 10);
+                    if (choise == 0 && Character.CheckSuperPoints(this, 50)) {  // EX Tatso
+                        this.BOT.EnqueueAction("Down", 5);
+                        this.BOT.EnqueueAction("Left", 5);
+                        this.BOT.EnqueueAction("RB", 1);
+
+                    } else if (choise < 4) { // Heavy Tatso
+                        this.BOT.EnqueueAction("Down", 5);
+                        this.BOT.EnqueueAction("Left", 5);
+                        this.BOT.EnqueueAction("B", 1);
+
+                    } else { // Light Tatso
+                        this.BOT.EnqueueAction("Down", 5);
+                        this.BOT.EnqueueAction("Left", 5);
+                        this.BOT.EnqueueAction("A", 1);
+                    }
+                }
+            } else if (choise == 0) { // Tatso
+                choise = this.rand.Next(0, 10);
+                if (choise == 0 && Character.CheckSuperPoints(this, 50)) {  // EX Tatso
+                    this.BOT.EnqueueAction("Down", 5);
+                    this.BOT.EnqueueAction("Left", 5);
+                    this.BOT.EnqueueAction("RB", 1);
+
+                } else if (choise < 4) { // Heavy Tatso
+                    this.BOT.EnqueueAction("Down", 5);
+                    this.BOT.EnqueueAction("Left", 5);
+                    this.BOT.EnqueueAction("B", 1);
+
+                } else { // Light Tatso
+                    this.BOT.EnqueueAction("Down", 5);
+                    this.BOT.EnqueueAction("Left", 5);
+                    this.BOT.EnqueueAction("A", 1);
+                }
+            } 
+
+        } else { // Long range
+            if (this.rand.Next(0, 10) == 0) {  // EX Hadouken
+                this.BOT.EnqueueAction("", 30);
+                this.BOT.EnqueueAction("Down", 10);
+                this.BOT.EnqueueAction("Right", 5);
+
+                var choise = this.rand.Next(0, 3);
+                if (choise == 0 && Character.CheckSuperPoints(this, 50)) 
+                    this.BOT.EnqueueAction("RB", 5);
+                else if (choise == 1) 
+                    this.BOT.EnqueueAction("D", 5);
+                else 
+                    this.BOT.EnqueueAction("C", 5);
+
+                return;
+            }
+        }
+
+        this.BOT.EnqueueAction("", this.rand.Next(10, 30)); // Delay aleatório
     }
 }

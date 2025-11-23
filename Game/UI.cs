@@ -85,10 +85,10 @@ namespace UI_space {
         // Draw Callers
         public void ShowFramerate(string textureName) {
             this.elapsed = this.counter % (60/2) == 0 ? (int) (1 / Program.last_frame_time) : this.elapsed;
-            this.DrawText(this.elapsed.ToString() + " - " + Program.last_frame_time.ToString("F5"), 0, 82, spacing: Config.spacing_small, size: 1f, textureName: textureName);
+            this.DrawText(this.elapsed.ToString() + " - " + Program.last_frame_time.ToString("F5"), 0, 82, spacing: Config.spacing_small, textureName: textureName);
         }
 
-        public void DrawText(string text, float X, float Y, float spacing = 0, float size = 1f, string alignment = "center", bool absolutePosition = false, string textureName = "default medium") {
+        public void DrawText(string text, float X, float Y, float spacing = 0, string alignment = "center", bool absolutePosition = false, string textureName = "default medium") {
             float totalWidth = 0;
             float pos_X;
             float pos_Y;
@@ -97,12 +97,9 @@ namespace UI_space {
 
             // Calcular a largura total do texto
 
-            foreach (char c in text)
-            {
-                if (font_textures[textureName].TryGetValue(c, out Sprite letter))
-                {
+            foreach (char c in text) {
+                if (font_textures[textureName].TryGetValue(c, out Sprite letter)) {
                     var sprite = new Sprite(letter);
-                    if (size > 0) sprite.Scale = new Vector2f(size, size);
                     totalWidth += sprite.GetGlobalBounds().Width + spacing;
                     text_sprites.Add(sprite);
                 }
@@ -251,15 +248,20 @@ namespace UI_space {
             this.DrawBar(-stun_bar_X, stun_bar_Y, stunB, 150, "stunbar", alignment: "right", mirrored: true, color: bar_stun, grow_inverted: true);
             
             // Names
-            UI.Instance.DrawText(stage.character_A.name, -191, -94, spacing: Config.spacing_small, size: 1f, alignment: "left", textureName: "default small white");
-            UI.Instance.DrawText(stage.character_B.name, 191, -94, spacing: Config.spacing_small, size: 1f, alignment: "right", textureName: "default small white");
+            UI.Instance.DrawText(stage.character_A.name, -191, -94, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
+            UI.Instance.DrawText(stage.character_B.name, 191, -94, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
+
+            if (stage.character_A.AIEnabled && stage.character_A.BotEnabled && UI.Instance.blink1Hz) 
+                UI.Instance.DrawText("press select", -Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
+            if (stage.character_B.AIEnabled && stage.character_B.BotEnabled && UI.Instance.blink1Hz) 
+                UI.Instance.DrawText("press select", Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
 
             // Combo text
-            if (stage.character_A.combo_counter > 1) this.DrawText(stage.character_A.combo_counter + " hits", -190, -80, spacing: -23, alignment: "left", size: 1f, textureName: "default medium white");
-            if (stage.character_B.combo_counter > 1) this.DrawText(stage.character_B.combo_counter + " hits", 190, -80, spacing: -23, alignment: "right", size: 1f, textureName: "default medium white");
+            if (stage.character_A.combo_counter > 1) this.DrawText(stage.character_A.combo_counter + " hits", -190, -80, spacing: -23, alignment: "left", textureName: "default medium white");
+            if (stage.character_B.combo_counter > 1) this.DrawText(stage.character_B.combo_counter + " hits", 190, -80, spacing: -23, alignment: "right", textureName: "default medium white");
 
             // Time
-            this.DrawText("" + Math.Max(stage.round_time, 0), 0, -106, alignment: "center", spacing: -8, size: 1f, textureName: "1");
+            this.DrawText("" + Math.Max(stage.round_time, 0), 0, -106, alignment: "center", spacing: -8, textureName: "1");
 
             // Round indicators
             this.DrawText(string.Concat(Enumerable.Repeat("-", Math.Max(Config.max_rounds - stage.rounds_A, 0))) + string.Concat(Enumerable.Repeat("*", stage.rounds_A)), -20, -91, spacing: -19, alignment: "right", textureName: "icons");

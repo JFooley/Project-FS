@@ -83,8 +83,8 @@ public class Hitspark : Character {
             {"Hit1", new State(Hit1, "Remove", 60)},
             {"Hit2", new State(Hit2, "Remove", 60)},
             {"Hit3", new State(Hit3, "Remove", 60)},
-            {"Parry", new State(Parry, "Remove", 30)},
-            {"Block", new State(Block, "Remove", 30)},
+            {"Parry", new State(Parry, "Remove", 20)},
+            {"Block", new State(Block, "Remove", 20)},
         };
 
         this.states = animations;

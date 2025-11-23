@@ -81,7 +81,7 @@ namespace Stage_Space {
         public Sound music;
         public State state => states[CurrentState];
         public Animation CurrentAnimation => states[CurrentState].animation;
-        public int CurrentFrameIndex => states[CurrentState].animation.current_frame_index;
+        public int CurrentFrameIndex => states[CurrentState].animation.anim_frame_index;
 
         // Visual info
         public Color AmbientLight = new Color(255, 255, 255, 255);
@@ -115,8 +115,7 @@ namespace Stage_Space {
         }
 
         // Behaviour
-        public void Update()
-        {
+        public void Update() {
             if (!this.character_A.on_hit) this.character_B.combo_counter = 0;
             if (!this.character_B.on_hit) this.character_A.combo_counter = 0;
 
@@ -147,8 +146,8 @@ namespace Stage_Space {
             if (!this.pause) this.PlayMusic();
 
             // Render 
-            foreach (Character char_object in this.OnSceneCharactersRender)
-            {
+            foreach (Character char_object in this.OnSceneCharactersRender) {
+                char_object.Bot();
                 this.DrawShadow(char_object);
                 char_object.Render(this.show_boxs);
             }
@@ -203,13 +202,13 @@ namespace Stage_Space {
         public void TrainingMode() {
             this.ResetRoundTime();
             UI.Instance.ShowFramerate("default small white");
-            UI.Instance.DrawText("training mode", 0, 70, spacing: Config.spacing_small, size: 1f, textureName: "default small white");
+            UI.Instance.DrawText("training mode", 0, 70, spacing: Config.spacing_small, textureName: "default small white");
 
             // Show life points
-            UI.Instance.DrawText(this.character_A.life_points.X.ToString(), -18, -Config.RenderHeight/2, spacing: Config.spacing_small, size: 1f, alignment: "right", textureName: "default small white");
-            UI.Instance.DrawText(this.character_B.life_points.X.ToString(), 18, -Config.RenderHeight/2, spacing: Config.spacing_small, size: 1f, alignment: "left", textureName: "default small white");
-            UI.Instance.DrawText((this.character_A.life_points.Y - this.character_A.life_points.X).ToString(), -Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, size: 1f, alignment: "left", textureName: "default small red");
-            UI.Instance.DrawText((this.character_B.life_points.Y - this.character_B.life_points.X).ToString(), Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, size: 1f, alignment: "right", textureName: "default small red");
+            UI.Instance.DrawText(this.character_A.life_points.X.ToString(), -18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
+            UI.Instance.DrawText(this.character_B.life_points.X.ToString(), 18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
+            UI.Instance.DrawText((this.character_A.life_points.Y - this.character_A.life_points.X).ToString(), -Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "left", textureName: "default small red");
+            UI.Instance.DrawText((this.character_B.life_points.Y - this.character_B.life_points.X).ToString(), Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small red");
 
             // Reset frames
             if (this.character_A.hitstop_counter == 0 && this.character_B.hitstop_counter == 0) this.reset_frames += 1;
@@ -277,7 +276,7 @@ namespace Stage_Space {
             Program.window.Draw(fade90);
 
             // Draw options
-            UI.Instance.DrawText(Language.GetText("Pause"), 0, -75, size: 1f, spacing: Config.spacing_medium, textureName: "default medium");
+            UI.Instance.DrawText(Language.GetText("Pause"), 0, -75, spacing: Config.spacing_medium, textureName: "default medium");
             UI.Instance.DrawText(Language.GetText("Settings"), 0, -45, spacing: Config.spacing_medium, textureName: this.pause_pointer == 0 ? "default medium hover" : "default medium");
             UI.Instance.DrawText(Language.GetText("Controls"), 0, -30, spacing: Config.spacing_medium, textureName: this.pause_pointer == 1 ? "default medium hover" : "default medium");
             UI.Instance.DrawText(Language.GetText("Training"), 0, -15, spacing: Config.spacing_medium, textureName: this.pause_pointer == 2 ? "default medium hover" : "default medium");
@@ -439,26 +438,26 @@ namespace Stage_Space {
             foreach (Character char_object in this.OnSceneCharacters) char_object.animate = !char_object.animate;
             foreach (Character part_object in this.OnSceneParticles) part_object.animate = ! part_object.animate;
         }
-        public void Hitstop(string amount, bool parry, Character character) {
-            if (parry) {
-                this.StopFor(Config.hit_stop_time + Config.parry_advantage);
-
+        public void Hitstop(string amount, int hit_type, Character character) {
+            if (hit_type == Character.PARRY) {
                 switch (amount) {
                     case "Light":
-                        character.hitstop_counter = Config.hit_stop_time * 1/2;
+                            this.StopFor((Config.hit_stop_time * 1/3) + character.current_animation.lenght + Config.parry_advantage * 2);
                         break;
 
                     case "Medium":
-                        character.hitstop_counter = Config.hit_stop_time * 2/3;
+                            this.StopFor((Config.hit_stop_time * 1/3) + character.current_animation.lenght + Config.parry_advantage * 3/2);
                         break;
 
                     case "Heavy":
-                        character.hitstop_counter = Config.hit_stop_time;
+                            this.StopFor((Config.hit_stop_time * 1/3) + character.current_animation.lenght + Config.parry_advantage);
                         break;
 
                     default:
                         break;
                 }
+                character.hitstop_counter = Config.hit_stop_time * 1/3;
+
             } else {
                 switch (amount) {
                     case "Light":

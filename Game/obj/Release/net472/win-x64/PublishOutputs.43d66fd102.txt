@@ -1,7 +1,5 @@
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\characters\Ken\sounds\sounds.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\characters\Ken\sprites\visuals.dat
-D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\characters\Psylock\sounds\sounds.dat
-D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\characters\Psylock\sprites\visuals.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\config.json
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\data\character_thumbs.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\Assets\data\stage_thumbs.dat

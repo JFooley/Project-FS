@@ -2337,8 +2337,6 @@ D:\GABRIEL\Repos\CS Fighting Game\Game\obj\Release\net472\win-x64\Project FS.exe
 D:\GABRIEL\Repos\CS Fighting Game\Game\obj\Release\net472\win-x64\Project FS.pdb
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Ken\sounds\sounds.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Ken\sprites\visuals.dat
-D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Psylock\sounds\sounds.dat
-D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Psylock\sprites\visuals.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\data\character_thumbs.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\data\stage_thumbs.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\data\visuals.dat

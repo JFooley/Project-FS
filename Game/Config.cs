@@ -9,7 +9,7 @@ public static class Config {
 
     public static bool Fullscreen = true;
     public static bool Vsync = false;
-    public static bool Crt_Filter = true;
+    public static bool Crt_Filter = false;
 
     public static int Language = 0;
 
@@ -63,7 +63,7 @@ public static class Config {
     public const float gravity = 2450f / (Framerate*Framerate);
     public const int corner_limit = 125;
     public const int camera_height = 140;
-    public const int last_hit_stop_time = 30;
+    public const int last_hit_stop_time = 20;
 
     // Text
     public const int spacing_small = -26; 
