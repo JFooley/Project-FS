@@ -14,6 +14,7 @@ public class Particle : Character {
     public Particle(string initialState, float startX, float startY, int facing, Stage stage = null)
         : base("Particle", initialState, startX, startY, "Assets/particles/Particle", stage) {
             this.facing = facing;
+            this.own_light = Color.White;
         }
     public Particle() : base("Particle", "", 0, 0, "Assets/particles/Particle", null) {}
 
@@ -176,7 +177,7 @@ public class Particle : Character {
         // Render sprite
         Sprite temp_sprite = this.GetCurrentSprite();
         temp_sprite.Position = new Vector2f(this.body.Position.X - (temp_sprite.GetLocalBounds().Width / 2 * this.facing), this.body.Position.Y - temp_sprite.GetLocalBounds().Height / 2);
-        temp_sprite.Scale = new Vector2f(this.size_ratio * this.facing, this.size_ratio);
+        temp_sprite.Scale = new Vector2f(this.facing, 1f);
         Program.window.Draw(temp_sprite);
 
         // Play sounds

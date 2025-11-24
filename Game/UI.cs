@@ -1,4 +1,5 @@
 using Data_space;
+using Language_space;
 using SFML.Graphics;
 using SFML.System;
 using Stage_Space;
@@ -252,9 +253,9 @@ namespace UI_space {
             UI.Instance.DrawText(stage.character_B.name, 191, -94, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
 
             if (stage.character_A.AIEnabled && stage.character_A.BotEnabled && UI.Instance.blink1Hz) 
-                UI.Instance.DrawText("press select", -Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
+                UI.Instance.DrawText(Language.GetText("P1 - press select"), -Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
             if (stage.character_B.AIEnabled && stage.character_B.BotEnabled && UI.Instance.blink1Hz) 
-                UI.Instance.DrawText("press select", Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
+                UI.Instance.DrawText(Language.GetText("press select - P2"), Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
 
             // Combo text
             if (stage.character_A.combo_counter > 1) this.DrawText(stage.character_A.combo_counter + " hits", -190, -80, spacing: -23, alignment: "left", textureName: "default medium white");

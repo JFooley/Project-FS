@@ -4,6 +4,7 @@ using SFML.System;
 using Stage_Space;
 using SFML.Graphics;
 using SFML.Audio;
+using System.Windows.Forms;
 
 public class Fireball : Character {
     private static Dictionary<string, Texture> textures_local = new Dictionary<string, Texture>();
@@ -17,6 +18,7 @@ public class Fireball : Character {
             this.facing = facing;
             this.life_points = new Vector2i(life_points, 0);
             this.shadow_size = 0;
+            this.own_light = new Color(255, 255, 255, 255);
         }
     public Fireball() : base("Fireball", "", 0, 0, "Assets/particles/Fireball", null, 1) {}
 

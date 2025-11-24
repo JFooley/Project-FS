@@ -4,7 +4,6 @@ namespace Object_Space {
     public class Object {
         // Informações básicas
         public RigidBody body = new RigidBody();
-        public float size_ratio = 1.0f;
         public int facing = 1;
 
         // Aux

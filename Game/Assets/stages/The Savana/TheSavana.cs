@@ -6,7 +6,7 @@ public class TheSavana : Stage {
     public TheSavana()
         : base("The Savana", 530, 512, 512, "Assets/stages/The Savana", Program.thumbs["savana_thumb"])
     {
-        this.AmbientLight = new SFML.Graphics.Color(255, 240, 225, 255);
+        this.AmbientLight = new SFML.Graphics.Color(200, 165, 145, 255);
     }
 
     public override void LoadStage() {

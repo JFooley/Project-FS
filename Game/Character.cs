@@ -86,7 +86,7 @@ namespace Character_Space {
         // AI
         public AI BOT = new AI();
         public bool BotEnabled = false;
-        public bool AIEnabled = true;
+        public bool AIEnabled = false;
 
         // Controls
         public int player_index { get; set; }
@@ -105,7 +105,8 @@ namespace Character_Space {
         public string current_state;
         public string last_state;
         private Sprite[] last_sprites = new Sprite[3]; // For tracing
-        public Color light_tint = new Color(255, 255, 255, 255);
+        public Color light_tint => Program.stage.AmbientLight;
+        public Color own_light = Color.Transparent;
 
         // Combat logic infos
         public bool not_acting => this.state.not_busy && !this.state.low && !this.state.air && !this.on_air;
@@ -190,8 +191,8 @@ namespace Character_Space {
             // Set current sprite
             var temp_sprite = this.GetCurrentSprite();
             temp_sprite.Position = new Vector2f(this.body.Position.X - (temp_sprite.GetLocalBounds().Width / 2 * this.facing), this.body.Position.Y - temp_sprite.GetLocalBounds().Height);
-            temp_sprite.Scale = new Vector2f(this.size_ratio * this.facing, this.size_ratio);
-            temp_sprite.Color = this.light_tint;
+            temp_sprite.Scale = new Vector2f(this.facing, 1f);
+            temp_sprite.Color = this.own_light == Color.Transparent ? this.light_tint : this.own_light;
 
             // Render tracing
             if (this.state.trace) {
@@ -212,7 +213,9 @@ namespace Character_Space {
             if (this.state.glow && UI.Instance.blink30Hz) {
                 Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
                 Program.window.Draw(temp_sprite, new RenderStates(Program.hueChange));
-            } else Program.window.Draw(temp_sprite);
+            } else {
+                Program.window.Draw(temp_sprite);
+            }
 
             // Play sounds
             this.PlayFrameSound();
@@ -237,10 +240,10 @@ namespace Character_Space {
 
                 foreach (GenericBox box in this.current_boxes) {
                     // Calcula as coordenadas absolutas da hitbox
-                    float x1 = box.getRealA(this).X * size_ratio;
-                    float y1 = box.getRealA(this).Y * size_ratio;
-                    float x2 = box.getRealB(this).X * size_ratio;
-                    float y2 = box.getRealB(this).Y * size_ratio;
+                    float x1 = box.getRealA(this).X;
+                    float y1 = box.getRealA(this).Y;
+                    float x2 = box.getRealB(this).X;
+                    float y2 = box.getRealB(this).Y;
 
                     // Cria o retângulo da hitbox
                     Color color;
@@ -295,42 +298,45 @@ namespace Character_Space {
         }
         public void Bot() {
             if (!this.BotEnabled || !this.behave) return;
-            
-            var enemy = Program.stage.character_A.player_index == this.player_index ? Program.stage.character_B : Program.stage.character_A;
-            
-            var AIstate = new FightState();
 
-            // Distância até o inimigo
-            AIstate.distance = Math.Abs(this.body.Position.X - enemy.body.Position.X);
-            AIstate.enemyDistance = AIstate.distance / Config.max_distance;
+            // Realiza as ações programadas
+            if (this.BOT.moveQueue.Count > 0)
+                InputManager.Instance.SetKey(this.BOT.moveQueue.Dequeue(), player: this.player_index, facing: this.facing);
+            if (this.BOT.actionQueue.Count > 0)
+                InputManager.Instance.SetKey(this.BOT.actionQueue.Dequeue(), player: this.player_index, facing: this.facing);
 
-            // Estado do inimigo
-            AIstate.enemyIsIdle = enemy.state.not_busy;
-            AIstate.enemyIsAttacking = enemy.state.can_harm;
-            AIstate.enemyIsAirborne = enemy.state.air;
-            AIstate.enemyIsCrouching = enemy.state.low;
-            AIstate.enemyIsBlocking = enemy.state.on_block;
-            AIstate.enemyIsOnHit = enemy.state.on_hit || enemy.state.on_parry;
-            AIstate.enemyChangedSide = enemy.facing == this.facing;
-            AIstate.enemyIsDead = enemy.life_points.X == 0;
-            AIstate.onCorner = this.body.Position.X < (0.2f * Config.RenderWidth) || this.body.Position.X >= (Program.stage.length - (0.2f * Config.RenderWidth));
-            
-            // Atualiza o array de estados de luta
-            this.BOT.states[4] = this.BOT.states[3];
-            this.BOT.states[3] = this.BOT.states[2];
-            this.BOT.states[2] = this.BOT.states[1];
-            this.BOT.states[1] = this.BOT.states[0];
-            this.BOT.states[0] = AIstate;
+            // IA do bot
+            if (this.AIEnabled) {
+                var enemy = Program.stage.character_A.player_index == this.player_index ? Program.stage.character_B : Program.stage.character_A;
+                
+                var AIstate = new FightState();
 
-            if (this.BOT.states[1] != null) {
-                if (this.BOT.moveQueue.Count > 0)
-                    InputManager.Instance.SetKey(this.BOT.moveQueue.Dequeue(), player: this.player_index, facing: this.facing);
-                if (this.BOT.moveQueue.Count == 0 && this.AIEnabled)
+                // Distância até o inimigo
+                AIstate.distance = Math.Abs(this.body.Position.X - enemy.body.Position.X);
+                AIstate.enemyDistance = AIstate.distance / Config.max_distance;
+
+                // Estado do inimigo
+                AIstate.enemyIsIdle = enemy.state.not_busy;
+                AIstate.enemyIsAttacking = enemy.state.can_harm;
+                AIstate.enemyIsAirborne = enemy.state.air;
+                AIstate.enemyIsCrouching = enemy.state.low;
+                AIstate.enemyIsBlocking = enemy.state.on_block;
+                AIstate.enemyIsOnHit = enemy.state.on_hit || enemy.state.on_parry;
+                AIstate.enemyChangedSide = enemy.facing == this.facing;
+                AIstate.enemyIsDead = enemy.life_points.X == 0;
+                AIstate.onCorner = this.body.Position.X < (0.2f * Config.RenderWidth) || this.body.Position.X >= (Program.stage.length - (0.2f * Config.RenderWidth));
+                
+                // Atualiza o array de estados de luta
+                this.BOT.states[4] = this.BOT.states[3];
+                this.BOT.states[3] = this.BOT.states[2];
+                this.BOT.states[2] = this.BOT.states[1];
+                this.BOT.states[1] = this.BOT.states[0];
+                this.BOT.states[0] = AIstate;
+
+                // Seleciona as ações, caso já tenha realizado todas
+                if (this.BOT.moveQueue.Count == 0 && this.BOT.states[1] != null)
                     SelectMovement(this.BOT.states[1]);
-
-                if (this.BOT.actionQueue.Count > 0)
-                    InputManager.Instance.SetKey(this.BOT.actionQueue.Dequeue(), player: this.player_index, facing: this.facing);
-                if (this.BOT.actionQueue.Count == 0 && this.AIEnabled)
+                if (this.BOT.actionQueue.Count == 0 && this.BOT.states[1] != null)
                     SelectAction(this.BOT.states[1]);
             }
         }
@@ -364,7 +370,6 @@ namespace Character_Space {
                     return;
 
                 } else if (airbone || (this.life_points.X <= 0 && !Program.stage.MustWait())|| this.current_state == "Airboned") {
-                    this.facing = -enemy.facing;
                     this.ChangeState("Airboned", reset: true);
                     this.stun_frames = 0;
 
@@ -372,13 +377,14 @@ namespace Character_Space {
                     return;
 
                 } else if (this.crounching) {
-                    this.facing = -enemy.facing;
                     this.ChangeState("OnHitLow", reset: true);
 
                 } else {
-                    this.facing = -enemy.facing;
                     this.ChangeState("OnHit", reset: true);
                 }
+
+                this.facing = -enemy.facing;
+                this.body.Velocity.X = Math.Abs(this.body.Velocity.X) * enemy.facing;
 
             } else { // Block stun states
                 this.facing = -enemy.facing;

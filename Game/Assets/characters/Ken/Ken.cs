@@ -804,12 +804,8 @@ public class Ken : Character {
             { "Intro", new State(introFrames, "Idle", 10, can_be_hit: false)},
         };
     }
-
     public override void DoBehave() {
         if (this.behave == false) return;
-
-        // REMOVE THIS LINE FOR FINAL BUILD
-        if (InputManager.Instance.Key_down("Select", player: this.player_index)) this.BotEnabled = !this.BotEnabled;
 
         if ((this.current_state == "WalkingForward" || this.current_state == "WalkingBackward") & !InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) & !InputManager.Instance.Key_hold("Right", player: this.player_index, facing: this.facing)) {
             this.ChangeState("Idle");
@@ -993,7 +989,6 @@ public class Ken : Character {
             else if (InputManager.Instance.Key_press("B", player: this.player_index, facing: this.facing)) this.ChangeState("AirMediumK");
         }
     }
-    
     public override int ImposeBehavior(Character target) {
         int hit = -1;
 

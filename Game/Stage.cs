@@ -122,9 +122,18 @@ namespace Stage_Space {
             // Pause
             if (InputManager.Instance.Key_down("Start") && Program.sub_state == Program.Battling) this.Pause();
 
+            // Bot
+            if (InputManager.Instance.Key_down("Select", player: InputManager.PLAYER_A)) {
+                this.character_A.BotEnabled = !this.character_A.BotEnabled;
+                this.character_A.AIEnabled = !this.character_A.AIEnabled;
+            }
+            if (InputManager.Instance.Key_down("Select", player: InputManager.PLAYER_B)) {
+                this.character_B.BotEnabled = !this.character_B.BotEnabled;
+                this.character_B.AIEnabled = !this.character_B.AIEnabled;
+            }
+
             // Render stage sprite
-            if (this.textures.ContainsKey(this.CurrentSprite))
-            {
+            if (this.textures.ContainsKey(this.CurrentSprite)) {
                 Sprite temp_sprite = new Sprite(this.textures[this.CurrentSprite]);
                 temp_sprite.Position = new Vector2f(0, 0);
                 Program.window.Draw(temp_sprite);
@@ -132,10 +141,8 @@ namespace Stage_Space {
 
             // Advance to the next frame
             CurrentAnimation.AdvanceFrame();
-            if (this.CurrentAnimation.ended && state.change_on_end)
-            {
-                if (states.ContainsKey(this.state.post_state))
-                {
+            if (this.CurrentAnimation.ended && state.change_on_end) {
+                if (states.ContainsKey(this.state.post_state)) {
                     this.LastState = this.CurrentState;
                     this.CurrentState = this.state.post_state;
                     if (CurrentState != LastState) this.states[LastState].animation.Reset();
@@ -143,9 +150,9 @@ namespace Stage_Space {
             }
 
             // Keep music playing
-            if (!this.pause) this.PlayMusic();
+            this.PlayMusic();
 
-            // Render 
+            // Render chars
             foreach (Character char_object in this.OnSceneCharactersRender) {
                 char_object.Bot();
                 this.DrawShadow(char_object);
@@ -202,7 +209,7 @@ namespace Stage_Space {
         public void TrainingMode() {
             this.ResetRoundTime();
             UI.Instance.ShowFramerate("default small white");
-            UI.Instance.DrawText("training mode", 0, 70, spacing: Config.spacing_small, textureName: "default small white");
+            UI.Instance.DrawText(Language.GetText("training mode"), 0, 70, spacing: Config.spacing_small, textureName: "default small white");
 
             // Show life points
             UI.Instance.DrawText(this.character_A.life_points.X.ToString(), -18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
@@ -213,8 +220,7 @@ namespace Stage_Space {
             // Reset frames
             if (this.character_A.hitstop_counter == 0 && this.character_B.hitstop_counter == 0) this.reset_frames += 1;
 
-            // Block 
-            // After hit
+            // Block: After hit
             if (this.character_B.stun_frames > 0) {
                 if (this.block == 1) this.character_B.blocking = true;
                 this.reset_frames = 0;
@@ -222,14 +228,14 @@ namespace Stage_Space {
                 if (this.block == 1) this.character_A.blocking = true;
                 this.reset_frames = 0;
             }
-            // Allways
+            
+            // Block: Allways
             if (this.block == 2) {
                 this.character_A.blocking = true;
                 this.character_B.blocking = true;
             }
 
-            // Parry 
-            // After hit
+            // Parry: After hit
             if (this.character_B.stun_frames > 0) {
                 if (this.parry == 1) this.character_B.parring = true;
                 this.reset_frames = 0;
@@ -237,32 +243,28 @@ namespace Stage_Space {
                 if (this.parry == 1) this.character_A.parring = true;
                 this.reset_frames = 0;
             }
-            // Allways
+
+            // Parry: Allways
             if (this.parry == 2) {
                 this.character_A.parring = true;
                 this.character_B.parring = true;
             }
 
             // Reset chars life, stun and super bar
-            if (this.reset_frames >= Config.reset_frames)
-            {
-                if (this.character_B.not_acting_all)
-                {
+            if (this.reset_frames >= Config.reset_frames) {
+                if (this.character_B.not_acting_all) {
                     if (this.block != 2) this.character_B.blocking = false;
                     if (this.parry != 2) this.character_B.parring = false;
-                    if (this.refil_life)
-                    {
+                    if (this.refil_life) {
                         this.character_B.life_points.X = this.character_B.life_points.Y;
                         this.character_B.dizzy_points.X = this.character_B.dizzy_points.Y;
                     }
                     if (this.refil_super) this.character_B.aura_points.X = this.character_B.aura_points.Y;
                 }
-                if (this.character_A.not_acting_all)
-                {
+                if (this.character_A.not_acting_all) {
                     if (this.block != 2) this.character_A.blocking = false;
                     if (this.parry != 2) this.character_A.parring = false;
-                    if (this.refil_life)
-                    {
+                    if (this.refil_life) {
                         this.character_A.life_points.X = this.character_A.life_points.Y;
                         this.character_A.dizzy_points.X = this.character_A.dizzy_points.Y;
                     }
@@ -518,9 +520,6 @@ namespace Stage_Space {
             this.character_B.body.Position.X = this.start_point_B;
             this.character_A.stage = this;
             this.character_B.stage = this;
-
-            this.character_A.light_tint = this.AmbientLight;
-            this.character_B.light_tint = this.AmbientLight;
 
             this.OnSceneCharacters = new List<Character> {this.character_A, this.character_B};
             this.LockPlayers();

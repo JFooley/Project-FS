@@ -6,7 +6,7 @@ public class BurningDojo : Stage {
     public BurningDojo()
         : base("Burning Dojo", 369, 800, 336, "Assets/stages/Burning Dojo", Program.thumbs["dojo_thumb"])
     {
-        this.AmbientLight = new SFML.Graphics.Color(255, 230, 210, 255);
+        this.AmbientLight = new SFML.Graphics.Color(190, 160, 150, 255);
     }
 
     public override void LoadStage() {

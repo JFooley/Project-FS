@@ -6,7 +6,7 @@ public class NightAlley : Stage {
     public NightAlley()
         : base("Night Alley", 409, 640, 384, "Assets/stages/Night Alley", Program.thumbs["alley_thumb"])
     {
-        this.AmbientLight = new SFML.Graphics.Color(210, 210, 255, 255);
+        this.AmbientLight = new SFML.Graphics.Color(180, 180, 230, 255);
     }
 
     public override void LoadStage() {

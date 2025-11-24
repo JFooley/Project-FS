@@ -13,6 +13,7 @@ public class Hitspark : Character {
     public Hitspark(string initialState, float startX, float startY, int facing, Stage stage = null)
         : base("Hitspark", initialState, startX, startY, "Assets/particles/Hitspark", stage) {
             this.facing = facing;
+            this.own_light = Color.White;
         }
     public Hitspark() : base("Hitspark", "", 0, 0, "Assets/particles/Hitspark", null) {}
 
