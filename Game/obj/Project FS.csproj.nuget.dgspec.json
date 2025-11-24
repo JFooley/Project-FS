@@ -74,7 +74,7 @@
         }
       },
       "runtimes": {
-        "win7-x64": {
+        "win-x64": {
           "#import": []
         }
       }
