@@ -362,7 +362,7 @@ namespace Character_Space {
             if ((this.not_acting_all || this.state.on_block) && (this.blocking_low || this.blocking)) return true;
             return (this.not_acting_low || (this.state.on_block && this.state.low)) && InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) && InputManager.Instance.Key_hold("Down", player: this.player_index);
         }
-        public void Stun(Character enemy, int advantage, bool hit = true, bool airbone = false, bool sweep = false, bool force = false) {
+        public void Stun(Character enemy, int advantage, bool hit = true, bool airbone = false, bool sweep = false, bool force_crounch = false, bool force_stand = false, bool force = false) {
             this.stun_frames = 0;
             if (hit) { // Hit stun states
                 if (sweep) {
@@ -376,7 +376,7 @@ namespace Character_Space {
                     if (this.life_points.X <= 0) this.SetVelocity(X: -Config.heavy_pushback, Y: 50);
                     return;
 
-                } else if (this.crounching) {
+                } else if ((this.crounching && !force_stand) || force_crounch) {
                     this.ChangeState("OnHitLow", reset: true);
 
                 } else {

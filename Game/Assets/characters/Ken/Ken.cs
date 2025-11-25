@@ -909,6 +909,7 @@ public class Ken : Character {
                 X: 2.4f, 
                 Y: 100);
         } 
+        if (this.current_state.Contains("Shory") && this.state.animation.on_last_frame) this.body.Velocity.X = 0;
 
         // Haduken
         if (this.current_fireball != null && this.current_fireball.remove) this.current_fireball = null;
@@ -1324,7 +1325,7 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 5, 0);
                 } else {
                     hit = Character.HIT;
-                    target.Stun(this, 10);
+                    target.Stun(this, 10, force_stand: true);
                     Character.Push(target: target, self: this, "Light", X_amount: 1, Y_amount: 20);
                     Character.Damage(target: target, self: this, 45, 35);
                     this.SA_flag = true;
@@ -1431,8 +1432,8 @@ public class Ken : Character {
         if (state.enemyIsDead) return;
 
         if (this.on_hit || this.state.on_block || (state.enemyIsAttacking && state.enemyDistance < 0.7f)) { // Block
-            if (state.enemyIsCrouching) this.BOT.EnqueueAction("Left Down *", this.rand.Next(20, 40));
-            else this.BOT.EnqueueAction("Left *", this.rand.Next(20, 40));
+            if (state.enemyIsCrouching) this.BOT.EnqueueAction("Left Down *", this.rand.Next(10, 30));
+            else this.BOT.EnqueueAction("Left *", this.rand.Next(10, 30));
 
             return;
         }
@@ -1444,19 +1445,19 @@ public class Ken : Character {
 
                 var choise = this.rand.Next(0, 4);
                 if (choise == 0) { // Path: BackMP
-                    this.BOT.EnqueueAction("Left", 3);
-                    this.BOT.EnqueueAction("Left D", 5);
+                    this.BOT.EnqueueAction("Left *", 3);
+                    this.BOT.EnqueueAction("Left D *", 5);
 
                 } else if (choise == 1) { // Path: Light Shoryuken
-                    this.BOT.EnqueueAction("Right", 5);
-                    this.BOT.EnqueueAction("Down", 5);
-                    this.BOT.EnqueueAction("Right", 5);
+                    this.BOT.EnqueueAction("Right *", 5);
+                    this.BOT.EnqueueAction("Down *", 5);
+                    this.BOT.EnqueueAction("Right *", 5);
                     this.BOT.EnqueueAction("C", 1);
 
                 } else if (choise == 3 && Character.CheckSuperPoints(this, 100)) { // Path: Super Art 1
-                    this.BOT.EnqueueAction("Down", 3);
-                    this.BOT.EnqueueAction("", 3);
-                    this.BOT.EnqueueAction("Down", 3);
+                    this.BOT.EnqueueAction("Down *", 3);
+                    this.BOT.EnqueueAction("*", 3);
+                    this.BOT.EnqueueAction("Down *", 3);
                     this.BOT.EnqueueAction("RB", 3);
                 }
             }
@@ -1466,9 +1467,9 @@ public class Ken : Character {
         if (state.enemyIsAirborne && !state.enemyIsOnHit) { // Anti air
             var choise = this.rand.Next(0, 2);
             if (choise == 0 && this.state.not_busy) { // Shoryuken
-                this.BOT.EnqueueAction("Right", 5);
-                this.BOT.EnqueueAction("Down", 5);
-                this.BOT.EnqueueAction("Right", 5);
+                this.BOT.EnqueueAction("Right *", 5);
+                this.BOT.EnqueueAction("Down *", 5);
+                this.BOT.EnqueueAction("Right *", 5);
                 this.BOT.EnqueueAction("C", 5);
             } 
 
@@ -1482,8 +1483,8 @@ public class Ken : Character {
             } else if (choise == 2) {
                 this.BOT.EnqueueAction("D", 3);
             } else {
-                this.BOT.EnqueueAction("Down", 5);
-                this.BOT.EnqueueAction("Left", 5);
+                this.BOT.EnqueueAction("Down *", 5);
+                this.BOT.EnqueueAction("Left *", 5);
 
                 if (Character.CheckSuperPoints(this, 50))
                     this.BOT.EnqueueAction("RB", 1);
@@ -1494,38 +1495,38 @@ public class Ken : Character {
         } else if (state.enemyDistance < 0.3f) { // Close range
             var choise = this.rand.Next(0, 10);
             
-            if (this.rand.Next(0, 3) == 0 && choise <= 8) {
-                this.BOT.EnqueueAction("Right", 3);
-                this.BOT.EnqueueAction("", 2);
-                this.BOT.EnqueueAction("Right", 3);
+            if (this.rand.Next(0, 3) == 0 && choise <= 9) {
+                this.BOT.EnqueueAction("Right *", 3);
+                this.BOT.EnqueueAction("*", 2);
+                this.BOT.EnqueueAction("Right *", 3);
             }
 
             if (choise < 3) { // Target combo
                 this.BOT.EnqueueAction("C", 3);
                 this.BOT.EnqueueAction("D", 3);
-                this.BOT.EnqueueAction("", 3);
+                this.BOT.EnqueueAction("*", 3);
 
                 choise = this.rand.Next(0, 4);
                 if (choise == 0) { // Path: BackMP
-                    this.BOT.EnqueueAction("Left", 3);
-                    this.BOT.EnqueueAction("Left D", 5);
+                    this.BOT.EnqueueAction("Left *", 3);
+                    this.BOT.EnqueueAction("Left D *", 5);
 
                 } else if (choise == 1) { // Path: Light Shoryuken
-                    this.BOT.EnqueueAction("Right", 5);
-                    this.BOT.EnqueueAction("Down", 5);
-                    this.BOT.EnqueueAction("Right", 5);
+                    this.BOT.EnqueueAction("Right *", 5);
+                    this.BOT.EnqueueAction("Down *", 5);
+                    this.BOT.EnqueueAction("Right *", 5);
                     this.BOT.EnqueueAction("C", 1);
 
                 } else if (Character.CheckSuperPoints(this, 100)) { // Path: Super Art 1
-                    this.BOT.EnqueueAction("Down", 3);
-                    this.BOT.EnqueueAction("", 3);
-                    this.BOT.EnqueueAction("Down", 3);
+                    this.BOT.EnqueueAction("Down *", 3);
+                    this.BOT.EnqueueAction("*", 3);
+                    this.BOT.EnqueueAction("Down *", 3);
                     this.BOT.EnqueueAction("RB", 3);
                 }
 
             } else if (choise < 6) { // Low LK
-                this.BOT.EnqueueAction("Down", 3);
-                this.BOT.EnqueueAction("Down A", 3);
+                this.BOT.EnqueueAction("Down *", 3);
+                this.BOT.EnqueueAction("Down A *", 3);
                 this.BOT.EnqueueAction("", 3);
 
                 choise = this.rand.Next(0, 10);
@@ -1554,18 +1555,18 @@ public class Ken : Character {
                 }
 
             } else if (choise == 6) { // Sweep
-                this.BOT.EnqueueAction("Down", 5);
-                this.BOT.EnqueueAction("Down B", 5);
+                this.BOT.EnqueueAction("Down *", 5);
+                this.BOT.EnqueueAction("Down B *", 5);
 
             } else if (choise == 7) { // Light Shory
-                this.BOT.EnqueueAction("Right", 5);
-                this.BOT.EnqueueAction("Down", 5);
-                this.BOT.EnqueueAction("Right", 5);
+                this.BOT.EnqueueAction("Right *", 5);
+                this.BOT.EnqueueAction("Down *", 5);
+                this.BOT.EnqueueAction("Right *", 5);
                 this.BOT.EnqueueAction("C", 1);
 
             } else if (choise == 8) { // Tatso                
-                this.BOT.EnqueueAction("Down", 5);
-                this.BOT.EnqueueAction("Left", 5);
+                this.BOT.EnqueueAction("Down *", 5);
+                this.BOT.EnqueueAction("Left *", 5);
 
                 choise = this.rand.Next(0, 10);
                 if (choise == 0 && Character.CheckSuperPoints(this, 50)) this.BOT.EnqueueAction("RB", 1);
@@ -1584,52 +1585,48 @@ public class Ken : Character {
             var choise = this.rand.Next(0, 25);
             if (choise < 3) { // Medium kick
                 this.BOT.EnqueueAction("B", 1);
+
             } else if (choise < 5) { // Low LK
-                this.BOT.EnqueueAction("Right", 20);
-                this.BOT.EnqueueAction("Down A", 2);
+                this.BOT.EnqueueAction("Right *", 20);
+                this.BOT.EnqueueAction("Down A *", 2);
 
                 if (this.rand.Next(0, 10) < 3) { // Follow up with Tatso
                     choise = this.rand.Next(0, 10);
                     if (choise == 0 && Character.CheckSuperPoints(this, 50)) {  // EX Tatso
-                        this.BOT.EnqueueAction("Down", 5);
-                        this.BOT.EnqueueAction("Left", 5);
+                        this.BOT.EnqueueAction("Down *", 5);
+                        this.BOT.EnqueueAction("Left *", 5);
                         this.BOT.EnqueueAction("RB", 1);
 
                     } else if (choise < 4) { // Heavy Tatso
-                        this.BOT.EnqueueAction("Down", 5);
-                        this.BOT.EnqueueAction("Left", 5);
+                        this.BOT.EnqueueAction("Down *", 5);
+                        this.BOT.EnqueueAction("Left *", 5);
                         this.BOT.EnqueueAction("B", 1);
 
                     } else { // Light Tatso
-                        this.BOT.EnqueueAction("Down", 5);
-                        this.BOT.EnqueueAction("Left", 5);
+                        this.BOT.EnqueueAction("Down *", 5);
+                        this.BOT.EnqueueAction("Left *", 5);
                         this.BOT.EnqueueAction("A", 1);
                     }
                 }
             } else if (choise == 0) { // Tatso
                 choise = this.rand.Next(0, 10);
+                this.BOT.EnqueueAction("Down *", 5);
+                this.BOT.EnqueueAction("Left *", 5);
+                
                 if (choise == 0 && Character.CheckSuperPoints(this, 50)) {  // EX Tatso
-                    this.BOT.EnqueueAction("Down", 5);
-                    this.BOT.EnqueueAction("Left", 5);
                     this.BOT.EnqueueAction("RB", 1);
-
                 } else if (choise < 4) { // Heavy Tatso
-                    this.BOT.EnqueueAction("Down", 5);
-                    this.BOT.EnqueueAction("Left", 5);
                     this.BOT.EnqueueAction("B", 1);
-
                 } else { // Light Tatso
-                    this.BOT.EnqueueAction("Down", 5);
-                    this.BOT.EnqueueAction("Left", 5);
                     this.BOT.EnqueueAction("A", 1);
                 }
             } 
 
         } else { // Long range
             if (this.rand.Next(0, 10) == 0) {  // EX Hadouken
-                this.BOT.EnqueueAction("", 30);
-                this.BOT.EnqueueAction("Down", 10);
-                this.BOT.EnqueueAction("Right", 5);
+                this.BOT.EnqueueAction("*", 30);
+                this.BOT.EnqueueAction("Down *", 10);
+                this.BOT.EnqueueAction("Right *", 5);
 
                 var choise = this.rand.Next(0, 3);
                 if (choise == 0 && Character.CheckSuperPoints(this, 50)) 
@@ -1642,7 +1639,5 @@ public class Ken : Character {
                 return;
             }
         }
-
-        this.BOT.EnqueueAction("", this.rand.Next(10, 30)); // Delay aleatório
     }
 }
