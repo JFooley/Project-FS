@@ -177,10 +177,8 @@ public static class Program {
                 case MainMenu:
                     window.Draw(main_bg);
                     UI.DrawText("by JFooley", 0, 76, spacing: Config.spacing_small - 1, textureName: "default small");
-                    if (UI.blink2Hz || InputManager.Key_hold("Start")) UI.DrawText(Language.GetText("press start"), 0, 50, spacing: Config.spacing_medium, textureName: InputManager.Key_hold("Start") ? "default medium click" : "default medium white");
 
-                    if (InputManager.Key_up("Start"))
-                    {
+                    if (UI.DrawButton(Language.GetText("press start"), 0, 50, spacing: Config.spacing_medium, click: InputManager.Key_hold("Start"), action: InputManager.Key_up("Start"), hover_font: UI.blink2Hz ? "default medium white" : "", click_font: "default medium click")) {
                         ChangeState(SelectStage);
                         pointer = 0;
                     }
@@ -190,41 +188,45 @@ public static class Program {
                     window.Draw(stages[pointer].thumb);
                     window.Draw(frame);
 
+                    var face_hold = InputManager.Key_hold("A") || InputManager.Key_hold("B") || InputManager.Key_hold("C") || InputManager.Key_hold("D");
+                    var face_up = InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D");
+                    
                     // draw texts
-                    UI.DrawText(Language.GetText(stages[pointer].name), 0, -80, spacing: Config.spacing_medium, textureName: InputManager.Key_hold("A") || InputManager.Key_hold("B") || InputManager.Key_hold("C") || InputManager.Key_hold("D") ? "default medium click" : "default medium white");
                     UI.DrawText(Program.player1_wins.ToString(), -Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "left");
                     UI.DrawText(Program.player2_wins.ToString(), Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "right");
 
                     UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
-                    UI.DrawText(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", textureName: InputManager.Key_hold("LB") ? "default small click" : "default small");
+                    if (UI.DrawButton(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: InputManager.Key_hold("LB"), action: InputManager.Key_up("LB"), click_font: "default small click", hover_font: "default small"))
+                        ChangeState(MainMenu);
 
                     UI.DrawText("F", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
-                    UI.DrawText(Language.GetText("Controls"), 182, 67, spacing: Config.spacing_small, alignment: "right", textureName: InputManager.Key_hold("RB") ? "default small click" : "default small");
+                    if (UI.DrawButton(Language.GetText("Controls"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: InputManager.Key_hold("RB"), action: InputManager.Key_up("RB"), click_font: "default small click", hover_font: "default small")) 
+                        ChangeState(Controls);
 
                     if (InputManager.Key_down("Left"))
                         pointer = pointer <= 0 ? stages.Count - 1 : pointer - 1;
                     else if (InputManager.Key_down("Right"))
                         pointer = pointer >= stages.Count - 1 ? 0 : pointer + 1;
 
-                    if (InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D")) {
-                        if (stages[pointer].name == "Settings") // TODO: traduzir
+                    if (UI.DrawButton(Language.GetText(stages[pointer].name), 0, -80, spacing: Config.spacing_medium, click: face_hold, action: face_up, click_font: "default medium click", hover_font: "default medium white")) {
+                        if (stages[pointer].name == "Settings") 
                             ChangeState(Settings);
-                        else if (stages[pointer].name == "Exit game") // TODO: traduzir
+                        else if (stages[pointer].name == "Exit game") 
                             window.Close();
                         else {
-                            if (stages[pointer].name == "Random") // TODO: traduzir
+                            if (stages[pointer].name == "Random")
                                 pointer = AI.rand.Next(1, stages.Count() - 2);
                             Program.stage = stages[pointer];
                             ChangeState(SelectChar);
                         }
                         pointer = 0;
                     }
-                    else if (InputManager.Key_up("LB")) ChangeState(MainMenu);
-                    else if (InputManager.Key_up("RB")) ChangeState(Controls);
                     break;
 
                 case SelectChar:
                     window.Draw(char_bg);
+
+                    face_up = InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D");
 
                     // Setup sprites texture
                     sprite_A.Texture = characters[pointer_charA].thumb;
@@ -255,49 +257,40 @@ public static class Program {
                     else window.Draw(sprite_B);
 
                     // Draw texts
-                    if (charA_selected == null) UI.DrawText("<  >", -77, -16);
-                    if (charB_selected == null) UI.DrawText("<  >", +77, -16);
-
                     UI.DrawText(player1_wins.ToString(), 0, 63, alignment: "right");
                     UI.DrawText(player2_wins.ToString(), 0, 63, alignment: "left");
 
-                    UI.DrawText(characters[pointer_charA].name, -77, 45, spacing: Config.spacing_small, textureName: "default small");
-                    UI.DrawText(characters[pointer_charB].name, +77, 45, spacing: Config.spacing_small, textureName: "default small");
-
                     UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
-                    UI.DrawText(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", textureName: InputManager.Key_hold("LB") ? "default small click" : "default small");
+                    if (UI.DrawButton(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: InputManager.Key_hold("LB"), action: InputManager.Key_up("LB"), click_font: "default small click", hover_font: "default small")) {
+                        ChangeState(SelectStage);
+                        charB_selected = null;
+                        charA_selected = null;
+                    }
 
                     UI.DrawText("F", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
-                    UI.DrawText(Language.GetText("Controls"), 182, 67, spacing: Config.spacing_small, alignment: "right", textureName: InputManager.Key_hold("RB") ? "default small click" : "default small");
+                    if (UI.DrawButton(Language.GetText("Controls"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: InputManager.Key_hold("RB"), action: InputManager.Key_up("RB"), click_font: "default small click", hover_font: "default small")) 
+                        ChangeState(Controls);
 
                     // Chose option A
-                    if (InputManager.Key_down("Left", player: 1) && charA_selected == null)
+                    if (UI.DrawButton("<   ", -77, -16, hover: charA_selected == null, click: InputManager.Key_hold("Left", player: 1), action: InputManager.Key_down("Left", player: 1), hover_font: "default small", font: "", spacing: 0))
                         pointer_charA = pointer_charA <= 0 ? characters.Count - 1 : pointer_charA - 1;
-                    else if (InputManager.Key_down("Right", player: 1) && charA_selected == null)
+                    if (UI.DrawButton("   >", -77, -16, hover: charA_selected == null, click: InputManager.Key_hold("Right", player: 1), action: InputManager.Key_down("Right", player: 1), hover_font: "default small", font: "", spacing: 0))
                         pointer_charA = pointer_charA >= characters.Count - 1 ? 0 : pointer_charA + 1;
 
-                    if (InputManager.Key_down("A", player: 1) || InputManager.Key_down("B", player: 1) || InputManager.Key_down("C", player: 1) || InputManager.Key_down("D", player: 1))
+                    if (UI.DrawButton(characters[pointer_charA].name, -77, 45, spacing: Config.spacing_small, action: InputManager.Key_down("A", player: 1), click: InputManager.Key_hold("A", player: 1), hover_font: "default small"))
                         charA_selected = characters[pointer_charA].name;
 
                     // Chose option B
-                    if (InputManager.Key_down("Left", player: 2) && charB_selected == null)
+                    if (UI.DrawButton("<   ", 77, -16, hover: charB_selected == null, click: InputManager.Key_hold("Left", player: 2), action: InputManager.Key_down("Left", player: 2), hover_font: "default small", font: "", spacing: 0))
                         pointer_charB = pointer_charB <= 0 ? characters.Count - 1 : pointer_charB - 1;
-                    else if (InputManager.Key_down("Right", player: 2) && charB_selected == null)
+                    if (UI.DrawButton("   >", 77, -16, hover: charB_selected == null, click: InputManager.Key_hold("Right", player: 2), action: InputManager.Key_down("Right", player: 2), hover_font: "default small", font: "", spacing: 0))
                         pointer_charB = pointer_charB >= characters.Count - 1 ? 0 : pointer_charB + 1;
 
-                    if (InputManager.Key_down("A", player: 2) || InputManager.Key_down("B", player: 2) || InputManager.Key_down("C", player: 2) || InputManager.Key_down("D", player: 2))
+                    if (UI.DrawButton(characters[pointer_charB].name, 77, 45, spacing: Config.spacing_small, action: InputManager.Key_down("A", player: 2), click: InputManager.Key_hold("A", player: 2), hover_font: "default small"))
                         charB_selected = characters[pointer_charB].name;
 
-                    // Return option
-                    if (InputManager.Key_up("LB")) {
-                        charB_selected = null;
-                        charA_selected = null;
-                        ChangeState(SelectStage);
-                    }
-                    else if (InputManager.Key_up("RB")) ChangeState(Controls);
-
                     // Ends when chars are selected
-                    if (charA_selected != null && charB_selected != null && (InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D")))
+                    if (charA_selected != null && charB_selected != null && face_up)
                         ChangeState(LoadScreen);
 
                     break;
@@ -402,6 +395,9 @@ public static class Program {
                     window.Draw(stage.thumb);
                     window.Draw(fade90);
 
+                    face_up = InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D");
+                    face_hold = InputManager.Key_hold("A") || InputManager.Key_hold("B") || InputManager.Key_hold("C") || InputManager.Key_hold("D");
+
                     stage.music.Volume = Math.Max(0, stage.music.Volume - 0.5f);
 
                     string winner_text;
@@ -411,10 +407,6 @@ public static class Program {
                     UI.DrawText(Program.player1_wins.ToString(), -Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "left");
                     UI.DrawText(Program.player2_wins.ToString(), Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "right");
                     UI.DrawText(winner_text, 0, -100, spacing: Config.spacing_medium, textureName: "default medium");
-                    
-                    UI.DrawButton(Language.GetText("Rematch"), 0, 0, spacing: Config.spacing_medium, hover: pointer == 0, font: "default medium", hover_font: "default medium white", click_font: "default medium click", click: InputManager.Key_hold("A") || InputManager.Key_hold("B") || InputManager.Key_hold("C") || InputManager.Key_hold("D"));
-                    UI.DrawButton(Language.GetText("Change stage"), 0, 20, spacing: Config.spacing_medium, hover: pointer == 1, font: "default medium", hover_font: "default medium white", click_font: "default medium click", click: InputManager.Key_hold("A") || InputManager.Key_hold("B") || InputManager.Key_hold("C") || InputManager.Key_hold("D"));
-                    UI.DrawButton(Language.GetText("Exit game"), 0, 40, spacing: Config.spacing_medium, hover: pointer == 2, font: "default medium", hover_font: "default medium red", click_font: "default medium click", click: InputManager.Key_hold("A") || InputManager.Key_hold("B") || InputManager.Key_hold("C") || InputManager.Key_hold("D"));
 
                     // Change option
                     if (InputManager.Key_down("Up") && pointer > 0)
@@ -423,21 +415,18 @@ public static class Program {
                         pointer += 1;
 
                     // Do option
-                    if (pointer == 0 && (InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D")))
-                    { // rematch
+                    if (UI.DrawButton(Language.GetText("rematch"), 0, 0, spacing: Config.spacing_medium, action: face_up, click: face_hold, hover: pointer == 0, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) {
                         Camera.SetChars(stage.character_A, stage.character_B);
                         Camera.SetLimits(stage.length, stage.height);
                         stage.LockPlayers();
                         ChangeState(Battle);
 
-                    }
-                    else if (pointer == 1 && (InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D")))
-                    { // MENU 
+                    } if (UI.DrawButton(Language.GetText("change stage"), 0, 20, spacing: Config.spacing_medium, action: face_up, click: face_hold, hover: pointer == 1, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
                         stage.StopMusic();
                         stage.UnloadStage();
                         ChangeState(SelectStage);
-                    }
-                    else if (pointer == 2 && (InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D")))
+
+                    } if (UI.DrawButton(Language.GetText("exit game"), 0, 40, spacing: Config.spacing_medium, action: face_up, click: face_hold, hover: pointer == 2, font: "default medium", hover_font: "default medium red", click_font: "default medium click"))
                         window.Close();
 
                     break;
@@ -538,9 +527,7 @@ public static class Program {
 
                     // Return option
                     UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
-                    UI.DrawText(Language.GetText("save and exit"), -182, 67, spacing: Config.spacing_small, alignment: "left", textureName: InputManager.Key_hold("LB") ? "default small click" : "default small");
-
-                    if (InputManager.Key_up("LB")) {
+                    if (UI.DrawButton(Language.GetText("save and exit"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: InputManager.Key_hold("LB"), action: InputManager.Key_up("LB"), click_font: "default small click", hover_font: "default small")) {
                         Config.SaveToFile();
                         Camera.LockCamera();
                         ChangeState(return_state);
@@ -557,8 +544,7 @@ public static class Program {
                     else if (InputManager.Key_up("Right")) controls_pointer = controls_pointer > 0 ? controls_pointer - 1 : 1;
 
                     UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
-                    UI.DrawButton(Language.GetText("Return"), -182, 67, alignment: "left", hover: true, click: InputManager.Key_hold("LB"), hover_font: "default small");
-                    if (InputManager.Key_up("LB")) {
+                    if (UI.DrawButton(Language.GetText("Return"), -182, 67, alignment: "left", action: InputManager.Key_up("LB"), click: InputManager.Key_hold("LB"), hover_font: "default small")) {
                         if (return_state == Battle) Camera.LockCamera();
                         ChangeState(return_state);
                     }

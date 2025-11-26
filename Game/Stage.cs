@@ -282,48 +282,36 @@ namespace Stage_Space {
 
             // Draw options
             UI.DrawText(Language.GetText("Pause"), 0, -75, spacing: Config.spacing_medium, textureName: "default medium");
-            UI.DrawButton(Language.GetText("Settings"), 0, -45, spacing: Config.spacing_medium, click: face_hold, hover: this.pause_pointer.Y == 0, click_font: "default medium click", hover_font: "default medium hover", font: "default medium");
-            UI.DrawButton(Language.GetText("Controls"), 0, -30, spacing: Config.spacing_medium, click: face_hold, hover: this.pause_pointer.Y == 1, click_font: "default medium click", hover_font: "default medium hover", font: "default medium");
-            UI.DrawButton(Language.GetText("Training"), 0, -15, spacing: Config.spacing_medium, click: face_hold, hover: this.pause_pointer.Y == 2, click_font: "default medium click", hover_font: "default medium hover", font: "default medium");
-            if (training_mode) {
-                UI.DrawButton(Language.GetText("Reset Characters"), 0, 0, spacing: Config.spacing_small, click: face_hold, hover: this.pause_pointer.Y == 3, click_font: "default small click", hover_font: "default small hover", font: "default small");
-                UI.DrawButton(Language.GetText("Show hitboxes"), 0, 10, spacing: Config.spacing_small, click: face_hold, hover: this.pause_pointer.Y == 4, click_font: "default small click", hover_font: "default small hover", font: "default small");
-                UI.DrawButton(block switch { 0 => Language.GetText("Block") + ": " + Language.GetText("Never"), 1 => Language.GetText("Block") + ": " + Language.GetText("After hit"), 2 => Language.GetText("Block") + ": " + Language.GetText("Always"), _ => Language.GetText("Block") + ": " + Language.GetText("Error")}, 0, 20, spacing: Config.spacing_small, click: face_hold, hover: this.pause_pointer.Y == 5, click_font: "default small click", hover_font: "default small hover", font: "default small");
-                UI.DrawButton(parry switch { 0 => Language.GetText("Parry") + ": " + Language.GetText("Never"), 1 => Language.GetText("Parry") + ": " + Language.GetText("After hit"), 2 => Language.GetText("Parry") + ": " + Language.GetText("Always"), _ => Language.GetText("Parry") + ": " + Language.GetText("Error")}, 0, 30, spacing: Config.spacing_small, click: face_hold, hover: this.pause_pointer.Y == 6, click_font: "default small click", hover_font: "default small hover", font: "default small");
-                UI.DrawButton(refil_life ? Language.GetText("Life") + ": " + Language.GetText("Refil") : Language.GetText("Life") + ": " + Language.GetText("Keep"), 0, 40, spacing: Config.spacing_small, click: face_hold, hover: this.pause_pointer.Y == 7, click_font: "default small click", hover_font: "default small hover", font: "default small");
-                UI.DrawButton(refil_super ? Language.GetText("Super") + ": " + Language.GetText("Refil") : Language.GetText("Super") + ": " + Language.GetText("Keep"), 0, 50, spacing: Config.spacing_small, click: face_hold, hover: this.pause_pointer.Y == 8, click_font: "default small click", hover_font: "default small hover", font: "default small");
-            }
-            UI.DrawButton(Language.GetText("End match"), 0, 70, spacing: Config.spacing_medium, click: face_hold, hover: this.pause_pointer.Y == 9, click_font: "default medium click", hover_font: "default medium red", font: "default medium");
 
-            // Change option 
-            if (InputManager.Key_down("Up") && this.pause_pointer.Y > 0) {
-                this.pause_pointer.Y -= 1;
-                if (!training_mode && this.pause_pointer.Y < 9 && this.pause_pointer.Y > 2) this.pause_pointer.Y = 2;
-            } else if (InputManager.Key_down("Down") && this.pause_pointer.Y < 9) {
-                this.pause_pointer.Y += 1;
-                if (!training_mode && this.pause_pointer.Y < 9 && this.pause_pointer.Y > 2) this.pause_pointer.Y = 9;
-            }
-
-            // Do option
-            if (this.pause_pointer.Y == 0 && face_release)
+            if (UI.DrawButton(Language.GetText("Settings"), 0, -45, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 0, click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
                 Program.ChangeState(Program.Settings);
-            else if (this.pause_pointer.Y == 1 && face_release)
+            
+            if (UI.DrawButton(Language.GetText("Controls"), 0, -30, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 1, click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
                 Program.ChangeState(Program.Controls);
-            else if (this.pause_pointer.Y == 2 && face_release)
+            
+            if (UI.DrawButton(Language.GetText("Training"), 0, -15, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 2, click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
                 this.training_mode = !this.training_mode;
-            else if (this.pause_pointer.Y == 3 && face_release)
-                this.ResetPlayers();
-            else if (this.pause_pointer.Y == 4 && face_release)
-                this.show_boxs = !this.show_boxs;
-            else if (this.pause_pointer.Y == 5 && face_release)
-                this.block = block >= 2 ? 0 : block + 1;
-            else if (this.pause_pointer.Y == 6 && face_release)
-                this.parry = parry >= 2 ? 0 : parry + 1;
-            else if (this.pause_pointer.Y == 7 && face_release)
-                this.refil_life = !this.refil_life;
-            else if (this.pause_pointer.Y == 8 && face_release)
-                this.refil_super = !this.refil_super;
-            else if (this.pause_pointer.Y == 9 && face_release) {
+            
+            if (training_mode) {
+                if (UI.DrawButton(Language.GetText("Reset Characters"), 0, 0, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 3, click_font: "default small click", hover_font: "default small hover", font: "default small"))
+                    this.ResetPlayers();
+            
+                if (UI.DrawButton(Language.GetText("Show hitboxes"), 0, 10, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 4, click_font: "default small click", hover_font: "default small hover", font: "default small"))
+                    this.show_boxs = !this.show_boxs;
+            
+                if (UI.DrawButton(block switch { 0 => Language.GetText("Block") + ": " + Language.GetText("Never"), 1 => Language.GetText("Block") + ": " + Language.GetText("After hit"), 2 => Language.GetText("Block") + ": " + Language.GetText("Always"), _ => Language.GetText("Block") + ": " + Language.GetText("Error")}, 0, 20, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 5, click_font: "default small click", hover_font: "default small hover", font: "default small"))
+                    this.block = block >= 2 ? 0 : block + 1;
+            
+                if (UI.DrawButton(parry switch { 0 => Language.GetText("Parry") + ": " + Language.GetText("Never"), 1 => Language.GetText("Parry") + ": " + Language.GetText("After hit"), 2 => Language.GetText("Parry") + ": " + Language.GetText("Always"), _ => Language.GetText("Parry") + ": " + Language.GetText("Error")}, 0, 30, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 6, click_font: "default small click", hover_font: "default small hover", font: "default small"))
+                    this.parry = parry >= 2 ? 0 : parry + 1;
+            
+                if (UI.DrawButton(refil_life ? Language.GetText("Life") + ": " + Language.GetText("Refil") : Language.GetText("Life") + ": " + Language.GetText("Keep"), 0, 40, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 7, click_font: "default small click", hover_font: "default small hover", font: "default small"))
+                    this.refil_life = !this.refil_life;
+            
+                if (UI.DrawButton(refil_super ? Language.GetText("Super") + ": " + Language.GetText("Refil") : Language.GetText("Super") + ": " + Language.GetText("Keep"), 0, 50, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 8, click_font: "default small click", hover_font: "default small hover", font: "default small"))
+                    this.refil_super = !this.refil_super;
+            
+            } if (UI.DrawButton(Language.GetText("End match"), 0, 70, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 9, click_font: "default medium click", hover_font: "default medium red", font: "default medium")) {
                 this.Pause();
                 Program.winner = Program.Drawn;
                 Program.sub_state = Program.MatchEnd;
@@ -333,7 +321,16 @@ namespace Stage_Space {
                 this.refil_life = true;
                 this.refil_super = true;
                 this.pause_pointer.Y = 0;
-            } 
+            }       
+
+            // Change option 
+            if (InputManager.Key_down("Up") && this.pause_pointer.Y > 0) {
+                this.pause_pointer.Y -= 1;
+                if (!training_mode && this.pause_pointer.Y < 9 && this.pause_pointer.Y > 2) this.pause_pointer.Y = 2;
+            } else if (InputManager.Key_down("Down") && this.pause_pointer.Y < 9) {
+                this.pause_pointer.Y += 1;
+                if (!training_mode && this.pause_pointer.Y < 9 && this.pause_pointer.Y > 2) this.pause_pointer.Y = 9;
+            }
         }
 
         // Spawns

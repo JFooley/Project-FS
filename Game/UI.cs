@@ -80,10 +80,12 @@ namespace UI_space {
             float offset_X = X;
             List<Sprite> text_sprites = new List<Sprite> {};
 
-            // Calcular a largura total do texto
+            // Checa se a textura existe
+            if (!UI.font_textures.TryGetValue(textureName, out Dictionary<char, Sprite> dict)) return;
 
+            // Calcular a largura total do texto
             foreach (char c in text) {
-                if (UI.font_textures[textureName].TryGetValue(c, out Sprite letter)) {
+                if (dict.TryGetValue(c, out Sprite letter)) {
                     var sprite = new Sprite(letter);
                     totalWidth += sprite.GetGlobalBounds().Width + spacing;
                     text_sprites.Add(sprite);
@@ -180,17 +182,17 @@ namespace UI_space {
             Program.window.Draw(barSprite, renderStates);
         }
         
-        public static bool DrawButton(string text, float pos_X, float pos_Y, bool hover = false, bool click = false, float spacing = Config.spacing_small, string alignment = "center", bool absolutePosition = false, string font = "default small", string hover_font = "default small hover", string click_font = "default small click") {
+        public static bool DrawButton(string text, float pos_X, float pos_Y, bool action = false, bool hover = true, bool click = false, float spacing = Config.spacing_small, string alignment = "center", bool absolutePosition = false, string font = "default small white", string hover_font = "default small hover", string click_font = "default small click") {
             if (click && hover) {
                 UI.DrawText(text, pos_X, pos_Y, spacing: spacing, alignment: alignment, absolutePosition: absolutePosition, textureName: click_font);
-                return true;
             } else if (hover) {
                 UI.DrawText(text, pos_X, pos_Y, spacing: spacing, alignment: alignment, absolutePosition: absolutePosition, textureName: hover_font);
-                return false;
             } else {
                 UI.DrawText(text, pos_X, pos_Y, spacing: spacing, alignment: alignment, absolutePosition: absolutePosition, textureName: font);
-                return false;
             }
+
+            if (action && hover) return true;
+            else return false;
         }
 
         // Battle UI
