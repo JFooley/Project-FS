@@ -49,6 +49,7 @@ Implementado:
 - Sistema de mudança sutil na cor da sprite de acordo com cada stage (simula uma iluminação global simples)
 - Uso de shaders
 - Load unificado e mais eficiente (usando arquivos binários)
+- Inteligência artificial dos BOTs
 
 Deprecated:
 - Física simples
