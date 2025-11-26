@@ -30,7 +30,7 @@ namespace Stage_Space {
         public List<Character> OnSceneCharacters = new List<Character> {};
         public List<Character> OnSceneCharactersSorted => this.OnSceneCharacters
                 .OrderByDescending(x => x.state.priority)
-                .ThenBy(x => Program.random.Next())
+                .ThenBy(x => AI.rand.Next())
                 .ToList();
         public List<Character> OnSceneCharactersRender => this.OnSceneCharacters
                 .OrderBy(x => x.state.priority)
@@ -64,7 +64,7 @@ namespace Stage_Space {
         private Stopwatch matchTimer;
 
         // Aux
-        private int pause_pointer = 0;
+        private Vector2i pause_pointer = new Vector2i(0,0);
 
         // Pre-renders
         private Hitspark spark; 
@@ -120,14 +120,14 @@ namespace Stage_Space {
             if (!this.character_B.on_hit) this.character_A.combo_counter = 0;
 
             // Pause
-            if (InputManager.Instance.Key_down("Start") && Program.sub_state == Program.Battling) this.Pause();
+            if (InputManager.Key_down("Start") && Program.sub_state == Program.Battling) this.Pause();
 
             // Bot
-            if (InputManager.Instance.Key_down("Select", player: InputManager.PLAYER_A)) {
+            if (InputManager.Key_down("Select", player: InputManager.PLAYER_A)) {
                 this.character_A.BotEnabled = !this.character_A.BotEnabled;
                 this.character_A.AIEnabled = !this.character_A.AIEnabled;
             }
-            if (InputManager.Instance.Key_down("Select", player: InputManager.PLAYER_B)) {
+            if (InputManager.Key_down("Select", player: InputManager.PLAYER_B)) {
                 this.character_B.BotEnabled = !this.character_B.BotEnabled;
                 this.character_B.AIEnabled = !this.character_B.AIEnabled;
             }
@@ -158,7 +158,7 @@ namespace Stage_Space {
                 this.DrawShadow(char_object);
                 char_object.Render(this.show_boxs);
             }
-            UI.Instance.DrawBattleUI(this);
+            UI.DrawBattleUI(this);
             foreach (Character part_object in this.OnSceneParticles) part_object.Render(this.show_boxs);
 
             // Update chars
@@ -208,14 +208,14 @@ namespace Stage_Space {
         public virtual void DoSpecialBehaviour() {}
         public void TrainingMode() {
             this.ResetRoundTime();
-            UI.Instance.ShowFramerate("default small white");
-            UI.Instance.DrawText(Language.GetText("training mode"), 0, 70, spacing: Config.spacing_small, textureName: "default small white");
+            UI.ShowFramerate("default small white");
+            UI.DrawText(Language.GetText("training mode"), 0, 70, spacing: Config.spacing_small, textureName: "default small white");
 
             // Show life points
-            UI.Instance.DrawText(this.character_A.life_points.X.ToString(), -18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
-            UI.Instance.DrawText(this.character_B.life_points.X.ToString(), 18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
-            UI.Instance.DrawText((this.character_A.life_points.Y - this.character_A.life_points.X).ToString(), -Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "left", textureName: "default small red");
-            UI.Instance.DrawText((this.character_B.life_points.Y - this.character_B.life_points.X).ToString(), Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small red");
+            UI.DrawText(this.character_A.life_points.X.ToString(), -18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
+            UI.DrawText(this.character_B.life_points.X.ToString(), 18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
+            UI.DrawText((this.character_A.life_points.Y - this.character_A.life_points.X).ToString(), -Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "left", textureName: "default small red");
+            UI.DrawText((this.character_B.life_points.Y - this.character_B.life_points.X).ToString(), Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small red");
 
             // Reset frames
             if (this.character_A.hitstop_counter == 0 && this.character_B.hitstop_counter == 0) this.reset_frames += 1;
@@ -274,54 +274,56 @@ namespace Stage_Space {
             }
         }
         public void PauseScreen() {
-            fade90.Position = new Vector2f(Program.camera.X - Config.RenderWidth/2, Program.camera.Y - Config.RenderHeight/2);
+            fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
             Program.window.Draw(fade90);
 
+            var face_release = InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D");
+            var face_hold = InputManager.Key_hold("A") || InputManager.Key_hold("B") || InputManager.Key_hold("C") || InputManager.Key_hold("D");
+
             // Draw options
-            UI.Instance.DrawText(Language.GetText("Pause"), 0, -75, spacing: Config.spacing_medium, textureName: "default medium");
-            UI.Instance.DrawText(Language.GetText("Settings"), 0, -45, spacing: Config.spacing_medium, textureName: this.pause_pointer == 0 ? "default medium hover" : "default medium");
-            UI.Instance.DrawText(Language.GetText("Controls"), 0, -30, spacing: Config.spacing_medium, textureName: this.pause_pointer == 1 ? "default medium hover" : "default medium");
-            UI.Instance.DrawText(Language.GetText("Training"), 0, -15, spacing: Config.spacing_medium, textureName: this.pause_pointer == 2 ? "default medium hover" : "default medium");
+            UI.DrawText(Language.GetText("Pause"), 0, -75, spacing: Config.spacing_medium, textureName: "default medium");
+            UI.DrawButton(Language.GetText("Settings"), 0, -45, spacing: Config.spacing_medium, click: face_hold, hover: this.pause_pointer.Y == 0, click_font: "default medium click", hover_font: "default medium hover", font: "default medium");
+            UI.DrawButton(Language.GetText("Controls"), 0, -30, spacing: Config.spacing_medium, click: face_hold, hover: this.pause_pointer.Y == 1, click_font: "default medium click", hover_font: "default medium hover", font: "default medium");
+            UI.DrawButton(Language.GetText("Training"), 0, -15, spacing: Config.spacing_medium, click: face_hold, hover: this.pause_pointer.Y == 2, click_font: "default medium click", hover_font: "default medium hover", font: "default medium");
             if (training_mode) {
-                UI.Instance.DrawText(Language.GetText("Reset Characters"), 0, 0, spacing: Config.spacing_small, textureName: this.pause_pointer == 3 ? "default small hover" : "default small");
-                UI.Instance.DrawText(Language.GetText("Show hitboxes"), 0, 10, spacing: Config.spacing_small, textureName: this.pause_pointer == 4 ? "default small hover" : "default small");
-                UI.Instance.DrawText(block switch { 0 => Language.GetText("Block") + ": " + Language.GetText("Never"), 1 => Language.GetText("Block") + ": " + Language.GetText("After hit"), 2 => Language.GetText("Block") + ": " + Language.GetText("Always"), _ => Language.GetText("Block") + ": " + Language.GetText("Error")}, 0, 20, spacing: Config.spacing_small, textureName: this.pause_pointer == 5 ? "default small hover" : "default small");
-                UI.Instance.DrawText(parry switch { 0 => Language.GetText("Parry") + ": " + Language.GetText("Never"), 1 => Language.GetText("Parry") + ": " + Language.GetText("After hit"), 2 => Language.GetText("Parry") + ": " + Language.GetText("Always"), _ => Language.GetText("Parry") + ": " + Language.GetText("Error")}, 0, 30, spacing: Config.spacing_small, textureName: this.pause_pointer == 6 ? "default small hover" : "default small");
-                UI.Instance.DrawText(refil_life ? Language.GetText("Life") + ": " + Language.GetText("Refil") : Language.GetText("Life") + ": " + Language.GetText("Keep"), 0, 40, spacing: Config.spacing_small, textureName: this.pause_pointer == 7 ? "default small hover" : "default small");
-                UI.Instance.DrawText(refil_super ? Language.GetText("Super") + ": " + Language.GetText("Refil") : Language.GetText("Super") + ": " + Language.GetText("Keep"), 0, 50, spacing: Config.spacing_small, textureName: this.pause_pointer == 8 ? "default small hover" : "default small");
+                UI.DrawButton(Language.GetText("Reset Characters"), 0, 0, spacing: Config.spacing_small, click: face_hold, hover: this.pause_pointer.Y == 3, click_font: "default small click", hover_font: "default small hover", font: "default small");
+                UI.DrawButton(Language.GetText("Show hitboxes"), 0, 10, spacing: Config.spacing_small, click: face_hold, hover: this.pause_pointer.Y == 4, click_font: "default small click", hover_font: "default small hover", font: "default small");
+                UI.DrawButton(block switch { 0 => Language.GetText("Block") + ": " + Language.GetText("Never"), 1 => Language.GetText("Block") + ": " + Language.GetText("After hit"), 2 => Language.GetText("Block") + ": " + Language.GetText("Always"), _ => Language.GetText("Block") + ": " + Language.GetText("Error")}, 0, 20, spacing: Config.spacing_small, click: face_hold, hover: this.pause_pointer.Y == 5, click_font: "default small click", hover_font: "default small hover", font: "default small");
+                UI.DrawButton(parry switch { 0 => Language.GetText("Parry") + ": " + Language.GetText("Never"), 1 => Language.GetText("Parry") + ": " + Language.GetText("After hit"), 2 => Language.GetText("Parry") + ": " + Language.GetText("Always"), _ => Language.GetText("Parry") + ": " + Language.GetText("Error")}, 0, 30, spacing: Config.spacing_small, click: face_hold, hover: this.pause_pointer.Y == 6, click_font: "default small click", hover_font: "default small hover", font: "default small");
+                UI.DrawButton(refil_life ? Language.GetText("Life") + ": " + Language.GetText("Refil") : Language.GetText("Life") + ": " + Language.GetText("Keep"), 0, 40, spacing: Config.spacing_small, click: face_hold, hover: this.pause_pointer.Y == 7, click_font: "default small click", hover_font: "default small hover", font: "default small");
+                UI.DrawButton(refil_super ? Language.GetText("Super") + ": " + Language.GetText("Refil") : Language.GetText("Super") + ": " + Language.GetText("Keep"), 0, 50, spacing: Config.spacing_small, click: face_hold, hover: this.pause_pointer.Y == 8, click_font: "default small click", hover_font: "default small hover", font: "default small");
             }
-            UI.Instance.DrawText(Language.GetText("End match"), 0, 70, spacing: Config.spacing_medium, textureName: this.pause_pointer == 9 ? "default medium red" : "default medium");
+            UI.DrawButton(Language.GetText("End match"), 0, 70, spacing: Config.spacing_medium, click: face_hold, hover: this.pause_pointer.Y == 9, click_font: "default medium click", hover_font: "default medium red", font: "default medium");
 
             // Change option 
-            if (InputManager.Instance.Key_down("Up") && this.pause_pointer > 0) {
-                this.pause_pointer -= 1;
-                if (!training_mode && this.pause_pointer < 9 && this.pause_pointer > 2) this.pause_pointer = 2;
-            } else if (InputManager.Instance.Key_down("Down") && this.pause_pointer < 9) {
-                this.pause_pointer += 1;
-                if (!training_mode && this.pause_pointer < 9 && this.pause_pointer > 2) this.pause_pointer = 9;
+            if (InputManager.Key_down("Up") && this.pause_pointer.Y > 0) {
+                this.pause_pointer.Y -= 1;
+                if (!training_mode && this.pause_pointer.Y < 9 && this.pause_pointer.Y > 2) this.pause_pointer.Y = 2;
+            } else if (InputManager.Key_down("Down") && this.pause_pointer.Y < 9) {
+                this.pause_pointer.Y += 1;
+                if (!training_mode && this.pause_pointer.Y < 9 && this.pause_pointer.Y > 2) this.pause_pointer.Y = 9;
             }
 
             // Do option
-            if (this.pause_pointer == 0 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
+            if (this.pause_pointer.Y == 0 && face_release)
                 Program.ChangeState(Program.Settings);
-            else if (this.pause_pointer == 1 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
+            else if (this.pause_pointer.Y == 1 && face_release)
                 Program.ChangeState(Program.Controls);
-            else if (this.pause_pointer == 2 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
+            else if (this.pause_pointer.Y == 2 && face_release)
                 this.training_mode = !this.training_mode;
-            else if (this.pause_pointer == 3 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
+            else if (this.pause_pointer.Y == 3 && face_release)
                 this.ResetPlayers();
-            else if (this.pause_pointer == 4 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
+            else if (this.pause_pointer.Y == 4 && face_release)
                 this.show_boxs = !this.show_boxs;
-            else if (this.pause_pointer == 5 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
+            else if (this.pause_pointer.Y == 5 && face_release)
                 this.block = block >= 2 ? 0 : block + 1;
-            else if (this.pause_pointer == 6 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
+            else if (this.pause_pointer.Y == 6 && face_release)
                 this.parry = parry >= 2 ? 0 : parry + 1;
-            else if (this.pause_pointer == 7 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
+            else if (this.pause_pointer.Y == 7 && face_release)
                 this.refil_life = !this.refil_life;
-            else if (this.pause_pointer == 8 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
+            else if (this.pause_pointer.Y == 8 && face_release)
                 this.refil_super = !this.refil_super;
-            else if (this.pause_pointer == 9 && (InputManager.Instance.Key_up("A") || InputManager.Instance.Key_up("B") || InputManager.Instance.Key_up("C") || InputManager.Instance.Key_up("D")))
-            {
+            else if (this.pause_pointer.Y == 9 && face_release) {
                 this.Pause();
                 Program.winner = Program.Drawn;
                 Program.sub_state = Program.MatchEnd;
@@ -330,7 +332,7 @@ namespace Stage_Space {
                 this.block = 0;
                 this.refil_life = true;
                 this.refil_super = true;
-                this.pause_pointer = 0;
+                this.pause_pointer.Y = 0;
             } 
         }
 
@@ -346,7 +348,7 @@ namespace Stage_Space {
             if (hit == Character.PARRY) {
                 state = "Parry";
             } else if (hit == Character.HIT) {
-                state = "Hit" + Program.random.Next(1, 4);
+                state = "Hit" + AI.rand.Next(1, 4);
             } else if (hit == Character.BLOCK){
                 state = "Block";
             } else {

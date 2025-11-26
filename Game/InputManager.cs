@@ -53,39 +53,36 @@ namespace Input_Space {
             }
         };
 
-        private int maxButtonIndex = 14;
+        private const int maxButtonIndex = 14;
 
-        private bool autoDetectDevice;
-        private int[] inputDevice = new int[3];
-        public int[] buttonState = new int[3];
-        public int[] buttonLastState = new int[3];
+        public static bool autoDetectDevice;
+        private static int[] inputDevice = new int[3];
+        public static int[] buttonState = new int[3];
+        public static int[] buttonLastState = new int[3];
 
-        public bool anyKey => this.buttonState[DEFAULT] > 0;
+        public static bool anyKey => InputManager.buttonState[DEFAULT] > 0;
 
         // Mapping para teclado e mouse
-        private Dictionary<Keys, int> keyMapA;
-        private Dictionary<Keys, int> keyMapB;
-        private Dictionary<int, int> joystickMap;
+        private static Dictionary<Keys, int> keyMapA;
+        private static Dictionary<Keys, int> keyMapB;
+        private static Dictionary<int, int> joystickMap;
 
         // Buffer de inputs para os últimos 240 frames
         private const int BufferSize = 240;
-        private LinkedList<int>[] buffers = new LinkedList<int>[3];
-
-        // Singleton
-        private static InputManager instance;
+        private static LinkedList<int>[] buffers = new LinkedList<int>[3];
 
         // Construtor
-        private InputManager(bool autoDetectDevice = true) {
-            this.autoDetectDevice = autoDetectDevice;
+        public InputManager(bool autoDetectDevice = true) {
+            InputManager.autoDetectDevice = autoDetectDevice;
             for (int i = 0; i < 3; i++) {
-                this.buttonState[i] = 0b0;
-                this.buttonLastState[i] = 0b0;
+                InputManager.buttonState[i] = 0b0;
+                InputManager.buttonLastState[i] = 0b0;
             }
             inputDevice[0] = KEYBOARD_A_INPUT;
             inputDevice[1] = JOYSTICK_0_INPUT;
             inputDevice[2] = JOYSTICK_1_INPUT;
 
-            this.keyMapA = new Dictionary<Keys, int>
+            InputManager.keyMapA = new Dictionary<Keys, int>
             {
                 { Keys.Z, 0 },      // A
                 { Keys.X, 1 },      // B
@@ -103,7 +100,7 @@ namespace Input_Space {
                 { Keys.Space, 13 }, // Select
             };
 
-            this.keyMapB = new Dictionary<Keys, int>
+            InputManager.keyMapB = new Dictionary<Keys, int>
             {
                 { Keys.Q, 0 },      // A
                 { Keys.W, 1 },      // B
@@ -121,7 +118,7 @@ namespace Input_Space {
                 { Keys.Subtract, 13 }, // Select
             };
 
-            this.joystickMap = new Dictionary<int, int>
+            InputManager.joystickMap = new Dictionary<int, int>
             {
                 { 0x1000, 0 },      // A
                 { 0x2000, 1 },      // B
@@ -139,30 +136,11 @@ namespace Input_Space {
                 { 0x0020, 13 },     // Select
             };
 
-            this.buffers = new LinkedList<int>[] {new LinkedList<int>(), new LinkedList<int>(), new LinkedList<int>()};
-        }
-    
-        // Singleton
-        public static InputManager Instance {
-            get
-            {
-                if (instance == null)
-                {
-                    instance = new InputManager(true);
-                }
-                return instance;
-            }
-        }
-        public static void Initialize(bool autoDetectDevice = true)
-        {
-            if (instance == null)
-            {
-                instance = new InputManager(autoDetectDevice);
-            }
+            InputManager.buffers = new LinkedList<int>[] {new LinkedList<int>(), new LinkedList<int>(), new LinkedList<int>()};
         }
 
         // Behaviour
-        public void Update() {
+        public static void Update() {
             // Altera automaticamente o dispositivo de entrada
             if (autoDetectDevice && JoystickInput.IsJoystickConnected(0) && JoystickInput.IsJoystickConnected(1))  {
                 inputDevice[0] = NONE_INPUT;
@@ -197,39 +175,39 @@ namespace Input_Space {
 
             // Atualiza o estado dos botões
             for (int j = 2; j >= 0; j--) {
-                this.buttonLastState[j] = this.buttonState[j];
-                this.buttonState[j] = 0;
+                InputManager.buttonLastState[j] = InputManager.buttonState[j];
+                InputManager.buttonState[j] = 0;
 
                 // Processa o estado dos botões default
-                if (j == 0) this.buttonState[0] = this.buttonState[1] | this.buttonState[2];
+                if (j == 0) InputManager.buttonState[0] = InputManager.buttonState[1] | InputManager.buttonState[2];
                 else {
-                    for (int i = 0; i < this.maxButtonIndex; i++)
+                    for (int i = 0; i < InputManager.maxButtonIndex; i++)
                         if ((currentInput[j] & (1 << i)) != 0) 
-                            this.buttonState[j] |= 1 << i;
+                            InputManager.buttonState[j] |= 1 << i;
                 }
 
                 // Adiciona o estado atual do botão no buffer
                 if (buffers[j].Count >= BufferSize) buffers[j].RemoveFirst();
-                buffers[j].AddLast(this.buttonState[j]);
+                buffers[j].AddLast(InputManager.buttonState[j]);
             }
 
 
         }
 
         // Key Detection
-        public bool Key_hold(string key, int player = DEFAULT, int facing = 1) {
+        public static bool Key_hold(string key, int player = DEFAULT, int facing = 1) {
             return (buttonState[player] & (1 << keysTranslationMap[facing][key])) != 0;
         }
-        public bool Key_down(string key, int player = DEFAULT, int facing = 1) {
+        public static bool Key_down(string key, int player = DEFAULT, int facing = 1) {
             return (buttonState[player] & (1 << keysTranslationMap[facing][key])) != 0 && (buttonLastState[player] & (1 << keysTranslationMap[facing][key])) == 0;
         }
-        public bool Key_up(string key, int player = DEFAULT, int facing = 1) {
+        public static bool Key_up(string key, int player = DEFAULT, int facing = 1) {
             return (buttonState[player] & (1 << keysTranslationMap[facing][key])) == 0 && (buttonLastState[player] & (1 << keysTranslationMap[facing][key])) != 0;
         }
-        public bool Key_change(string key, int player = DEFAULT, int facing = 1) {
+        public static bool Key_change(string key, int player = DEFAULT, int facing = 1) {
             return (buttonState[player] & (1 << keysTranslationMap[facing][key])) != (buttonLastState[player] & (1 << keysTranslationMap[facing][key]));
         }
-        public bool Key_sequence_press(string rawSequenceString, int maxFrames, int player = DEFAULT, int facing = 1, bool flexEntry = true, bool flexTransition = true) {
+        public static bool Key_sequence_press(string rawSequenceString, int maxFrames, int player = DEFAULT, int facing = 1, bool flexEntry = true, bool flexTransition = true) {
             int[] sequence = rawSequenceString.Split(' ').Select(key => keysTranslationMap[facing][key]).ToArray();
             List<int> bufferList = buffers[player].ToList();
 
@@ -274,7 +252,7 @@ namespace Input_Space {
 
             return true;
         }
-        public bool Key_press(string key, int player = DEFAULT, int facing = 1, int input_window = -1) {
+        public static bool Key_press(string key, int player = DEFAULT, int facing = 1, int input_window = -1) {
             List<int> bufferList = buffers[player].ToList();
             for (int i = bufferList.Count() - 1; i > (bufferList.Count() - (input_window == -1 ? Config.input_window_time : input_window)); i--) {
                 if ((bufferList[i] & (1 << keysTranslationMap[facing][key])) != 0 && (bufferList[i-1] & (1 << keysTranslationMap[facing][key])) == 0) {
@@ -285,14 +263,14 @@ namespace Input_Space {
         }
         
         // Key Manipulation
-        public void SetKey(string key, int player, int facing = 1) {
+        public static void SetKey(string key, int player, int facing = 1) {
             if (key == "") return;
-            if (key.Contains("*")) this.buttonState[player] = 0; // Clear the input first
+            if (key.Contains("*")) InputManager.buttonState[player] = 0; // Clear the input first
             
             foreach (var k in key.Split(' ')) {
                 if (keysTranslationMap[facing].ContainsKey(k)) {
-                    this.buttonState[player] |= 1 << keysTranslationMap[facing][k];
-                    this.buffers[player].Last.Value = this.buttonState[player];
+                    InputManager.buttonState[player] |= 1 << keysTranslationMap[facing][k];
+                    InputManager.buffers[player].Last.Value = InputManager.buttonState[player];
                 }
             }
         }

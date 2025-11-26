@@ -78,7 +78,7 @@ public class Fireball : Character {
             this.current_animation.Reset();
         }
 
-        if (Math.Abs(Program.camera.X - this.visual_position.X) > Config.RenderWidth) this.remove = true;  
+        if (Math.Abs(Camera.X - this.visual_position.X) > Config.RenderWidth) this.remove = true;  
         
         switch (this.current_state) {
             case "Ken1":

@@ -43,7 +43,7 @@ using Data_space;
 
 namespace Character_Space {
     public class AI {
-        public Random rand = new Random();
+        public static Random rand = new Random();
         public Queue<string> moveQueue = new Queue<string>();
         public Queue<string> actionQueue = new Queue<string>();
         public FightState[] states = new FightState[5];
@@ -118,7 +118,7 @@ namespace Character_Space {
         public bool on_air => this.body.Position.Y < this.floor_line;
         public bool crounching => this.state.low;
 
-        public bool can_parry => (not_acting_all && parring) || (not_acting_all && InputManager.Instance.Key_press("Left", input_window: Config.parry_window, player: this.player_index, facing: this.facing));
+        public bool can_parry => (not_acting_all && parring) || (not_acting_all && InputManager.Key_press("Left", input_window: Config.parry_window, player: this.player_index, facing: this.facing));
         public bool can_dash => not_acting && !this.state.on_parry;
         public bool has_hit = false; 
 
@@ -210,7 +210,7 @@ namespace Character_Space {
             } else last_sprites = new Sprite[3];
 
             // Render current sprite
-            if (this.state.glow && UI.Instance.blink30Hz) {
+            if (this.state.glow && UI.blink30Hz) {
                 Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
                 Program.window.Draw(temp_sprite, new RenderStates(Program.hueChange));
             } else {
@@ -272,9 +272,9 @@ namespace Character_Space {
                     // Desenha o retângulo da hitbox na janela
                     Program.window.Draw(hitboxRect);
                 }
-                UI.Instance.DrawText(this.current_anim_frame_index.ToString(), this.body.Position.X - Camera.Instance.X, this.body.Position.Y - Camera.Instance.Y - 135, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.Instance.DrawText(this.current_state, this.body.Position.X - Camera.Instance.X, this.body.Position.Y - Camera.Instance.Y - 125, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.Instance.DrawText(this.state.not_busy ? "waiting" : "busy", this.body.Position.X - Camera.Instance.X, this.body.Position.Y - Camera.Instance.Y - 115, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                UI.DrawText(this.current_anim_frame_index.ToString(), this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 135, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                UI.DrawText(this.current_state, this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 125, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                UI.DrawText(this.state.not_busy ? "waiting" : "busy", this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 115, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
             }
         }
         public override void Animate() {   
@@ -301,9 +301,9 @@ namespace Character_Space {
 
             // Realiza as ações programadas
             if (this.BOT.moveQueue.Count > 0)
-                InputManager.Instance.SetKey(this.BOT.moveQueue.Dequeue(), player: this.player_index, facing: this.facing);
+                InputManager.SetKey(this.BOT.moveQueue.Dequeue(), player: this.player_index, facing: this.facing);
             if (this.BOT.actionQueue.Count > 0)
-                InputManager.Instance.SetKey(this.BOT.actionQueue.Dequeue(), player: this.player_index, facing: this.facing);
+                InputManager.SetKey(this.BOT.actionQueue.Dequeue(), player: this.player_index, facing: this.facing);
 
             // IA do bot
             if (this.AIEnabled) {
@@ -356,11 +356,11 @@ namespace Character_Space {
         }
         public bool isBlockingHigh() {
             if ((this.not_acting_all || this.state.on_block) && (this.blocking_high || this.blocking)) return true;
-            return (this.not_acting || (this.state.on_block && !this.state.low)) && InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) && !InputManager.Instance.Key_hold("Down", player: this.player_index, facing: this.facing);
+            return (this.not_acting || (this.state.on_block && !this.state.low)) && InputManager.Key_hold("Left", player: this.player_index, facing: this.facing) && !InputManager.Key_hold("Down", player: this.player_index, facing: this.facing);
         }
         public bool isBlockingLow() {
             if ((this.not_acting_all || this.state.on_block) && (this.blocking_low || this.blocking)) return true;
-            return (this.not_acting_low || (this.state.on_block && this.state.low)) && InputManager.Instance.Key_hold("Left", player: this.player_index, facing: this.facing) && InputManager.Instance.Key_hold("Down", player: this.player_index);
+            return (this.not_acting_low || (this.state.on_block && this.state.low)) && InputManager.Key_hold("Left", player: this.player_index, facing: this.facing) && InputManager.Key_hold("Down", player: this.player_index);
         }
         public void Stun(Character enemy, int advantage, bool hit = true, bool airbone = false, bool sweep = false, bool force_crounch = false, bool force_stand = false, bool force = false) {
             this.stun_frames = 0;
@@ -452,7 +452,7 @@ namespace Character_Space {
 
         // Static Methods 
         public static void Push(Character target, Character self, string amount, float X_amount = 0, float Y_amount = 0, bool airbone = false, bool force_push = false) {
-            if ((target.body.Position.X <= Camera.Instance.X - Config.corner_limit || target.body.Position.X >= Camera.Instance.X + Config.corner_limit) && !force_push) {
+            if ((target.body.Position.X <= Camera.X - Config.corner_limit || target.body.Position.X >= Camera.X + Config.corner_limit) && !force_push) {
                 if (X_amount != 0) {
                     self.SetVelocity(X: self.facing * target.facing * X_amount, keep_Y: true);
                     target.SetVelocity(X: self.facing * target.facing * X_amount, Y: (target.on_air || airbone) ? Y_amount : 0);
