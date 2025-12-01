@@ -6,6 +6,7 @@ using System.IO.Compression;
 using Stage_Space;
 using SFML.Graphics;
 using SFML.Audio;
+using UI_space;
 
 public class Ken : Character {
     private static Dictionary<string, Texture> textures_local = new Dictionary<string, Texture>();
@@ -15,8 +16,7 @@ public class Ken : Character {
 
     private int tatso_speed = 4;
     private Fireball current_fireball;
-
-    // Constructors
+// Constructors
     public Ken(string initialState, int startX, int startY, Stage stage)
         : base("Ken", initialState, startX, startY, "Assets/characters/Ken", stage)
     {
@@ -1394,22 +1394,28 @@ public class Ken : Character {
 
         } else if (state.enemyDistance < 0.7f) {
             var choise = AI.rand.Next(0, 20);
-            if (choise == 0) {
+            if (choise == 0 || choise == 20) {
                 this.BOT.EnqueueMove("Up Right", 5);
+
             } else if (choise <= 2) { 
                 this.BOT.EnqueueMove("Right", 20);
+
             } else if (choise <= 4) { 
                 this.BOT.EnqueueMove("Right", 20);
                 this.BOT.EnqueueMove("Down", 10);
+
             } else if (choise <= 6) { 
                 this.BOT.EnqueueMove("Left", 10);
+
             } else if (choise <= 8) { 
                 this.BOT.EnqueueMove("Left", 10);
                 this.BOT.EnqueueMove("Down", 10);
-                this.BOT.EnqueueMove("Right", 20);   
+                this.BOT.EnqueueMove("Right", 20);  
+
             } else if (choise <= 10) {
                 this.BOT.EnqueueMove("Left", 10);
                 this.BOT.EnqueueMove("Right", 30);
+
             } else 
                 this.BOT.EnqueueMove("", 30);
 
@@ -1425,9 +1431,9 @@ public class Ken : Character {
 
     }
     public override void SelectAction(FightState state) {
+        if (state.enemyIsDead) return;
         if (state.enemyChangedSide) this.BOT.actionQueue.Clear();
         if (this.state.busy && !this.on_hit && !this.state.on_block && !this.state.on_parry) return;
-        if (state.enemyIsDead) return;
 
         if (this.on_hit || this.state.on_block || (state.enemyIsAttacking && state.enemyDistance < 0.7f)) { // Block
             if (state.enemyIsCrouching) this.BOT.EnqueueAction("Left Down *", AI.rand.Next(10, 30));
@@ -1462,7 +1468,7 @@ public class Ken : Character {
             return;
         } 
         
-        if (state.enemyIsAirborne && !state.enemyIsOnHit) { // Anti air
+        if (state.enemyIsAirborne) { // Anti air
             var choise = AI.rand.Next(0, 2);
             if (choise == 0 && this.state.not_busy) { // Shoryuken
                 this.BOT.EnqueueAction("Right *", 5);
@@ -1471,7 +1477,7 @@ public class Ken : Character {
                 this.BOT.EnqueueAction("C", 5);
             } 
 
-        } else if (this.state.air) { // Air
+        } else if (this.state.air && state.enemyDistance < 0.4f) { // Air
             var choise = AI.rand.Next(0, 4);
 
             if (choise == 0) {
@@ -1496,7 +1502,7 @@ public class Ken : Character {
             if (AI.rand.Next(0, 3) == 0 && choise <= 9) {
                 this.BOT.EnqueueAction("Right *", 3);
                 this.BOT.EnqueueAction("*", 2);
-                this.BOT.EnqueueAction("Right *", 3);
+                this.BOT.EnqueueAction("Right *", 10);
             }
 
             if (choise < 3) { // Target combo
@@ -1608,8 +1614,8 @@ public class Ken : Character {
                 }
             } else if (choise == 0) { // Tatso
                 choise = AI.rand.Next(0, 10);
-                this.BOT.EnqueueAction("Down *", 5);
-                this.BOT.EnqueueAction("Left *", 5);
+                this.BOT.EnqueueAction("Down *", 15);
+                this.BOT.EnqueueAction("Left *", 15);
                 
                 if (choise == 0 && Character.CheckSuperPoints(this, 50)) {  // EX Tatso
                     this.BOT.EnqueueAction("RB", 1);
@@ -1621,9 +1627,8 @@ public class Ken : Character {
             } 
 
         } else { // Long range
-            if (AI.rand.Next(0, 10) == 0) {  // EX Hadouken
-                this.BOT.EnqueueAction("*", 30);
-                this.BOT.EnqueueAction("Down *", 10);
+            if (AI.rand.Next(0, 5) == 0 && this.current_fireball == null) {  // Hadouken
+                this.BOT.EnqueueAction("Down *", 20);
                 this.BOT.EnqueueAction("Right *", 5);
 
                 var choise = AI.rand.Next(0, 3);
@@ -1635,7 +1640,7 @@ public class Ken : Character {
                     this.BOT.EnqueueAction("C", 5);
 
                 return;
-            }
+            } else this.BOT.EnqueueAction("", AI.rand.Next(10, 30));
         }
     }
 }

@@ -443,21 +443,21 @@ namespace Stage_Space {
             if (hit_type == Character.PARRY) {
                 switch (amount) {
                     case "Light":
-                            this.StopFor((Config.hit_stop_time * 1/3) + character.current_animation.lenght + Config.parry_advantage * 2);
+                            this.StopFor(lenght: (Config.hit_stop_time * 1/3) + character.current_animation.lenght + Config.parry_advantage * 2, target: character, target_lenght: Config.hit_stop_time * 1/3);
                         break;
 
                     case "Medium":
-                            this.StopFor((Config.hit_stop_time * 1/3) + character.current_animation.lenght + Config.parry_advantage * 3/2);
+                            this.StopFor(lenght: (Config.hit_stop_time * 1/3) + character.current_animation.lenght + Config.parry_advantage * 3/2, target: character, target_lenght: Config.hit_stop_time * 1/3);
                         break;
 
                     case "Heavy":
-                            this.StopFor((Config.hit_stop_time * 1/3) + character.current_animation.lenght + Config.parry_advantage);
+                            this.StopFor(lenght: (Config.hit_stop_time * 1/3) + character.current_animation.lenght + Config.parry_advantage, target: character, target_lenght: Config.hit_stop_time * 1/3);
                         break;
 
                     default:
+                        this.StopFor(lenght: (Config.hit_stop_time * 1/3) + character.current_animation.lenght + Config.parry_advantage * 2, target: character, target_lenght: Config.hit_stop_time * 1/3);
                         break;
                 }
-                character.hitstop_counter = Config.hit_stop_time * 1/3;
 
             } else {
                 switch (amount) {
@@ -474,12 +474,14 @@ namespace Stage_Space {
                         break;
 
                     default:
+                        this.StopFor(Config.hit_stop_time * 1/2);
                         break;
                 }
             }
         }
-        public void StopFor(int frame_amount) {
-            foreach (var entity in this.OnSceneCharacters) entity.hitstop_counter = frame_amount;
+        public void StopFor(int lenght, int target_lenght = 0, Character target = null) {
+            foreach (var entity in this.OnSceneCharacters) entity.hitstop_counter = lenght;
+            if (target != null) target.hitstop_counter = target_lenght;
         }
         public bool MustWait() {
             return this.character_A.state.drama_wait || this.character_B.state.drama_wait;
@@ -585,7 +587,7 @@ namespace Stage_Space {
             else this.SetMusicVolume(volume_B);
         }
         
-        // Loads
+        // Loads☺
         public void LoadCharacters(string charA_name, string charB_name) {        
             var charA = Character.SelectCharacter(charA_name, this);
             var charB = Character.SelectCharacter(charB_name, this);
