@@ -10,12 +10,12 @@ public class Hitspark : Character {
     private static Dictionary<string, SoundBuffer> sounds_local = new Dictionary<string, SoundBuffer>();
     public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
 
-    public Hitspark(string initialState, float startX, float startY, int facing, Stage stage = null)
-        : base("Hitspark", initialState, startX, startY, "Assets/particles/Hitspark", stage) {
+    public Hitspark(string initialState, float startX, float startY, int facing)
+        : base("Hitspark", initialState, startX, startY, "Assets/particles/Hitspark") {
             this.facing = facing;
             this.own_light = Color.White;
         }
-    public Hitspark() : base("Hitspark", "", 0, 0, "Assets/particles/Hitspark", null) {}
+    public Hitspark() : base("Hitspark", "", 0, 0, "Assets/particles/Hitspark") {}
 
     public override void Load() {
         // Animations

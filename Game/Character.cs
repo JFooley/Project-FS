@@ -68,7 +68,7 @@ namespace Character_Space {
         public bool enemyIsDead;
         public bool onCorner;
     }
-
+    
     public abstract class Character : Object_Space.Object {
         // Consts
         public const int NOTHING = -1;
@@ -81,7 +81,7 @@ namespace Character_Space {
         public int type;
         public string folder_path;
         public float floor_line;
-        public Stage stage;
+        public Stage stage => Program.stage;
 
         // AI
         public AI BOT = new AI();
@@ -95,6 +95,7 @@ namespace Character_Space {
         public Vector2i life_points = new Vector2i(1000, 1000);
         public Vector2i dizzy_points = new Vector2i(500, 500);
         public Vector2i aura_points = new Vector2i(0, 100);
+        public Vector2f visual_position => new Vector2f(this.body.Position.X - 125, this.body.Position.Y - 250);
         public int stun_frames = 0;
         public int move_speed = 0;
         public int dash_speed = 0;
@@ -105,8 +106,6 @@ namespace Character_Space {
         public string current_state;
         public string last_state;
         private Sprite[] last_sprites = new Sprite[3]; // For tracing
-        public Color light_tint => Program.stage.AmbientLight;
-        public Color own_light = Color.Transparent;
 
         // Combat logic infos
         public bool not_acting => this.state.not_busy && !this.state.low && !this.state.air && !this.on_air;
@@ -134,10 +133,15 @@ namespace Character_Space {
         private static List<Sound> active_sounds = new List<Sound>();
 
         // Visuals
-        public Vector2f visual_position => new Vector2f(this.body.Position.X - 125, this.body.Position.Y - 250);
         public Texture thumb;
+        public Color light_tint => Program.stage.AmbientLight;
+        public Color own_light = Color.Transparent;
         public int shadow_size = 1;
-        public bool has_frame_change => this.last_frame_index != this.current_anim_frame_index;
+        public bool has_frame_change => this.last_anim_frame_index != this.current_anim_frame_index;
+        public virtual Texture palette {get; protected set;}
+        public uint palette_size => this.palette.Size.X;
+        public uint palette_quantity => this.palette.Size.Y;
+        public uint palette_index = 0;
 
         // Gets
         public string current_sprite => current_animation.GetCurrentFrame().Sprite_index;
@@ -147,7 +151,7 @@ namespace Character_Space {
         public int current_logic_frame_index => current_animation.logic_frame_index;
         public Animation current_animation => states[current_state].animation;
         public State state => states[current_state];
-        public int last_frame_index = -1;
+        public int last_anim_frame_index = -1;
 
         // Flags and counters
         public int combo_counter = 0;
@@ -155,23 +159,22 @@ namespace Character_Space {
         public float damage_scaling => Math.Max(0.1f, 1 - combo_counter * 0.1f);
         public bool SA_flag = false;
 
-        public Character(string name, string initialState, float startX, float startY, string folderPath, Stage stage, int type = 0) : base() {
+        public Character(string name, string initialState, float startX, float startY, string folderPath, int type = 0) : base() {
             this.folder_path = folderPath;
             this.name = name;
             this.type = type;
             this.current_state = initialState;
             this.last_state = initialState;
-            this.stage = stage;
             base.body.Position.X = startX; 
             base.body.Position.Y = startY;
             this.floor_line = startY;
         }
-        public Character(string name, string folder_path, Texture thumb) {
+        public Character(string name, string folder_path) {
             this.name = name;
             this.folder_path = folder_path;
             this.thumb = thumb;
         }
-        
+
         // Every Frame methods
         public override void Update() {
             // Render > Behave > Colide > Anima
@@ -192,7 +195,6 @@ namespace Character_Space {
             var temp_sprite = this.GetCurrentSprite();
             temp_sprite.Position = new Vector2f(this.body.Position.X - (temp_sprite.GetLocalBounds().Width / 2 * this.facing), this.body.Position.Y - temp_sprite.GetLocalBounds().Height);
             temp_sprite.Scale = new Vector2f(this.facing, 1f);
-            temp_sprite.Color = this.own_light == Color.Transparent ? this.light_tint : this.own_light;
 
             // Render tracing
             if (this.state.trace) {
@@ -210,12 +212,18 @@ namespace Character_Space {
             } else last_sprites = new Sprite[3];
 
             // Render current sprite
-            if (this.state.glow && UI.blink30Hz) {
-                Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
-                Program.window.Draw(temp_sprite, new RenderStates(Program.hueChange));
+            if (this.palette != null) {
+                var light = this.own_light == Color.Transparent ? this.light_tint : this.own_light;
+                Program.window.Draw(temp_sprite, this.SetSwaperShader(this.palette, this.palette_size, this.palette_quantity, this.palette_index, light));
             } else {
                 Program.window.Draw(temp_sprite);
             }
+
+            // Aplly aura effect
+            if (this.state.glow && UI.blink30Hz) {
+                Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
+                Program.window.Draw(temp_sprite, new RenderStates(shader: Program.hueChange));
+            } 
 
             // Play sounds
             this.PlayFrameSound();
@@ -286,7 +294,7 @@ namespace Character_Space {
             this.body.Position.Y += current_animation.GetCurrentFrame().DeltaY * this.facing;
 
             // Advance to the next frame and reset hit if necessary
-            this.last_frame_index = this.current_anim_frame_index;
+            this.last_anim_frame_index = this.current_anim_frame_index;
             if (current_animation.AdvanceFrame() && current_animation.GetCurrentFrame().hasHit == false) this.has_hit = false;
 
             // Change state, if necessary
@@ -556,25 +564,33 @@ namespace Character_Space {
             this.body.SetVelocity(this, 0, 0, raw_set: true);
             this.facing = facing;
         }
-    
+        public RenderStates SetSwaperShader(Texture palette, uint palette_size, uint palette_quantity, uint palette_index, Color light) {
+            Program.paletteSwaper.SetUniform("palette", palette);
+            Program.paletteSwaper.SetUniform("palette_size", palette_size);
+            Program.paletteSwaper.SetUniform("palette_quantity", palette_quantity);
+            Program.paletteSwaper.SetUniform("palette_index", palette_index);
+            Program.paletteSwaper.SetUniform("light", new Vector3f(light.R / 255f, light.G / 255f, light.B / 255f));
+            return new RenderStates(Program.paletteSwaper);
+        }
         // Loads
-        public void LoadTextures() {
+        public void LoadTextures(bool do_index = false) {
             string currentDirectory = Directory.GetCurrentDirectory();
             string full_path = Path.Combine(currentDirectory, this.folder_path, "sprites");
-            
-            // Verifica se o diretório existe
+
             if (!System.IO.Directory.Exists(full_path)) {
                 throw new System.IO.DirectoryNotFoundException($"O diretório {full_path} não foi encontrado.");
             }
 
-            // Verifica se o arquivo binário existe, senão, carrega as texturas e cria ele
             string dat_path = Path.Combine(full_path, "visuals.dat");
             try {
                 DataManagement.LoadTexturesFromFile(dat_path, this.textures);
             } catch (Exception e) {
                 DataManagement.LoadTexturesFromPath(full_path, this.textures);
+                if (do_index) DataManagement.IndexTextureColors(this.textures, this.palette);
                 DataManagement.SaveTexturesToFile(dat_path, this.textures);
             }
+
+
         }
         public void UnloadTextures() {
             foreach (var image in textures.Values)
@@ -587,12 +603,10 @@ namespace Character_Space {
             string currentDirectory = Directory.GetCurrentDirectory();
             string full_sound_path = Path.Combine(currentDirectory, this.folder_path, "sounds");
 
-            // Verifica se o diretório existe
             if (!System.IO.Directory.Exists(full_sound_path)) {
                 throw new System.IO.DirectoryNotFoundException($"O diretório {full_sound_path} não foi encontrado.");
             }
 
-            // Verifica se o arquivo binário existe, senão, carrega os sons e cria ele
             string dat_path = Path.Combine(full_sound_path, "sounds.dat");
             try {
                 DataManagement.LoadSoundsFromFile(dat_path, this.sounds);
@@ -608,30 +622,22 @@ namespace Character_Space {
             }
             sounds.Clear(); 
         }
-        
-        // General Load
-        public static Character SelectCharacter(string name, Stage stage) {
-            switch (name) {
-                case "Ken":
-                    var Ken_object = new Ken("Intro", 0, stage.floorLine, stage);
-                    Ken_object.Load();
-                    return Ken_object;
-
-                default:
-                    var Default_object = new Ken("Intro", 0, stage.floorLine, stage);
-                    Default_object.Load();
-                    return Default_object;
+        public void LoadPalette() {
+            string currentDirectory = Directory.GetCurrentDirectory();
+            this.palette = new Texture(Path.Combine(currentDirectory, this.folder_path, "palette.bmp"));
+        }
+        public void SetThumb() {
+            try {
+                this.textures.TryGetValue("thumb", out Texture thumb);
+                this.thumb = thumb ;
+            } catch (Exception) {
+                this.thumb = new Texture(1,1);
             }
         }
-        public static void LoadThumbs() {
-            try {
-                DataManagement.LoadTexturesFromFile("Assets/data/character_thumbs.dat", Program.thumbs);
-            } catch (Exception e) {
-                var temp_dict = new Dictionary<string, Texture> { };
-                foreach (string characterDir in Directory.GetDirectories("Assets/characters")) DataManagement.LoadTexturesFromPath(characterDir, temp_dict);
-                DataManagement.SaveTexturesToFile("Assets/data/character_thumbs.dat", temp_dict);
-                foreach (var item in temp_dict) Program.thumbs[item.Key] = item.Value;
-            }
+        
+        // General Load
+        public virtual Character Copy() {
+            return null;
         }
         public virtual void Load() { }
         public override void Unload() {

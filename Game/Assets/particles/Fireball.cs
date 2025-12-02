@@ -12,15 +12,15 @@ public class Fireball : Character {
     private static Dictionary<string, SoundBuffer> sounds_local = new Dictionary<string, SoundBuffer>();
     public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
 
-    public Fireball(string initialState, int life_points, float startX, float startY, int team, int facing, Stage stage)
-        : base("Fireball", initialState, startX, startY, "Assets/particles/Fireball", stage, 1) {
+    public Fireball(string initialState, int life_points, float startX, float startY, int team, int facing)
+        : base("Fireball", initialState, startX, startY, "Assets/particles/Fireball", 1) {
             this.player_index = team;
             this.facing = facing;
             this.life_points = new Vector2i(life_points, 0);
             this.shadow_size = 0;
             this.own_light = new Color(255, 255, 255, 255);
         }
-    public Fireball() : base("Fireball", "", 0, 0, "Assets/particles/Fireball", null, 1) {}
+    public Fireball() : base("Fireball", "", 0, 0, "Assets/particles/Fireball", 1) {}
 
     public override void Load() {
         // Animations
@@ -70,7 +70,6 @@ public class Fireball : Character {
 
         this.states = animations;
     }
-
     public override void DoBehave() {
         base.DoBehave();
         if (this.state.post_state == "Remove" && this.current_animation.ended) {
@@ -116,7 +115,6 @@ public class Fireball : Character {
                 break;
         }
     }
-
     public override int ImposeBehavior(Character target) {
         int hit = Character.NOTHING;
 
@@ -186,7 +184,6 @@ public class Fireball : Character {
         }
         return hit;
     }
-
     public override int DefineColisionType(Character target) {
         this.life_points.X -= 1;
         return base.DefineColisionType(target);

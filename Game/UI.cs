@@ -158,7 +158,7 @@ namespace UI_space {
             float posX = Camera.X + X;
             float posY = Camera.Y + Y;
             
-            // 2. Move a posição original do rect + X para a direita
+            // Move a posição original do rect + X para a direita
             if (mirrored) {
                 if (grow_inverted) posX -= reducedWidth;
 
@@ -220,21 +220,17 @@ namespace UI_space {
             // Super bar A
             var superA_scale = stage.character_A.aura_points.X * 117 / stage.character_A.aura_points.Y;
             var superA = Math.Max(Math.Min(superA_scale, 117), 0);
-            UI.DrawBar(super_bar_X, super_bar_Y, superA, 117, "aurabar", alignment: "left", mirrored: false, color: UI.bar_super, grow_inverted: false);
-            if (stage.character_A.aura_points.X >= stage.character_A.aura_points.Y/2) {
-                var control = stage.character_A.aura_points.X == stage.character_A.aura_points.Y ? UI.blink10Hz : true;
-                if (control) UI.DrawBar(super_bar_X, super_bar_Y, superA, 117, "aurabar", alignment: "left", mirrored: false, color: UI.bar_super_full, grow_inverted: false);
-            }
+            var full_A = stage.character_A.aura_points.X == stage.character_A.aura_points.Y;
+            var aura_color_A = stage.character_A.aura_points.X >= stage.character_A.aura_points.Y/2 && !(full_A && UI.blink10Hz) ? UI.bar_super_full : UI.bar_super;
+            UI.DrawBar(super_bar_X, super_bar_Y, superA, 117, "aurabar", alignment: "left", mirrored: false, color: aura_color_A, grow_inverted: false);
             if (stage.character_A.aura_points.X == stage.character_A.aura_points.Y && UI.blink2Hz) UI.DrawText(UI.superBarMsg, -193, 73, spacing: Config.spacing_medium, alignment: "left", textureName: "default small white");
                         
             // Super bar B
             var superB_scale = stage.character_B.aura_points.X * 117 / stage.character_B.aura_points.Y;
             var superB = Math.Max(Math.Min(superB_scale, 117), 0);
-            UI.DrawBar(-super_bar_X, super_bar_Y, superB, 117, "aurabar", alignment: "right", mirrored: true, color: UI.bar_super, grow_inverted: false);
-            if (stage.character_B.aura_points.X >= stage.character_B.aura_points.Y/2) {
-                var control = stage.character_B.aura_points.X == stage.character_B.aura_points.Y ? UI.blink10Hz : true;
-                if (control) UI.DrawBar(-super_bar_X, super_bar_Y, superB, 117, "aurabar", alignment: "right", mirrored: true, color: UI.bar_super_full, grow_inverted: false);
-            }
+            var full_B = stage.character_B.aura_points.X == stage.character_B.aura_points.Y;
+            var aura_color_B = stage.character_B.aura_points.X >= stage.character_B.aura_points.Y/2 && !(full_B && UI.blink10Hz) ? UI.bar_super_full : UI.bar_super;
+            UI.DrawBar(-super_bar_X, super_bar_Y, superB, 117, "aurabar", alignment: "right", mirrored: true, color: aura_color_B, grow_inverted: false);
             if (stage.character_B.aura_points.X == stage.character_B.aura_points.Y && UI.blink2Hz) UI.DrawText(UI.superBarMsg, 193, 73, spacing: Config.spacing_medium, alignment: "right", textureName: "default small white");
 
             // Stun bar A

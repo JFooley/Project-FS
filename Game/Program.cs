@@ -43,7 +43,8 @@ public static class Program {
     // Common objects
     public static Stage stage;
     public static RenderWindow window;
-    private static Stopwatch frametimer;
+    public static Clock gameTime = new Clock();
+    private static Stopwatch frametimer = new Stopwatch();
 
     // Session infos
     public static int player1_wins = 0;
@@ -56,17 +57,22 @@ public static class Program {
     // Aux
     private static int pointer = 0;
     private static int controls_pointer = 0;
-    private static string charA_selected = null;
-    private static string charB_selected = null;
-    private static int pointer_charA = 0;
-    private static int pointer_charB = 0;
     public static bool loading = false;
     public static double last_frame_time = 0;
+    private static Character charA_selected;
+    private static Character charB_selected;
+    private static int pointer_charA = 0;
+    private static int pointer_charB = 0;
+    private static bool ready_charA = false;
+    private static bool ready_charB = false;
+    public static bool AI_charA = false;
+    public static bool AI_charB = false;
 
     // Shaders
     public static Shader colorTinterShader = new Shader(null, null, "Assets/shaders/color_tinter.frag");
     public static Shader colorFillShader = new Shader(null, null, "Assets/shaders/color_fill.frag");
     public static Shader hueChange = new Shader(null, null, "Assets/shaders/hue_change.frag");
+    public static Shader paletteSwaper = new Shader(null, null, "Assets/shaders/palette_swaper.frag");
 
     // Data
     private static List<Stage> stages;
@@ -92,14 +98,12 @@ public static class Program {
             DataManagement.SaveTexturesToFile("Assets/data/visuals.dat", visuals);
         }
         Stage.LoadThumbs();
-        Character.LoadThumbs();
         new UI();
 
         // Inicializações
         Language.Initialize();
         new InputManager(autoDetectDevice: true);
         new Camera();
-        frametimer = new Stopwatch();
 
         // Crie uma janela
         if (Config.Fullscreen == true) window = new RenderWindow(VideoMode.DesktopMode, Config.GameTitle, Styles.Fullscreen);
@@ -147,8 +151,8 @@ public static class Program {
         Sprite KO_logo = new Sprite(visuals["ko"]);
         Sprite fslogo = new Sprite(visuals["fs"]);
 
-        Sprite sprite_A = new Sprite(characters[pointer_charA].thumb);
-        Sprite sprite_B = new Sprite(characters[pointer_charB].thumb);
+        Sprite sprite_A = new Sprite();
+        Sprite sprite_B = new Sprite();
 
         while (window.IsOpen) {
             window.DispatchEvents();
@@ -166,8 +170,7 @@ public static class Program {
 
                     UI.DrawText(string.Concat(Enumerable.Repeat(".", pointer)), -122, 68, alignment: "left", spacing: -24);
 
-                    if (!loading)
-                    {
+                    if (!loading) {
                         Thread main_loader = new Thread(MainLoader);
                         main_loader.Start();
                         loading = true;
@@ -226,8 +229,6 @@ public static class Program {
                 case SelectChar:
                     window.Draw(char_bg);
 
-                    face_up = InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D");
-
                     // Setup sprites texture
                     sprite_A.Texture = characters[pointer_charA].thumb;
                     sprite_B.Texture = characters[pointer_charB].thumb;
@@ -235,63 +236,74 @@ public static class Program {
                     // Draw Shadows
                     colorFillShader.SetUniform("fillColor", new SFML.Graphics.Glsl.Vec3(0, 0, 0));
 
-                    sprite_A.Scale = new Vector2f(1f, 1f);
-                    sprite_A.Position = new Vector2f(Camera.X - 81 - sprite_A.GetLocalBounds().Width / 2, Camera.Y - 20 - sprite_A.GetLocalBounds().Height / 2);
-                    window.Draw(sprite_A, new RenderStates(colorFillShader));
-
-                    sprite_B.Scale = new Vector2f(-1f, 1f);
-                    sprite_B.Position = new Vector2f(Camera.X + 73 + sprite_B.GetLocalBounds().Width / 2, Camera.Y - 20 - sprite_B.GetLocalBounds().Height / 2);
-                    window.Draw(sprite_B, new RenderStates(colorFillShader));
+                    if (charA_selected != null) {
+                        sprite_A.Scale = new Vector2f(1f, 1f);
+                        sprite_A.Position = new Vector2f(Camera.X - 87 - sprite_A.GetLocalBounds().Width / 2, Camera.Y - 20 - sprite_A.GetLocalBounds().Height / 2);
+                        window.Draw(sprite_A, new RenderStates(colorFillShader));
+                    } if (charB_selected != null) {
+                        sprite_B.Scale = new Vector2f(-1f, 1f);
+                        sprite_B.Position = new Vector2f(Camera.X + 67 + sprite_B.GetLocalBounds().Width / 2, Camera.Y - 20 - sprite_B.GetLocalBounds().Height / 2);
+                        window.Draw(sprite_B, new RenderStates(colorFillShader));
+                    }
 
                     // Draw main sprite
-                    colorTinterShader.SetUniform("tintColor", new SFML.Graphics.Glsl.Vec3(0, 0, 0));
-                    colorTinterShader.SetUniform("intensity", 0.75f);
-
+                    sprite_B.Scale = new Vector2f(1f, 1f);
                     sprite_A.Position = new Vector2f(Camera.X - 77 - sprite_B.GetLocalBounds().Width / 2, Camera.Y - 20 - sprite_B.GetLocalBounds().Height / 2);
-                    if (charA_selected != null) window.Draw(sprite_A, new RenderStates(colorTinterShader));
-                    else window.Draw(sprite_A);
+                    window.Draw(sprite_A, characters[pointer_charA].SetSwaperShader(characters[pointer_charA].palette, characters[pointer_charA].palette_size, characters[pointer_charA].palette_quantity, charA_selected != null ? charA_selected.palette_index : 0, ready_charA ? new Color(128, 128, 128) : Color.White));
+                    if (ready_charA) UI.DrawText(Language.GetText("ready"), -77, -20, textureName: "default small", spacing: Config.spacing_small);
 
-                    sprite_B.Position = new Vector2f(Camera.X + 77 + sprite_B.GetLocalBounds().Width / 2, Camera.Y - 20 - sprite_B.GetLocalBounds().Height / 2);
                     sprite_B.Scale = new Vector2f(-1f, 1f);
-                    if (charB_selected != null) window.Draw(sprite_B, new RenderStates(colorTinterShader));
-                    else window.Draw(sprite_B);
+                    sprite_B.Position = new Vector2f(Camera.X + 77 + sprite_B.GetLocalBounds().Width / 2, Camera.Y - 20 - sprite_B.GetLocalBounds().Height / 2);
+                    window.Draw(sprite_B, characters[pointer_charB].SetSwaperShader(characters[pointer_charB].palette, characters[pointer_charB].palette_size, characters[pointer_charB].palette_quantity, charB_selected != null ? charB_selected.palette_index : 0, ready_charB ? new Color(128, 128, 128) : Color.White));
+                    if (ready_charB) UI.DrawText(Language.GetText("ready"), +77, -20, textureName: "default small", spacing: Config.spacing_small);
 
                     // Draw texts
                     UI.DrawText(player1_wins.ToString(), 0, 63, alignment: "right");
                     UI.DrawText(player2_wins.ToString(), 0, 63, alignment: "left");
 
+                    // Draw buttons
                     UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
                     if (UI.DrawButton(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: InputManager.Key_hold("LB"), action: InputManager.Key_up("LB"), click_font: "default small click", hover_font: "default small")) {
                         ChangeState(SelectStage);
-                        charB_selected = null;
                         charA_selected = null;
+                        charB_selected = null;
+                        ready_charA = false;
+                        ready_charB = false;
                     }
-
                     UI.DrawText("F", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
                     if (UI.DrawButton(Language.GetText("Controls"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: InputManager.Key_hold("RB"), action: InputManager.Key_up("RB"), click_font: "default small click", hover_font: "default small")) 
                         ChangeState(Controls);
 
                     // Chose option A
-                    if (UI.DrawButton("<   ", -77, -16, hover: charA_selected == null, click: InputManager.Key_hold("Left", player: 1), action: InputManager.Key_down("Left", player: 1), hover_font: "default small", font: "", spacing: 0))
-                        pointer_charA = pointer_charA <= 0 ? characters.Count - 1 : pointer_charA - 1;
-                    if (UI.DrawButton("   >", -77, -16, hover: charA_selected == null, click: InputManager.Key_hold("Right", player: 1), action: InputManager.Key_down("Right", player: 1), hover_font: "default small", font: "", spacing: 0))
-                        pointer_charA = pointer_charA >= characters.Count - 1 ? 0 : pointer_charA + 1;
+                    if (UI.DrawButton("<   ", -77, -16, hover: true, click: InputManager.Key_hold("Left", player: 1), action: InputManager.Key_down("Left", player: 1), hover_font: "default small", font: "", spacing: 0)) {
+                        if (charA_selected == null) pointer_charA = pointer_charA > 0 ? pointer_charA - 1 : characters.Count - 1;
+                        else if (!ready_charA) charA_selected.palette_index = charA_selected.palette_index > 0 ? charA_selected.palette_index - 1 : charA_selected.palette_quantity - 1;
+                    } if (UI.DrawButton("   >", -77, -16, hover: true, click: InputManager.Key_hold("Right", player: 1), action: InputManager.Key_down("Right", player: 1), hover_font: "default small", font: "", spacing: 0)) {
+                        if (charA_selected == null) pointer_charA = pointer_charA < characters.Count - 1 ? pointer_charA + 1 : 0;
+                        else if (!ready_charA) charA_selected.palette_index = charA_selected.palette_index < charA_selected.palette_quantity - 1 ? charA_selected.palette_index + 1 : 0;
+                    }
 
                     if (UI.DrawButton(characters[pointer_charA].name, -77, 45, spacing: Config.spacing_small, action: InputManager.Key_down("A", player: 1), click: InputManager.Key_hold("A", player: 1), hover_font: "default small"))
-                        charA_selected = characters[pointer_charA].name;
+                        if (charA_selected == null) charA_selected = characters[pointer_charA].Copy();
+                        else ready_charA = !ready_charA;
 
                     // Chose option B
-                    if (UI.DrawButton("<   ", 77, -16, hover: charB_selected == null, click: InputManager.Key_hold("Left", player: 2), action: InputManager.Key_down("Left", player: 2), hover_font: "default small", font: "", spacing: 0))
-                        pointer_charB = pointer_charB <= 0 ? characters.Count - 1 : pointer_charB - 1;
-                    if (UI.DrawButton("   >", 77, -16, hover: charB_selected == null, click: InputManager.Key_hold("Right", player: 2), action: InputManager.Key_down("Right", player: 2), hover_font: "default small", font: "", spacing: 0))
-                        pointer_charB = pointer_charB >= characters.Count - 1 ? 0 : pointer_charB + 1;
+                    if (UI.DrawButton("<   ", 77, -16, hover: true, click: InputManager.Key_hold("Left", player: 2), action: InputManager.Key_down("Left", player: 2), hover_font: "default small", font: "", spacing: 0)) {
+                        if (charB_selected == null) pointer_charB = pointer_charB > 0 ? pointer_charA - 1 : characters.Count - 1;
+                        else if (!ready_charB) charB_selected.palette_index = charB_selected.palette_index > 0 ? charB_selected.palette_index - 1 : charB_selected.palette_quantity - 1;
+                    } if (UI.DrawButton("   >", 77, -16, hover: true, click: InputManager.Key_hold("Right", player: 2), action: InputManager.Key_down("Right", player: 2), hover_font: "default small", font: "", spacing: 0)) {
+                        if (charB_selected == null) pointer_charB = pointer_charB < characters.Count - 1 ? pointer_charB + 1 : 0;
+                        else if (!ready_charB) charB_selected.palette_index = charB_selected.palette_index < charB_selected.palette_quantity - 1 ? charB_selected.palette_index + 1 : 0;
+                    }
 
                     if (UI.DrawButton(characters[pointer_charB].name, 77, 45, spacing: Config.spacing_small, action: InputManager.Key_down("A", player: 2), click: InputManager.Key_hold("A", player: 2), hover_font: "default small"))
-                        charB_selected = characters[pointer_charB].name;
+                        if (charB_selected == null) charB_selected = characters[pointer_charB].Copy();
+                        else ready_charB = !ready_charB;
 
-                    // Ends when chars are selected
-                    if (charA_selected != null && charB_selected != null && face_up)
-                        ChangeState(LoadScreen);
+                    // Ends when chars are selected and ready
+                    if (ready_charA && ready_charB)
+                        if (UI.blink2Hz) UI.DrawText(Language.GetText("press start"), 0, -90, spacing: Config.spacing_medium);
+                        if (InputManager.Key_down("Start")) ChangeState(LoadScreen);
 
                     break;
 
@@ -305,6 +317,8 @@ public static class Program {
                     pointer = 0;
                     charA_selected = null;
                     charB_selected = null;
+                    ready_charA = false;
+                    ready_charB = false;
                     pointer_charA = 0;
                     pointer_charB = 0;
 
@@ -569,17 +583,16 @@ public static class Program {
         game_state = new_state;
     }
 
-    public static void MainLoader()
-    {
-        foreach (var character in characters)
-        {
+    public static void MainLoader() {
+        foreach (var character in characters) {
             if (character.GetType() == typeof(Character)) continue;
-            character.LoadTextures();
+            character.LoadPalette();
+            character.LoadTextures(do_index: true);
             character.LoadSounds();
+            character.SetThumb();
         }
 
-        foreach (var stage in stages)
-        {
+        foreach (var stage in stages) {
             if (stage.GetType() == typeof(Stage)) continue;
             stage.LoadTextures();
             stage.LoadSounds();

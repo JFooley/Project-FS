@@ -11,12 +11,12 @@ public class Particle : Character {
     private static Dictionary<string, SoundBuffer> sounds_local = new Dictionary<string, SoundBuffer>();
     public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
 
-    public Particle(string initialState, float startX, float startY, int facing, Stage stage = null)
-        : base("Particle", initialState, startX, startY, "Assets/particles/Particle", stage) {
+    public Particle(string initialState, float startX, float startY, int facing)
+        : base("Particle", initialState, startX, startY, "Assets/particles/Particle") {
             this.facing = facing;
             this.own_light = Color.White;
         }
-    public Particle() : base("Particle", "", 0, 0, "Assets/particles/Particle", null) {}
+    public Particle() : base("Particle", "", 0, 0, "Assets/particles/Particle") {}
 
     public override void Load() {
         // Animations

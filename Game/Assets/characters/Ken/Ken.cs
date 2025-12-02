@@ -9,16 +9,19 @@ using SFML.Audio;
 using UI_space;
 
 public class Ken : Character {
-    private static Dictionary<string, Texture> textures_local = new Dictionary<string, Texture>();
-    public override Dictionary<string, Texture> textures {get => textures_local; protected set => textures_local = value ?? new Dictionary<string, Texture>();}
-    private static Dictionary<string, SoundBuffer> sounds_local = new Dictionary<string, SoundBuffer>();
-    public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
+    private static Dictionary<string, Texture> _shared_textures = new Dictionary<string, Texture>();
+    public override Dictionary<string, Texture> textures {get => _shared_textures; protected set => _shared_textures = value ?? new Dictionary<string, Texture>();}
+    private static Dictionary<string, SoundBuffer> _shared_sounds = new Dictionary<string, SoundBuffer>();
+    public override Dictionary<string, SoundBuffer> sounds {get => _shared_sounds; protected set => _shared_sounds = value ?? new Dictionary<string, SoundBuffer>();}
+    
+    private static Texture _shared_palette;
+    public override Texture palette {get => _shared_palette; protected set => _shared_palette = value;}
 
     private int tatso_speed = 4;
     private Fireball current_fireball;
 // Constructors
-    public Ken(string initialState, int startX, int startY, Stage stage)
-        : base("Ken", initialState, startX, startY, "Assets/characters/Ken", stage)
+    public Ken(string initialState, int startX, int startY)
+        : base("Ken", initialState, startX, startY, "Assets/characters/Ken")
     {
         this.life_points = new Vector2i(1000, 1000);
         this.dizzy_points = new Vector2i(500, 500);
@@ -26,8 +29,14 @@ public class Ken : Character {
 
         this.dash_speed = 8;
         this.move_speed = 3;
-    } public Ken() : base("Ken", "Assets/characters/Ken", Program.thumbs["ken_thumb"]) { }
-    
+    } 
+    public Ken() : base("Ken", "Assets/characters/Ken") { }
+
+    public override Character Copy() {
+        var obj = new Ken("Intro", 0, 0);
+        obj.Load();
+        return obj;
+    }
     public override void Load() {
         // Hurtboxes
         var pushbox = new GenericBox(2, 125 - this.push_box_width, 110, 125 + this.push_box_width, 195);
@@ -804,6 +813,8 @@ public class Ken : Character {
     }
     public override void DoBehave() {
         if (this.behave == false) return;
+
+        if (InputManager.Key_down("LT", player: this.player_index)) this.palette_index = this.palette_index + 1 < this.palette_quantity ? this.palette_index + 1 : 0;
 
         if ((this.current_state == "WalkingForward" || this.current_state == "WalkingBackward") & !InputManager.Key_hold("Left", player: this.player_index, facing: this.facing) & !InputManager.Key_hold("Right", player: this.player_index, facing: this.facing)) {
             this.ChangeState("Idle");

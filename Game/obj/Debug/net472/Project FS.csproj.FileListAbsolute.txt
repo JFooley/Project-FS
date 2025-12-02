@@ -2337,9 +2337,10 @@ D:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.pdb
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\config.json
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\languages\EN.json
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\languages\PT.json
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\palette_swaper.frag
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\palette.bmp
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\sounds\sounds.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\sprites\visuals.dat
-D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\data\character_thumbs.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\data\stage_thumbs.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\data\visuals.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\fonts\fonts.dat

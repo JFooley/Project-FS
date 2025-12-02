@@ -100,9 +100,9 @@ namespace Stage_Space {
             this.rounds_B = 0;
             this.CurrentState = "Default";
 
-            this.spark = new Hitspark("Default", 0, 0, 1, this);
-            this.fireball = new Fireball("Default", 1, 0, 0, 0, 1, this);
-            this.particle = new Particle("Default", 0, 0, 1, this);
+            this.spark = new Hitspark("Default", 0, 0, 1);
+            this.fireball = new Fireball("Default", 1, 0, 0, 0, 1);
+            this.particle = new Particle("Default", 0, 0, 1);
 
             this.thumb = new Sprite(thumb);
 
@@ -357,7 +357,7 @@ namespace Stage_Space {
             this.newParticles.Add(hs);
         }
         public Fireball spawnFireball(string state, float X, float Y, int facing, int team, int life_points = 1, int X_offset = 10, int Y_offset = 0) {        
-            var fb = new Fireball(state, life_points, X + X_offset * facing, Y + Y_offset, team, facing, this);
+            var fb = new Fireball(state, life_points, X + X_offset * facing, Y + Y_offset, team, facing);
             fb.ChangeState(state, reset: true);
             fb.states = this.fireball.states;
             this.newCharacters.Add(fb);
@@ -510,17 +510,21 @@ namespace Stage_Space {
             this.character_A = char_A;
             this.character_A.facing = 1;
             this.character_A.player_index = 1;
+            this.character_A.BotEnabled = Program.AI_charA;
+            this.character_A.AIEnabled = Program.AI_charA;
 
             this.character_B = char_B;
             this.character_B.facing = -1;
             this.character_B.player_index = 2;
+            this.character_B.BotEnabled = Program.AI_charB;
+            this.character_B.AIEnabled = Program.AI_charB;
 
             this.character_A.floor_line = this.floorLine;
             this.character_B.floor_line = this.floorLine;
+            this.character_A.body.Position.Y = this.floorLine;
+            this.character_B.body.Position.Y = this.floorLine;
             this.character_A.body.Position.X = this.start_point_A;
             this.character_B.body.Position.X = this.start_point_B;
-            this.character_A.stage = this;
-            this.character_B.stage = this;
 
             this.OnSceneCharacters = new List<Character> {this.character_A, this.character_B};
             this.LockPlayers();
@@ -588,10 +592,7 @@ namespace Stage_Space {
         }
         
         // Loads☺
-        public void LoadCharacters(string charA_name, string charB_name) {        
-            var charA = Character.SelectCharacter(charA_name, this);
-            var charB = Character.SelectCharacter(charB_name, this);
-
+        public void LoadCharacters(Character charA, Character charB) {        
             this.SetChars(charA, charB);
             
             this.spark.Load();

@@ -1,9 +1,9 @@
+using System.Runtime.Remoting;
 using SFML.Audio;
 using SFML.Graphics;
 
 namespace Data_space {
-    public static class DataManagement
-    {
+    public static class DataManagement {
         public static void SaveTexturesToFile(string fileName, Dictionary<string, Texture> textures) {
             using (var stream = new FileStream(fileName, FileMode.Create))
             using (var writer = new BinaryWriter(stream))
@@ -153,5 +153,32 @@ namespace Data_space {
 
             return sounds;
         }
+    
+        public static void IndexTextureColors(Dictionary<string, Texture> textures, Texture palette) {
+            var palette_img = palette.CopyToImage();
+
+            Dictionary<Color, byte> colorToIndexMap = new Dictionary<Color, byte>();
+            for (uint x = 0; x < palette_img.Size.X; x++) {
+                colorToIndexMap[palette_img.GetPixel(x, 0)] = (byte) x;
+            }
+
+            foreach (Texture textureEntry in textures.Values) {
+                var temp_img = textureEntry.CopyToImage();
+
+                for (uint y = 0; y < temp_img.Size.Y; y++) {
+                    for (uint x = 0; x < temp_img.Size.X; x++) {
+                        
+                        if (temp_img.GetPixel(x, y).A == 0) continue;
+
+                        if (colorToIndexMap.TryGetValue(temp_img.GetPixel(x, y), out byte index)) {
+                            temp_img.SetPixel(x, y, new Color(index, index, index, temp_img.GetPixel(x,y).A));
+                        }
+                    }
+                }
+
+                textureEntry.Update(temp_img);
+            }
+        }
+
     }
 }
