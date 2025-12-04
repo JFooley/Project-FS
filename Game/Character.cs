@@ -67,6 +67,7 @@ namespace Character_Space {
         public bool enemyChangedSide;
         public bool enemyIsDead;
         public bool onCorner;
+        public string lastState;
     }
     
     public abstract class Character : Object_Space.Object {
@@ -321,11 +322,12 @@ namespace Character_Space {
 
                 // Distância até o inimigo
                 AIstate.distance = Math.Abs(this.body.Position.X - enemy.body.Position.X);
-                AIstate.enemyDistance = AIstate.distance / Config.max_distance;
+                AIstate.enemyDistance = AIstate.distance / Config.RenderWidth;
 
-                // Estado do inimigo
+                // Estado
+                AIstate.lastState = this.last_state;
                 AIstate.enemyIsIdle = enemy.state.not_busy;
-                AIstate.enemyIsAttacking = enemy.state.can_harm;
+                AIstate.enemyIsAttacking = enemy.state.can_harm && !enemy.state.not_busy;
                 AIstate.enemyIsAirborne = enemy.state.air;
                 AIstate.enemyIsCrouching = enemy.state.low;
                 AIstate.enemyIsBlocking = enemy.state.on_block;
@@ -342,10 +344,10 @@ namespace Character_Space {
                 this.BOT.states[0] = AIstate;
 
                 // Seleciona as ações, caso já tenha realizado todas
-                if (this.BOT.moveQueue.Count == 0 && this.BOT.states[1] != null)
-                    SelectMovement(this.BOT.states[1]);
-                if (this.BOT.actionQueue.Count == 0 && this.BOT.states[1] != null)
-                    SelectAction(this.BOT.states[1]);
+                if (this.BOT.moveQueue.Count == 0 && AIstate != null)
+                    SelectMovement(AIstate);
+                if (this.BOT.actionQueue.Count == 0 && AIstate != null)
+                    SelectAction(AIstate);
             }
         }
         public virtual void SelectMovement(FightState state) {}
@@ -372,7 +374,7 @@ namespace Character_Space {
         }
         public void Stun(Character enemy, int advantage, bool hit = true, bool airbone = false, bool sweep = false, bool force_crounch = false, bool force_stand = false, bool force = false) {
             this.stun_frames = 0;
-            if (hit) { // Hit stun states
+            if (hit || this.life_points.X == 0) { // Hit stun states
                 if (sweep) {
                     this.ChangeState("Sweeped", reset: true);
                     return;

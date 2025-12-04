@@ -756,21 +756,21 @@ public class Ken : Character {
             { "Parry", new State(parryFrames, "Idle", 60, 6, glow: true, is_parry: true)},
             { "AirParry", new State(airParryFrames, "JumpFalling", 60, 6, glow: true, air: true, is_parry: true)},
             // Normals
-            { "LightP", new State(LPFrames, "Idle", 20, 0)},
-            { "LowLightP", new State(lowLPFrames, "Crouching", 20, 0, low: true)},
-            { "AirLightP", new State(airLPFrames, "Idle", 20, 0, change_on_end: false, change_on_ground: true, loop: false, air: true)},
-            { "LightK", new State(LKFrames, "Idle", 20, 0)},
-            { "LowLightK", new State(lowLKFrames, "Crouching", 20, 1, hitstop: "Medium", low: true)},
-            { "AirLightK", new State(airLKFrames, "Idle", 20, 0, change_on_end: false, change_on_ground: true, loop: false, air: true)},
-            { "MediumP", new State(MPFrames, "Idle", 20, 1, hitstop: "Medium")},
-            { "LowMediumP", new State(lowMPFrames, "Crouching", 20, 1, hitstop: "Medium", low: true)},
-            { "AirMediumP", new State(airMPFrames, "Idle", 20, 1, hitstop: "Medium", change_on_end: false, change_on_ground: true, loop: false, air: true)},
-            { "BackMediumP", new State(backMPframes, "Idle", 20, 2, hitstop: "Heavy")},
-            { "MediumK", new State(MKFrames, "Idle", 20, 1, hitstop: "Medium")},
-            { "LowMediumK", new State(lowMKFrames, "Crouching", 20, 2, hitstop: "Heavy", low: true)},
-            { "AirMediumK", new State(airMKFrames, "Idle", 20, 1, hitstop: "Medium", change_on_end: false, change_on_ground: true, loop: false, air: true)},
-            { "BackMediumK", new State(BackMKFrames, "Idle", 20, 1)},
-            { "CloseMP", new State(cl_HPFrames, "Idle", 30, 1, hitstop: "Medium")},
+            { "LightP", new State(LPFrames, "Idle", 20, 0, can_harm: true)},
+            { "LowLightP", new State(lowLPFrames, "Crouching", 20, 0, low: true, can_harm: true)},
+            { "AirLightP", new State(airLPFrames, "Idle", 20, 0, change_on_end: false, change_on_ground: true, loop: false, air: true, can_harm: true)},
+            { "LightK", new State(LKFrames, "Idle", 20, 0, can_harm: true)},
+            { "LowLightK", new State(lowLKFrames, "Crouching", 20, 1, hitstop: "Medium", low: true, can_harm: true)},
+            { "AirLightK", new State(airLKFrames, "Idle", 20, 0, change_on_end: false, change_on_ground: true, loop: false, air: true, can_harm: true)},
+            { "MediumP", new State(MPFrames, "Idle", 20, 1, hitstop: "Medium", can_harm: true)},
+            { "LowMediumP", new State(lowMPFrames, "Crouching", 20, 1, hitstop: "Medium", low: true, can_harm: true)},
+            { "AirMediumP", new State(airMPFrames, "Idle", 20, 1, hitstop: "Medium", change_on_end: false, change_on_ground: true, loop: false, air: true, can_harm: true)},
+            { "BackMediumP", new State(backMPframes, "Idle", 20, 2, hitstop: "Heavy", can_harm: true)},
+            { "MediumK", new State(MKFrames, "Idle", 20, 1, hitstop: "Medium", can_harm: true)},
+            { "LowMediumK", new State(lowMKFrames, "Crouching", 20, 2, hitstop: "Heavy", low: true, can_harm: true)},
+            { "AirMediumK", new State(airMKFrames, "Idle", 20, 1, hitstop: "Medium", change_on_end: false, change_on_ground: true, loop: false, air: true, can_harm: true)},
+            { "BackMediumK", new State(BackMKFrames, "Idle", 20, 1, can_harm: true)},
+            { "CloseMP", new State(cl_HPFrames, "Idle", 30, 1, hitstop: "Medium", can_harm: true)},
             // Movement
             { "WalkingForward", new State(walkingForwardFrames, "WalkingForward", 20, not_busy: true)},
             { "WalkingBackward", new State(walkingBackwardFrames, "WalkingBackward", 20, not_busy: true)},
@@ -784,24 +784,24 @@ public class Ken : Character {
             { "CrouchingIn", new State(crouchingInFrames, "Crouching", 60, not_busy: true, low: true)},
             { "Crouching", new State(crouchingFrames, "Crouching", 4, not_busy: true, low: true)},
             // Super
-            { "SA1", new State(SA1, "MediumK", 60, 4, trace: true, drama_wait: true)},
-            { "SA1_tail", new State(SA1_tail, "SA1_exit", 30, 4, trace: true, air: true, drama_wait: true)},
+            { "SA1", new State(SA1, "MediumK", 60, 4, trace: true, drama_wait: true, can_harm: true)},
+            { "SA1_tail", new State(SA1_tail, "SA1_exit", 30, 4, trace: true, air: true, drama_wait: true, can_harm: true)},
             { "SA1_exit", new State(SA1_exit, "JumpFalling", 20, 4)},
             { "Shungoku", new State(Shungoku, "Idle", 10, 5, hitstop: "None", trace: true, can_be_parried: false, drama_wait: true)},
-            { "Shungoku_End", new State(idleFrames, "Idle", 10, 5, hitstop: "None", drama_wait: true)},
+            { "Shungoku_End", new State(idleFrames, "Idle", 10, 5, hitstop: "None", drama_wait: true, can_harm: true)},
             // Specials
-            { "LightShory", new State(lightShoryFrames, "ShoryFalling", 30, 3, hitstop: "Heavy", air: true)},
-            { "HeavyShory", new State(heavyShoryFrames, "ShoryFalling", 30, 3, hitstop: "Heavy", air: true)},
-            { "ShoryEX", new State(EXShoryFrames, "ShoryFalling", 60, 3, hitstop: "Heavy", glow: true, trace: true, air: true, can_be_hit: false)},
-            { "ShoryFalling", new State(shoryFallingFrames, "Landing", 20, change_on_end: false, change_on_ground: true, loop: false, air: true)},
-            { "LightHaduken", new State(hadukenFrames, "Idle", 30, 3, hitstop: "Medium", air: true)},
-            { "HeavyHaduken", new State(hadukenFrames, "Idle", 20, 3, hitstop: "Medium")},
-            { "HadukenEX", new State(hadukenFrames, "Idle", 30, 3, hitstop: "Heavy", glow: true, trace: true)},
-            { "LightTatso", new State(lightTatsoFrames, "Landing", 30, 3, hitstop: "Light")},
-            { "HeavyTatso", new State(heavyTatsoFrames, "Landing", 30, 3, hitstop: "Light")},
-            { "TatsoEX", new State(EXTatsoFrames, "Landing", 60, 3, hitstop: "Light", glow: true, trace: true)},
-            { "AirTatso", new State(tatsoFrames, "Landing", 30, 3, change_on_ground: true, change_on_end: false, air: true)},
-            { "AirTatsoEX", new State(tatsoFrames, "Landing", 60, 3, change_on_ground: true, change_on_end: false, glow: true, trace: true, air: true)},
+            { "LightShory", new State(lightShoryFrames, "ShoryFalling", 30, 3, hitstop: "Heavy", air: true, can_harm: true)},
+            { "HeavyShory", new State(heavyShoryFrames, "ShoryFalling", 30, 3, hitstop: "Heavy", air: true, can_harm: true)},
+            { "ShoryEX", new State(EXShoryFrames, "ShoryFalling", 60, 3, hitstop: "Heavy", glow: true, trace: true, air: true, can_be_hit: false, can_harm: true)},
+            { "ShoryFalling", new State(shoryFallingFrames, "Landing", 20, change_on_end: false, change_on_ground: true, loop: false, air: true, can_harm: true)},
+            { "LightHaduken", new State(hadukenFrames, "Idle", 30, 3, hitstop: "Medium", air: true, can_harm: true)},
+            { "HeavyHaduken", new State(hadukenFrames, "Idle", 20, 3, hitstop: "Medium", can_harm: true)},
+            { "HadukenEX", new State(hadukenFrames, "Idle", 30, 3, hitstop: "Heavy", glow: true, trace: true, can_harm: true)},
+            { "LightTatso", new State(lightTatsoFrames, "Landing", 30, 3, hitstop: "Light", can_harm: true)},
+            { "HeavyTatso", new State(heavyTatsoFrames, "Landing", 30, 3, hitstop: "Light", can_harm: true)},
+            { "TatsoEX", new State(EXTatsoFrames, "Landing", 60, 3, hitstop: "Light", glow: true, trace: true, can_harm: true)},
+            { "AirTatso", new State(tatsoFrames, "Landing", 30, 3, change_on_ground: true, change_on_end: false, air: true, can_harm: true)},
+            { "AirTatsoEX", new State(tatsoFrames, "Landing", 60, 3, change_on_ground: true, change_on_end: false, glow: true, trace: true, air: true, can_harm: true)},
             // Other
             { "Falling", new State(fallingFrames, "OnGround", 20, can_be_hit: false)},
             { "Sweeped", new State(sweepedFrames, "Falling", 30, low: true, can_be_hit: false)},
@@ -813,8 +813,6 @@ public class Ken : Character {
     }
     public override void DoBehave() {
         if (this.behave == false) return;
-
-        if (InputManager.Key_down("LT", player: this.player_index)) this.palette_index = this.palette_index + 1 < this.palette_quantity ? this.palette_index + 1 : 0;
 
         if ((this.current_state == "WalkingForward" || this.current_state == "WalkingBackward") & !InputManager.Key_hold("Left", player: this.player_index, facing: this.facing) & !InputManager.Key_hold("Right", player: this.player_index, facing: this.facing)) {
             this.ChangeState("Idle");
@@ -1441,45 +1439,18 @@ public class Ken : Character {
         } 
 
     }
-    public override void SelectAction(FightState state) {
-        if (state.enemyIsDead) return;
-        if (state.enemyChangedSide) this.BOT.actionQueue.Clear();
-        if (this.state.busy && !this.on_hit && !this.state.on_block && !this.state.on_parry) return;
+    public override void SelectAction(FightState f_state) {
+        if (f_state.enemyIsDead) return;
+        if (this.state.can_harm && !this.on_hit && !this.state.on_block && !this.state.on_parry) return;
 
-        if (this.on_hit || this.state.on_block || (state.enemyIsAttacking && state.enemyDistance < 0.7f)) { // Block
-            if (state.enemyIsCrouching) this.BOT.EnqueueAction("Left Down *", AI.rand.Next(10, 30));
-            else this.BOT.EnqueueAction("Left *", AI.rand.Next(10, 30));
+        if (this.on_hit || this.state.on_block || (f_state.enemyIsAttacking && f_state.enemyDistance <= 0.5f)) { // Block
+            if (f_state.enemyIsCrouching) this.BOT.EnqueueAction("Left Down *", 5);
+            else this.BOT.EnqueueAction("Left *", 5);
 
             return;
         }
         
-        if (this.state.on_parry) { // Parry
-            if (AI.rand.Next(0, 2) == 0) { // Punish
-                this.BOT.EnqueueAction("C", 2);
-                this.BOT.EnqueueAction("D", 2);
-
-                var choise = AI.rand.Next(0, 4);
-                if (choise == 0) { // Path: BackMP
-                    this.BOT.EnqueueAction("Left *", 3);
-                    this.BOT.EnqueueAction("Left D *", 5);
-
-                } else if (choise == 1) { // Path: Light Shoryuken
-                    this.BOT.EnqueueAction("Right *", 5);
-                    this.BOT.EnqueueAction("Down *", 5);
-                    this.BOT.EnqueueAction("Right *", 5);
-                    this.BOT.EnqueueAction("C", 1);
-
-                } else if (choise == 3 && Character.CheckSuperPoints(this, 100)) { // Path: Super Art 1
-                    this.BOT.EnqueueAction("Down *", 3);
-                    this.BOT.EnqueueAction("*", 3);
-                    this.BOT.EnqueueAction("Down *", 3);
-                    this.BOT.EnqueueAction("RB", 3);
-                }
-            }
-            return;
-        } 
-        
-        if (state.enemyIsAirborne) { // Anti air
+        if (f_state.enemyIsAirborne) { // Anti air
             var choise = AI.rand.Next(0, 2);
             if (choise == 0 && this.state.not_busy) { // Shoryuken
                 this.BOT.EnqueueAction("Right *", 5);
@@ -1488,7 +1459,7 @@ public class Ken : Character {
                 this.BOT.EnqueueAction("C", 5);
             } 
 
-        } else if (this.state.air && state.enemyDistance < 0.4f) { // Air
+        } else if (this.state.air && f_state.enemyDistance < 0.5f) { // Air
             var choise = AI.rand.Next(0, 4);
 
             if (choise == 0) {
@@ -1507,101 +1478,136 @@ public class Ken : Character {
                     this.BOT.EnqueueAction("A", 1);
             }
             
-        } else if (state.enemyDistance < 0.3f) { // Close range
+        } else if (f_state.enemyDistance < 0.3f) { // Close range
             var choise = AI.rand.Next(0, 10);
-            
-            if (AI.rand.Next(0, 3) == 0 && choise <= 9) {
-                this.BOT.EnqueueAction("Right *", 3);
-                this.BOT.EnqueueAction("*", 2);
-                this.BOT.EnqueueAction("Right *", 10);
-            }
+            if (f_state.enemyIsCrouching) { // LOW
+                if (choise < 3) { // Normais
+                    choise = AI.rand.Next(0, 2);
+                    if (choise < 1) this.BOT.EnqueueAction("A", 3);
+                    else if (choise < 2) this.BOT.EnqueueAction("B", 3);
 
-            if (choise < 3) { // Target combo
-                this.BOT.EnqueueAction("C", 3);
-                this.BOT.EnqueueAction("D", 3);
-                this.BOT.EnqueueAction("*", 3);
+                } else if (choise < 5) { // Low LK
+                    this.BOT.EnqueueAction("Down *", 3);
+                    this.BOT.EnqueueAction("Down A *", 3);
+                    this.BOT.EnqueueAction("", 3);
 
-                choise = AI.rand.Next(0, 4);
-                if (choise == 0) { // Path: BackMP
-                    this.BOT.EnqueueAction("Left *", 3);
-                    this.BOT.EnqueueAction("Left D *", 5);
+                    choise = AI.rand.Next(0, 10);
+                    if (choise < 1) { // Path: Light Tatso
+                        this.BOT.EnqueueAction("Down *", 3);
+                        this.BOT.EnqueueAction("Left *", 3);
+                        this.BOT.EnqueueAction("A *", 3);
 
-                } else if (choise == 1) { // Path: Light Shoryuken
+                    } else if (choise < 3 && Character.CheckSuperPoints(this, 50)) { // Path: Tatso
+                        this.BOT.EnqueueAction("Down *", 3);
+                        this.BOT.EnqueueAction("Left *", 3);
+
+                        if (choise == 1) this.BOT.EnqueueAction("RB *", 3);
+                        else this.BOT.EnqueueAction("A *", 3);
+
+                    } else if (choise < 5) { // Path: Light Shoryuken
+                        this.BOT.EnqueueAction("Right *", 3);
+                        this.BOT.EnqueueAction("Down *", 3);
+                        this.BOT.EnqueueAction("Right *", 3);
+                        this.BOT.EnqueueAction("C *", 3);
+
+                    }
+                } else if (choise < 6) { // Sweep
+                    this.BOT.EnqueueAction("Down *", 5);
+                    this.BOT.EnqueueAction("Down B *", 5);
+                } else if (choise < 7) { // Overhead
+                    this.BOT.EnqueueAction("Left B *", 5);
+                }
+
+            } else { // STAND
+                if (choise < 2) { // Normais
+                    choise = AI.rand.Next(0, 4);
+                    if (choise < 1) this.BOT.EnqueueAction("D", 3);
+                    else if (choise < 2) this.BOT.EnqueueAction("B", 3);
+                    else if (choise < 3) this.BOT.EnqueueAction("C", 3);
+                    else this.BOT.EnqueueAction("A", 3);
+
+                } else if (choise < 4) { // Low LK
+                    this.BOT.EnqueueAction("Down *", 3);
+                    this.BOT.EnqueueAction("Down A *", 3);
+                    this.BOT.EnqueueAction("", 3);
+
+                    choise = AI.rand.Next(0, 10);
+                    if (choise == 0) { // Path: Light Tatso
+                        this.BOT.EnqueueAction("Down *", 3);
+                        this.BOT.EnqueueAction("Left *", 3);
+                        this.BOT.EnqueueAction("A *", 3);
+
+                    } else if (choise == 1 && Character.CheckSuperPoints(this, 50)) { // Path: EX Tatso
+                        this.BOT.EnqueueAction("Down *", 3);
+                        this.BOT.EnqueueAction("Left *", 3);
+                        this.BOT.EnqueueAction("RB *", 3);
+
+                    } else if (choise == 3) { // Path: Light Shoryuken
+                        this.BOT.EnqueueAction("Right *", 3);
+                        this.BOT.EnqueueAction("Down *", 3);
+                        this.BOT.EnqueueAction("Right *", 3);
+                        this.BOT.EnqueueAction("C *", 3);
+
+                    } else if (Character.CheckSuperPoints(this, 100)) { // Path: Super Art 1
+                        this.BOT.EnqueueAction("Down *", 3);
+                        this.BOT.EnqueueAction(" *", 3);
+                        this.BOT.EnqueueAction("Down *", 3);
+                        this.BOT.EnqueueAction("RB *", 3);
+
+                    }
+
+                } else if (choise < 5) { // Sweep
+                    this.BOT.EnqueueAction("Down *", 5);
+                    this.BOT.EnqueueAction("Down B *", 5);
+
+                } else if (choise < 6) { // Light Shory
                     this.BOT.EnqueueAction("Right *", 5);
                     this.BOT.EnqueueAction("Down *", 5);
                     this.BOT.EnqueueAction("Right *", 5);
                     this.BOT.EnqueueAction("C", 1);
 
-                } else if (Character.CheckSuperPoints(this, 100)) { // Path: Super Art 1
-                    this.BOT.EnqueueAction("Down *", 3);
-                    this.BOT.EnqueueAction("*", 3);
-                    this.BOT.EnqueueAction("Down *", 3);
-                    this.BOT.EnqueueAction("RB", 3);
-                }
+                } else if (choise < 7) { // Tatso                
+                    this.BOT.EnqueueAction("Down *", 5);
+                    this.BOT.EnqueueAction("Left *", 5);
 
-            } else if (choise < 6) { // Low LK
-                this.BOT.EnqueueAction("Down *", 3);
-                this.BOT.EnqueueAction("Down A *", 3);
-                this.BOT.EnqueueAction("", 3);
+                    choise = AI.rand.Next(0, 10);
+                    if (choise == 0 && Character.CheckSuperPoints(this, 50)) this.BOT.EnqueueAction("RB", 1);
+                    else if (choise < 4) this.BOT.EnqueueAction("B", 1);
+                    else this.BOT.EnqueueAction("A", 1);
 
-                choise = AI.rand.Next(0, 10);
-                if (choise == 0) { // Path: Light Tatso
-                    this.BOT.EnqueueAction("Down", 3);
-                    this.BOT.EnqueueAction("Left", 3);
-                    this.BOT.EnqueueAction("A", 3);
-
-                } else if (choise == 1 && Character.CheckSuperPoints(this, 50)) { // Path: EX Tatso
-                    this.BOT.EnqueueAction("Down", 3);
-                    this.BOT.EnqueueAction("Left", 3);
-                    this.BOT.EnqueueAction("RB", 3);
-
-                } else if (choise == 3) { // Path: Light Shoryuken
-                    this.BOT.EnqueueAction("Right", 3);
-                    this.BOT.EnqueueAction("Down", 3);
-                    this.BOT.EnqueueAction("Right", 3);
+                } else if (choise < 10) { // Target combo
                     this.BOT.EnqueueAction("C", 3);
+                    this.BOT.EnqueueAction("D", 3);
+                    this.BOT.EnqueueAction("*", 3);
 
-                } else if (Character.CheckSuperPoints(this, 100)) { // Path: Super Art 1
-                    this.BOT.EnqueueAction("Down", 3);
-                    this.BOT.EnqueueAction("", 3);
-                    this.BOT.EnqueueAction("Down", 3);
-                    this.BOT.EnqueueAction("RB", 3);
+                    choise = AI.rand.Next(0, 4);
+                    if (choise == 0) { // Path: BackMP
+                        this.BOT.EnqueueAction("Left *", 3);
+                        this.BOT.EnqueueAction("Left D *", 5);
 
+                    } else if (choise == 1) { // Path: Light Shoryuken
+                        this.BOT.EnqueueAction("Right *", 5);
+                        this.BOT.EnqueueAction("Down *", 5);
+                        this.BOT.EnqueueAction("Right *", 5);
+                        this.BOT.EnqueueAction("C", 1);
+
+                    } else if (Character.CheckSuperPoints(this, 100)) { // Path: Super Art 1
+                        this.BOT.EnqueueAction("Down *", 3);
+                        this.BOT.EnqueueAction("*", 3);
+                        this.BOT.EnqueueAction("Down *", 3);
+                        this.BOT.EnqueueAction("RB", 3);
+                    }
                 }
-
-            } else if (choise == 6) { // Sweep
-                this.BOT.EnqueueAction("Down *", 5);
-                this.BOT.EnqueueAction("Down B *", 5);
-
-            } else if (choise == 7) { // Light Shory
-                this.BOT.EnqueueAction("Right *", 5);
-                this.BOT.EnqueueAction("Down *", 5);
-                this.BOT.EnqueueAction("Right *", 5);
-                this.BOT.EnqueueAction("C", 1);
-
-            } else if (choise == 8) { // Tatso                
-                this.BOT.EnqueueAction("Down *", 5);
-                this.BOT.EnqueueAction("Left *", 5);
-
-                choise = AI.rand.Next(0, 10);
-                if (choise == 0 && Character.CheckSuperPoints(this, 50)) this.BOT.EnqueueAction("RB", 1);
-                else if (choise < 4) this.BOT.EnqueueAction("B", 1);
-                else this.BOT.EnqueueAction("A", 1);
-
-            } else if (choise == 9) { // Normals
-                choise = AI.rand.Next(0, 4);
-                if (choise == 0) this.BOT.EnqueueAction("A", 3);
-                else if (choise == 1) this.BOT.EnqueueAction("B", 3);
-                else if (choise == 1) this.BOT.EnqueueAction("C", 3);
-                else this.BOT.EnqueueAction("D", 3);
             }
-            
-        } else if (state.enemyDistance < 0.45f) { // Mid range
-            var choise = AI.rand.Next(0, 25);
-            if (choise < 3) { // Medium kick
+
+            return;
+
+        } else if (f_state.enemyDistance < 0.4f) { // Mid range
+            var choise = AI.rand.Next(0, 10);
+            if (choise < 1) { // Medium kick
                 this.BOT.EnqueueAction("B", 1);
 
-            } else if (choise < 5) { // Low LK
+            } else if (choise < 2) { // Low LK
                 this.BOT.EnqueueAction("Right *", 20);
                 this.BOT.EnqueueAction("Down A *", 2);
 
@@ -1623,7 +1629,7 @@ public class Ken : Character {
                         this.BOT.EnqueueAction("A", 1);
                     }
                 }
-            } else if (choise == 0) { // Tatso
+            } else if (choise < 3) { // Tatso
                 choise = AI.rand.Next(0, 10);
                 this.BOT.EnqueueAction("Down *", 15);
                 this.BOT.EnqueueAction("Left *", 15);
@@ -1651,7 +1657,10 @@ public class Ken : Character {
                     this.BOT.EnqueueAction("C", 5);
 
                 return;
-            } else this.BOT.EnqueueAction("", AI.rand.Next(10, 30));
+            } else 
+                this.BOT.EnqueueAction("", AI.rand.Next(10, 30)); // Nothing
         }
+    
+        this.BOT.EnqueueAction("", AI.rand.Next(5, 10));
     }
 }
