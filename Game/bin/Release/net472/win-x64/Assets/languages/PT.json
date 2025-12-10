@@ -57,5 +57,9 @@
   "on" : "Ligado",
   "off" : "Desligado",
   "save and exit" : "Salvar e sair",
-  "parry" : "Parry"
+  "parry" : "Parry",
+  "computer" : "Computador",
+  "player 1" : "Jogador 1",
+  "player 2" : "Jogador 2",
+  "combo" : "Combo"
 }

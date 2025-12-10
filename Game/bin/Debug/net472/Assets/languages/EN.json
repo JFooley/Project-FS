@@ -57,5 +57,9 @@
   "on" : "On", 
   "off" : "Off", 
   "save and exit" : "Save and exit", 
-  "parry" : "Parry"
+  "parry" : "Parry",
+  "computer" : "Computer",
+  "player 1" : "Player 1",
+  "player 2" : "Player 2",
+  "combo" : "Combo"
 }

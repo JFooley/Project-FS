@@ -84,6 +84,11 @@ namespace Animation_Space {
             playing_sound = false;
             ended = false;
         }
+    
+        public static Animation LoadFromFile() {
+            return new Animation(new List<string>(), 1);
+        }
+        public static void SaveToFile() {}
     }
 
     public class GenericBox {

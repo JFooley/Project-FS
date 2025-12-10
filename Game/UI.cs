@@ -75,8 +75,7 @@ namespace UI_space {
 
         public static void DrawText(string text, float X, float Y, float spacing = 0, string alignment = "center", bool absolutePosition = false, string textureName = "default medium") {
             float totalWidth = 0;
-            float pos_X;
-            float pos_Y;
+            float pos_X, pos_Y;
             float offset_X = X;
             List<Sprite> text_sprites = new List<Sprite> {};
 
@@ -97,19 +96,15 @@ namespace UI_space {
 
             // Ajustar posição se centralizado
             if (alignment == "center") {
-                offset_X -= totalWidth / 2; 
+                offset_X -= (int) totalWidth / 2; 
             } else if (alignment == "right") {
                 offset_X -= totalWidth; 
             }
 
-            if (absolutePosition) {
-                pos_X = X;
-                pos_Y = Y;
-                offset_X = 0;
-            } else {
-                pos_X = Camera.X;
-                pos_Y = Camera.Y;
-            }
+            // Define a posição base
+            pos_X = absolutePosition ? X : Camera.X;
+            pos_Y = absolutePosition ? Y : Camera.Y;
+
             foreach (Sprite sprite in text_sprites) {   
                 sprite.Position = new Vector2f(pos_X + offset_X, pos_Y + Y);
                 Program.window.Draw(sprite);
@@ -117,27 +112,39 @@ namespace UI_space {
             }
         }
 
-        public static void DrawRectangle(float X, float Y, float width, float height, SFML.Graphics.Color color) {
-            RectangleShape rectangle = new RectangleShape(new Vector2f(width, height))
-            {
-                Position = new Vector2f(Camera.X + X, Camera.Y + Y),
-                FillColor = color
-            };
+        public static void DrawRectangle(float X, float Y, float width, float height, SFML.Graphics.Color color, string alignment = "center", bool absolutePosition = false) {
+            RectangleShape rectangle;
+            float pos_X = absolutePosition ? X : Camera.X + X;
+            float pos_Y = absolutePosition ? Y : Camera.Y + Y;
+
+            if (alignment == "left") {
+                rectangle = new RectangleShape(new Vector2f(width, height)) {
+                    Position = new Vector2f(pos_X, pos_Y),
+                    FillColor = color};
+            } else if (alignment == "right") {
+                rectangle = new RectangleShape(new Vector2f(width, height)) {
+                    Position = new Vector2f(pos_X - width, pos_Y),
+                    FillColor = color};            
+            } else {
+                rectangle = new RectangleShape(new Vector2f(width, height)) {
+                    Position = new Vector2f(pos_X - ((int) width/2), pos_Y),
+                    FillColor = color};  
+            }
 
             Program.window.Draw(rectangle);
         }
     
-        public static void DrawBar(float X, float Y, float currentValue, float maxValue, string textureName, string alignment = "center", bool mirrored = false, SFML.Graphics.Color? color = null, bool grow_inverted = true) {
+        public static void DrawBar(float X, float Y, float currentValue, float maxValue, string textureName, string alignment = "center", bool mirrored = false, SFML.Graphics.Color? color = null, bool grow_inverted = true, bool absolutePosition = false) {
             if (!Program.visuals.ContainsKey(textureName)) return;
             
-            Sprite barSprite = new Sprite(Program.visuals[textureName]);
+            var barSprite = new Sprite(Program.visuals[textureName]);
             IntRect originalRect = barSprite.TextureRect;
 
             // Pinta a sprite se uma cor for fornecida
             RenderStates renderStates = RenderStates.Default;
             if (color.HasValue)  {
-                Program.colorFillShader.SetUniform("fillColor", new SFML.Graphics.Glsl.Vec3(color.Value.R, color.Value.G, color.Value.B));
-                renderStates = new RenderStates(Program.colorFillShader);
+                Program.colorTinterShader.SetUniform("color", new SFML.Graphics.Glsl.Vec3(color.Value.R, color.Value.G, color.Value.B));
+                renderStates = new RenderStates(Program.colorTinterShader);
             }
             
             // Calcula a porcentagem da barra
@@ -155,15 +162,15 @@ namespace UI_space {
             barSprite.Scale = new Vector2f(scaleX, 1f);
             
             // Ajusta a posição baseado no alinhamento
-            float posX = Camera.X + X;
-            float posY = Camera.Y + Y;
+            float posX = absolutePosition ? X : Camera.X + X;
+            float posY = absolutePosition ? Y : Camera.Y + Y;
             
             // Move a posição original do rect + X para a direita
             if (mirrored) {
                 if (grow_inverted) posX -= reducedWidth;
 
                 if (alignment == "center")
-                    posX += originalRect.Width / 2f;
+                    posX += (int) originalRect.Width / 2;
                 else if (alignment == "left")
                     posX += originalRect.Width;
 
@@ -171,7 +178,7 @@ namespace UI_space {
                 if (grow_inverted) posX += reducedWidth;
 
                 if (alignment == "center") 
-                    posX -= originalRect.Width / 2f;
+                    posX -= (int) originalRect.Width / 2;
                 else if (alignment == "right")
                     posX -= originalRect.Width;
             }
@@ -244,17 +251,24 @@ namespace UI_space {
             UI.DrawBar(-stun_bar_X, stun_bar_Y, stunB, 150, "stunbar", alignment: "right", mirrored: true, color: bar_stun, grow_inverted: true);
             
             // Names
-            UI.DrawText(stage.character_A.name, -191, -94, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
-            UI.DrawText(stage.character_B.name, 191, -94, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
+            UI.DrawText(stage.character_A.name, -182, -94, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
+            UI.DrawText(stage.character_B.name, 182, -94, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
 
-            if (stage.character_A.AIEnabled && stage.character_A.BotEnabled && UI.blink1Hz) 
-                UI.DrawText(Language.GetText("P1 - press select"), -Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
-            if (stage.character_B.AIEnabled && stage.character_B.BotEnabled && UI.blink1Hz) 
-                UI.DrawText(Language.GetText("press select - P2"), Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
+            UI.DrawBar(-177, -81, 1, 1, "croma", color: stage.character_A.current_palette_color, alignment: "left", mirrored: false);
+            UI.DrawBar(177, -81, 1, 1, "croma", color: stage.character_B.current_palette_color, alignment: "right", mirrored: true);
+
+            UI.DrawText(Language.GetText((stage.character_A.AIEnabled && stage.character_A.BotEnabled) ? "computer" : "player 1"), -Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
+            UI.DrawText(Language.GetText((stage.character_B.AIEnabled && stage.character_B.BotEnabled) ? "computer" : "player 2"), Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
 
             // Combo text
-            if (stage.character_A.combo_counter > 1) UI.DrawText(stage.character_A.combo_counter + " hits", -190, -80, spacing: -23, alignment: "left", textureName: "default medium white");
-            if (stage.character_B.combo_counter > 1) UI.DrawText(stage.character_B.combo_counter + " hits", 190, -80, spacing: -23, alignment: "right", textureName: "default medium white");
+            if (stage.character_A.combo_counter > 1) {
+                UI.DrawText(Language.GetText("combo"), -190, -80, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
+                UI.DrawText(stage.character_A.combo_counter.ToString(), -135, -70, spacing: Config.spacing_medium, alignment: "right", textureName: "default medium white");
+            }
+            if (stage.character_B.combo_counter > 1) {
+                UI.DrawText(Language.GetText("combo"), 190, -80, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
+                UI.DrawText(stage.character_B.combo_counter.ToString(), 135, -70, spacing: Config.spacing_medium, alignment: "left", textureName: "default medium white");
+            }
 
             // Time
             UI.DrawText("" + Math.Max(stage.round_time, 0), 0, -106, alignment: "center", spacing: -8, textureName: "1");

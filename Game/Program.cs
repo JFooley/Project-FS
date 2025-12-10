@@ -234,7 +234,7 @@ public static class Program {
                     sprite_B.Texture = characters[pointer_charB].thumb;
 
                     // Draw Shadows
-                    colorFillShader.SetUniform("fillColor", new SFML.Graphics.Glsl.Vec3(0, 0, 0));
+                    colorFillShader.SetUniform("fillColor", Color.Black);
 
                     if (charA_selected != null) {
                         sprite_A.Scale = new Vector2f(1f, 1f);
@@ -246,22 +246,37 @@ public static class Program {
                         window.Draw(sprite_B, new RenderStates(colorFillShader));
                     }
 
-                    // Draw main sprite
-                    sprite_B.Scale = new Vector2f(1f, 1f);
+                    // Draw main sprite A
+                    sprite_A.Scale = new Vector2f(1f, 1f);
                     sprite_A.Position = new Vector2f(Camera.X - 77 - sprite_B.GetLocalBounds().Width / 2, Camera.Y - 20 - sprite_B.GetLocalBounds().Height / 2);
-                    window.Draw(sprite_A, characters[pointer_charA].SetSwaperShader(characters[pointer_charA].palette, characters[pointer_charA].palette_size, characters[pointer_charA].palette_quantity, charA_selected != null ? charA_selected.palette_index : 0, ready_charA ? new Color(128, 128, 128) : Color.White));
+                    window.Draw(sprite_A, characters[pointer_charA].SetSwaperShader(
+                        palette_index: (int) (charA_selected != null ? charA_selected.palette_index : 0), 
+                        light: ready_charA ? new Color(128, 128, 128) : Color.White
+                    ));
                     if (ready_charA) UI.DrawText(Language.GetText("ready"), -77, -20, textureName: "default small", spacing: Config.spacing_small);
+                    if (charA_selected != null) {
+                        UI.DrawRectangle(-77, 67, 6, 6, Color.White);
+                        UI.DrawRectangle(-77, 68, 4, 4, charA_selected.current_palette_color);
+                    } 
 
+                    // Draw main sprite B
                     sprite_B.Scale = new Vector2f(-1f, 1f);
                     sprite_B.Position = new Vector2f(Camera.X + 77 + sprite_B.GetLocalBounds().Width / 2, Camera.Y - 20 - sprite_B.GetLocalBounds().Height / 2);
-                    window.Draw(sprite_B, characters[pointer_charB].SetSwaperShader(characters[pointer_charB].palette, characters[pointer_charB].palette_size, characters[pointer_charB].palette_quantity, charB_selected != null ? charB_selected.palette_index : 0, ready_charB ? new Color(128, 128, 128) : Color.White));
+                    window.Draw(sprite_B, characters[pointer_charB].SetSwaperShader( 
+                        palette_index: (int) (charB_selected != null ? charB_selected.palette_index : 0), 
+                        light: ready_charB ? new Color(128, 128, 128) : Color.White
+                    ));
                     if (ready_charB) UI.DrawText(Language.GetText("ready"), +77, -20, textureName: "default small", spacing: Config.spacing_small);
+                    if (charB_selected != null) {
+                        UI.DrawRectangle(77, 67, 6, 6, Color.White);
+                        UI.DrawRectangle(77, 68, 4, 4, charB_selected.current_palette_color);  
+                    } 
 
                     // Draw texts
                     UI.DrawText(player1_wins.ToString(), 0, 63, alignment: "right");
                     UI.DrawText(player2_wins.ToString(), 0, 63, alignment: "left");
 
-                    // Draw buttons
+                    // Draw shoulder buttons
                     UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
                     if (UI.DrawButton(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: InputManager.Key_hold("LB"), action: InputManager.Key_up("LB"), click_font: "default small click", hover_font: "default small")) {
                         ChangeState(SelectStage);
@@ -274,26 +289,26 @@ public static class Program {
                     if (UI.DrawButton(Language.GetText("Controls"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: InputManager.Key_hold("RB"), action: InputManager.Key_up("RB"), click_font: "default small click", hover_font: "default small")) 
                         ChangeState(Controls);
 
-                    // Chose option A
+                    // Buttons A
                     if (UI.DrawButton("<   ", -77, -16, hover: true, click: InputManager.Key_hold("Left", player: 1), action: InputManager.Key_down("Left", player: 1), hover_font: "default small", font: "", spacing: 0)) {
                         if (charA_selected == null) pointer_charA = pointer_charA > 0 ? pointer_charA - 1 : characters.Count - 1;
-                        else if (!ready_charA) charA_selected.palette_index = charA_selected.palette_index > 0 ? charA_selected.palette_index - 1 : charA_selected.palette_quantity - 1;
+                        else if (!ready_charA) charA_selected.ChangePalette(-1);
                     } if (UI.DrawButton("   >", -77, -16, hover: true, click: InputManager.Key_hold("Right", player: 1), action: InputManager.Key_down("Right", player: 1), hover_font: "default small", font: "", spacing: 0)) {
                         if (charA_selected == null) pointer_charA = pointer_charA < characters.Count - 1 ? pointer_charA + 1 : 0;
-                        else if (!ready_charA) charA_selected.palette_index = charA_selected.palette_index < charA_selected.palette_quantity - 1 ? charA_selected.palette_index + 1 : 0;
+                        else if (!ready_charA) charA_selected.ChangePalette(1);
                     }
 
                     if (UI.DrawButton(characters[pointer_charA].name, -77, 45, spacing: Config.spacing_small, action: InputManager.Key_down("A", player: 1), click: InputManager.Key_hold("A", player: 1), hover_font: "default small"))
                         if (charA_selected == null) charA_selected = characters[pointer_charA].Copy();
                         else ready_charA = !ready_charA;
 
-                    // Chose option B
+                    // Buttons B
                     if (UI.DrawButton("<   ", 77, -16, hover: true, click: InputManager.Key_hold("Left", player: 2), action: InputManager.Key_down("Left", player: 2), hover_font: "default small", font: "", spacing: 0)) {
                         if (charB_selected == null) pointer_charB = pointer_charB > 0 ? pointer_charA - 1 : characters.Count - 1;
-                        else if (!ready_charB) charB_selected.palette_index = charB_selected.palette_index > 0 ? charB_selected.palette_index - 1 : charB_selected.palette_quantity - 1;
+                        else if (!ready_charB) charB_selected.ChangePalette(-1);
                     } if (UI.DrawButton("   >", 77, -16, hover: true, click: InputManager.Key_hold("Right", player: 2), action: InputManager.Key_down("Right", player: 2), hover_font: "default small", font: "", spacing: 0)) {
                         if (charB_selected == null) pointer_charB = pointer_charB < characters.Count - 1 ? pointer_charB + 1 : 0;
-                        else if (!ready_charB) charB_selected.palette_index = charB_selected.palette_index < charB_selected.palette_quantity - 1 ? charB_selected.palette_index + 1 : 0;
+                        else if (!ready_charB) charB_selected.ChangePalette(1);
                     }
 
                     if (UI.DrawButton(characters[pointer_charB].name, 77, 45, spacing: Config.spacing_small, action: InputManager.Key_down("A", player: 2), click: InputManager.Key_hold("A", player: 2), hover_font: "default small"))

@@ -6,6 +6,7 @@ using Input_Space;
 using Stage_Space;
 using UI_space;
 using Data_space;
+using System.Runtime.InteropServices;
 
 // ----- Default States -------
 // Intro
@@ -143,6 +144,7 @@ namespace Character_Space {
         public uint palette_size => this.palette.Size.X;
         public uint palette_quantity => this.palette.Size.Y;
         public uint palette_index = 0;
+        public SFML.Graphics.Color current_palette_color;
 
         // Gets
         public string current_sprite => current_animation.GetCurrentFrame().Sprite_index;
@@ -169,11 +171,12 @@ namespace Character_Space {
             base.body.Position.X = startX; 
             base.body.Position.Y = startY;
             this.floor_line = startY;
+            this.current_palette_color = this.palette != null ? this.palette.CopyToImage().GetPixel(0, this.palette_index) : Color.White;
         }
         public Character(string name, string folder_path) {
             this.name = name;
             this.folder_path = folder_path;
-            this.thumb = thumb;
+            this.current_palette_color = this.palette != null ? this.palette.CopyToImage().GetPixel(0, this.palette_index) : Color.White;
         }
 
         // Every Frame methods
@@ -215,7 +218,7 @@ namespace Character_Space {
             // Render current sprite
             if (this.palette != null) {
                 var light = this.own_light == Color.Transparent ? this.light_tint : this.own_light;
-                Program.window.Draw(temp_sprite, this.SetSwaperShader(this.palette, this.palette_size, this.palette_quantity, this.palette_index, light));
+                Program.window.Draw(temp_sprite, this.SetSwaperShader(light));
             } else {
                 Program.window.Draw(temp_sprite);
             }
@@ -566,7 +569,7 @@ namespace Character_Space {
             this.body.SetVelocity(this, 0, 0, raw_set: true);
             this.facing = facing;
         }
-        public RenderStates SetSwaperShader(Texture palette, uint palette_size, uint palette_quantity, uint palette_index, Color light) {
+        public static RenderStates SetSwaperShader(Texture palette, uint palette_size, uint palette_quantity, uint palette_index, Color light) {
             Program.paletteSwaper.SetUniform("palette", palette);
             Program.paletteSwaper.SetUniform("palette_size", palette_size);
             Program.paletteSwaper.SetUniform("palette_quantity", palette_quantity);
@@ -574,6 +577,15 @@ namespace Character_Space {
             Program.paletteSwaper.SetUniform("light", new Vector3f(light.R / 255f, light.G / 255f, light.B / 255f));
             return new RenderStates(Program.paletteSwaper);
         }
+        public RenderStates SetSwaperShader(Color light, int palette_index = -1) {
+            Program.paletteSwaper.SetUniform("palette", this.palette);
+            Program.paletteSwaper.SetUniform("palette_size", this.palette_size);
+            Program.paletteSwaper.SetUniform("palette_quantity", this.palette_quantity);
+            Program.paletteSwaper.SetUniform("palette_index", palette_index == -1 ? this.palette_index : (uint) palette_index);
+            Program.paletteSwaper.SetUniform("light", new Vector3f(light.R / 255f, light.G / 255f, light.B / 255f));
+            return new RenderStates(Program.paletteSwaper);
+        }
+        
         // Loads
         public void LoadTextures(bool do_index = false) {
             string currentDirectory = Directory.GetCurrentDirectory();
@@ -635,6 +647,21 @@ namespace Character_Space {
             } catch (Exception) {
                 this.thumb = new Texture(1,1);
             }
+        }
+        public void ChangePalette(int add_to_index = 0) {
+            var temp_index = (int) this.palette_index + add_to_index;
+
+            if (temp_index >= this.palette_quantity) 
+                temp_index = 0;
+            else if (temp_index < 0) 
+                temp_index = (int) this.palette_quantity - 1;
+
+            this.palette_index = (uint) temp_index;
+
+            this.current_palette_color = this.palette.CopyToImage().GetPixel(0, this.palette_index);
+        }
+        public void UpdatePalette() {
+            this.current_palette_color = this.palette.CopyToImage().GetPixel(0, this.palette_index);
         }
         
         // General Load
