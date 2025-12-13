@@ -13,8 +13,8 @@ using System.Windows.Forms;
 public static class Program {
     // Winner index
     public const int Drawn = 0;
-    public const int Player1 = 1;
-    public const int Player2 = 2;
+    public const int PlayerA = 1;
+    public const int PlayerB = 2;
 
     // Game States
     public const int Intro = 0;
@@ -47,8 +47,9 @@ public static class Program {
     private static Stopwatch frametimer = new Stopwatch();
 
     // Session infos
-    public static int player1_wins = 0;
-    public static int player2_wins = 0;
+    public static int playerA_wins = 0;
+    public static int playerB_wins = 0;
+
     public static int winner = 0;
 
     // View
@@ -65,8 +66,8 @@ public static class Program {
     private static int pointer_charB = 0;
     private static bool ready_charA = false;
     private static bool ready_charB = false;
-    public static bool AI_charA = false;
-    public static bool AI_charB = false;
+    public static bool AI_playerA = true;
+    public static bool AI_playerB = true;
 
     // Shaders
     public static Shader colorTinterShader = new Shader(null, null, "Assets/shaders/color_tinter.frag");
@@ -163,6 +164,7 @@ public static class Program {
 
             switch (game_state) {
                 case Intro:
+                    InputManager.UpdateAI();
                     if (UI.counter % 20 == 0) pointer = pointer < 3 ? pointer + 1 : 0;
                     fslogo.Position = new Vector2f(10, 139);
 
@@ -178,6 +180,7 @@ public static class Program {
                     break;
 
                 case MainMenu:
+                    InputManager.UpdateAI();
                     window.Draw(main_bg);
                     UI.DrawText("by JFooley", 0, 76, spacing: Config.spacing_small - 1, textureName: "default small");
 
@@ -188,6 +191,7 @@ public static class Program {
                     break;
 
                 case SelectStage:
+                    InputManager.UpdateAI();
                     window.Draw(stages[pointer].thumb);
                     window.Draw(frame);
 
@@ -195,8 +199,8 @@ public static class Program {
                     var face_up = InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D");
                     
                     // draw texts
-                    UI.DrawText(Program.player1_wins.ToString(), -Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "left");
-                    UI.DrawText(Program.player2_wins.ToString(), Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "right");
+                    UI.DrawText(Program.playerA_wins.ToString(), -Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "left");
+                    UI.DrawText(Program.playerB_wins.ToString(), Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "right");
 
                     UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
                     if (UI.DrawButton(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: InputManager.Key_hold("LB"), action: InputManager.Key_up("LB"), click_font: "default small click", hover_font: "default small"))
@@ -227,6 +231,7 @@ public static class Program {
                     break;
 
                 case SelectChar:
+                    InputManager.UpdateAI();
                     window.Draw(char_bg);
 
                     // Setup sprites texture
@@ -235,7 +240,6 @@ public static class Program {
 
                     // Draw Shadows
                     colorFillShader.SetUniform("fillColor", Color.Black);
-
                     if (charA_selected != null) {
                         sprite_A.Scale = new Vector2f(1f, 1f);
                         sprite_A.Position = new Vector2f(Camera.X - 87 - sprite_A.GetLocalBounds().Width / 2, Camera.Y - 20 - sprite_A.GetLocalBounds().Height / 2);
@@ -273,8 +277,8 @@ public static class Program {
                     } 
 
                     // Draw texts
-                    UI.DrawText(player1_wins.ToString(), 0, 63, alignment: "right");
-                    UI.DrawText(player2_wins.ToString(), 0, 63, alignment: "left");
+                    UI.DrawText(playerA_wins.ToString(), 0, 63, alignment: "right");
+                    UI.DrawText(playerB_wins.ToString(), 0, 63, alignment: "left");
 
                     // Draw shoulder buttons
                     UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
@@ -289,13 +293,27 @@ public static class Program {
                     if (UI.DrawButton(Language.GetText("Controls"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: InputManager.Key_hold("RB"), action: InputManager.Key_up("RB"), click_font: "default small click", hover_font: "default small")) 
                         ChangeState(Controls);
 
+                    // Autoselect
+                    if (charA_selected == null && Program.AI_playerA) {
+                        pointer_charA = AI.rand.Next(0, characters.Count);
+                        charA_selected = characters[pointer_charA].Copy();
+                        charA_selected.ChangePalette(AI.rand.Next());
+                        ready_charA = true;
+                    }
+                    if (charB_selected == null && Program.AI_playerB) {
+                        pointer_charB = AI.rand.Next(0, characters.Count);
+                        charB_selected = characters[pointer_charB].Copy();
+                        charB_selected.ChangePalette(AI.rand.Next());
+                        ready_charB = true;
+                    }
+
                     // Buttons A
-                    if (UI.DrawButton("<   ", -77, -16, hover: true, click: InputManager.Key_hold("Left", player: 1), action: InputManager.Key_down("Left", player: 1), hover_font: "default small", font: "", spacing: 0)) {
+                    if (!ready_charA && UI.DrawButton("<   ", -77, -16, hover: true, click: InputManager.Key_hold("Left", player: 1), action: InputManager.Key_down("Left", player: 1), hover_font: "default small", font: "", spacing: 0)) {
                         if (charA_selected == null) pointer_charA = pointer_charA > 0 ? pointer_charA - 1 : characters.Count - 1;
-                        else if (!ready_charA) charA_selected.ChangePalette(-1);
-                    } if (UI.DrawButton("   >", -77, -16, hover: true, click: InputManager.Key_hold("Right", player: 1), action: InputManager.Key_down("Right", player: 1), hover_font: "default small", font: "", spacing: 0)) {
+                        else charA_selected.ChangePalette(-1);
+                    } if (!ready_charA && UI.DrawButton("   >", -77, -16, hover: true, click: InputManager.Key_hold("Right", player: 1), action: InputManager.Key_down("Right", player: 1), hover_font: "default small", font: "", spacing: 0)) {
                         if (charA_selected == null) pointer_charA = pointer_charA < characters.Count - 1 ? pointer_charA + 1 : 0;
-                        else if (!ready_charA) charA_selected.ChangePalette(1);
+                        else charA_selected.ChangePalette(1);
                     }
 
                     if (UI.DrawButton(characters[pointer_charA].name, -77, 45, spacing: Config.spacing_small, action: InputManager.Key_down("A", player: 1), click: InputManager.Key_hold("A", player: 1), hover_font: "default small"))
@@ -303,12 +321,12 @@ public static class Program {
                         else ready_charA = !ready_charA;
 
                     // Buttons B
-                    if (UI.DrawButton("<   ", 77, -16, hover: true, click: InputManager.Key_hold("Left", player: 2), action: InputManager.Key_down("Left", player: 2), hover_font: "default small", font: "", spacing: 0)) {
+                    if (!ready_charB && UI.DrawButton("<   ", 77, -16, hover: true, click: InputManager.Key_hold("Left", player: 2), action: InputManager.Key_down("Left", player: 2), hover_font: "default small", font: "", spacing: 0)) {
                         if (charB_selected == null) pointer_charB = pointer_charB > 0 ? pointer_charA - 1 : characters.Count - 1;
-                        else if (!ready_charB) charB_selected.ChangePalette(-1);
-                    } if (UI.DrawButton("   >", 77, -16, hover: true, click: InputManager.Key_hold("Right", player: 2), action: InputManager.Key_down("Right", player: 2), hover_font: "default small", font: "", spacing: 0)) {
+                        else charB_selected.ChangePalette(-1);
+                    } if (!ready_charB && UI.DrawButton("   >", 77, -16, hover: true, click: InputManager.Key_hold("Right", player: 2), action: InputManager.Key_down("Right", player: 2), hover_font: "default small", font: "", spacing: 0)) {
                         if (charB_selected == null) pointer_charB = pointer_charB < characters.Count - 1 ? pointer_charB + 1 : 0;
-                        else if (!ready_charB) charB_selected.ChangePalette(1);
+                        else charB_selected.ChangePalette(1);
                     }
 
                     if (UI.DrawButton(characters[pointer_charB].name, 77, 45, spacing: Config.spacing_small, action: InputManager.Key_down("A", player: 2), click: InputManager.Key_hold("A", player: 2), hover_font: "default small"))
@@ -316,9 +334,10 @@ public static class Program {
                         else ready_charB = !ready_charB;
 
                     // Ends when chars are selected and ready
-                    if (ready_charA && ready_charB)
+                    if (ready_charA && ready_charB) {
                         if (UI.blink2Hz) UI.DrawText(Language.GetText("press start"), 0, -90, spacing: Config.spacing_medium);
                         if (InputManager.Key_down("Start")) ChangeState(LoadScreen);
+                    }
 
                     break;
 
@@ -371,8 +390,7 @@ public static class Program {
                             break;
 
                         case Battling: // Durante a batalha
-                            if (stage.CheckRoundEnd())
-                            {
+                            if (stage.CheckRoundEnd()) {
                                 sub_state = RoundEnd;
                                 stage.StopRoundTime();
                                 stage.ResetTimer();
@@ -380,29 +398,21 @@ public static class Program {
                             break;
 
                         case RoundEnd: // Fim de round
-                            if (stage.GetTimerValue() < 3)
-                            {
-                                if (stage.character_A.life_points.X <= 0 || stage.character_B.life_points.X <= 0)
-                                {
+                            stage.LockPlayers();
+                            if (stage.GetTimerValue() < 3) {
+                                if (stage.character_A.life_points.X <= 0 || stage.character_B.life_points.X <= 0) {
                                     KO_logo.Position = new Vector2f(Camera.X - 75, Camera.Y - 54);
                                     window.Draw(KO_logo);
-                                }
-                                else
-                                {
+                                } else {
                                     timesup_logo.Position = new Vector2f(Camera.X - 131, Camera.Y - 55);
                                     window.Draw(timesup_logo);
                                 }
                             }
-                            if (stage.CheckTimer(4))
-                            {
-                                stage.LockPlayers();
+                            if (stage.CheckTimer(4)) {
                                 stage.ResetTimer();
-                                if (stage.CheckMatchEnd())
-                                {
+                                if (stage.CheckMatchEnd()) {
                                     sub_state = MatchEnd;
-                                }
-                                else
-                                {
+                                } else {
                                     sub_state = RoundStart;
                                     stage.ResetPlayers();
                                 }
@@ -433,8 +443,8 @@ public static class Program {
                     if (winner == Program.Drawn) winner_text = Language.GetText("Drawn");
                     else winner_text = Language.GetText("Player") + " " + winner + " " + Language.GetText("Wins");
 
-                    UI.DrawText(Program.player1_wins.ToString(), -Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "left");
-                    UI.DrawText(Program.player2_wins.ToString(), Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "right");
+                    UI.DrawText(Program.playerA_wins.ToString(), -Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "left");
+                    UI.DrawText(Program.playerB_wins.ToString(), Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "right");
                     UI.DrawText(winner_text, 0, -100, spacing: Config.spacing_medium, textureName: "default medium");
 
                     // Change option
@@ -450,9 +460,10 @@ public static class Program {
                         stage.LockPlayers();
                         ChangeState(Battle);
 
-                    } if (UI.DrawButton(Language.GetText("change stage"), 0, 20, spacing: Config.spacing_medium, action: face_up, click: face_hold, hover: pointer == 1, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
+                    } if (UI.DrawButton(Language.GetText("menu"), 0, 20, spacing: Config.spacing_medium, action: face_up, click: face_hold, hover: pointer == 1, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
                         stage.StopMusic();
                         stage.UnloadStage();
+                        InputManager.ResetAI();
                         ChangeState(SelectStage);
 
                     } if (UI.DrawButton(Language.GetText("exit game"), 0, 40, spacing: Config.spacing_medium, action: face_up, click: face_hold, hover: pointer == 2, font: "default medium", hover_font: "default medium red", click_font: "default medium click"))

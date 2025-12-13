@@ -414,13 +414,13 @@ namespace Stage_Space {
                 return true;
             }
             else if (this.rounds_A >= Config.max_rounds) {
-                Program.winner = Program.Player1;
-                Program.player1_wins += 1;
+                Program.winner = Program.PlayerA;
+                Program.playerA_wins += 1;
                 return true;
             }
             else if (this.rounds_B >= Config.max_rounds) {
-                Program.winner = Program.Player2;
-                Program.player2_wins += 1;
+                Program.winner = Program.PlayerB;
+                Program.playerB_wins += 1;
                 return true;
             }
             
@@ -510,14 +510,14 @@ namespace Stage_Space {
             this.character_A = char_A;
             this.character_A.facing = 1;
             this.character_A.player_index = 1;
-            this.character_A.BotEnabled = Program.AI_charA;
-            this.character_A.AIEnabled = Program.AI_charA;
+            this.character_A.BotEnabled = Program.AI_playerA;
+            this.character_A.AIEnabled = Program.AI_playerA;
 
             this.character_B = char_B;
             this.character_B.facing = -1;
             this.character_B.player_index = 2;
-            this.character_B.BotEnabled = Program.AI_charB;
-            this.character_B.AIEnabled = Program.AI_charB;
+            this.character_B.BotEnabled = Program.AI_playerB;
+            this.character_B.AIEnabled = Program.AI_playerB;
 
             this.character_A.floor_line = this.floorLine;
             this.character_B.floor_line = this.floorLine;

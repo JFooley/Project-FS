@@ -15,8 +15,7 @@ namespace Input_Space {
         public const int PLAYER_B = 2;
 
         private static Dictionary<int, Dictionary<string, int>> keysTranslationMap = new Dictionary<int, Dictionary<string, int>> {
-            { -1, new Dictionary<string, int>
-                {
+            { -1, new Dictionary<string, int> {
                     { "A", 0 },
                     { "B", 1 },
                     { "C", 2 },
@@ -33,8 +32,7 @@ namespace Input_Space {
                     { "Select", 13 },
                 }
             },
-            { 1, new Dictionary<string, int>
-                {
+            { 1, new Dictionary<string, int> {
                     { "A", 0 },
                     { "B", 1 },
                     { "C", 2 },
@@ -61,13 +59,61 @@ namespace Input_Space {
         public static int[] buttonLastState = new int[3];
 
         public static bool anyKey => InputManager.buttonState[DEFAULT] > 0;
+        public static bool anyKeyA => InputManager.buttonState[PLAYER_A] > 0;
+        public static bool anyKeyB => InputManager.buttonState[PLAYER_B] > 0;
+
 
         // Mapping para teclado e mouse
-        private static Dictionary<Keys, int> keyMapA;
-        private static Dictionary<Keys, int> keyMapB;
-        private static Dictionary<int, int> joystickMap;
+        private static Dictionary<Keys, int> keyMapA = new Dictionary<Keys, int> {
+            { Keys.Z, 0 },      // A
+            { Keys.X, 1 },      // B
+            { Keys.A, 2 },      // X
+            { Keys.S, 3 },      // Y
+            { Keys.F, 4 },      // L
+            { Keys.V, 5 },      // LT
+            { Keys.D, 6 },      // R
+            { Keys.C, 7 },      // RT
+            { Keys.Up, 8 },     // Up
+            { Keys.Down, 9 },   // Down
+            { Keys.Left, 10 },  // Left
+            { Keys.Right, 11 }, // Right
+            { Keys.Enter, 12 }, // Start
+            { Keys.Space, 13 }, // Select
+        };
+        private static Dictionary<Keys, int> keyMapB = new Dictionary<Keys, int> {
+            { Keys.Q, 0 },      // A
+            { Keys.W, 1 },      // B
+            { Keys.D1, 2 },     // X
+            { Keys.D2, 3 },     // Y
+            { Keys.D4, 4 },     // L
+            { Keys.R, 5 },      // LT
+            { Keys.D3, 6 },     // R
+            { Keys.E, 7 },      // RT
+            { Keys.NumPad8, 8 },   // Up
+            { Keys.NumPad2, 9 },   // Down
+            { Keys.NumPad4, 10 },  // Left
+            { Keys.NumPad6, 11 },  // Right
+            { Keys.Add, 12 },      // Start
+            { Keys.Subtract, 13 }, // Select
+        };
+        private static Dictionary<int, int> joystickMap = new Dictionary<int, int> {
+            { 0x1000, 0 },      // A
+            { 0x2000, 1 },      // B
+            { 0x4000, 2 },      // X
+            { 0x8000, 3 },      // Y
+            { 0x0100, 4 },      // L
+            { 0x0400, 5 },      // LT
+            { 0x0200, 6 },      // R
+            { 0x0800, 7 },      // RT
+            { 0x0001, 8 },      // Up
+            { 0x0002, 9 },      // Down
+            { 0x0004, 10 },     // Esquerda
+            { 0x0008, 11 },     // Direita
+            { 0x0010, 12 },     // Start
+            { 0x0020, 13 },     // Select
+        };
 
-        // Buffer de inputs para os últimos 240 frames
+        // Buffer de inputs para os últimos 240 frames (4 segundos)
         private const int BufferSize = 240;
         private static LinkedList<int>[] buffers = new LinkedList<int>[3];
 
@@ -78,63 +124,6 @@ namespace Input_Space {
                 InputManager.buttonState[i] = 0b0;
                 InputManager.buttonLastState[i] = 0b0;
             }
-            inputDevice[0] = KEYBOARD_A_INPUT;
-            inputDevice[1] = JOYSTICK_0_INPUT;
-            inputDevice[2] = JOYSTICK_1_INPUT;
-
-            InputManager.keyMapA = new Dictionary<Keys, int>
-            {
-                { Keys.Z, 0 },      // A
-                { Keys.X, 1 },      // B
-                { Keys.A, 2 },      // X
-                { Keys.S, 3 },      // Y
-                { Keys.F, 4 },      // L
-                { Keys.V, 5 },      // LT
-                { Keys.D, 6 },      // R
-                { Keys.C, 7 },      // RT
-                { Keys.Up, 8 },     // Up
-                { Keys.Down, 9 },   // Down
-                { Keys.Left, 10 },  // Left
-                { Keys.Right, 11 }, // Right
-                { Keys.Enter, 12 }, // Start
-                { Keys.Space, 13 }, // Select
-            };
-
-            InputManager.keyMapB = new Dictionary<Keys, int>
-            {
-                { Keys.Q, 0 },      // A
-                { Keys.W, 1 },      // B
-                { Keys.D1, 2 },     // X
-                { Keys.D2, 3 },     // Y
-                { Keys.D4, 4 },     // L
-                { Keys.R, 5 },      // LT
-                { Keys.D3, 6 },     // R
-                { Keys.E, 7 },      // RT
-                { Keys.NumPad8, 8 },   // Up
-                { Keys.NumPad2, 9 },   // Down
-                { Keys.NumPad4, 10 },  // Left
-                { Keys.NumPad6, 11 },  // Right
-                { Keys.Add, 12 },      // Start
-                { Keys.Subtract, 13 }, // Select
-            };
-
-            InputManager.joystickMap = new Dictionary<int, int>
-            {
-                { 0x1000, 0 },      // A
-                { 0x2000, 1 },      // B
-                { 0x4000, 2 },      // X
-                { 0x8000, 3 },      // Y
-                { 0x0100, 4 },      // L
-                { 0x0400, 5 },      // LT
-                { 0x0200, 6 },      // R
-                { 0x0800, 7 },      // RT
-                { 0x0001, 8 },      // Up
-                { 0x0002, 9 },      // Down
-                { 0x0004, 10 },     // Esquerda
-                { 0x0008, 11 },     // Direita
-                { 0x0010, 12 },     // Start
-                { 0x0020, 13 },     // Select
-            };
 
             InputManager.buffers = new LinkedList<int>[] {new LinkedList<int>(), new LinkedList<int>(), new LinkedList<int>()};
         }
@@ -193,7 +182,14 @@ namespace Input_Space {
 
 
         }
-
+        public static void UpdateAI() {
+            if (Program.AI_playerA & InputManager.anyKeyA) Program.AI_playerA = false;
+            if (Program.AI_playerB & InputManager.anyKeyB) Program.AI_playerB = false;
+        }
+        public static void ResetAI() {
+            Program.AI_playerA = true;
+            Program.AI_playerB = true;
+        }
         // Key Detection
         public static bool Key_hold(string key, int player = DEFAULT, int facing = 1) {
             return (buttonState[player] & (1 << keysTranslationMap[facing][key])) != 0;

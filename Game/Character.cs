@@ -649,12 +649,9 @@ namespace Character_Space {
             }
         }
         public void ChangePalette(int add_to_index = 0) {
-            var temp_index = (int) this.palette_index + add_to_index;
+            var temp_index = (int) (this.palette_index + add_to_index) % this.palette_quantity;
 
-            if (temp_index >= this.palette_quantity) 
-                temp_index = 0;
-            else if (temp_index < 0) 
-                temp_index = (int) this.palette_quantity - 1;
+            if (temp_index < 0) temp_index += this.palette_quantity;
 
             this.palette_index = (uint) temp_index;
 
