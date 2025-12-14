@@ -237,6 +237,10 @@ public static class Program {
                     // Setup sprites texture
                     sprite_A.Texture = characters[pointer_charA].thumb;
                     sprite_B.Texture = characters[pointer_charB].thumb;
+                    UI.DrawText(playerA_wins.ToString(), 0, 63, alignment: "right");
+                    UI.DrawText(playerB_wins.ToString(), 0, 63, alignment: "left" );
+                    UI.DrawText(AI_playerA ? "COM" : "P1", -15, 63, textureName: "default small", alignment: "right", spacing: Config.spacing_small);
+                    UI.DrawText(AI_playerB ? "COM" : "P2",  15, 63, textureName: "default small", alignment:  "left", spacing: Config.spacing_small);
 
                     // Draw Shadows
                     colorFillShader.SetUniform("fillColor", Color.Black);
@@ -258,7 +262,7 @@ public static class Program {
                         light: ready_charA ? new Color(128, 128, 128) : Color.White
                     ));
                     if (ready_charA) UI.DrawText(Language.GetText("ready"), -77, -20, textureName: "default small", spacing: Config.spacing_small);
-                    if (charA_selected != null) {
+                    if (charA_selected != null && !ready_charA) {
                         UI.DrawRectangle(-77, 67, 6, 6, Color.White);
                         UI.DrawRectangle(-77, 68, 4, 4, charA_selected.current_palette_color);
                     } 
@@ -271,14 +275,10 @@ public static class Program {
                         light: ready_charB ? new Color(128, 128, 128) : Color.White
                     ));
                     if (ready_charB) UI.DrawText(Language.GetText("ready"), +77, -20, textureName: "default small", spacing: Config.spacing_small);
-                    if (charB_selected != null) {
+                    if (charB_selected != null && !ready_charB) {
                         UI.DrawRectangle(77, 67, 6, 6, Color.White);
                         UI.DrawRectangle(77, 68, 4, 4, charB_selected.current_palette_color);  
                     } 
-
-                    // Draw texts
-                    UI.DrawText(playerA_wins.ToString(), 0, 63, alignment: "right");
-                    UI.DrawText(playerB_wins.ToString(), 0, 63, alignment: "left");
 
                     // Draw shoulder buttons
                     UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
@@ -294,13 +294,13 @@ public static class Program {
                         ChangeState(Controls);
 
                     // Autoselect
-                    if (charA_selected == null && Program.AI_playerA) {
+                    if (charA_selected == null && Program.AI_playerA && ready_charB) {
                         pointer_charA = AI.rand.Next(0, characters.Count);
                         charA_selected = characters[pointer_charA].Copy();
                         charA_selected.ChangePalette(AI.rand.Next());
                         ready_charA = true;
                     }
-                    if (charB_selected == null && Program.AI_playerB) {
+                    if (charB_selected == null && Program.AI_playerB && ready_charA) {
                         pointer_charB = AI.rand.Next(0, characters.Count);
                         charB_selected = characters[pointer_charB].Copy();
                         charB_selected.ChangePalette(AI.rand.Next());
@@ -398,7 +398,6 @@ public static class Program {
                             break;
 
                         case RoundEnd: // Fim de round
-                            stage.LockPlayers();
                             if (stage.GetTimerValue() < 3) {
                                 if (stage.character_A.life_points.X <= 0 || stage.character_B.life_points.X <= 0) {
                                     KO_logo.Position = new Vector2f(Camera.X - 75, Camera.Y - 54);
@@ -409,6 +408,7 @@ public static class Program {
                                 }
                             }
                             if (stage.CheckTimer(4)) {
+                                stage.LockPlayers();
                                 stage.ResetTimer();
                                 if (stage.CheckMatchEnd()) {
                                     sub_state = MatchEnd;

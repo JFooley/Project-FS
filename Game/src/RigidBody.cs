@@ -29,7 +29,7 @@ public class RigidBody {
         this.Position.Y += this.Velocity.Y;
 
         this.CheckGravity(player);
-        this.CheckFriction();
+        this.CheckFriction(player);
     }
 
     private void CheckGravity(Character player) {
@@ -41,8 +41,8 @@ public class RigidBody {
         }
     }
 
-    private void CheckFriction() {
-        if (this.Velocity.X != 0 && this.Velocity.Y == 0) {
+    private void CheckFriction(Character player) {
+        if (this.Velocity.X != 0 && this.Position.Y == player.floor_line) {
             this.Velocity.X = Math.Abs(this.Velocity.X) > this.atrito ? this.Velocity.X + (this.atrito * -Math.Sign(this.Velocity.X)) : 0;
         } 
     }

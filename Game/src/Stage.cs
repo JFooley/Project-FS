@@ -209,7 +209,7 @@ namespace Stage_Space {
         public void TrainingMode() {
             this.ResetRoundTime();
             UI.ShowFramerate("default small white");
-            UI.DrawText(Language.GetText("training mode"), 0, 70, spacing: Config.spacing_small, textureName: "default small white");
+            // UI.DrawText(Language.GetText("training mode"), 0, 70, spacing: Config.spacing_small, textureName: "default small white");
 
             // Show life points
             UI.DrawText(this.character_A.life_points.X.ToString(), -18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
@@ -218,30 +218,26 @@ namespace Stage_Space {
             UI.DrawText((this.character_B.life_points.Y - this.character_B.life_points.X).ToString(), Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small red");
 
             // Reset frames
-            if (this.character_A.hitstop_counter == 0 && this.character_B.hitstop_counter == 0) this.reset_frames += 1;
+            if (this.character_A.hitstop_counter == 0 && this.character_B.hitstop_counter == 0) {
+                this.reset_frames += 1;
+            }
 
-            // Block: After hit
-            if (this.character_B.stun_frames > 0) {
+            // Parry & Block: After hit (NOT WORKING)
+            if (this.character_B.on_hit) {
                 if (this.block == 1) this.character_B.blocking = true;
+                if (this.parry == 1) this.character_B.parring = true;
                 this.reset_frames = 0;
-            } else if (this.character_A.stun_frames > 0) {
+            } 
+            if (this.character_A.on_hit) {
                 if (this.block == 1) this.character_A.blocking = true;
+                if (this.parry == 1) this.character_A.parring = true;
                 this.reset_frames = 0;
             }
-            
+
             // Block: Allways
             if (this.block == 2) {
                 this.character_A.blocking = true;
                 this.character_B.blocking = true;
-            }
-
-            // Parry: After hit
-            if (this.character_B.stun_frames > 0) {
-                if (this.parry == 1) this.character_B.parring = true;
-                this.reset_frames = 0;
-            } else if (this.character_A.stun_frames > 0) {
-                if (this.parry == 1) this.character_A.parring = true;
-                this.reset_frames = 0;
             }
 
             // Parry: Allways
@@ -255,21 +251,25 @@ namespace Stage_Space {
                 if (this.character_B.not_acting_all) {
                     if (this.block != 2) this.character_B.blocking = false;
                     if (this.parry != 2) this.character_B.parring = false;
+
                     if (this.refil_life) {
                         this.character_B.life_points.X = this.character_B.life_points.Y;
                         this.character_B.dizzy_points.X = this.character_B.dizzy_points.Y;
                     }
                     if (this.refil_super) this.character_B.aura_points.X = this.character_B.aura_points.Y;
                 }
+
                 if (this.character_A.not_acting_all) {
                     if (this.block != 2) this.character_A.blocking = false;
                     if (this.parry != 2) this.character_A.parring = false;
+
                     if (this.refil_life) {
                         this.character_A.life_points.X = this.character_A.life_points.Y;
                         this.character_A.dizzy_points.X = this.character_A.dizzy_points.Y;
                     }
                     if (this.refil_super) this.character_A.aura_points.X = this.character_A.aura_points.Y;
                 }
+                
                 this.reset_frames = Config.reset_frames;
             }
         }

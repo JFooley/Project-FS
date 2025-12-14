@@ -98,7 +98,6 @@ namespace Character_Space {
         public Vector2i dizzy_points = new Vector2i(500, 500);
         public Vector2i aura_points = new Vector2i(0, 100);
         public Vector2f visual_position => new Vector2f(this.body.Position.X - 125, this.body.Position.Y - 250);
-        public int stun_frames = 0;
         public int move_speed = 0;
         public int dash_speed = 0;
         public int jump_hight = 79;
@@ -376,7 +375,6 @@ namespace Character_Space {
             return (this.not_acting_low || (this.state.on_block && this.state.low)) && InputManager.Key_hold("Left", player: this.player_index, facing: this.facing) && InputManager.Key_hold("Down", player: this.player_index);
         }
         public void Stun(Character enemy, int advantage, bool hit = true, bool airbone = false, bool sweep = false, bool force_crounch = false, bool force_stand = false, bool force = false) {
-            this.stun_frames = 0;
             if (hit || this.life_points.X == 0) { // Hit stun states
                 if (sweep) {
                     this.ChangeState("Sweeped", reset: true);
@@ -384,7 +382,6 @@ namespace Character_Space {
 
                 } else if (airbone || (this.life_points.X <= 0 && !Program.stage.MustWait())|| this.current_state == "Airboned") {
                     this.ChangeState("Airboned", reset: true);
-                    this.stun_frames = 0;
 
                     if (this.life_points.X <= 0) this.SetVelocity(X: -Config.heavy_pushback, Y: 50);
                     return;
@@ -414,16 +411,6 @@ namespace Character_Space {
         }
         public void BlockStun(Character enemy, int advantage, bool force = false) {
             this.Stun(enemy, advantage, hit: false, force: force);
-        }
-        public void CheckStun() {
-            if (this.stun_frames > 0) {
-                this.stun_frames -= 1;
-                if (this.stun_frames == 0 && this.current_state != "Airboned") {
-                    if (this.on_air) this.ChangeState("JumpFalling");
-                    else if (this.crounching) this.ChangeState("Crouching");
-                    else this.ChangeState("Idle");
-                }
-            }
         }
         public void CheckColisions() {               
             // Para cada character no stage
@@ -532,8 +519,6 @@ namespace Character_Space {
                 this.current_state = new_state;
                 this.has_hit = false;
             }
-
-            if (this.current_state.Contains("Falling")) this.stun_frames = 0;
         }
         public Sprite GetCurrentSprite() {
             if (textures.TryGetValue(this.current_sprite, out Texture texture)) {
