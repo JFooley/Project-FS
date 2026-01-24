@@ -239,8 +239,8 @@ public static class Program {
                     sprite_B.Texture = characters[pointer_charB].thumb;
                     UI.DrawText(playerA_wins.ToString(), 0, 63, alignment: "right");
                     UI.DrawText(playerB_wins.ToString(), 0, 63, alignment: "left" );
-                    UI.DrawText(AI_playerA ? "COM" : "P1", -15, 63, textureName: "default small", alignment: "right", spacing: Config.spacing_small);
-                    UI.DrawText(AI_playerB ? "COM" : "P2",  15, 63, textureName: "default small", alignment:  "left", spacing: Config.spacing_small);
+                    UI.DrawText(Language.GetText(AI_playerA ? "COM" : "P1"), -15, 63, textureName: "default small", alignment: "right", spacing: Config.spacing_small);
+                    UI.DrawText(Language.GetText(AI_playerB ? "COM" : "P2"),  15, 63, textureName: "default small", alignment:  "left", spacing: Config.spacing_small);
 
                     // Draw Shadows
                     colorFillShader.SetUniform("fillColor", Color.Black);
@@ -600,7 +600,7 @@ public static class Program {
             // Finally
             last_frame_time = frametimer.Elapsed.TotalMilliseconds/1000;
             window.Display();
-            window.Clear();
+            window.Clear();            
         }
     }
 

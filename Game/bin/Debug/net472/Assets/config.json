@@ -7,10 +7,10 @@
   "parry_window": 10,
   "_main_volume": 100.0,
   "_character_volume": 80.0,
-  "_music_volume": 100.0,
+  "_music_volume": 80.0,
   "_effect_volume": 100.0,
   "round_length": 90,
-  "hit_stop_time": 12,
+  "hit_stop_time": 15,
   "max_rounds": 2,
   "Language": 0
 }

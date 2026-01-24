@@ -16,8 +16,8 @@ public static class Config {
     // Battle
     public static int round_length = 90;
     public const int default_round_length = 90;
-    public static int hit_stop_time = 12;
-    public const int default_hit_stop_time = 12;
+    public static int hit_stop_time = 15;
+    public const int default_hit_stop_time = 15;
     public static int max_rounds = 2;
     public const int default_max_rounds = 2;
     public static int input_window_time = 4;
@@ -28,7 +28,7 @@ public static class Config {
     // Audio
     public static float _main_volume = 100f;
     public static float _character_volume = 80f;
-    public static float _music_volume = 100f;
+    public static float _music_volume = 80f;
     public static float _effect_volume = 100f;
 
     public static float Main_Volume

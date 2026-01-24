@@ -2346,7 +2346,6 @@ D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\data\visuals.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\fonts\fonts.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Fireball\sounds\sounds.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Fireball\sprites\visuals.dat
-D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Hitspark\sounds\sounds.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Hitspark\sprites\visuals.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Particle\sounds\sounds.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Particle\sprites\visuals.dat
@@ -2366,3 +2365,4 @@ D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Savana
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Savana\sprites\visuals.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Training Stage\sound\sounds.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Training Stage\sprites\visuals.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Hitspark\sounds\sounds.dat

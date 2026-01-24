@@ -81,7 +81,6 @@ namespace Stage_Space {
         public Sound music;
         public State state => states[CurrentState];
         public Animation CurrentAnimation => states[CurrentState].animation;
-        public int CurrentFrameIndex => states[CurrentState].animation.anim_frame_index;
 
         // Visual info
         public Color AmbientLight = new Color(255, 255, 255, 255);
@@ -140,7 +139,7 @@ namespace Stage_Space {
             }
 
             // Advance to the next frame
-            CurrentAnimation.AdvanceFrame();
+            CurrentAnimation.AdvanceFrameSimple();
             if (this.CurrentAnimation.ended && state.change_on_end) {
                 if (states.ContainsKey(this.state.post_state)) {
                     this.LastState = this.CurrentState;
@@ -619,7 +618,7 @@ namespace Stage_Space {
             string dat_path = Path.Combine(full_path, "visuals.dat");
             try {
                 DataManagement.LoadTexturesFromFile(dat_path, this.textures);
-            } catch (Exception e) {
+            } catch (Exception) {
                 DataManagement.LoadTexturesFromPath(full_path, this.textures);
                 DataManagement.SaveTexturesToFile(dat_path, this.textures);
             }

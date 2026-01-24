@@ -22,7 +22,7 @@ public class Particle : Character {
         // Animations
 
         var SAGathering = new List<FrameData> {
-            new FrameData(11, 0, 0, new List<GenericBox> {}, "super art"),
+            new FrameData(11, 0, 0, new List<GenericBox> {}, sound: "super art"),
             new FrameData(12, 0, 0, new List<GenericBox> {}),
             new FrameData(13, 0, 0, new List<GenericBox> {}),
             new FrameData(14, 0, 0, new List<GenericBox> {}),
@@ -127,7 +127,7 @@ public class Particle : Character {
             new FrameData(313, 0, 0, new List<GenericBox> {}),
             new FrameData(314, 0, 0, new List<GenericBox> {}),
             new FrameData(315, 0, 0, new List<GenericBox> {}),
-            new FrameData(316, 0, 0, new List<GenericBox> {}, "explosão"),
+            new FrameData(316, 0, 0, new List<GenericBox> {}, sound: "explosão"),
             new FrameData(317, 0, 0, new List<GenericBox> {}),
             new FrameData(318, 0, 0, new List<GenericBox> {}),
             new FrameData(319, 0, 0, new List<GenericBox> {}),

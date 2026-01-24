@@ -199,7 +199,7 @@ namespace Character_Space {
             temp_sprite.Position = new Vector2f(this.body.Position.X - (temp_sprite.GetLocalBounds().Width / 2 * this.facing), this.body.Position.Y - temp_sprite.GetLocalBounds().Height);
             temp_sprite.Scale = new Vector2f(this.facing, 1f);
 
-            // Render tracing
+            // Draw tracing
             if (this.state.trace) {
                 Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
 
@@ -214,7 +214,7 @@ namespace Character_Space {
                 }
             } else last_sprites = new Sprite[3];
 
-            // Render current sprite
+            // Draw current sprite
             if (this.palette != null) {
                 var light = this.own_light == Color.Transparent ? this.light_tint : this.own_light;
                 Program.window.Draw(temp_sprite, this.SetSwaperShader(light));
@@ -283,14 +283,13 @@ namespace Character_Space {
                     // Desenha o retângulo da hitbox na janela
                     Program.window.Draw(hitboxRect);
                 }
+                UI.DrawText(this.current_logic_frame_index + "/" + this.current_animation.lenght, this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 145, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
                 UI.DrawText(this.current_anim_frame_index.ToString(), this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 135, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
                 UI.DrawText(this.current_state, this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 125, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
                 UI.DrawText(this.state.not_busy ? "waiting" : "busy", this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 115, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
             }
         }
         public override void Animate() {   
-            // this.CheckStun();
-
             // Update body.Position
             this.body.Update(this);
             this.body.Position.X += current_animation.GetCurrentFrame().DeltaX * this.facing;
@@ -301,9 +300,7 @@ namespace Character_Space {
             if (current_animation.AdvanceFrame() && current_animation.GetCurrentFrame().hasHit == false) this.has_hit = false;
 
             // Change state, if necessary
-            if (state.change_on_end && this.current_animation.ended) {
-                this.ChangeState(this.state.post_state);
-            } else if (state.change_on_ground && !this.on_air) {
+            if ((state.change_on_end && this.current_animation.ended) || (state.change_on_ground && !this.on_air)) {
                 this.ChangeState(this.state.post_state);
             }
         }
@@ -406,7 +403,8 @@ namespace Character_Space {
             if (force) {
                 this.current_animation.lenght = Math.Max(advantage, 1);
             } else {
-                this.current_animation.lenght = Math.Max(enemy.current_animation.lenght - enemy.current_logic_frame_index + advantage + 1, 1);
+                this.current_animation.lenght = Math.Max(enemy.current_animation.lenght - enemy.current_logic_frame_index + advantage, 1);
+                
             }
         }
         public void BlockStun(Character enemy, int advantage, bool force = false) {
@@ -435,8 +433,11 @@ namespace Character_Space {
                                 int hit_type = DefineColisionType(charB);
 
                                 if (hit_type == Character.NOTHING) continue;
-                                if (hit_type == Character.PARRY) charB.ChangeState("Parry", reset: true);
-
+                                if (hit_type == Character.PARRY) {
+                                    charB.ChangeState("Parry", reset: true);
+                                    charB.aura_points.X = Math.Min(charB.aura_points.Y, charB.aura_points.X + 10);
+                                }
+                                
                                 stage.Hitstop(this.state.hitstop, hit_type: hit_type, character: charB);
                                 
                                 if (this.player_index == 1) stage.character_A.combo_counter += hit_type == Character.HIT ? 1 : 0; 
@@ -482,11 +483,11 @@ namespace Character_Space {
             target.life_points.X = (int) Math.Max(target.life_points.X - damage * self.damage_scaling, 0);
             target.dizzy_points.X = (int) Math.Max(target.dizzy_points.X - dizzy_damage * self.damage_scaling, 0);
         }
-        public static void GetSuperPoints(Character target, Character self, int hit , int target_amount = 3, int self_amount = 10) {
+        public static void AddAuraPoints(Character target, Character self, int hit , int target_amount = 3, int self_amount = 10) {
             target.aura_points.X = (int) Math.Min(target.aura_points.Y, target.aura_points.X + target_amount);
             self.aura_points.X = (int) Math.Min(self.aura_points.Y, hit == 1 ? self.aura_points.X + self_amount : self.aura_points.X + (self_amount / 3));
         }
-        public static bool CheckSuperPoints(Character target, int amount) {
+        public static bool CheckAuraPoints(Character target, int amount) {
             return target.aura_points.X >= amount;
         }
         public static void UseSuperPoints(Character target, int amount) {

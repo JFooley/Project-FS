@@ -28,44 +28,44 @@ public class Fireball : Character {
         var kenFB1 = new GenericBox(1, 139, 115, 163, 143);
         
         var KenFireballFrames = new List<FrameData> { 
-            new FrameData(21, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(22, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(23, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(24, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(25, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(26, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(27, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(28, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(29, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(210, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(211, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(212, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(213, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(214, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(215, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(216, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(217, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(218, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(219, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(220, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(221, 0, 0, new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(21, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(22, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(23, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(24, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(25, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(26, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(27, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(28, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(29, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(210, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(211, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(212, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(213, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(214, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(215, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(216, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(217, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(218, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(219, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(220, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData(221, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
         };
 
         var KenFireballFinal = new List<FrameData> {
-            new FrameData(12, 0, 0, new List<GenericBox> {}),
-            new FrameData(13, 0, 0, new List<GenericBox> {}),
-            new FrameData(14, 0, 0, new List<GenericBox> {}),
-            new FrameData(15, 0, 0, new List<GenericBox> {}),
-            new FrameData(16, 0, 0, new List<GenericBox> {}),
-            new FrameData(17, 0, 0, new List<GenericBox> {}),
+            new FrameData(12, 0, 0, len: 2, boxes: new List<GenericBox> {}),
+            new FrameData(13, 0, 0, len: 2, boxes: new List<GenericBox> {}),
+            new FrameData(14, 0, 0, len: 2, boxes: new List<GenericBox> {}),
+            new FrameData(15, 0, 0, len: 2, boxes: new List<GenericBox> {}),
+            new FrameData(16, 0, 0, len: 2, boxes: new List<GenericBox> {}),
+            new FrameData(17, 0, 0, len: 2, boxes: new List<GenericBox> {}),
         };
 
         // States
         var animations = new Dictionary<string, State> {
-            {"Ken1", new State(KenFireballFrames, "Ken1", 20, 7, can_harm: true)},
-            {"Ken2", new State(KenFireballFrames, "Ken2", 20, 7, can_harm: true)},
-            {"Ken3", new State(KenFireballFrames, "Ken3", 30, 7, glow: true, can_harm: true)},
-            {"KenExit", new State(KenFireballFinal, "Remove", 30, 7)},
+            {"Ken1", new State(KenFireballFrames, "Ken1", 7, can_harm: true)},
+            {"Ken2", new State(KenFireballFrames, "Ken2", 7, can_harm: true)},
+            {"Ken3", new State(KenFireballFrames, "Ken3", 7, glow: true, can_harm: true)},
+            {"KenExit", new State(KenFireballFinal, "Remove", 7)},
         };
 
         this.states = animations;
@@ -138,8 +138,8 @@ public class Fireball : Character {
                     target.Stun(this, 30, force: true);
                 }
 
-                if (this.player_index == 0) Character.GetSuperPoints(target: target, self: stage.character_A, hit);
-                else Character.GetSuperPoints(target: target, self: stage.character_B, hit);
+                if (this.player_index == 0) Character.AddAuraPoints(target: target, self: stage.character_A, hit);
+                else Character.AddAuraPoints(target: target, self: stage.character_B, hit);
                 break;
 
             case "Ken2":
@@ -156,8 +156,8 @@ public class Fireball : Character {
                     target.Stun(this, 30, force: true);
                 }
 
-                if (this.player_index == 0) Character.GetSuperPoints(target: target, self: stage.character_A, hit);
-                else Character.GetSuperPoints(target: target, self: stage.character_B, hit);
+                if (this.player_index == 0) Character.AddAuraPoints(target: target, self: stage.character_A, hit);
+                else Character.AddAuraPoints(target: target, self: stage.character_B, hit);
                 break;
             
             case "Ken3":
@@ -174,8 +174,8 @@ public class Fireball : Character {
                     target.Stun(this, 30, force: true);
                 }
 
-                if (this.player_index == 0) Character.GetSuperPoints(target: target, self: stage.character_A, hit);
-                else Character.GetSuperPoints(target: target, self: stage.character_B, hit);
+                if (this.player_index == 0) Character.AddAuraPoints(target: target, self: stage.character_A, hit);
+                else Character.AddAuraPoints(target: target, self: stage.character_B, hit);
                 break;
 
             default:
