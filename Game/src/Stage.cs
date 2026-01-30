@@ -207,8 +207,7 @@ namespace Stage_Space {
         public virtual void DoSpecialBehaviour() {}
         public void TrainingMode() {
             this.ResetRoundTime();
-            UI.ShowFramerate("default small white");
-            // UI.DrawText(Language.GetText("training mode"), 0, 70, spacing: Config.spacing_small, textureName: "default small white");
+            if (Config.debug) UI.ShowFramerate("default small white");
 
             // Show life points
             UI.DrawText(this.character_A.life_points.X.ToString(), -18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");

@@ -283,10 +283,14 @@ namespace Character_Space {
                     // Desenha o retângulo da hitbox na janela
                     Program.window.Draw(hitboxRect);
                 }
-                UI.DrawText(this.current_logic_frame_index + "/" + this.current_animation.lenght, this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 145, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.DrawText(this.current_anim_frame_index.ToString(), this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 135, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.DrawText(this.current_state, this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 125, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.DrawText(this.state.not_busy ? "waiting" : "busy", this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 115, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+
+                // Draw debug info
+                if (Config.debug) {
+                    UI.DrawText(this.current_logic_frame_index + "/" + this.current_animation.lenght, this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 145, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                    UI.DrawText(this.current_anim_frame_index.ToString(), this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 135, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                    UI.DrawText(this.current_state, this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 125, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                    UI.DrawText(this.state.not_busy ? "waiting" : "busy", this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 115, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                }
             }
         }
         public override void Animate() {   
