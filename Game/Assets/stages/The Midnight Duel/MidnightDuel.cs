@@ -10,11 +10,15 @@ public class MidnightDuel : Stage {
     }
 
     public override void LoadStage() {
-        var defaultFrames = new List<int> {0, 1, 2, 3};
-        List<string> frames = defaultFrames.Select(i => i.ToString()).ToList();
+        var defaultFrames = new List<Frame> {
+            new Frame(0, len: 7),
+            new Frame(1, len: 7),
+            new Frame(2, len: 7),
+            new Frame(3, len: 7)
+        };
 
         var animations = new Dictionary<string, State> {
-            { "Default", new State(frames, "Default", 8)},
+            { "Default", new State(defaultFrames, "Default")},
         };
 
         this.states = animations;

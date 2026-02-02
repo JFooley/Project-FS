@@ -27,7 +27,7 @@ public class Fireball : Character {
         var kenFB0 = new GenericBox(0, 139, 115, 163, 143);
         var kenFB1 = new GenericBox(1, 139, 115, 163, 143);
         
-        var KenFireballFrames = new List<FrameData> { 
+        var KenFireballFrames = new List<Frame> { 
             new FrameData(21, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
             new FrameData(22, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
             new FrameData(23, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
@@ -51,7 +51,7 @@ public class Fireball : Character {
             new FrameData(221, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
         };
 
-        var KenFireballFinal = new List<FrameData> {
+        var KenFireballFinal = new List<Frame> {
             new FrameData(12, 0, 0, len: 2, boxes: new List<GenericBox> {}),
             new FrameData(13, 0, 0, len: 2, boxes: new List<GenericBox> {}),
             new FrameData(14, 0, 0, len: 2, boxes: new List<GenericBox> {}),

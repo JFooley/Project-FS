@@ -19,7 +19,7 @@ public class Hitspark : Character {
 
     public override void Load() {
         // Animations
-        var Hit1 = new List<FrameData> { 
+        var Hit1 = new List<Frame> { 
             new FrameData(11, 0, 0, len: 1, boxes: new List<GenericBox> {}, sound: "on_hit_1"),
             new FrameData(12, 0, 0, len: 1, boxes: new List<GenericBox> {}),
             new FrameData(13, 0, 0, len: 1, boxes: new List<GenericBox> {}),
@@ -32,7 +32,7 @@ public class Hitspark : Character {
             new FrameData(110, 0, 0, len: 1, boxes: new List<GenericBox> {}),
         };
 
-        var Hit2 = new List<FrameData> { 
+        var Hit2 = new List<Frame> { 
             new FrameData(21, 0, 0, len: 1, boxes: new List<GenericBox> {}, sound: "on_hit_2"),
             new FrameData(22, 0, 0, len: 1, boxes: new List<GenericBox> {}),
             new FrameData(23, 0, 0, len: 1, boxes: new List<GenericBox> {}),
@@ -45,7 +45,7 @@ public class Hitspark : Character {
             new FrameData(210, 0, 0, len: 1, boxes: new List<GenericBox> {}),
         };
 
-        var Hit3 = new List<FrameData> { 
+        var Hit3 = new List<Frame> { 
             new FrameData(41, 0, 0, len: 1, boxes: new List<GenericBox> {}, sound: "on_hit_3"),
             new FrameData(42, 0, 0, len: 1, boxes: new List<GenericBox> {}),
             new FrameData(43, 0, 0, len: 1, boxes: new List<GenericBox> {}),
@@ -58,7 +58,7 @@ public class Hitspark : Character {
             new FrameData(410, 0, 0, len: 1, boxes: new List<GenericBox> {}),
         };
 
-        var Block = new List<FrameData> {
+        var Block = new List<Frame> {
             new FrameData(31, 0, 0, len: 2, boxes: new List<GenericBox> {}, sound: "on_block"),
             new FrameData(32, 0, 0, len: 2, boxes: new List<GenericBox> {}),
             new FrameData(33, 0, 0, len: 2, boxes: new List<GenericBox> {}),
@@ -67,7 +67,7 @@ public class Hitspark : Character {
             new FrameData(36, 0, 0, len: 2, boxes: new List<GenericBox> {}),
         };
 
-        var Parry = new List<FrameData> {
+        var Parry = new List<Frame> {
             new FrameData("parry1", 0, 0, len: 2, boxes: new List<GenericBox> {}),
             new FrameData("parry2", 0, 0, len: 2, boxes: new List<GenericBox> {}, sound: "parry"),
             new FrameData("parry3", 0, 0, len: 2, boxes: new List<GenericBox> {}),

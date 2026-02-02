@@ -27,29 +27,8 @@ public class State {
     // Other logics
     public bool drama_wait;
 
-    public State(List<FrameData> frames, string post_state, int priority = -1, bool loop = true, bool change_on_end = true, bool change_on_ground = false, bool can_be_parried = true, bool trace = false, bool glow = false, string hitstop = "Light", bool not_busy = false, bool air = false, bool low = false, bool on_hit = false, bool on_block = false, bool is_parry = false, bool can_be_hit = true, bool can_harm = false, bool drama_wait = false) {
+    public State(List<Frame> frames, string post_state, int priority = -1, bool loop = true, bool change_on_end = true, bool change_on_ground = false, bool can_be_parried = true, bool trace = false, bool glow = false, string hitstop = "Light", bool not_busy = false, bool air = false, bool low = false, bool on_hit = false, bool on_block = false, bool is_parry = false, bool can_be_hit = true, bool can_harm = false, bool drama_wait = false) {
         this.animation = new Animation(frames, loop);
-        this.post_state = post_state;
-        this.priority = priority;
-        this.change_on_end = change_on_end;
-        this.change_on_ground = change_on_ground;
-        this.trace = trace;
-        this.glow = glow;
-        this.hitstop = hitstop;
-        this.can_be_parried = can_be_parried;
-        this.can_be_hit = can_be_hit;
-        this.not_busy = not_busy;
-        this.air = air;
-        this.low = low;
-        this.on_hit = on_hit;
-        this.on_block = on_block;
-        this.on_parry = is_parry;
-        this.drama_wait = drama_wait;
-        this.can_harm = (!not_busy && !on_hit && !on_block && !is_parry) || can_harm;
-    }
-
-    public State(List<string> frames, string post_state, int framerate = 60, int priority = -1, bool loop = true, bool change_on_end = true, bool change_on_ground = false, bool can_be_parried = true, bool trace = false, bool glow = false, string hitstop = "Light", bool not_busy = false, bool air = false, bool low = false, bool on_hit = false, bool on_block = false, bool is_parry = false, bool can_be_hit = true, bool can_harm = false, bool drama_wait = false) {
-        this.animation = new Animation(frames, framerate);
         this.post_state = post_state;
         this.priority = priority;
         this.change_on_end = change_on_end;

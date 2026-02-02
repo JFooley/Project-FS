@@ -1,7 +1,7 @@
 {
   "Fullscreen": true,
   "Vsync": true,
-  "Crt_Filter": true,
+  "debug": false,
   "input_window_time": 4,
   "parry_advantage": 2,
   "parry_window": 10,

@@ -118,7 +118,7 @@ namespace Character_Space {
         public bool on_air => this.body.Position.Y < this.floor_line;
         public bool crounching => this.state.low;
 
-        public bool can_parry => (not_acting_all && parring) || (not_acting_all && InputManager.Key_press("Left", input_window: Config.parry_window, player: this.player_index, facing: this.facing));
+        public bool can_parry => (not_acting_all && parring) || (not_acting_all && InputManager.Key_press("Right", input_window: Config.parry_window, player: this.player_index, facing: this.facing));
         public bool can_dash => not_acting && !this.state.on_parry;
         public bool has_hit = false; 
 
@@ -233,22 +233,6 @@ namespace Character_Space {
             
             // Draw Hitboxes
             if (drawHitboxes) {  
-                RectangleShape anchorY = new RectangleShape(new Vector2f(0, 10)) {
-                    Position = new Vector2f(this.body.Position.X, this.body.Position.Y - 60),
-                    FillColor = SFML.Graphics.Color.Transparent,
-                    OutlineColor = this.current_animation.on_last_frame ? Color.Red : Color.White, 
-                    OutlineThickness = 1.0f
-                };
-                RectangleShape anchorX = new RectangleShape(new Vector2f(10, 0)) {
-                    Position = new Vector2f(this.body.Position.X - 5, this.body.Position.Y - 55),
-                    FillColor = SFML.Graphics.Color.Transparent,
-                    OutlineColor = this.current_animation.on_last_frame ? Color.Red : Color.White, 
-                    OutlineThickness = 1.0f 
-                };
-                
-                Program.window.Draw(anchorX);
-                Program.window.Draw(anchorY);
-
                 foreach (GenericBox box in this.current_boxes) {
                     // Calcula as coordenadas absolutas da hitbox
                     float x1 = box.getRealA(this).X;
@@ -286,6 +270,22 @@ namespace Character_Space {
 
                 // Draw debug info
                 if (Config.debug) {
+                    RectangleShape anchorY = new RectangleShape(new Vector2f(0, 10)) {
+                        Position = new Vector2f(this.body.Position.X, this.body.Position.Y - 60),
+                        FillColor = SFML.Graphics.Color.Transparent,
+                        OutlineColor = this.current_animation.on_last_frame ? Color.Red : Color.White, 
+                        OutlineThickness = 1.0f
+                    };
+                    RectangleShape anchorX = new RectangleShape(new Vector2f(10, 0)) {
+                        Position = new Vector2f(this.body.Position.X - 5, this.body.Position.Y - 55),
+                        FillColor = SFML.Graphics.Color.Transparent,
+                        OutlineColor = this.current_animation.on_last_frame ? Color.Red : Color.White, 
+                        OutlineThickness = 1.0f 
+                    };
+                    
+                    Program.window.Draw(anchorX);
+                    Program.window.Draw(anchorY);
+
                     UI.DrawText(this.current_logic_frame_index + "/" + this.current_animation.lenght, this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 145, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
                     UI.DrawText(this.current_anim_frame_index.ToString(), this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 135, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
                     UI.DrawText(this.current_state, this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 125, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
@@ -456,31 +456,12 @@ namespace Character_Space {
         }
 
         // Static Methods 
-        public static void Push(Character target, Character self, string amount, float X_amount = 0, float Y_amount = 0, bool airbone = false, bool force_push = false) {
+        public static void Push(Character target, Character self, float X_amount, float Y_amount = 0, bool airbone = false, bool force_push = false) {
             if ((target.body.Position.X <= Camera.X - Config.corner_limit || target.body.Position.X >= Camera.X + Config.corner_limit) && !force_push) {
-                if (X_amount != 0) {
-                    self.SetVelocity(X: self.facing * target.facing * X_amount, keep_Y: true);
-                    target.SetVelocity(X: self.facing * target.facing * X_amount, Y: (target.on_air || airbone) ? Y_amount : 0);
-                } else if (amount == "Light") {
-                    self.SetVelocity(X: self.facing * target.facing * Config.light_pushback, keep_Y: true);
-                    target.SetVelocity(X: self.facing * target.facing * Config.light_pushback, Y: (target.on_air || airbone) ? Y_amount : 0);
-                } else if (amount == "Medium") {
-                    self.SetVelocity(X: self.facing * target.facing * Config.medium_pushback, keep_Y: true);
-                    target.SetVelocity(X: self.facing * target.facing * Config.medium_pushback, Y: (target.on_air || airbone) ? Y_amount : 0);
-                } else if (amount == "Heavy"){
-                    self.SetVelocity(X: self.facing * target.facing * Config.heavy_pushback, keep_Y: true);
-                    target.SetVelocity(X: self.facing * target.facing * Config.heavy_pushback, Y: (target.on_air || airbone) ? Y_amount : 0);
-                }
+                self.SetVelocity(X: self.facing * target.facing * X_amount, keep_Y: true);
+                target.SetVelocity(X: self.facing * target.facing * X_amount, Y: (target.on_air || airbone) ? Y_amount : 0);
             } else {
-                if (X_amount != 0) {
-                    target.SetVelocity(X: self.facing * target.facing * X_amount, Y: (target.on_air || airbone) ? Y_amount : 0);
-                } else if (amount == "Light") {
-                    target.SetVelocity(X: self.facing * target.facing * Config.light_pushback, Y: (target.on_air || airbone) ? Y_amount : 0);
-                } else if (amount == "Medium") {
-                    target.SetVelocity(X: self.facing * target.facing * Config.medium_pushback, Y: (target.on_air || airbone) ? Y_amount : 0);
-                } else if (amount == "Heavy"){
-                    target.SetVelocity(X: self.facing * target.facing * Config.heavy_pushback, Y: (target.on_air || airbone) ? Y_amount : 0);
-                }
+                target.SetVelocity(X: self.facing * target.facing * X_amount, Y: (target.on_air || airbone) ? Y_amount : 0);
             }
         }
         public static void Damage(Character target, Character self, int damage, int dizzy_damage) {

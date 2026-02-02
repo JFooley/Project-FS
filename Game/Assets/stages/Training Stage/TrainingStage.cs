@@ -1,4 +1,5 @@
 using Stage_Space;
+using Animation_Space;
 
 public class TrainingStage : Stage {
     public TrainingStage()
@@ -9,7 +10,7 @@ public class TrainingStage : Stage {
 
     public override void LoadStage() {
         var animations = new Dictionary<string, State> {
-            { "Default", new State(new List<string>{"0"}, "Default", 1)},
+            { "Default", new State(new List<Frame> {new Frame(0, len: 60)}, "Default")},
         };
 
         this.states = animations;

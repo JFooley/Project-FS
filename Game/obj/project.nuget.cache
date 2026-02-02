@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "Asp0IKTHzrQ=",
+  "dgSpecHash": "Z4u7X7uVtFw=",
   "success": true,
   "projectFilePath": "D:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj",
   "expectedPackageFiles": [
@@ -18,12 +18,5 @@
     "C:\\Users\\gabri\\.nuget\\packages\\system.runtime.interopservices\\4.3.0\\system.runtime.interopservices.4.3.0.nupkg.sha512",
     "C:\\Users\\gabri\\.nuget\\packages\\system.windows.forms\\4.0.0\\system.windows.forms.4.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file D:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\obj\\project.nuget.cache : Found invalid data while decoding."
-    }
-  ]
+  "logs": []
 }

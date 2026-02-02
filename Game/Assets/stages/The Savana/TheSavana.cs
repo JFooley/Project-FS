@@ -1,7 +1,6 @@
 using Stage_Space;
 using Animation_Space;
 
-
 public class TheSavana : Stage {
     public TheSavana()
         : base("The Savana", 530, 512, 512, "Assets/stages/The Savana", Program.thumbs["savana_thumb"])
@@ -10,11 +9,27 @@ public class TheSavana : Stage {
     }
 
     public override void LoadStage() {
-        var defaultFrames = new List<int> {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
-        List<string> frames = defaultFrames.Select(i => i.ToString()).ToList();
+        var defaultFrames = new List<Frame> { 
+            new Frame(0, len: 4),
+            new Frame(1, len: 4),
+            new Frame(2, len: 4),
+            new Frame(3, len: 4),
+            new Frame(4, len: 4),
+            new Frame(5, len: 4),
+            new Frame(6, len: 4),
+            new Frame(7, len: 4),
+            new Frame(8, len: 4),
+            new Frame(9, len: 4),
+            new Frame(10, len: 4),
+            new Frame(11, len: 4),
+            new Frame(12, len: 4),
+            new Frame(13, len: 4),
+            new Frame(14, len: 4),
+            new Frame(15, len: 4)
+        };
 
         var animations = new Dictionary<string, State> {
-            { "Default", new State(frames, "Default", 15)},
+            { "Default", new State(defaultFrames, "Default")},
         };
 
         this.states = animations;

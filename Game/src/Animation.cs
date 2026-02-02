@@ -4,8 +4,7 @@ using SFML.System;
 namespace Animation_Space {
 
     public class Animation {
-        public List<FrameData> Frames { get; private set; }
-        public List<string> SimpleFrames { get; private set; }
+        public List<Frame> Frames { get; private set; }
 
         // logic
         private int frame_counter;
@@ -20,7 +19,7 @@ namespace Animation_Space {
         public bool loop;
         public int framerate;
 
-        public Animation(List<FrameData> frames, bool loop = true) {
+        public Animation(List<Frame> frames, bool loop = true) {
             this.Frames = frames;
             this.anim_frame_index = 0;
             this.lenght = 0;
@@ -30,23 +29,14 @@ namespace Animation_Space {
             this.logic_frame_index = 0;
         }
 
-        public Animation(List<string> SimpleFrames, int framerate = 30) {
-            this.SimpleFrames = SimpleFrames;
-            this.anim_frame_index = 0;
-            this.lenght = SimpleFrames.Count() * (Config.Framerate / framerate);
-            this.loop = true;
-            this.framerate = framerate;
-            this.logic_frame_index = 0;
+        public FrameData GetCurrentFrame() {
+            if (anim_frame_index > Frames.Count() - 1) return this.Frames.Last().GetType() == typeof(FrameData) ? (FrameData) this.Frames.Last() : new FrameData();
+            else return this.Frames[anim_frame_index].GetType() == typeof(FrameData) ? (FrameData) this.Frames[anim_frame_index] : new FrameData();
         }
 
-        public FrameData GetCurrentFrame() {
+        public Frame GetCurrentFrameSimple() {
             if (anim_frame_index > Frames.Count() - 1) return this.Frames.Last();
             else return this.Frames[anim_frame_index];
-        }
-
-        public string GetCurrentSimpleFrame() {
-            if (anim_frame_index > SimpleFrames.Count() - 1) return this.SimpleFrames.Last();
-            else return this.SimpleFrames[anim_frame_index];
         }
 
         public bool AdvanceFrame() {
@@ -76,34 +66,6 @@ namespace Animation_Space {
             return advanced;
         }
 
-        public bool AdvanceFrameSimple() {
-            if (this.ended && this.loop) this.Reset();
-
-            logic_frame_index++;
-
-            // Check if it's on last frame
-            if (logic_frame_index == lenght) this.on_last_frame = true;
-            else this.on_last_frame = false;
-
-            // Check if animation has ended
-            if (logic_frame_index > lenght) {
-                this.ended = true;
-                logic_frame_index -= 1;
-                
-                return false; 
-            }
-
-            // Passa um frame de animação
-            if (logic_frame_index % (Config.Framerate / framerate) == 0) {
-                anim_frame_index++; 
-                playing_sound = false;
-                
-                return true; 
-            }
-
-            return false; 
-        }
-
         public void Reset() {
             anim_frame_index = 0;
             logic_frame_index = 0;
@@ -113,10 +75,8 @@ namespace Animation_Space {
             ended = false;
         }
     
-        public static Animation LoadFromFile() {
-            return new Animation(new List<string>(), 1);
-        }
-        public static void SaveToFile() {}
+        // public static Animation LoadFromFile() {}
+        // public static void SaveToFile() {}
     }
 
     public class GenericBox {
@@ -182,11 +142,8 @@ namespace Animation_Space {
         } 
     }
 
-    public class FrameData {
+    public class FrameData : Frame{
         public bool hasHit;
-        public int lenght;
-        public string Sprite_index;
-        public string Sound_index;
         public float DeltaX;
         public float DeltaY;
         public List<GenericBox> Boxes;
@@ -209,6 +166,28 @@ namespace Animation_Space {
             this.Sound_index = sound;
             this.lenght = len;
             this.hasHit = hasHit;
+        }
+
+        public FrameData() {}
+    }
+
+    public class Frame {
+        public int lenght;
+        public string Sprite_index;
+        public string Sound_index;
+
+        protected Frame() {}
+
+        public Frame(int sprite_index, int len = 1, string sound = "") {
+            this.Sprite_index = sprite_index.ToString();
+            this.Sound_index = sound;
+            this.lenght = len;
+        }
+
+        public Frame(string sprite_index, int len = 1, string sound = "") {
+            this.Sprite_index = sprite_index;
+            this.Sound_index = sound;
+            this.lenght = len;
         }
     }
 

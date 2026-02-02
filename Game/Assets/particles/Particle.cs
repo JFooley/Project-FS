@@ -21,7 +21,7 @@ public class Particle : Character {
     public override void Load() {
         // Animations
 
-        var SAGathering = new List<FrameData> {
+        var SAGathering = new List<Frame> {
             new FrameData(11, 0, 0, new List<GenericBox> {}, sound: "super art"),
             new FrameData(12, 0, 0, new List<GenericBox> {}),
             new FrameData(13, 0, 0, new List<GenericBox> {}),
@@ -56,7 +56,7 @@ public class Particle : Character {
             new FrameData(132, 0, 0, new List<GenericBox> {}),
         };
 
-        var SALighting = new List<FrameData> { 
+        var SALighting = new List<Frame> { 
             new FrameData(133, 0, 0, new List<GenericBox> {}),
             new FrameData(134, 0, 0, new List<GenericBox> {}),
             new FrameData(135, 0, 0, new List<GenericBox> {}),
@@ -81,7 +81,7 @@ public class Particle : Character {
             new FrameData(154, 0, 0, new List<GenericBox> {}),
         };
 
-        var SABlink = new List<FrameData> {
+        var SABlink = new List<Frame> {
             new FrameData(29, 0, 0, new List<GenericBox> {}),
             new FrameData(210, 0, 0, new List<GenericBox> {}),
             new FrameData(211, 0, 0, new List<GenericBox> {}),
@@ -97,7 +97,7 @@ public class Particle : Character {
             new FrameData(221, 0, 0, new List<GenericBox> {}),
         };
 
-        var Shungoku = new List<FrameData> {
+        var Shungoku = new List<Frame> {
             new FrameData(323, 0, 0, new List<GenericBox> {}),
             new FrameData(323, 0, 0, new List<GenericBox> {}),
             new FrameData(323, 0, 0, new List<GenericBox> {}),
@@ -140,7 +140,7 @@ public class Particle : Character {
             new FrameData(326, 0, 0, new List<GenericBox> {}),
         };
 
-        var Shungoku_text = new List<FrameData> {
+        var Shungoku_text = new List<Frame> {
             new FrameData(511, 0, 0, new List<GenericBox> {}),
             new FrameData(512, 0, 0, new List<GenericBox> {}),
             new FrameData(513, 0, 0, new List<GenericBox> {}),

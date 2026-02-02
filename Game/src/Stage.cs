@@ -77,7 +77,7 @@ namespace Stage_Space {
         public Dictionary<string, State> states;
         private Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
         private Dictionary<string, SoundBuffer> sounds = new Dictionary<string, SoundBuffer>();
-        public string CurrentSprite => CurrentAnimation.GetCurrentSimpleFrame();
+        public Frame CurrentSprite => CurrentAnimation.GetCurrentFrameSimple();
         public Sound music;
         public State state => states[CurrentState];
         public Animation CurrentAnimation => states[CurrentState].animation;
@@ -132,14 +132,14 @@ namespace Stage_Space {
             }
 
             // Render stage sprite
-            if (this.textures.ContainsKey(this.CurrentSprite)) {
-                Sprite temp_sprite = new Sprite(this.textures[this.CurrentSprite]);
+            if (this.textures.ContainsKey(this.CurrentSprite.Sprite_index)) {
+                Sprite temp_sprite = new Sprite(this.textures[this.CurrentSprite.Sprite_index]);
                 temp_sprite.Position = new Vector2f(0, 0);
                 Program.window.Draw(temp_sprite);
             }
 
             // Advance to the next frame
-            CurrentAnimation.AdvanceFrameSimple();
+            CurrentAnimation.AdvanceFrame();
             if (this.CurrentAnimation.ended && state.change_on_end) {
                 if (states.ContainsKey(this.state.post_state)) {
                     this.LastState = this.CurrentState;
