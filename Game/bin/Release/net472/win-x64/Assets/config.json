@@ -1,10 +1,7 @@
 {
   "Fullscreen": true,
-  "Vsync": false,
-  "debug": false,
+  "Vsync": true,
   "input_window_time": 4,
-  "parry_advantage": 2,
-  "parry_window": 10,
   "_main_volume": 100.0,
   "_character_volume": 80.0,
   "_music_volume": 80.0,

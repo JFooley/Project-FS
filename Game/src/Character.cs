@@ -118,7 +118,7 @@ namespace Character_Space {
         public bool on_air => this.body.Position.Y < this.floor_line;
         public bool crounching => this.state.low;
 
-        public bool can_parry => (not_acting_all && parring) || (not_acting_all && InputManager.Key_press("Right", input_window: Config.parry_window, player: this.player_index, facing: this.facing));
+        public bool can_parry => (not_acting_all && parring) || (not_acting_all && InputManager.Key_press("Left", input_window: this.state.air? Config.parry_window/2 : Config.parry_window, player: this.player_index, facing: this.facing));
         public bool can_dash => not_acting && !this.state.on_parry;
         public bool has_hit = false; 
 
@@ -179,13 +179,12 @@ namespace Character_Space {
         }
 
         // Every Frame methods
-        public override void Update() {
-            // Render > Behave > Colide > Anima
+        public override void Update() { // Render > Behave > Colide > Animate
             base.Update();
             if (this.hitstop_counter <= 0) {
                 if (this.animate) this.Animate();
                 if (this.behave) {
-                    this.DoBehave();
+                    this.Behave();
                     this.CheckColisions();
                 }
             }
@@ -375,21 +374,18 @@ namespace Character_Space {
             if ((this.not_acting_all || this.state.on_block) && (this.blocking_low || this.blocking)) return true;
             return (this.not_acting_low || (this.state.on_block && this.state.low)) && InputManager.Key_hold("Left", player: this.player_index, facing: this.facing) && InputManager.Key_hold("Down", player: this.player_index);
         }
-        public void Stun(Character enemy, int advantage, bool hit = true, bool airbone = false, bool sweep = false, bool force_crounch = false, bool force_stand = false, bool force = false) {
+        public void Stun(Character enemy, int advantage, bool hit = true, bool airbone = false, bool sweep = false, bool force_crounch = false, bool force_stand = false, bool raw_value = false) {
             if (hit || this.life_points.X == 0) { // Hit stun states
                 if (sweep) {
                     this.ChangeState("Sweeped", reset: true);
                     return;
-
-                } else if (airbone || (this.life_points.X <= 0 && !Program.stage.MustWait())|| this.current_state == "Airboned") {
+                } else if (airbone || (this.life_points.X <= 0 && !Program.stage.MustWait()) || (this.state.air && this.state.on_hit)) {
                     this.ChangeState("Airboned", reset: true);
-
                     if (this.life_points.X <= 0) this.SetVelocity(X: -Config.heavy_pushback, Y: 50);
+                    this.facing = -enemy.facing;
                     return;
-
                 } else if ((this.crounching && !force_stand) || force_crounch) {
                     this.ChangeState("OnHitLow", reset: true);
-
                 } else {
                     this.ChangeState("OnHit", reset: true);
                 }
@@ -404,15 +400,11 @@ namespace Character_Space {
             }
         
             // Set stun frames
-            if (force) {
-                this.current_animation.lenght = Math.Max(advantage, 1);
-            } else {
-                this.current_animation.lenght = Math.Max(enemy.current_animation.lenght - enemy.current_logic_frame_index + advantage, 1);
-                
-            }
+            if (raw_value) this.current_animation.lenght = Math.Max(advantage, 1);
+            else this.current_animation.lenght = Math.Max(enemy.current_animation.lenght - enemy.current_logic_frame_index + advantage, 1);
         }
-        public void BlockStun(Character enemy, int advantage, bool force = false) {
-            this.Stun(enemy, advantage, hit: false, force: force);
+        public void BlockStun(Character enemy, int advantage, bool raw_value = false) {
+            this.Stun(enemy, advantage, hit: false, raw_value: raw_value);
         }
         public void CheckColisions() {               
             // Para cada character no stage
@@ -494,7 +486,7 @@ namespace Character_Space {
         }
         
         // Auxiliar methods
-        public void ChangeState(string new_state, bool reset = false, int variation = 0) {
+        public void ChangeState(string new_state, bool reset = false) {
             if (this.life_points.X <= 0 && !Program.stage.training_mode && this.current_state == "OnGround" && !reset) return;
 
             if (new_state == "Parry" && this.on_air) new_state = "AirParry";
@@ -530,7 +522,7 @@ namespace Character_Space {
                 this.current_animation.playing_sound = true;
             };
         }
-        public void Reset(int start_point, int facing, String state = "Idle", bool total_reset = false) {
+        public virtual void Reset(int start_point, int facing, String state = "Idle", bool total_reset = false) {
             this.ChangeState(state, reset: true);
             this.life_points.X = this.life_points.Y;
             this.dizzy_points.X = total_reset ? dizzy_points.Y : this.dizzy_points.X;
@@ -626,9 +618,6 @@ namespace Character_Space {
 
             this.palette_index = (uint) temp_index;
 
-            this.current_palette_color = this.palette.CopyToImage().GetPixel(0, this.palette_index);
-        }
-        public void UpdatePalette() {
             this.current_palette_color = this.palette.CopyToImage().GetPixel(0, this.palette_index);
         }
         

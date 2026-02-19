@@ -346,20 +346,12 @@ namespace Stage_Space {
                 state = "Hit" + AI.rand.Next(1, 4);
             } else if (hit == Character.BLOCK){
                 state = "Block";
-            } else {
-                return;
-            }
+            } else return;
+
             var hs = new Hitspark(state, X + X_offset * facing, Y + Y_offset, facing);
             hs.ChangeState(state, reset: true);
             hs.states = this.spark.states;
             this.newParticles.Add(hs);
-        }
-        public Fireball spawnFireball(string state, float X, float Y, int facing, int team, int life_points = 1, int X_offset = 10, int Y_offset = 0) {        
-            var fb = new Fireball(state, life_points, X + X_offset * facing, Y + Y_offset, team, facing);
-            fb.ChangeState(state, reset: true);
-            fb.states = this.fireball.states;
-            this.newCharacters.Add(fb);
-            return fb;
         }
 
         // Visuals
@@ -381,14 +373,12 @@ namespace Stage_Space {
             if (this.round_time == 0) {
                 if (character_A.life_points.X <= character_B.life_points.X) {
                     this.rounds_B += 1;
-                    doEnd = true;
                 } 
                 if (character_A.life_points.X >= character_B.life_points.X) {
                     this.rounds_A += 1;
-                    doEnd = true;
                 } 
 
-                return doEnd;
+                return true;
             }
 
             if (character_A.life_points.X <= 0 && !character_B.state.drama_wait) {
@@ -535,6 +525,9 @@ namespace Stage_Space {
                 this.character_A.Reset(this.start_point_A, facing: 1, total_reset: total_reset);
                 this.character_B.Reset(this.start_point_B, facing: -1, total_reset: total_reset);
             }
+            
+            this.OnSceneParticles.Clear();
+            this.OnSceneCharacters = new List<Character> {this.character_A, this.character_B};
         }
         public void TogglePlayers() {
             this.character_A.behave = !this.character_A.behave;
@@ -581,8 +574,8 @@ namespace Stage_Space {
             }
         }
         public void ToggleMusic() {
-            if (this.music.Status == SoundStatus.Paused) this.PlayMusic();
-            else this.PauseMusic();
+            if (this.music.Status == SoundStatus.Playing) this.PauseMusic();
+            else this.PlayMusic();
         }
         public void ToggleMusicVolume(bool control, float volume_A = -1, float volume_B = -1) {
             if (control) this.SetMusicVolume(volume_A);
@@ -648,7 +641,8 @@ namespace Stage_Space {
             }
 
             // setta a musica
-            this.music = new Sound(sounds["music"]);
+            if (this.sounds.ContainsKey("music")) this.music = new Sound(this.sounds["music"]);
+            else this.music = new Sound();
         }
         public void UnloadSounds() {
             this.StopMusic();

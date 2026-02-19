@@ -1,10 +1,8 @@
 using Character_Space;
 using Animation_Space;
 using SFML.System;
-using Stage_Space;
 using SFML.Graphics;
 using SFML.Audio;
-using System.Windows.Forms;
 
 public class Fireball : Character {
     private static Dictionary<string, Texture> textures_local = new Dictionary<string, Texture>();
@@ -13,14 +11,14 @@ public class Fireball : Character {
     public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
 
     public Fireball(string initialState, int life_points, float startX, float startY, int team, int facing)
-        : base("Fireball", initialState, startX, startY, "Assets/particles/Fireball", 1) {
+        : base("Fireball", initialState, startX, startY, "Assets/characters/Ken/Fireball", 1) {
             this.player_index = team;
             this.facing = facing;
             this.life_points = new Vector2i(life_points, 0);
             this.shadow_size = 0;
             this.own_light = new Color(255, 255, 255, 255);
         }
-    public Fireball() : base("Fireball", "", 0, 0, "Assets/particles/Fireball", 1) {}
+    public Fireball() : base("Fireball", "", 0, 0, "Assets/characters/Ken/Fireball", 1) {}
 
     public override void Load() {
         // Animations
@@ -70,8 +68,8 @@ public class Fireball : Character {
 
         this.states = animations;
     }
-    public override void DoBehave() {
-        base.DoBehave();
+    public override void Behave() {
+        base.Behave();
         if (this.state.post_state == "Remove" && this.current_animation.ended) {
             this.remove = true;
             this.current_animation.Reset();
@@ -130,12 +128,12 @@ public class Fireball : Character {
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 0);
-                    target.BlockStun(this, 20, force: true);
+                    target.BlockStun(this, 20, raw_value: true);
 
                 } else {
                     hit = Character.HIT;
                     Character.Damage(target: target, self: this, 63, 48);
-                    target.Stun(this, 30, force: true);
+                    target.Stun(this, 30, raw_value: true);
                 }
 
                 if (this.player_index == 0) Character.AddAuraPoints(target: target, self: stage.character_A, hit);
@@ -148,12 +146,12 @@ public class Fireball : Character {
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 0);
-                    target.BlockStun(this, 20, force: true);
+                    target.BlockStun(this, 20, raw_value: true);
 
                 } else {
                     hit = Character.HIT;
                     Character.Damage(target: target, self: this, 125, 78);
-                    target.Stun(this, 30, force: true);
+                    target.Stun(this, 30, raw_value: true);
                 }
 
                 if (this.player_index == 0) Character.AddAuraPoints(target: target, self: stage.character_A, hit);
@@ -166,12 +164,12 @@ public class Fireball : Character {
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 0);
-                    target.BlockStun(this, 20, force: true);
+                    target.BlockStun(this, 20, raw_value: true);
 
                 } else {
                     hit = Character.HIT;
                     Character.Damage(target: target, self: this, 80, 60);
-                    target.Stun(this, 30, force: true);
+                    target.Stun(this, 30, raw_value: true);
                 }
 
                 if (this.player_index == 0) Character.AddAuraPoints(target: target, self: stage.character_A, hit);

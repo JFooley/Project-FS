@@ -2339,8 +2339,6 @@ D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\charact
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\data\stage_thumbs.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\data\visuals.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\fonts\fonts.dat
-D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\particles\Fireball\sounds\sounds.dat
-D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\particles\Fireball\sprites\visuals.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\particles\Hitspark\sounds\sounds.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\particles\Hitspark\sprites\visuals.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\particles\Particle\sounds\sounds.dat
@@ -2366,3 +2364,5 @@ D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\languag
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Ken\palette.bmp
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\shaders\palette_swaper.frag
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\misc\sprites.txt
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Ken\Fireball\sounds\sounds.dat
+D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Ken\Fireball\sprites\visuals.dat

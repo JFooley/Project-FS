@@ -80,7 +80,6 @@ public static class Program {
     private static List<Character> characters;
     public static Dictionary<string, Texture> visuals = new Dictionary<string, Texture>();
     public static Dictionary<string, Texture> thumbs = new Dictionary<string, Texture>();
-    private static Fireball fb = new Fireball();
     private static Hitspark hs = new Hitspark();
     private static Particle pt = new Particle();
 
@@ -165,7 +164,7 @@ public static class Program {
             switch (game_state) {
                 case Intro:
                     InputManager.UpdateAI();
-                    if (UI.counter % 20 == 0) pointer = pointer < 3 ? pointer + 1 : 0;
+                    if (UI.frame_counter % 20 == 0) pointer = pointer < 3 ? pointer + 1 : 0;
                     fslogo.Position = new Vector2f(10, 139);
 
                     window.Draw(fslogo);
@@ -263,8 +262,8 @@ public static class Program {
                     ));
                     if (ready_charA) UI.DrawText(Language.GetText("ready"), -77, -20, textureName: "default small", spacing: Config.spacing_small);
                     if (charA_selected != null && !ready_charA) {
-                        UI.DrawRectangle(-77, 67, 6, 6, Color.White);
-                        UI.DrawRectangle(-77, 68, 4, 4, charA_selected.current_palette_color);
+                        UI.DrawRectangle(-77, 67, 6, 6, fill_color: Color.White);
+                        UI.DrawRectangle(-77, 68, 4, 4, fill_color: charA_selected.current_palette_color);
                     } 
 
                     // Draw main sprite B
@@ -276,8 +275,8 @@ public static class Program {
                     ));
                     if (ready_charB) UI.DrawText(Language.GetText("ready"), +77, -20, textureName: "default small", spacing: Config.spacing_small);
                     if (charB_selected != null && !ready_charB) {
-                        UI.DrawRectangle(77, 67, 6, 6, Color.White);
-                        UI.DrawRectangle(77, 68, 4, 4, charB_selected.current_palette_color);  
+                        UI.DrawRectangle(77, 67, 6, 6, fill_color: Color.White);
+                        UI.DrawRectangle(77, 68, 4, 4, fill_color: charB_selected.current_palette_color);  
                     } 
 
                     // Draw shoulder buttons
@@ -297,13 +296,13 @@ public static class Program {
                     if (charA_selected == null && Program.AI_playerA && ready_charB) {
                         pointer_charA = AI.rand.Next(0, characters.Count);
                         charA_selected = characters[pointer_charA].Copy();
-                        charA_selected.ChangePalette(AI.rand.Next());
+                        if (pointer_charA == pointer_charB && charB_selected.palette_index == 0) charA_selected.ChangePalette(AI.rand.Next());
                         ready_charA = true;
                     }
                     if (charB_selected == null && Program.AI_playerB && ready_charA) {
                         pointer_charB = AI.rand.Next(0, characters.Count);
                         charB_selected = characters[pointer_charB].Copy();
-                        charB_selected.ChangePalette(AI.rand.Next());
+                        if (pointer_charB == pointer_charA && charA_selected.palette_index == 0) charB_selected.ChangePalette(AI.rand.Next());
                         ready_charB = true;
                     }
 
@@ -398,7 +397,7 @@ public static class Program {
                             break;
 
                         case RoundEnd: // Fim de round
-                            if (stage.GetTimerValue() < 3) {
+                            if (!stage.CheckTimer(3)) {
                                 if (stage.character_A.life_points.X <= 0 || stage.character_B.life_points.X <= 0) {
                                     KO_logo.Position = new Vector2f(Camera.X - 75, Camera.Y - 54);
                                     window.Draw(KO_logo);
@@ -428,7 +427,9 @@ public static class Program {
                             ChangeState(PostBattle);
                             break;
 
-                    } break;
+                    } 
+            
+                    break;
 
                 case PostBattle:
                     window.Draw(stage.thumb);
@@ -623,9 +624,6 @@ public static class Program {
             stage.LoadTextures();
             stage.LoadSounds();
         }
-
-        fb.LoadTextures();
-        fb.LoadSounds();
 
         hs.LoadTextures();
         hs.LoadSounds();

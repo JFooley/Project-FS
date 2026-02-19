@@ -8,7 +8,7 @@ public static class Config {
     public const int Framerate = 60;
 
     public static bool Fullscreen = true;
-    public static bool Vsync = false;
+    public static bool Vsync = true;
     public static bool debug = false;
 
     public static int Language = 0;
@@ -22,8 +22,6 @@ public static class Config {
     public const int default_max_rounds = 2;
     public static int input_window_time = 4;
     public const int default_input_window_time = 4;
-    public static int parry_advantage = 2;
-    public static int parry_window = 10;
 
     // Audio
     public static float _main_volume = 100f;
@@ -57,6 +55,9 @@ public static class Config {
     public const float medium_pushback = 4f;
     public const float heavy_pushback = 5.5f;
 
+    public const int parry_advantage = 2;
+    public const int parry_window = 10;
+
     // Game constants
     public const int max_distance = 350;
     public const int reset_frames = 20;
@@ -74,10 +75,7 @@ public static class Config {
         {
             Fullscreen,
             Vsync,
-            debug,
             input_window_time,
-            parry_advantage,
-            parry_window,
             _main_volume,
             _character_volume,
             _music_volume,
@@ -98,10 +96,7 @@ public static class Config {
 
             Fullscreen = configData.Fullscreen;
             Vsync = configData.Vsync;
-            debug = configData.Debug;
             input_window_time = configData.input_window_time;
-            parry_advantage = configData.parry_advantage;
-            parry_window = configData.parry_window;
             _main_volume = configData._main_volume;
             _character_volume = configData._character_volume;
             _music_volume = configData._music_volume;
@@ -118,10 +113,7 @@ public static class Config {
     private class ConfigData {
         public bool Fullscreen { get; set; }
         public bool Vsync { get; set; }
-        public bool Debug { get; set; }
         public int input_window_time { get; set; }
-        public int parry_advantage { get; set; }
-        public int parry_window { get; set; }
         public float _main_volume { get; set; }
         public float _character_volume { get; set; }
         public float _music_volume { get; set; }

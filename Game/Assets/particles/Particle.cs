@@ -184,7 +184,7 @@ public class Particle : Character {
         this.PlayFrameSound();
     }
     
-    public override void DoBehave() {        
+    public override void Behave() {        
         if (this.state.post_state == "Remove" && this.current_animation.ended) {
             this.remove = true;
             this.current_animation.Reset();

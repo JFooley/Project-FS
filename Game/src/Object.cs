@@ -23,7 +23,7 @@ namespace Object_Space {
         public virtual void Update() {
             if (!this.active) return;
         }
-        public virtual void DoBehave() {
+        public virtual void Behave() {
             if (!this.behave) return;
 
         }

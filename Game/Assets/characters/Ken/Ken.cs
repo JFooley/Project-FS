@@ -13,12 +13,13 @@ public class Ken : Character {
     public override Dictionary<string, Texture> textures {get => _shared_textures; protected set => _shared_textures = value ?? new Dictionary<string, Texture>();}
     private static Dictionary<string, SoundBuffer> _shared_sounds = new Dictionary<string, SoundBuffer>();
     public override Dictionary<string, SoundBuffer> sounds {get => _shared_sounds; protected set => _shared_sounds = value ?? new Dictionary<string, SoundBuffer>();}
-    private static Texture _shared_palette;
+    private static Texture? _shared_palette;
     public override Texture palette {get => _shared_palette; protected set => _shared_palette = value;}
 
     private int tatso_speed = 4;
-    private Fireball current_fireball;
-// Constructors
+    private Fireball? current_fireball; 
+
+    // Constructors
     public Ken(string initialState, int startX, int startY)
         : base("Ken", initialState, startX, startY, "Assets/characters/Ken")
     {
@@ -37,6 +38,11 @@ public class Ken : Character {
         return obj;
     }
     public override void Load() {
+        // Fireball
+        var fb = new Fireball();
+        fb.LoadTextures();
+        fb.LoadSounds();
+
         // Hurtboxes
         var pushbox = new GenericBox(2, 125 - this.push_box_width, 110, 125 + this.push_box_width, 195);
         var airPuxbox = new GenericBox(2, 125 - this.push_box_width, 80, 125 + this.push_box_width, 156);
@@ -741,7 +747,7 @@ public class Ken : Character {
             { "AirTatso", new State(airTatsoFrames, "Landing", 3, change_on_ground: true, change_on_end: false, air: true, can_harm: true)},
             { "AirTatsoEX", new State(airTatsoFrames, "Landing", 3, change_on_ground: true, change_on_end: false, glow: true, trace: true, air: true, can_harm: true)},
             // Other
-            { "Falling", new State(fallingFrames, "OnGround", can_be_hit: false)},
+            { "Falling", new State(fallingFrames, "OnGround", on_hit: true, can_be_hit: false)},
             { "Sweeped", new State(sweepedFrames, "Falling", low: true, can_be_hit: false)},
             { "OnGround", new State(OnGroundFrames, "Wakeup", low: true, can_be_hit: false)},
             { "Wakeup", new State(wakeupFrames, "Idle", can_be_hit: false)},
@@ -749,7 +755,7 @@ public class Ken : Character {
             { "Intro", new State(introFrames, "Idle", can_be_hit: false)},
         };
     }
-    public override void DoBehave() {
+    public override void Behave() {
         if (this.behave == false) return;
 
         if ((this.current_state == "WalkingForward" || this.current_state == "WalkingBackward") & !InputManager.Key_hold("Left", player: this.player_index, facing: this.facing) & !InputManager.Key_hold("Right", player: this.player_index, facing: this.facing)) {
@@ -852,18 +858,18 @@ public class Ken : Character {
         if (this.current_fireball == null && InputManager.Key_sequence_press("Down Right C", 10, player: this.player_index, facing: this.facing) && ((this.not_acting || this.not_acting_low) || (this.has_hit && (this.current_state == "MediumP" || this.current_state == "LightP" || this.current_state == "LowLightK")))) {
             this.ChangeState("LightHaduken");
         } else if (this.current_state == "LightHaduken" && this.current_anim_frame_index == 3 && this.current_fireball == null) {
-            this.current_fireball = stage.spawnFireball("Ken1", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, X_offset: 25);
+            this.spawnFireball("Ken1", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, X_offset: 25);
         } 
         if (this.current_fireball == null && InputManager.Key_sequence_press("Down Right D", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low)) {
             this.ChangeState("HeavyHaduken");
         } else if (this.current_state == "HeavyHaduken" && this.current_anim_frame_index == 4 && this.current_fireball == null) {
-            this.current_fireball = stage.spawnFireball("Ken2", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, X_offset: 25);
+            this.spawnFireball("Ken2", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, X_offset: 25);
         }
         if (this.current_fireball == null && InputManager.Key_sequence_press("Down Right RB", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low) && Character.CheckAuraPoints(this, 50)) {
             Character.UseSuperPoints(this, 50);
             this.ChangeState("HadukenEX");
         } else if (this.current_state == "HadukenEX" && this.current_anim_frame_index == 4 && this.current_fireball == null) {
-            this.current_fireball = stage.spawnFireball("Ken3", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, life_points: 2, X_offset: 25);
+            this.spawnFireball("Ken3", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, life_points: 2, X_offset: 25);
             this.PlaySound("EX");
         }
 
@@ -1188,11 +1194,11 @@ public class Ken : Character {
             case "LightTatso":
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
-                    target.BlockStun(this, -6);
+                    target.BlockStun(this, 12, raw_value: true);
                 } else {
                     hit = Character.HIT;
                     Character.Damage(target: target, self: this, 66, 203);
-                    target.Stun(this, -3);
+                    target.Stun(this, 15, raw_value: true);
                 }
                 Character.Push(target: target, self: this, Config.light_pushback);
                 Character.AddAuraPoints(target, this, hit);
@@ -1201,11 +1207,11 @@ public class Ken : Character {
             case "HeavyTatso":
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
-                    target.BlockStun(this, -5);
+                    target.BlockStun(this, 12, raw_value: true);
                 } else {
                     hit = Character.HIT;
                     Character.Damage(target: target, self: this, 54, 234);
-                    target.Stun(this, -3);
+                    target.Stun(this, 15, raw_value: true);
                 }
                 Character.Push(target: target, self: this, Config.light_pushback);
                 Character.AddAuraPoints(target, this, hit, self_amount: 8);
@@ -1214,12 +1220,12 @@ public class Ken : Character {
             case "TatsoEX":
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
-                    target.BlockStun(this, 10, force: true);
+                    target.BlockStun(this, 6, raw_value: true);
                     Character.Damage(target: target, self: this, 10, 30);
                 } else {
                     hit = Character.HIT;
                     Character.Damage(target: target, self: this, 54, 234);
-                    target.Stun(this, -3);
+                    target.Stun(this, 8, raw_value: true);
                 }
                 Character.Push(target: target, self: this, Config.light_pushback);
                 Character.AddAuraPoints(target, this, hit, self_amount: 2);
@@ -1228,12 +1234,12 @@ public class Ken : Character {
             case "AirTatso":
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
-                    target.BlockStun(this, 15, force: true);
+                    target.BlockStun(this, 15, raw_value: true);
 
                 } else {
                     hit = Character.HIT;
                     Character.Damage(target: target, self: this, 80, 140);
-                    target.Stun(this, 15, force: true);
+                    target.Stun(this, 15, raw_value: true);
                 }
                 Character.Push(target: target, self: this, Config.light_pushback);
                 Character.AddAuraPoints(target, this, hit, self_amount: 14);
@@ -1256,7 +1262,7 @@ public class Ken : Character {
             case "SA1":
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
-                    target.BlockStun(this, 30, force: true);
+                    target.BlockStun(this, 30, raw_value: true);
                     Character.Push(target: target, self: this, Config.heavy_pushback);
                     Character.Damage(target: target, self: this, 5, 0);
                 } else {
@@ -1272,7 +1278,7 @@ public class Ken : Character {
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 5, 0);
-                    target.BlockStun(this, 30, force: true);
+                    target.BlockStun(this, 30, raw_value: true);
 
                 } else {
                     hit = Character.HIT;
@@ -1302,7 +1308,6 @@ public class Ken : Character {
                 target.ChangeState("OnGround");
 
                 Character.Damage(target: target, self: this, 400, 0);
-                Character.AddAuraPoints(target, this, hit, self_amount: 0, target_amount: 30);
                 break;
 
             default:
@@ -1311,12 +1316,12 @@ public class Ken : Character {
 
         return hit;
     }
-
+    
     // AI
-    public override void SelectMovement(FightState state) {
-        if (state.enemyDistance < 0.3f) {
+    public override void SelectMovement(FightState f_state) {
+        if (f_state.enemyDistance < 0.3f) {
             var choise = AI.rand.Next(0, 20);
-            if (choise == 0 && state.onCorner) { 
+            if (choise == 0 && f_state.onCorner) { 
                 this.BOT.EnqueueMove("Up Right", 5);
             } else if (choise <= 2) { 
                 this.BOT.EnqueueMove("Left", 10);
@@ -1328,9 +1333,9 @@ public class Ken : Character {
                 this.BOT.EnqueueMove("*", 2);
                 this.BOT.EnqueueMove("Right *", 2);
             } else
-                this.BOT.EnqueueMove("", 60);
+                this.BOT.EnqueueMove("", 5);
 
-        } else if (state.enemyDistance < 0.7f) {
+        } else if (f_state.enemyDistance < 0.7f) {
             var choise = AI.rand.Next(0, 20);
             if (choise == 0 || choise == 20) {
                 this.BOT.EnqueueMove("Up Right", 5);
@@ -1355,7 +1360,7 @@ public class Ken : Character {
                 this.BOT.EnqueueMove("Right", 30);
 
             } else 
-                this.BOT.EnqueueMove("", 30);
+                this.BOT.EnqueueMove("", 10);
 
         } else {
             var choise = AI.rand.Next(0, 10);
@@ -1364,11 +1369,12 @@ public class Ken : Character {
             } else if (choise < 6) {
                 this.BOT.EnqueueMove("Right", 20);
             } else 
-                this.BOT.EnqueueMove("", 30);
+                this.BOT.EnqueueMove("", 60);
         } 
 
     }
     public override void SelectAction(FightState f_state) {
+        // return;
         if (f_state.enemyIsDead) return;
         if (this.state.can_harm && !this.on_hit && !this.state.on_block && !this.state.on_parry) return;
 
@@ -1380,13 +1386,15 @@ public class Ken : Character {
         }
         
         if (f_state.enemyIsAirborne && f_state.enemyDistance <= 0.3f) { // Anti air
-            var choise = AI.rand.Next(0, 2);
-            if (choise == 0 && this.state.not_busy) { // Shoryuken
+            var choise = AI.rand.Next(0, 4);
+            if (choise == 0) { // Shoryuken
                 this.BOT.EnqueueAction("Right *", 2);
                 this.BOT.EnqueueAction("Down *", 2);
                 this.BOT.EnqueueAction("Right *", 2);
                 this.BOT.EnqueueAction("C", 5);
-            } 
+            } else if (choise == 1) {
+                this.BOT.EnqueueAction("Down D *", 5);
+            }
 
         } else if (this.state.air && f_state.enemyDistance < 0.5f) { // Air
             var choise = AI.rand.Next(0, 4);
@@ -1591,5 +1599,18 @@ public class Ken : Character {
         }
     
         this.BOT.EnqueueAction("", AI.rand.Next(5, 10));
+    }
+
+    // Other
+    public override void Reset(int start_point, int facing, String state = "Idle", bool total_reset = false) {
+        base.Reset(start_point, facing, state, total_reset);
+        this.current_fireball = null;
+    }
+    public void spawnFireball(string state, float X, float Y, int facing, int team, int life_points = 1, int X_offset = 10, int Y_offset = 0) {        
+        var fb = new Fireball(state, life_points, X + X_offset * facing, Y + Y_offset, team, facing);
+        fb.ChangeState(state, reset: true);
+        fb.Load();
+        Program.stage.newCharacters.Add(fb);
+        this.current_fireball = fb;
     }
 }

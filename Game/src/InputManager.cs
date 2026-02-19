@@ -190,6 +190,7 @@ namespace Input_Space {
             Program.AI_playerA = true;
             Program.AI_playerB = true;
         }
+        
         // Key Detection
         public static bool Key_hold(string key, int player = DEFAULT, int facing = 1) {
             return (buttonState[player] & (1 << keysTranslationMap[facing][key])) != 0;

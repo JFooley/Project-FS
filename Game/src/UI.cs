@@ -8,7 +8,7 @@ using System.Drawing;
 namespace UI_space {
     public class UI {
         private static int elapsed = 0;
-        public static int counter = 0;
+        public static double frame_counter = 0;
 
         // Clocks
         public static bool blink30Hz = true;
@@ -49,12 +49,12 @@ namespace UI_space {
         }
 
         public static void Update() {
-            UI.counter = UI.counter <= 60 ? UI.counter + 1 : 1;
-            UI.blink30Hz = UI.counter % (60/30) == 0 ? UI.blink30Hz = !UI.blink30Hz : UI.blink30Hz;
-            UI.blink10Hz = UI.counter % (60/10) == 0 ? UI.blink10Hz = !UI.blink10Hz : UI.blink10Hz;
-            UI.blink4Hz = UI.counter % (60/4) == 0 ? UI.blink4Hz = !UI.blink4Hz : UI.blink4Hz;
-            UI.blink2Hz = UI.counter % (60/2) == 0 ? UI.blink2Hz = !UI.blink2Hz : UI.blink2Hz;
-            UI.blink1Hz = UI.counter % 60 == 0 ? UI.blink1Hz = !UI.blink1Hz : UI.blink1Hz;;
+            UI.frame_counter++;
+            UI.blink30Hz = UI.frame_counter % (60/30) == 0 ? UI.blink30Hz = !UI.blink30Hz : UI.blink30Hz;
+            UI.blink10Hz = UI.frame_counter % (60/10) == 0 ? UI.blink10Hz = !UI.blink10Hz : UI.blink10Hz;
+            UI.blink4Hz = UI.frame_counter % (60/4) == 0 ? UI.blink4Hz = !UI.blink4Hz : UI.blink4Hz;
+            UI.blink2Hz = UI.frame_counter % (60/2) == 0 ? UI.blink2Hz = !UI.blink2Hz : UI.blink2Hz;
+            UI.blink1Hz = UI.frame_counter % 60 == 0 ? UI.blink1Hz = !UI.blink1Hz : UI.blink1Hz;;
         }
 
         // Loads
@@ -69,7 +69,7 @@ namespace UI_space {
 
         // Draw Callers
         public static void ShowFramerate(string textureName) {
-            UI.elapsed = UI.counter % (60/2) == 0 ? (int) (1 / Program.last_frame_time) : UI.elapsed;
+            UI.elapsed = UI.frame_counter % 30 == 0 ? (int) (1 / Program.last_frame_time) : UI.elapsed;
             UI.DrawText(UI.elapsed.ToString() + " - " + Program.last_frame_time.ToString("F5"), 0, 82, spacing: Config.spacing_small, textureName: textureName);
         }
 
@@ -112,7 +112,7 @@ namespace UI_space {
             }
         }
 
-        public static void DrawRectangle(float X, float Y, float width, float height, SFML.Graphics.Color color, string alignment = "center", bool absolutePosition = false) {
+        public static void DrawRectangle(float X, float Y, float width, float height, SFML.Graphics.Color? outline_color = null, SFML.Graphics.Color? fill_color = null, string alignment = "center", bool absolutePosition = false) {
             RectangleShape rectangle;
             float pos_X = absolutePosition ? X : Camera.X + X;
             float pos_Y = absolutePosition ? Y : Camera.Y + Y;
@@ -120,15 +120,21 @@ namespace UI_space {
             if (alignment == "left") {
                 rectangle = new RectangleShape(new Vector2f(width, height)) {
                     Position = new Vector2f(pos_X, pos_Y),
-                    FillColor = color};
+                    OutlineThickness = 1,
+                    OutlineColor = outline_color.HasValue ? outline_color.Value : SFML.Graphics.Color.Transparent,
+                    FillColor = fill_color.HasValue ? fill_color.Value : SFML.Graphics.Color.Transparent};
             } else if (alignment == "right") {
                 rectangle = new RectangleShape(new Vector2f(width, height)) {
                     Position = new Vector2f(pos_X - width, pos_Y),
-                    FillColor = color};            
+                    OutlineThickness = 1,
+                    OutlineColor = outline_color.HasValue ? outline_color.Value : SFML.Graphics.Color.Transparent,
+                    FillColor = fill_color.HasValue ? fill_color.Value : SFML.Graphics.Color.Transparent};            
             } else {
                 rectangle = new RectangleShape(new Vector2f(width, height)) {
                     Position = new Vector2f(pos_X - ((int) width/2), pos_Y),
-                    FillColor = color};  
+                    OutlineThickness = 1,
+                    OutlineColor = outline_color.HasValue ? outline_color.Value : SFML.Graphics.Color.Transparent,
+                    FillColor = fill_color.HasValue ? fill_color.Value : SFML.Graphics.Color.Transparent};  
             }
 
             Program.window.Draw(rectangle);
