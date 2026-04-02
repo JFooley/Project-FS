@@ -6,9 +6,7 @@ using Stage_Space;
 using UI_space;
 using System.Diagnostics;
 using Character_Space;
-using Data_space;
 using Language_space;
-using System.Windows.Forms;
 
 public static class Program {
     // Winner index
@@ -18,16 +16,17 @@ public static class Program {
 
     // Game States
     public const int Intro = 0;
-    public const int MainMenu = 1;
-    public const int SelectStage = 2;
-    public const int SelectChar = 3;
-    public const int LoadScreen = 4;
-    public const int Battle = 5;
-    public const int PostBattle = 6;
-    public const int Settings = 7;
-    public const int Controls = 8;
-    public const int AccessibilityMenu = 9;
-    public const int Credits = 10;
+    public const int StartScreen = 1;
+    public const int MainMenu = 2;
+    public const int SelectStage = 3;
+    public const int SelectChar = 4;
+    public const int LoadScreen = 5;
+    public const int Battle = 6;
+    public const int PostBattle = 7;
+    public const int Settings = 8;
+    public const int Controls = 9;
+    public const int AccessibilityMenu = 10;
+    public const int Credits = 11;
 
     // Battle States
     public const int RoundStart = 1;
@@ -41,9 +40,8 @@ public static class Program {
     public static int sub_state;
 
     // Common objects
-    public static Stage stage;
+    public static Stage? stage;
     public static RenderWindow window;
-    public static Clock gameTime = new Clock();
     private static Stopwatch frametimer = new Stopwatch();
 
     // Session infos
@@ -53,15 +51,15 @@ public static class Program {
     public static int winner = 0;
 
     // View
-    public static SFML.Graphics.View view = new SFML.Graphics.View(new FloatRect(0, 0, Config.RenderWidth, Config.RenderHeight));
+    public static View view = new View(new FloatRect(new Vector2f(0, 0), new Vector2f(Config.RenderWidth, Config.RenderHeight)));
 
     // Aux
     private static int pointer = 0;
     private static int controls_pointer = 0;
     public static bool loading = false;
     public static double last_frame_time = 0;
-    private static Character charA_selected;
-    private static Character charB_selected;
+    private static Character? charA_selected;
+    private static Character? charB_selected;
     private static int pointer_charA = 0;
     private static int pointer_charB = 0;
     private static bool ready_charA = false;
@@ -75,14 +73,6 @@ public static class Program {
     public static Shader hueChange = new Shader(null, null, "Assets/shaders/hue_change.frag");
     public static Shader paletteSwaper = new Shader(null, null, "Assets/shaders/palette_swaper.frag");
 
-    // Data
-    private static List<Stage> stages;
-    private static List<Character> characters;
-    public static Dictionary<string, Texture> visuals = new Dictionary<string, Texture>();
-    public static Dictionary<string, Texture> thumbs = new Dictionary<string, Texture>();
-    private static Hitspark hs = new Hitspark();
-    private static Particle pt = new Particle();
-
     public static void Main() {  
         Config.LoadFromFile();
 
@@ -90,12 +80,12 @@ public static class Program {
         game_state = Intro;
         sub_state = Intro;
         
-        // Carregamento de texturas gerais
+        // Carregamento de texturas genéricas
         try {
-            DataManagement.LoadTexturesFromFile("Assets/data/visuals.dat", visuals);
+            Data.LoadTexturesFromFile("Assets/data/visuals.dat", Data.textures);
         } catch (Exception e) {
-            DataManagement.LoadTexturesFromPath("Assets/ui", visuals);
-            DataManagement.SaveTexturesToFile("Assets/data/visuals.dat", visuals);
+            Data.LoadTexturesFromPath("Assets/visuals", Data.textures);
+            Data.SaveTexturesToFile("Assets/data/visuals.dat", Data.textures);
         }
         Stage.LoadThumbs();
         new UI();
@@ -106,8 +96,8 @@ public static class Program {
         new Camera();
 
         // Crie uma janela
-        if (Config.Fullscreen == true) window = new RenderWindow(VideoMode.DesktopMode, Config.GameTitle, Styles.Fullscreen);
-        else window = new RenderWindow(new VideoMode(Config.RenderWidth * 3, Config.RenderHeight * 3), Config.GameTitle, Styles.Default);
+        if (Config.Fullscreen == true) window = new RenderWindow(VideoMode.DesktopMode, Config.GameTitle, Styles.Default, SFML.Window.State.Fullscreen);
+        else window = new RenderWindow(new VideoMode( new Vector2u(Config.RenderWidth * 3, Config.RenderHeight * 3)), Config.GameTitle, Styles.Default, SFML.Window.State.Windowed);
         window.Closed += (sender, e) => window.Close();
         window.SetFramerateLimit(Config.Framerate);
         window.SetVerticalSyncEnabled(Config.Vsync);
@@ -117,13 +107,13 @@ public static class Program {
         window.SetView(view);
 
         // Carregamento dos personagens
-        characters = new List<Character> {
+        Data.characters = new List<Character> {
             new Ken(),
         };
 
-        // Carregamento dos stages
-        stages = new List<Stage> {
-            new Stage("Random", visuals["random"]),
+        // Carregamento dos Data.stages
+        Data.stages = new List<Stage> {
+            new Stage("Random", Data.textures["screens:random"]),
             new BurningDojo(),
             new MidnightDuel(),
             new NightAlley(),
@@ -132,27 +122,26 @@ public static class Program {
             new TheSavana(),
             new JapanFields(),
             new TrainingStage(),
-            new Stage("Settings", visuals["settings"]),
-            new Stage("Exit game", visuals["exit"]),
+            new Stage("Settings", Data.textures["screens:settings"]),
+            new Stage("Exit game", Data.textures["screens:exit"]),
         };
-        stage = stages[0];
+        stage = Data.stages[0];
 
         // Sprites
-        Sprite main_bg = new Sprite(visuals["title"]);
-        Sprite settings_bg = new Sprite(visuals["settings_bg"]);
-        Sprite char_bg = new Sprite(visuals["bgchar"]);
-        Sprite stage_bg = new Sprite();
+        Sprite main_bg = new Sprite(Data.textures["screens:title"]);
+        Sprite settings_bg = new Sprite(Data.textures["screens:settings_bg"]);
+        Sprite char_bg = new Sprite(Data.textures["screens:bgchar"]);
 
-        Sprite frame = new Sprite(visuals["frame"]);
-        Sprite fade90 = new Sprite(visuals["90fade"]);
+        Sprite frame = new Sprite(Data.textures["screens:frame"]);
+        Sprite fade90 = new Sprite(Data.textures["screens:90fade"]);
 
-        Sprite fight_logo = new Sprite(visuals["fight"]);
-        Sprite timesup_logo = new Sprite(visuals["timesup"]);
-        Sprite KO_logo = new Sprite(visuals["ko"]);
-        Sprite fslogo = new Sprite(visuals["fs"]);
+        Sprite fight_logo = new Sprite(Data.textures["typography:fight"]);
+        Sprite timesup_logo = new Sprite(Data.textures["typography:timesup"]);
+        Sprite KO_logo = new Sprite(Data.textures["typography:ko"]);
+        Sprite fslogo = new Sprite(Data.textures["typography:fs"]);
 
-        Sprite sprite_A = new Sprite();
-        Sprite sprite_B = new Sprite();
+        Sprite sprite_A = new Sprite(Data.textures["other:placeholder"]);
+        Sprite sprite_B = new Sprite(Data.textures["other:placeholder"]);
 
         while (window.IsOpen) {
             window.DispatchEvents();
@@ -178,20 +167,25 @@ public static class Program {
                     }
                     break;
 
-                case MainMenu:
+                case StartScreen:
                     InputManager.UpdateAI();
                     window.Draw(main_bg);
                     UI.DrawText("by JFooley", 0, 76, spacing: Config.spacing_small - 1, textureName: "default small");
 
                     if (UI.DrawButton(Language.GetText("press start"), 0, 50, spacing: Config.spacing_medium, click: InputManager.Key_hold("Start"), action: InputManager.Key_up("Start"), hover_font: UI.blink2Hz ? "default medium white" : "", click_font: "default medium click")) {
-                        ChangeState(SelectStage);
+                        ChangeState(MainMenu);
                         pointer = 0;
                     }
                     break;
 
+                case MainMenu:
+                    window.Draw(frame);
+                    Program.ChangeState(SelectStage);
+                    break;
+
                 case SelectStage:
                     InputManager.UpdateAI();
-                    window.Draw(stages[pointer].thumb);
+                    window.Draw(Data.stages[pointer].thumb);
                     window.Draw(frame);
 
                     var face_hold = InputManager.Key_hold("A") || InputManager.Key_hold("B") || InputManager.Key_hold("C") || InputManager.Key_hold("D");
@@ -210,19 +204,19 @@ public static class Program {
                         ChangeState(Controls);
 
                     if (InputManager.Key_down("Left"))
-                        pointer = pointer <= 0 ? stages.Count - 1 : pointer - 1;
+                        pointer = pointer <= 0 ? Data.stages.Count - 1 : pointer - 1;
                     else if (InputManager.Key_down("Right"))
-                        pointer = pointer >= stages.Count - 1 ? 0 : pointer + 1;
+                        pointer = pointer >= Data.stages.Count - 1 ? 0 : pointer + 1;
 
-                    if (UI.DrawButton(Language.GetText(stages[pointer].name), 0, -80, spacing: Config.spacing_medium, click: face_hold, action: face_up, click_font: "default medium click", hover_font: "default medium white")) {
-                        if (stages[pointer].name == "Settings") 
+                    if (UI.DrawButton(Language.GetText(Data.stages[pointer].name), 0, -80, spacing: Config.spacing_medium, click: face_hold, action: face_up, click_font: "default medium click", hover_font: "default medium white")) {
+                        if (Data.stages[pointer].name == "Settings") 
                             ChangeState(Settings);
-                        else if (stages[pointer].name == "Exit game") 
+                        else if (Data.stages[pointer].name == "Exit game") 
                             window.Close();
                         else {
-                            if (stages[pointer].name == "Random")
-                                pointer = AI.rand.Next(1, stages.Count() - 2);
-                            Program.stage = stages[pointer];
+                            if (Data.stages[pointer].name == "Random")
+                                pointer = AI.rand.Next(1, Data.stages.Count() - 2);
+                            Program.stage = Data.stages[pointer];
                             ChangeState(SelectChar);
                         }
                         pointer = 0;
@@ -234,8 +228,8 @@ public static class Program {
                     window.Draw(char_bg);
 
                     // Setup sprites texture
-                    sprite_A.Texture = characters[pointer_charA].thumb;
-                    sprite_B.Texture = characters[pointer_charB].thumb;
+                    sprite_A.Texture = Data.characters[pointer_charA].thumb;
+                    sprite_B.Texture = Data.characters[pointer_charB].thumb;
                     UI.DrawText(playerA_wins.ToString(), 0, 63, alignment: "right");
                     UI.DrawText(playerB_wins.ToString(), 0, 63, alignment: "left" );
                     UI.DrawText(Language.GetText(AI_playerA ? "COM" : "P1"), -15, 63, textureName: "default small", alignment: "right", spacing: Config.spacing_small);
@@ -256,7 +250,7 @@ public static class Program {
                     // Draw main sprite A
                     sprite_A.Scale = new Vector2f(1f, 1f);
                     sprite_A.Position = new Vector2f(Camera.X - 77 - sprite_B.GetLocalBounds().Width / 2, Camera.Y - 20 - sprite_B.GetLocalBounds().Height / 2);
-                    window.Draw(sprite_A, characters[pointer_charA].SetSwaperShader(
+                    window.Draw(sprite_A, Data.characters[pointer_charA].SetSwaperShader(
                         palette_index: (int) (charA_selected != null ? charA_selected.palette_index : 0), 
                         light: ready_charA ? new Color(128, 128, 128) : Color.White
                     ));
@@ -269,7 +263,7 @@ public static class Program {
                     // Draw main sprite B
                     sprite_B.Scale = new Vector2f(-1f, 1f);
                     sprite_B.Position = new Vector2f(Camera.X + 77 + sprite_B.GetLocalBounds().Width / 2, Camera.Y - 20 - sprite_B.GetLocalBounds().Height / 2);
-                    window.Draw(sprite_B, characters[pointer_charB].SetSwaperShader( 
+                    window.Draw(sprite_B, Data.characters[pointer_charB].SetSwaperShader( 
                         palette_index: (int) (charB_selected != null ? charB_selected.palette_index : 0), 
                         light: ready_charB ? new Color(128, 128, 128) : Color.White
                     ));
@@ -294,42 +288,42 @@ public static class Program {
 
                     // Autoselect
                     if (charA_selected == null && Program.AI_playerA && ready_charB) {
-                        pointer_charA = AI.rand.Next(0, characters.Count);
-                        charA_selected = characters[pointer_charA].Copy();
+                        pointer_charA = AI.rand.Next(0, Data.characters.Count);
+                        charA_selected = Data.characters[pointer_charA].Copy();
                         if (pointer_charA == pointer_charB && charB_selected.palette_index == 0) charA_selected.ChangePalette(AI.rand.Next());
                         ready_charA = true;
                     }
                     if (charB_selected == null && Program.AI_playerB && ready_charA) {
-                        pointer_charB = AI.rand.Next(0, characters.Count);
-                        charB_selected = characters[pointer_charB].Copy();
+                        pointer_charB = AI.rand.Next(0, Data.characters.Count);
+                        charB_selected = Data.characters[pointer_charB].Copy();
                         if (pointer_charB == pointer_charA && charA_selected.palette_index == 0) charB_selected.ChangePalette(AI.rand.Next());
                         ready_charB = true;
                     }
 
                     // Buttons A
                     if (!ready_charA && UI.DrawButton("<   ", -77, -16, hover: true, click: InputManager.Key_hold("Left", player: 1), action: InputManager.Key_down("Left", player: 1), hover_font: "default small", font: "", spacing: 0)) {
-                        if (charA_selected == null) pointer_charA = pointer_charA > 0 ? pointer_charA - 1 : characters.Count - 1;
+                        if (charA_selected == null) pointer_charA = pointer_charA > 0 ? pointer_charA - 1 : Data.characters.Count - 1;
                         else charA_selected.ChangePalette(-1);
                     } if (!ready_charA && UI.DrawButton("   >", -77, -16, hover: true, click: InputManager.Key_hold("Right", player: 1), action: InputManager.Key_down("Right", player: 1), hover_font: "default small", font: "", spacing: 0)) {
-                        if (charA_selected == null) pointer_charA = pointer_charA < characters.Count - 1 ? pointer_charA + 1 : 0;
+                        if (charA_selected == null) pointer_charA = pointer_charA < Data.characters.Count - 1 ? pointer_charA + 1 : 0;
                         else charA_selected.ChangePalette(1);
                     }
 
-                    if (UI.DrawButton(characters[pointer_charA].name, -77, 45, spacing: Config.spacing_small, action: InputManager.Key_down("A", player: 1), click: InputManager.Key_hold("A", player: 1), hover_font: "default small"))
-                        if (charA_selected == null) charA_selected = characters[pointer_charA].Copy();
+                    if (UI.DrawButton(Data.characters[pointer_charA].name, -77, 45, spacing: Config.spacing_small, action: InputManager.Key_down("A", player: 1), click: InputManager.Key_hold("A", player: 1), hover_font: "default small"))
+                        if (charA_selected == null) charA_selected = Data.characters[pointer_charA].Copy();
                         else ready_charA = !ready_charA;
 
                     // Buttons B
                     if (!ready_charB && UI.DrawButton("<   ", 77, -16, hover: true, click: InputManager.Key_hold("Left", player: 2), action: InputManager.Key_down("Left", player: 2), hover_font: "default small", font: "", spacing: 0)) {
-                        if (charB_selected == null) pointer_charB = pointer_charB > 0 ? pointer_charA - 1 : characters.Count - 1;
+                        if (charB_selected == null) pointer_charB = pointer_charB > 0 ? pointer_charA - 1 : Data.characters.Count - 1;
                         else charB_selected.ChangePalette(-1);
                     } if (!ready_charB && UI.DrawButton("   >", 77, -16, hover: true, click: InputManager.Key_hold("Right", player: 2), action: InputManager.Key_down("Right", player: 2), hover_font: "default small", font: "", spacing: 0)) {
-                        if (charB_selected == null) pointer_charB = pointer_charB < characters.Count - 1 ? pointer_charB + 1 : 0;
+                        if (charB_selected == null) pointer_charB = pointer_charB < Data.characters.Count - 1 ? pointer_charB + 1 : 0;
                         else charB_selected.ChangePalette(1);
                     }
 
-                    if (UI.DrawButton(characters[pointer_charB].name, 77, 45, spacing: Config.spacing_small, action: InputManager.Key_down("A", player: 2), click: InputManager.Key_hold("A", player: 2), hover_font: "default small"))
-                        if (charB_selected == null) charB_selected = characters[pointer_charB].Copy();
+                    if (UI.DrawButton(Data.characters[pointer_charB].name, 77, 45, spacing: Config.spacing_small, action: InputManager.Key_down("A", player: 2), click: InputManager.Key_hold("A", player: 2), hover_font: "default small"))
+                        if (charB_selected == null) charB_selected = Data.characters[pointer_charB].Copy();
                         else ready_charB = !ready_charB;
 
                     // Ends when chars are selected and ready
@@ -438,7 +432,7 @@ public static class Program {
                     face_up = InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D");
                     face_hold = InputManager.Key_hold("A") || InputManager.Key_hold("B") || InputManager.Key_hold("C") || InputManager.Key_hold("D");
 
-                    stage.music.Volume = Math.Max(0, stage.music.Volume - 0.5f);
+                    stage.SetMusicVolume((stage.music != null) ? Math.Max(0, stage.music.Volume - 0.5f) : 0);
 
                     string winner_text;
                     if (winner == Program.Drawn) winner_text = Language.GetText("Drawn");
@@ -532,8 +526,8 @@ public static class Program {
                     {
                         Config.Fullscreen = !Config.Fullscreen;
                         window.Close();
-                        if (Config.Fullscreen == true) window = new RenderWindow(VideoMode.DesktopMode, Config.GameTitle, Styles.Fullscreen);
-                        else window = new RenderWindow(new VideoMode(Config.RenderWidth * 3, Config.RenderHeight * 3), Config.GameTitle, Styles.Default);
+                        if (Config.Fullscreen == true) window = new RenderWindow(VideoMode.DesktopMode, Config.GameTitle, Styles.Default, SFML.Window.State.Fullscreen);
+                        else window = new RenderWindow(new VideoMode( new Vector2u(Config.RenderWidth * 3, Config.RenderHeight * 3)), Config.GameTitle, Styles.Default, SFML.Window.State.Windowed);
                         window.Closed += (sender, e) => window.Close();
                         window.SetFramerateLimit(Config.Framerate);
                         window.SetVerticalSyncEnabled(Config.Vsync);
@@ -578,8 +572,8 @@ public static class Program {
 
                 case Controls:
                     if (Camera.isLocked) Camera.UnlockCamera();
-                    window.Draw(new Sprite(visuals["frame"]));
-                    window.Draw(new Sprite(visuals["controls_" + controls_pointer]));
+                    window.Draw(new Sprite(Data.textures["screens:frame"]));
+                    window.Draw(new Sprite(Data.textures["screens:controls_" + controls_pointer]));
 
                     if (InputManager.Key_up("Left")) controls_pointer = controls_pointer < 1 ? controls_pointer + 1 : 0;
                     else if (InputManager.Key_up("Right")) controls_pointer = controls_pointer > 0 ? controls_pointer - 1 : 1;
@@ -611,7 +605,7 @@ public static class Program {
     }
 
     public static void MainLoader() {
-        foreach (var character in characters) {
+        foreach (var character in Data.characters) {
             if (character.GetType() == typeof(Character)) continue;
             character.LoadPalette();
             character.LoadTextures(do_index: true);
@@ -619,11 +613,14 @@ public static class Program {
             character.SetThumb();
         }
 
-        foreach (var stage in stages) {
+        foreach (var stage in Data.stages) {
             if (stage.GetType() == typeof(Stage)) continue;
             stage.LoadTextures();
             stage.LoadSounds();
         }
+
+        Hitspark hs = new Hitspark();
+        Particle pt = new Particle();
 
         hs.LoadTextures();
         hs.LoadSounds();
@@ -632,7 +629,7 @@ public static class Program {
         pt.LoadSounds();
 
         loading = false;
-        ChangeState(MainMenu);
+        ChangeState(StartScreen);
     }
 }
 

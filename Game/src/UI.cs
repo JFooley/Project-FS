@@ -1,4 +1,4 @@
-using Data_space;
+
 using Language_space;
 using SFML.Graphics;
 using SFML.System;
@@ -44,7 +44,7 @@ namespace UI_space {
 
         public UI() {
             font_textures = new Dictionary<string, Dictionary<char, Sprite>>();
-            UI.hud = new Sprite(Program.visuals["hud"]);
+            UI.hud = new Sprite(Data.textures["ui:hud"]);
             UI.Load();
         }
 
@@ -141,9 +141,9 @@ namespace UI_space {
         }
     
         public static void DrawBar(float X, float Y, float currentValue, float maxValue, string textureName, string alignment = "center", bool mirrored = false, SFML.Graphics.Color? color = null, bool grow_inverted = true, bool absolutePosition = false) {
-            if (!Program.visuals.ContainsKey(textureName)) return;
+            if (!Data.textures.ContainsKey(textureName)) return;
             
-            var barSprite = new Sprite(Program.visuals[textureName]);
+            var barSprite = new Sprite(Data.textures[textureName]);
             IntRect originalRect = barSprite.TextureRect;
 
             // Pinta a sprite se uma cor for fornecida
@@ -158,11 +158,13 @@ namespace UI_space {
             
             // Define a região da textura que será mostrada
             IntRect textureRect = originalRect;
-            textureRect.Width = (int)(originalRect.Width * percentage);
+            textureRect.Size.X = (int)(originalRect.Width * percentage);
             
             // Calcula quanto foi diminuído
             int reducedWidth = originalRect.Width - textureRect.Width;
-            if (grow_inverted) textureRect.Left = originalRect.Left + reducedWidth;
+            if (grow_inverted) {
+                textureRect = new IntRect( new Vector2i(originalRect.Left + reducedWidth, textureRect.Top), textureRect.Size);
+            }
             
             float scaleX = mirrored ? -1f : 1f;
             barSprite.Scale = new Vector2f(scaleX, 1f);
@@ -218,24 +220,24 @@ namespace UI_space {
             var lifeA_scale = stage.character_A.life_points.X * 150 / stage.character_A.life_points.Y;
             var lifeA = Math.Max(Math.Min(lifeA_scale, 150), 0);
             if (stage.character_B.combo_counter == 0) UI.graylife_A = lifeA > UI.graylife_A ? UI.graylife_A = lifeA : (int) (UI.graylife_A + (lifeA - UI.graylife_A) * 0.01);            
-            UI.DrawBar(life_bar_X, life_bar_Y, UI.graylife_A, 150, "lifebar", alignment: "left", mirrored: false, color: UI.bar_graylife);
+            UI.DrawBar(life_bar_X, life_bar_Y, UI.graylife_A, 150, "ui:lifebar", alignment: "left", mirrored: false, color: UI.bar_graylife);
             var lifeColorA = stage.character_A.life_points.X == stage.character_A.life_points.Y ? UI.bar_fulllife : UI.bar_life;
-            UI.DrawBar(life_bar_X, life_bar_Y, lifeA, 150, "lifebar", alignment: "left", mirrored: false, color: lifeColorA);
+            UI.DrawBar(life_bar_X, life_bar_Y, lifeA, 150, "ui:lifebar", alignment: "left", mirrored: false, color: lifeColorA);
 
             // Lifebar B
             var lifeB_scale = stage.character_B.life_points.X * 150 / stage.character_B.life_points.Y;
             var lifeB = Math.Max(Math.Min(lifeB_scale, 150), 0);
             if (stage.character_A.combo_counter == 0) UI.graylife_B = lifeB > UI.graylife_B ? UI.graylife_B = lifeB : (int) (UI.graylife_B + (lifeB - UI.graylife_B) * 0.01);            
-            UI.DrawBar(-life_bar_X, life_bar_Y, UI.graylife_B, 150, "lifebar", alignment: "right", mirrored: true, color: UI.bar_graylife);
+            UI.DrawBar(-life_bar_X, life_bar_Y, UI.graylife_B, 150, "ui:lifebar", alignment: "right", mirrored: true, color: UI.bar_graylife);
             var lifeColorB = stage.character_B.life_points.X == stage.character_B.life_points.Y ? UI.bar_fulllife : UI.bar_life;
-            UI.DrawBar(-life_bar_X, life_bar_Y, lifeB, 150, "lifebar", alignment: "right", mirrored: true, color: lifeColorB);
+            UI.DrawBar(-life_bar_X, life_bar_Y, lifeB, 150, "ui:lifebar", alignment: "right", mirrored: true, color: lifeColorB);
             
             // Super bar A
             var superA_scale = stage.character_A.aura_points.X * 117 / stage.character_A.aura_points.Y;
             var superA = Math.Max(Math.Min(superA_scale, 117), 0);
             var full_A = stage.character_A.aura_points.X == stage.character_A.aura_points.Y;
             var aura_color_A = stage.character_A.aura_points.X >= stage.character_A.aura_points.Y/2 && !(full_A && UI.blink10Hz) ? UI.bar_super_full : UI.bar_super;
-            UI.DrawBar(super_bar_X, super_bar_Y, superA, 117, "aurabar", alignment: "left", mirrored: false, color: aura_color_A, grow_inverted: false);
+            UI.DrawBar(super_bar_X, super_bar_Y, superA, 117, "ui:aurabar", alignment: "left", mirrored: false, color: aura_color_A, grow_inverted: false);
             if (stage.character_A.aura_points.X == stage.character_A.aura_points.Y && UI.blink2Hz) UI.DrawText(UI.superBarMsg, -193, 73, spacing: Config.spacing_medium, alignment: "left", textureName: "default small white");
                         
             // Super bar B
@@ -243,25 +245,25 @@ namespace UI_space {
             var superB = Math.Max(Math.Min(superB_scale, 117), 0);
             var full_B = stage.character_B.aura_points.X == stage.character_B.aura_points.Y;
             var aura_color_B = stage.character_B.aura_points.X >= stage.character_B.aura_points.Y/2 && !(full_B && UI.blink10Hz) ? UI.bar_super_full : UI.bar_super;
-            UI.DrawBar(-super_bar_X, super_bar_Y, superB, 117, "aurabar", alignment: "right", mirrored: true, color: aura_color_B, grow_inverted: false);
+            UI.DrawBar(-super_bar_X, super_bar_Y, superB, 117, "ui:aurabar", alignment: "right", mirrored: true, color: aura_color_B, grow_inverted: false);
             if (stage.character_B.aura_points.X == stage.character_B.aura_points.Y && UI.blink2Hz) UI.DrawText(UI.superBarMsg, 193, 73, spacing: Config.spacing_medium, alignment: "right", textureName: "default small white");
 
             // Stun bar A
             var stunA_scale = ( stage.character_A.dizzy_points.Y - stage.character_A.dizzy_points.X) * 150 / stage.character_A.dizzy_points.Y;
             var stunA = Math.Max(Math.Min(stunA_scale, 150), 0);
-            UI.DrawBar(stun_bar_X, stun_bar_Y, stunA, 150, "stunbar", alignment: "left", mirrored: false, color: bar_stun, grow_inverted: true);
+            UI.DrawBar(stun_bar_X, stun_bar_Y, stunA, 150, "ui:stunbar", alignment: "left", mirrored: false, color: bar_stun, grow_inverted: true);
 
             // Stun bar B
             var stunB_scale = ( stage.character_B.dizzy_points.Y - stage.character_B.dizzy_points.X) * 150 / stage.character_B.dizzy_points.Y;
             var stunB = Math.Max(Math.Min(stunB_scale, 150), 0);
-            UI.DrawBar(-stun_bar_X, stun_bar_Y, stunB, 150, "stunbar", alignment: "right", mirrored: true, color: bar_stun, grow_inverted: true);
+            UI.DrawBar(-stun_bar_X, stun_bar_Y, stunB, 150, "ui:stunbar", alignment: "right", mirrored: true, color: bar_stun, grow_inverted: true);
             
             // Names
             UI.DrawText(stage.character_A.name, -182, -94, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
             UI.DrawText(stage.character_B.name, 182, -94, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
 
-            UI.DrawBar(-177, -81, 1, 1, "croma", color: stage.character_A.current_palette_color, alignment: "left", mirrored: false);
-            UI.DrawBar(177, -81, 1, 1, "croma", color: stage.character_B.current_palette_color, alignment: "right", mirrored: true);
+            UI.DrawBar(-177, -81, 1, 1, "ui:croma", color: stage.character_A.current_palette_color, alignment: "left", mirrored: false);
+            UI.DrawBar(177, -81, 1, 1, "ui:croma", color: stage.character_B.current_palette_color, alignment: "right", mirrored: true);
 
             UI.DrawText(Language.GetText((stage.character_A.AIEnabled && stage.character_A.BotEnabled) ? "computer" : "player 1"), -Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
             UI.DrawText(Language.GetText((stage.character_B.AIEnabled && stage.character_B.BotEnabled) ? "computer" : "player 2"), Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
@@ -335,12 +337,12 @@ namespace UI_space {
 
             try
             {
-                DataManagement.LoadTexturesFromFile("Assets/fonts/fonts.dat", BitmapFont.textures);
+                Data.LoadTexturesFromFile("Assets/fonts/fonts.dat", BitmapFont.textures);
             }
             catch (Exception e)
             {
-                DataManagement.LoadTexturesFromPath("Assets/fonts", BitmapFont.textures);
-                DataManagement.SaveTexturesToFile("Assets/fonts/fonts.dat", BitmapFont.textures);
+                Data.LoadTexturesFromPath("Assets/fonts", BitmapFont.textures);
+                Data.SaveTexturesToFile("Assets/fonts/fonts.dat", BitmapFont.textures);
             }
         }
 
@@ -371,7 +373,7 @@ namespace UI_space {
             int y = (index / Columns) * CellSize;
 
             // Cria um sprite do caractere
-            Sprite sprite = new Sprite(texture, new IntRect(x, y, CellSize, CellSize));
+            Sprite sprite = new Sprite(texture, new IntRect(new Vector2i(x, y), new Vector2i(CellSize, CellSize)));
             sprite.Scale = new Vector2f(size / CellSize, size / CellSize); // Ajusta o tamanho
             return sprite;
         }

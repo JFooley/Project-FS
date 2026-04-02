@@ -1,12 +1,11 @@
 using SFML.Graphics;
 using SFML.System;
 using SFML.Audio;
-using Animation_Space;
+
 using Character_Space;
 using UI_space;
 using Input_Space;
 using System.Diagnostics;
-using Data_space;
 using Language_space;
 
 namespace Stage_Space {
@@ -66,11 +65,6 @@ namespace Stage_Space {
         // Aux
         private Vector2i pause_pointer = new Vector2i(0,0);
 
-        // Pre-renders
-        private Hitspark spark; 
-        private Fireball fireball;
-        private Particle particle;
-
         // Animation infos
         public string CurrentState { get; set; }
         public string LastState { get; set; }
@@ -84,7 +78,7 @@ namespace Stage_Space {
 
         // Visual info
         public Color AmbientLight = new Color(255, 255, 255, 255);
-        private Sprite fade90 = new Sprite(Program.visuals["90fade"]);
+        private Sprite fade90 = new Sprite(Data.textures["screens:90fade"]);
         private Sprite shadow;
 
         public Stage(string name, int floorLine, int length, int height, string folder_path, Texture thumb) {
@@ -98,10 +92,6 @@ namespace Stage_Space {
             this.rounds_A = 0;
             this.rounds_B = 0;
             this.CurrentState = "Default";
-
-            this.spark = new Hitspark("Default", 0, 0, 1);
-            this.fireball = new Fireball("Default", 1, 0, 0, 0, 1);
-            this.particle = new Particle("Default", 0, 0, 1);
 
             this.thumb = new Sprite(thumb);
 
@@ -335,7 +325,7 @@ namespace Stage_Space {
         public void spawnParticle(String state, float X, float Y, int facing = 1, int X_offset = 0, int Y_offset = 0) {
             var par = new Particle(state, X + X_offset * facing, Y + Y_offset, facing);
             par.ChangeState(state, reset: true);
-            par.states = this.particle.states;
+            par.Load();
             this.newParticles.Add(par);
         }
         public void spawnHitspark(int hit, float X, float Y, int facing, int X_offset = 0, int Y_offset = 0) {
@@ -350,14 +340,15 @@ namespace Stage_Space {
 
             var hs = new Hitspark(state, X + X_offset * facing, Y + Y_offset, facing);
             hs.ChangeState(state, reset: true);
-            hs.states = this.spark.states;
+            hs.Load();
             this.newParticles.Add(hs);
         }
 
         // Visuals
         public void DrawShadow(Character char_obj) {
             if (char_obj.shadow_size != -1) {
-                this.shadow.Texture = Program.visuals["shadow" + char_obj.shadow_size];
+                int shadow_index = (int) (char_obj.shadow_size * (Config.contact_shadow - Math.Min(this.floorLine - char_obj.body.Position.Y, Config.contact_shadow)) / Config.contact_shadow);
+                this.shadow.Texture = Data.textures["ui:shadow" + shadow_index];
                 this.shadow.Position = new Vector2f(char_obj.body.Position.X - this.shadow.GetLocalBounds().Width/2, this.floorLine - this.shadow.GetLocalBounds().Height/2 - 55 );
                 this.shadow.Color = this.AmbientLight;
                 Program.window.Draw(this.shadow);
@@ -558,26 +549,25 @@ namespace Stage_Space {
         }
         
         // Music
-        public void SetMusicVolume(float amount = -1) {
-            if (amount == -1) amount = Config.Music_Volume;
-            this.music.Volume = amount * (Config.Music_Volume / 100);
+        public void SetMusicVolume(float amount = 100) {
+            if (this.music != null) this.music.Volume = amount * (Config.Music_Volume / 100);
         }
         public void StopMusic() {
-            this.music.Stop();
+            this.music?.Stop();
         }
         public void PauseMusic() {
-            this.music.Pause();
+            this.music?.Pause();
         }
         public void PlayMusic() {
-            if (this.music.Status == SoundStatus.Stopped || this.music.Status == SoundStatus.Paused){
+            if (this.music?.Status == SoundStatus.Stopped || this.music?.Status == SoundStatus.Paused){
                 this.music.Play();
             }
         }
         public void ToggleMusic() {
-            if (this.music.Status == SoundStatus.Playing) this.PauseMusic();
+            if (this.music?.Status == SoundStatus.Playing) this.PauseMusic();
             else this.PlayMusic();
         }
-        public void ToggleMusicVolume(bool control, float volume_A = -1, float volume_B = -1) {
+        public void ToggleMusicVolume(bool control, float volume_A = 100, float volume_B = 100) {
             if (control) this.SetMusicVolume(volume_A);
             else this.SetMusicVolume(volume_B);
         }
@@ -585,10 +575,6 @@ namespace Stage_Space {
         // Loads☺
         public void LoadCharacters(Character charA, Character charB) {        
             this.SetChars(charA, charB);
-            
-            this.spark.Load();
-            this.fireball.Load();
-            this.particle.Load();
         }
         public void UnloadCharacters() {
             this.character_A = null;
@@ -604,15 +590,15 @@ namespace Stage_Space {
             }
 
             // Set shadow            
-            this.shadow = new Sprite(Program.visuals["shadow1"]);
+            this.shadow = new Sprite(Data.textures["ui:shadow1"]);
 
             // Verifica se o arquivo binário existe, senão, carrega as texturas e cria ele
             string dat_path = Path.Combine(full_path, "visuals.dat");
             try {
-                DataManagement.LoadTexturesFromFile(dat_path, this.textures);
+                Data.LoadTexturesFromFile(dat_path, this.textures);
             } catch (Exception) {
-                DataManagement.LoadTexturesFromPath(full_path, this.textures);
-                DataManagement.SaveTexturesToFile(dat_path, this.textures);
+                Data.LoadTexturesFromPath(full_path, this.textures);
+                Data.SaveTexturesToFile(dat_path, this.textures);
             }
         }
         public void UnloadTextures() {
@@ -634,15 +620,16 @@ namespace Stage_Space {
             // Verifica se o arquivo binário existe, senão, carrega os sons e cria ele
             string dat_path = Path.Combine(full_sound_path, "sounds.dat");
             try {
-                DataManagement.LoadSoundsFromFile(dat_path, this.sounds);
+                this.sounds = Data.LoadSoundsFromFile(dat_path);
             } catch (Exception e) {
-                DataManagement.LoadSoundsFromPath(full_sound_path, this.sounds);
-                DataManagement.SaveSoundsToFile(dat_path, this.sounds);
+                var sound_bytes = Data.LoadSoundsFromPath(full_sound_path);
+                Data.SaveSoundsToFile(dat_path, sound_bytes);
+                this.sounds = Data.LoadSoundsFromFile(dat_path);
             }
 
             // setta a musica
             if (this.sounds.ContainsKey("music")) this.music = new Sound(this.sounds["music"]);
-            else this.music = new Sound();
+            else this.music = null;
         }
         public void UnloadSounds() {
             this.StopMusic();
@@ -654,12 +641,12 @@ namespace Stage_Space {
         }
         public static void LoadThumbs() {
             try {
-                DataManagement.LoadTexturesFromFile("Assets/data/stage_thumbs.dat", Program.thumbs);
+                Data.LoadTexturesFromFile("Assets/data/stage_thumbs.dat", Data.thumbs);
             } catch (Exception e) {
                 var temp_dict = new Dictionary<string, Texture> { };
-                foreach (string characterDir in Directory.GetDirectories("Assets/stages")) DataManagement.LoadTexturesFromPath(characterDir, temp_dict);
-                DataManagement.SaveTexturesToFile("Assets/data/stage_thumbs.dat", temp_dict);
-                foreach (var item in temp_dict) Program.thumbs[item.Key] = item.Value;
+                foreach (string characterDir in Directory.GetDirectories("Assets/stages")) Data.LoadTexturesFromPath(characterDir, temp_dict);
+                Data.SaveTexturesToFile("Assets/data/stage_thumbs.dat", temp_dict);
+                foreach (var item in temp_dict) Data.thumbs[item.Key] = item.Value;
             }
         }
 

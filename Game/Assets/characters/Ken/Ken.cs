@@ -1,6 +1,6 @@
 using SFML.System;
 using Character_Space;
-using Animation_Space;
+
 using Input_Space;
 using System.IO.Compression;
 using Stage_Space;

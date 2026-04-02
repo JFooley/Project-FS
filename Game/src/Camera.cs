@@ -27,10 +27,6 @@ public class Camera {
             // Update camera pos based on target
             Camera.X = Camera.Lerp(Camera.X, Camera.target.X, 0.04f);
             Camera.Y = Camera.Lerp(Camera.Y, Camera.target.Y - Config.camera_height, 0.1f);
-
-            // Old camera
-            // Camera.X = Camera.target.X;
-            // Camera.Y = Camera.target.Y - Config.camera_height;
             
             // Limit camera pos
             Camera.X = Math.Max(Program.view.Size.X / 2, Math.Min(Camera.X, Camera.X_stage_limits - Program.view.Size.X / 2));

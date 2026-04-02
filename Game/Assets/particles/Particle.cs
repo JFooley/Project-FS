@@ -1,5 +1,5 @@
 using Character_Space;
-using Animation_Space;
+
 using SFML.System;
 using SFML.Graphics;
 using Stage_Space;

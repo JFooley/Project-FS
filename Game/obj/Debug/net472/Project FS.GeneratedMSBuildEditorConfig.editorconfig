@@ -1,5 +1,8 @@
 is_global = true
 build_property.RootNamespace = Project_FS
-build_property.ProjectDir = D:\GABRIEL\Repos\CS Fighting Game\Game\
+build_property.ProjectDir = A:\GABRIEL\Repos\CS Fighting Game\Game\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.CsWinRTUseWindowsUIXamlProjections = false
+build_property.EffectiveAnalysisLevelStyle = 
+build_property.EnableCodeStyleSeverity = 

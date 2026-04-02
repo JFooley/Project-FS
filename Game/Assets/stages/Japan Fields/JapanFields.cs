@@ -1,10 +1,10 @@
 using Stage_Space;
-using Animation_Space;
+
 
 
 public class JapanFields : Stage {
     public JapanFields()
-        : base("Japan Fields", 540, 896, 511, "Assets/stages/Japan Fields", Program.thumbs["japan_thumb"])
+        : base("Japan Fields", 540, 896, 511, "Assets/stages/Japan Fields", Data.thumbs["japan_thumb"])
     {
         this.AmbientLight = new SFML.Graphics.Color(250, 250, 230, 255);
     }

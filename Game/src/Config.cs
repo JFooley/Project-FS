@@ -65,6 +65,7 @@ public static class Config {
     public const int corner_limit = 125;
     public const int camera_height = 140;
     public const int last_hit_stop_time = 20;
+    public const int contact_shadow = 100;
 
     // Text
     public const int spacing_small = -26; 

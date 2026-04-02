@@ -1,8 +1,6 @@
 using Character_Space;
 using SFML.System;
 
-namespace Animation_Space {
-
     public class Animation {
         public List<Frame> Frames { get; private set; }
 
@@ -191,4 +189,3 @@ namespace Animation_Space {
         }
     }
 
-}

@@ -62,6 +62,9 @@ namespace Input_Space {
         public static bool anyKeyA => InputManager.buttonState[PLAYER_A] > 0;
         public static bool anyKeyB => InputManager.buttonState[PLAYER_B] > 0;
 
+        public static bool faceButtonUp => InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D");
+        public static bool faceButtonHold => InputManager.Key_hold("A") || InputManager.Key_hold("B") || InputManager.Key_hold("C") || InputManager.Key_hold("D");
+
 
         // Mapping para teclado e mouse
         private static Dictionary<Keys, int> keyMapA = new Dictionary<Keys, int> {
@@ -272,26 +275,22 @@ namespace Input_Space {
             }
         }
 
-    public static class RawInput
-        {
-            [DllImport("user32.dll")]
-            private static extern short GetAsyncKeyState(Keys vKey);
+    public static class RawInput {
+        [DllImport("user32.dll")]
+        private static extern short GetAsyncKeyState(Keys vKey);
 
-            public static int ReadKeyboardState(Dictionary<Keys, int> keyMapA)
-            {
-                int state = 0;
+        public static int ReadKeyboardState(Dictionary<Keys, int> keyMapA) {
+            int state = 0;
 
-                foreach (var key in keyMapA)
-                {
-                    if ((GetAsyncKeyState(key.Key) & 0x8000) != 0)
-                    {
-                        state |= 1 << key.Value;
-                    }
+            foreach (var key in keyMapA) {
+                if ((GetAsyncKeyState(key.Key) & 0x8000) != 0) {
+                    state |= 1 << key.Value;
                 }
-
-                return state;
             }
+
+            return state;
         }
+    }
 
     public class JoystickInput {
         [DllImport("xinput1_3.dll")]

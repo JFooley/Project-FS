@@ -1,5 +1,4 @@
 using Character_Space;
-using Animation_Space;
 using SFML.System;
 using SFML.Graphics;
 using SFML.Audio;
@@ -15,7 +14,7 @@ public class Fireball : Character {
             this.player_index = team;
             this.facing = facing;
             this.life_points = new Vector2i(life_points, 0);
-            this.shadow_size = 0;
+            this.shadow_size = 1;
             this.own_light = new Color(255, 255, 255, 255);
         }
     public Fireball() : base("Fireball", "", 0, 0, "Assets/characters/Ken/Fireball", 1) {}

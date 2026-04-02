@@ -1,12 +1,10 @@
 using SFML.Graphics;
 using SFML.System;
 using SFML.Audio;
-using Animation_Space;
+
 using Input_Space;
 using Stage_Space;
 using UI_space;
-using Data_space;
-using System.Runtime.InteropServices;
 
 // ----- Default States -------
 // Intro
@@ -56,7 +54,7 @@ namespace Character_Space {
             for (int i = 0; i < frames; i++) actionQueue.Enqueue(key);
         }
     }
-    public class FightState {
+    public struct FightState {
         public float distance;
         public float enemyDistance;
         public bool enemyIsIdle;
@@ -137,7 +135,7 @@ namespace Character_Space {
         public Texture thumb;
         public Color light_tint => Program.stage.AmbientLight;
         public Color own_light = Color.Transparent;
-        public int shadow_size = 1;
+        public int shadow_size = 2;
         public bool has_frame_change => this.last_anim_frame_index != this.current_anim_frame_index;
         public virtual Texture palette {get; protected set;}
         public uint palette_size => this.palette.Size.X;
@@ -170,12 +168,12 @@ namespace Character_Space {
             base.body.Position.X = startX; 
             base.body.Position.Y = startY;
             this.floor_line = startY;
-            this.current_palette_color = this.palette != null ? this.palette.CopyToImage().GetPixel(0, this.palette_index) : Color.White;
+            this.current_palette_color = this.palette != null ? this.palette.CopyToImage().GetPixel(new Vector2u(0, this.palette_index)) : Color.White;
         }
         public Character(string name, string folder_path) {
             this.name = name;
             this.folder_path = folder_path;
-            this.current_palette_color = this.palette != null ? this.palette.CopyToImage().GetPixel(0, this.palette_index) : Color.White;
+            this.current_palette_color = this.palette != null ? this.palette.CopyToImage().GetPixel(new Vector2u(0, this.palette_index)) : Color.White;
         }
 
         // Every Frame methods
@@ -319,25 +317,25 @@ namespace Character_Space {
             // IA do bot
             if (this.AIEnabled) {
                 var enemy = Program.stage.character_A.player_index == this.player_index ? Program.stage.character_B : Program.stage.character_A;
-                
-                var AIstate = new FightState();
 
-                // Distância até o inimigo
-                AIstate.distance = Math.Abs(this.body.Position.X - enemy.body.Position.X);
-                AIstate.enemyDistance = AIstate.distance / Config.RenderWidth;
+                var AIstate = new FightState {
+                    // Distância até o inimigo
+                    distance = Math.Abs(this.body.Position.X - enemy.body.Position.X),
+                    enemyDistance = Math.Abs(this.body.Position.X - enemy.body.Position.X) / Config.RenderWidth,
+                    
+                    // Estado
+                    lastState = this.last_state,
+                    enemyIsIdle = enemy.state.not_busy,
+                    enemyIsAttacking = enemy.state.can_harm && !enemy.state.not_busy,
+                    enemyIsAirborne = enemy.state.air,
+                    enemyIsCrouching = enemy.state.low,
+                    enemyIsBlocking = enemy.state.on_block,
+                    enemyIsOnHit = enemy.state.on_hit || enemy.state.on_parry,
+                    enemyChangedSide = enemy.facing == this.facing,
+                    enemyIsDead = enemy.life_points.X == 0,
+                    onCorner = this.body.Position.X < (0.2f * Config.RenderWidth) || this.body.Position.X >= (Program.stage.length - (0.2f * Config.RenderWidth))
+                };
 
-                // Estado
-                AIstate.lastState = this.last_state;
-                AIstate.enemyIsIdle = enemy.state.not_busy;
-                AIstate.enemyIsAttacking = enemy.state.can_harm && !enemy.state.not_busy;
-                AIstate.enemyIsAirborne = enemy.state.air;
-                AIstate.enemyIsCrouching = enemy.state.low;
-                AIstate.enemyIsBlocking = enemy.state.on_block;
-                AIstate.enemyIsOnHit = enemy.state.on_hit || enemy.state.on_parry;
-                AIstate.enemyChangedSide = enemy.facing == this.facing;
-                AIstate.enemyIsDead = enemy.life_points.X == 0;
-                AIstate.onCorner = this.body.Position.X < (0.2f * Config.RenderWidth) || this.body.Position.X >= (Program.stage.length - (0.2f * Config.RenderWidth));
-                
                 // Atualiza o array de estados de luta
                 this.BOT.states[4] = this.BOT.states[3];
                 this.BOT.states[3] = this.BOT.states[2];
@@ -346,9 +344,9 @@ namespace Character_Space {
                 this.BOT.states[0] = AIstate;
 
                 // Seleciona as ações, caso já tenha realizado todas
-                if (this.BOT.moveQueue.Count == 0 && AIstate != null)
+                if (this.BOT.moveQueue.Count == 0)
                     SelectMovement(AIstate);
-                if (this.BOT.actionQueue.Count == 0 && AIstate != null)
+                if (this.BOT.actionQueue.Count == 0)
                     SelectAction(AIstate);
             }
         }
@@ -502,20 +500,24 @@ namespace Character_Space {
             if (textures.TryGetValue(this.current_sprite, out Texture texture)) {
                 return new Sprite(texture);
             }
-            return new Sprite(); 
+            return null; 
         }
         public void PlayFrameSound() {
             if (!this.current_animation.playing_sound && this.current_sound != "" && sounds.TryGetValue(this.current_sound, out SoundBuffer buffer)) {
-                var temp_sound = new Sound(buffer) {Volume = Config.Character_Volume};
+                var temp_sound = new Sound(buffer) {
+                    Volume = Config.Character_Volume,
+                    Pan = (Camera.target.X / Program.stage.length * 2) - 1};
                 temp_sound.Play();
                 active_sounds.Add(temp_sound);
                 active_sounds.RemoveAll(s => s.Status == SoundStatus.Stopped);
                 this.current_animation.playing_sound = true;
             }
         }
-        public void PlaySound(string sound_name) {
+        public void PlaySound(string sound_name, float panning = 0, bool follow_player = true) {
             if (sounds.TryGetValue(sound_name, out SoundBuffer buffer)) {
-                var temp_sound = new Sound(buffer) {Volume = Config.Character_Volume};
+                var temp_sound = new Sound(buffer) {
+                    Volume = Config.Character_Volume,
+                    Pan = follow_player ? (Camera.target.X / Program.stage.length * 2) - 1 : panning};
                 temp_sound.Play();
                 active_sounds.Add(temp_sound);
                 active_sounds.RemoveAll(s => s.Status == SoundStatus.Stopped);
@@ -560,11 +562,11 @@ namespace Character_Space {
 
             string dat_path = Path.Combine(full_path, "visuals.dat");
             try {
-                DataManagement.LoadTexturesFromFile(dat_path, this.textures);
+                Data.LoadTexturesFromFile(dat_path, this.textures);
             } catch (Exception e) {
-                DataManagement.LoadTexturesFromPath(full_path, this.textures);
-                if (do_index) DataManagement.IndexTextureColors(this.textures, this.palette);
-                DataManagement.SaveTexturesToFile(dat_path, this.textures);
+                Data.LoadTexturesFromPath(full_path, this.textures);
+                if (do_index) Data.IndexTextureColors(this.textures, this.palette);
+                Data.SaveTexturesToFile(dat_path, this.textures);
             }
 
 
@@ -586,10 +588,11 @@ namespace Character_Space {
 
             string dat_path = Path.Combine(full_sound_path, "sounds.dat");
             try {
-                DataManagement.LoadSoundsFromFile(dat_path, this.sounds);
+                this.sounds = Data.LoadSoundsFromFile(dat_path);
             } catch (Exception e) {
-                DataManagement.LoadSoundsFromPath(full_sound_path, this.sounds);
-                DataManagement.SaveSoundsToFile(dat_path, this.sounds);
+                var sound_bytes = Data.LoadSoundsFromPath(full_sound_path);
+                Data.SaveSoundsToFile(dat_path, sound_bytes);
+                this.sounds = Data.LoadSoundsFromFile(dat_path);
             }
         }
         public void UnloadSounds() {
@@ -608,7 +611,7 @@ namespace Character_Space {
                 this.textures.TryGetValue("thumb", out Texture thumb);
                 this.thumb = thumb ;
             } catch (Exception) {
-                this.thumb = new Texture(1,1);
+                this.thumb = new Texture(new Vector2u(1,1));
             }
         }
         public void ChangePalette(int add_to_index = 0) {
@@ -618,7 +621,7 @@ namespace Character_Space {
 
             this.palette_index = (uint) temp_index;
 
-            this.current_palette_color = this.palette.CopyToImage().GetPixel(0, this.palette_index);
+            this.current_palette_color = this.palette.CopyToImage().GetPixel(new Vector2u(0, this.palette_index));
         }
         
         // General Load

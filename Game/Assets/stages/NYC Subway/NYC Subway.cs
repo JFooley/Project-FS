@@ -1,11 +1,11 @@
 using Stage_Space;
-using Animation_Space;
+
 
 
 public class NYCSubway : Stage {
     
     public NYCSubway()
-        : base("NYC Subway", 528, 912, 512, "Assets/stages/NYC Subway", Program.thumbs["subway_thumb"])
+        : base("NYC Subway", 528, 912, 512, "Assets/stages/NYC Subway", Data.thumbs["subway_thumb"])
     {
         this.AmbientLight = new SFML.Graphics.Color(255, 255, 220, 255);
     }

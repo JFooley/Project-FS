@@ -1,9 +1,9 @@
 using Stage_Space;
-using Animation_Space;
+
 
 public class TheSavana : Stage {
     public TheSavana()
-        : base("The Savana", 530, 512, 512, "Assets/stages/The Savana", Program.thumbs["savana_thumb"])
+        : base("The Savana", 530, 512, 512, "Assets/stages/The Savana", Data.thumbs["savana_thumb"])
     {
         this.AmbientLight = new SFML.Graphics.Color(200, 165, 145, 255);
     }
