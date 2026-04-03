@@ -1,10 +1,6 @@
-using Stage_Space;
-
-
-
 public class MidnightDuel : Stage {
     public MidnightDuel()
-        : base("The Midnight Duel", 362, 800, 336, "Assets/stages/The Midnight Duel", Data.thumbs["duel_thumb"])
+        : base("The Midnight Duel", 362, 800, 336, "Assets/stages/The Midnight Duel")
     {
         this.AmbientLight = new SFML.Graphics.Color(205, 220, 195, 255);
     }

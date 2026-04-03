@@ -2,7 +2,6 @@
 using Language_space;
 using SFML.Graphics;
 using SFML.System;
-using Stage_Space;
 using System.Drawing;
 
 namespace UI_space {
@@ -335,14 +334,12 @@ namespace UI_space {
             if (!System.IO.Directory.Exists(full_path))
                 throw new System.IO.DirectoryNotFoundException($"O diretório {full_path} não foi encontrado.");
 
-            try
-            {
+            try {
                 Data.LoadTexturesFromFile("Assets/fonts/fonts.dat", BitmapFont.textures);
-            }
-            catch (Exception e)
-            {
-                Data.LoadTexturesFromPath("Assets/fonts", BitmapFont.textures);
-                Data.SaveTexturesToFile("Assets/fonts/fonts.dat", BitmapFont.textures);
+            } catch (Exception) {
+                var tex_data = Data.LoadTexturesFromPath("Assets/fonts");
+                Data.SaveTexturesToFile("Assets/fonts/fonts.dat", tex_data);
+                Data.LoadTexturesFromFile("Assets/fonts/fonts.dat", BitmapFont.textures);
             }
         }
 
@@ -351,11 +348,8 @@ namespace UI_space {
             textures.Remove(old_name);
         }
 
-        public static Sprite GetCharacterSprite(char character, float size, string textureName)
-        {
-            // Verifica se a textura existe
-            if (!textures.ContainsKey(textureName))
-            {
+        public static Sprite GetCharacterSprite(char character, float size, string textureName) {
+            if (!textures.ContainsKey(textureName)) {
                 return null; // Retorna null se a textura não for encontrada
             }
 
@@ -363,8 +357,7 @@ namespace UI_space {
 
             // Encontra o índice do caractere no array
             int index = Array.IndexOf(characters, character);
-            if (index == -1 || index >= Columns * Rows) // Ignora as últimas 8 células
-            {
+            if (index == -1 || index >= Columns * Rows) {
                 return null; // Retorna null se o caractere não for encontrado
             }
 

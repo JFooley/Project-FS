@@ -1,9 +1,6 @@
-using Stage_Space;
-
-
 public class BurningDojo : Stage {
     public BurningDojo()
-        : base("Burning Dojo", 369, 800, 336, "Assets/stages/Burning Dojo", Data.thumbs["dojo_thumb"])
+        : base("Burning Dojo", 369, 800, 336, "Assets/stages/Burning Dojo")
     {
         this.AmbientLight = new SFML.Graphics.Color(190, 160, 150, 255);
     }

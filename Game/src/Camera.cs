@@ -1,5 +1,4 @@
 using SFML.System;
-using Character_Space;
 
 public class Camera {
     public static bool isLocked => lock_on_players;

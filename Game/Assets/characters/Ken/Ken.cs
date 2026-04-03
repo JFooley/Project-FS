@@ -1,9 +1,6 @@
 using SFML.System;
-using Character_Space;
-
 using Input_Space;
 using System.IO.Compression;
-using Stage_Space;
 using SFML.Graphics;
 using SFML.Audio;
 using UI_space;
@@ -684,10 +681,6 @@ public class Ken : Character {
             new FrameData(15286, 0, 0, len: 3, boxes: new List<GenericBox> { new GenericBox(0, 188, 93, 206, 110), new GenericBox(0, 164, 98, 188, 118), new GenericBox(1, 110, 81, 129, 95), new GenericBox(1, 97, 92, 143, 139), new GenericBox(1, 143, 102, 174, 126), new GenericBox(2, 97, 91, 143, 140) }),
             new FrameData(15287, 0, 0, len: 3, boxes: new List<GenericBox> { new GenericBox(2, 99, 91, 144, 142), new GenericBox(1, 108, 81, 126, 94), new GenericBox(1, 99, 90, 145, 142), new GenericBox(1, 145, 101, 169, 132) }),
             new FrameData(15288, 0, 0, len: 3, boxes: new List<GenericBox> { new GenericBox(1, 102, 92, 147, 146), new GenericBox(1, 114, 80, 133, 96), new GenericBox(2, 102, 91, 147, 146) }),
-        };
-
-        var Shungoku = new List<Frame> {
-            new FrameData(14768, 0, 0, len: 10, boxes: new List<GenericBox> { new GenericBox(0, 166, 129, 200, 173) }),         
         };
 
         // States

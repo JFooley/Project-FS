@@ -62,5 +62,9 @@
   "player 1" : "Jogador 1",
   "player 2" : "Jogador 2",
   "combo" : "Combo",
-  "menu" : "Menu"
+  "menu" : "Menu",
+  "versus player" : "Contra jogador",
+  "versus bot" : "Contra Bot",
+  "training mode": "Modo de Treinamento",
+  "acessibility" : "Acessibilidade"
 }

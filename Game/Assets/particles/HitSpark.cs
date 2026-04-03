@@ -1,6 +1,3 @@
-using Character_Space;
-
-using Stage_Space;
 using SFML.Graphics;
 using SFML.Audio;
 

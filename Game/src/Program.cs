@@ -2,10 +2,8 @@
 using SFML.Graphics;
 using SFML.Window;
 using SFML.System;
-using Stage_Space;
 using UI_space;
 using System.Diagnostics;
-using Character_Space;
 using Language_space;
 
 public static class Program {
@@ -83,11 +81,12 @@ public static class Program {
         // Carregamento de texturas genéricas
         try {
             Data.LoadTexturesFromFile("Assets/data/visuals.dat", Data.textures);
-        } catch (Exception e) {
-            Data.LoadTexturesFromPath("Assets/visuals", Data.textures);
-            Data.SaveTexturesToFile("Assets/data/visuals.dat", Data.textures);
+        } catch (Exception) {
+            var tex_data = Data.LoadTexturesFromPath("Assets/visuals");
+            Data.SaveTexturesToFile("Assets/data/visuals.dat", tex_data);
+            Data.LoadTexturesFromFile("Assets/data/visuals.dat", Data.textures);
         }
-        Stage.LoadThumbs();
+
         new UI();
 
         // Inicializações
@@ -122,10 +121,19 @@ public static class Program {
             new TheSavana(),
             new JapanFields(),
             new TrainingStage(),
-            new Stage("Settings", Data.textures["screens:settings"]),
-            new Stage("Exit game", Data.textures["screens:exit"]),
         };
         stage = Data.stages[0];
+
+        // Main menu
+        List<KeyValuePair<string, Texture>> main_menu = new List<KeyValuePair<string, Texture>>() {
+            { new KeyValuePair<string, Texture>("versus player", Data.textures["screens:versus_player"]) },
+            { new KeyValuePair<string, Texture>("versus bot", Data.textures["screens:versus_bot"]) },
+            { new KeyValuePair<string, Texture>("training mode", Data.textures["screens:training_mode"]) },
+            { new KeyValuePair<string, Texture>("controls", Data.textures["screens:controls"]) },
+            { new KeyValuePair<string, Texture>("acessibility", Data.textures["screens:acessibility"]) },
+            { new KeyValuePair<string, Texture>("settings", Data.textures["screens:settings"]) },
+            { new KeyValuePair<string, Texture>("Exit", Data.textures["screens:exit"]) }
+        };
 
         // Sprites
         Sprite main_bg = new Sprite(Data.textures["screens:title"]);
@@ -142,6 +150,7 @@ public static class Program {
 
         Sprite sprite_A = new Sprite(Data.textures["other:placeholder"]);
         Sprite sprite_B = new Sprite(Data.textures["other:placeholder"]);
+        Sprite stage_thumb = new Sprite(stage.thumb);
 
         while (window.IsOpen) {
             window.DispatchEvents();
@@ -152,7 +161,6 @@ public static class Program {
 
             switch (game_state) {
                 case Intro:
-                    InputManager.UpdateAI();
                     if (UI.frame_counter % 20 == 0) pointer = pointer < 3 ? pointer + 1 : 0;
                     fslogo.Position = new Vector2f(10, 139);
 
@@ -168,7 +176,6 @@ public static class Program {
                     break;
 
                 case StartScreen:
-                    InputManager.UpdateAI();
                     window.Draw(main_bg);
                     UI.DrawText("by JFooley", 0, 76, spacing: Config.spacing_small - 1, textureName: "default small");
 
@@ -179,25 +186,74 @@ public static class Program {
                     break;
 
                 case MainMenu:
+                    window.Draw(new Sprite(main_menu.ElementAt(pointer).Value));
                     window.Draw(frame);
-                    Program.ChangeState(SelectStage);
+                    for (int i = 0; i < main_menu.Count; i++) 
+                        UI.DrawText(i == pointer ? ")" : "(", (i * 10) - ((main_menu.Count - 1) * 5), -80, textureName: "icons");
+                    
+                    // Shoulder buttons
+                    UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
+                    if (UI.DrawButton(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: InputManager.Key_hold("LB"), action: InputManager.Key_up("LB"), click_font: "default small click", hover_font: "default small")) {
+                        ChangeState(StartScreen);
+                        pointer = 0;
+                    }
+
+                    // Change option
+                    if (InputManager.Key_down("Left"))
+                        pointer = pointer <= 0 ? main_menu.Count - 1 : pointer - 1;
+                    else if (InputManager.Key_down("Right"))
+                        pointer = pointer >= main_menu.Count - 1 ? 0 : pointer + 1;
+
+                    // Do option
+                    if (UI.DrawButton(Language.GetText(main_menu.ElementAt(pointer).Key), 0, -95, spacing: Config.spacing_medium, click: InputManager.faceButtonHold, action: InputManager.faceButtonUp, click_font: "default medium click", hover_font: "default medium white")) {
+                        if (main_menu.ElementAt(pointer).Key == "versus player") {
+                            AI_playerA = false;
+                            AI_playerB = false;
+                            ChangeState(SelectStage);
+
+                        } else if (main_menu.ElementAt(pointer).Key == "versus bot") {
+                            AI_playerA = false;
+                            AI_playerB = true;
+                            ChangeState(SelectStage);
+
+                        } else if (main_menu.ElementAt(pointer).Key == "training mode") {
+                            AI_playerA = false;
+                            AI_playerB = false;
+                            Stage.training_mode = true;
+                            ChangeState(SelectStage);
+
+                        } else if (main_menu.ElementAt(pointer).Key == "acessibility") {
+                            ChangeState(AccessibilityMenu);
+
+                        } else if (main_menu.ElementAt(pointer).Key == "controls") {
+                            ChangeState(Controls);
+
+                        } else if (main_menu.ElementAt(pointer).Key == "settings") {
+                            ChangeState(Settings);
+
+                        } else if (main_menu.ElementAt(pointer).Key == "Exit") {
+                            window.Close();
+                        }
+                        pointer = 0;
+                    }
                     break;
 
                 case SelectStage:
-                    InputManager.UpdateAI();
-                    window.Draw(Data.stages[pointer].thumb);
+                    stage_thumb.Texture = Data.stages[pointer].thumb;
+                    window.Draw(stage_thumb);
                     window.Draw(frame);
-
-                    var face_hold = InputManager.Key_hold("A") || InputManager.Key_hold("B") || InputManager.Key_hold("C") || InputManager.Key_hold("D");
-                    var face_up = InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D");
+                    for (int i = 0; i < Data.stages.Count; i++) 
+                        UI.DrawText(i == pointer ? ")" : "(", (i * 10) - ((Data.stages.Count - 1) * 5), -80, textureName: "icons");
                     
                     // draw texts
                     UI.DrawText(Program.playerA_wins.ToString(), -Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "left");
                     UI.DrawText(Program.playerB_wins.ToString(), Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "right");
 
                     UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
-                    if (UI.DrawButton(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: InputManager.Key_hold("LB"), action: InputManager.Key_up("LB"), click_font: "default small click", hover_font: "default small"))
+                    if (UI.DrawButton(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: InputManager.Key_hold("LB"), action: InputManager.Key_up("LB"), click_font: "default small click", hover_font: "default small")) {
                         ChangeState(MainMenu);
+                        pointer = 0;
+                    }
 
                     UI.DrawText("F", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
                     if (UI.DrawButton(Language.GetText("Controls"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: InputManager.Key_hold("RB"), action: InputManager.Key_up("RB"), click_font: "default small click", hover_font: "default small")) 
@@ -208,23 +264,16 @@ public static class Program {
                     else if (InputManager.Key_down("Right"))
                         pointer = pointer >= Data.stages.Count - 1 ? 0 : pointer + 1;
 
-                    if (UI.DrawButton(Language.GetText(Data.stages[pointer].name), 0, -80, spacing: Config.spacing_medium, click: face_hold, action: face_up, click_font: "default medium click", hover_font: "default medium white")) {
-                        if (Data.stages[pointer].name == "Settings") 
-                            ChangeState(Settings);
-                        else if (Data.stages[pointer].name == "Exit game") 
-                            window.Close();
-                        else {
-                            if (Data.stages[pointer].name == "Random")
-                                pointer = AI.rand.Next(1, Data.stages.Count() - 2);
-                            Program.stage = Data.stages[pointer];
-                            ChangeState(SelectChar);
-                        }
+                    if (UI.DrawButton(Language.GetText(Data.stages[pointer].name), 0, -95, spacing: Config.spacing_medium, click: InputManager.faceButtonHold, action: InputManager.faceButtonUp, click_font: "default medium click", hover_font: "default medium white")) {
+                        if (Data.stages[pointer].name == "Random")
+                            pointer = AI.rand.Next(1, Data.stages.Count() - 2);
+                        Program.stage = Data.stages[pointer];
+                        ChangeState(SelectChar);
                         pointer = 0;
                     }
                     break;
 
                 case SelectChar:
-                    InputManager.UpdateAI();
                     window.Draw(char_bg);
 
                     // Setup sprites texture
@@ -258,7 +307,9 @@ public static class Program {
                     if (charA_selected != null && !ready_charA) {
                         UI.DrawRectangle(-77, 67, 6, 6, fill_color: Color.White);
                         UI.DrawRectangle(-77, 68, 4, 4, fill_color: charA_selected.current_palette_color);
-                    } 
+                    } else {
+                        for (int i = 0; i < Data.characters.Count; i++) UI.DrawText(i == pointer_charA ? ")" : "(", (i * 10) - ((Data.characters.Count - 1) * 5) - 77, 55, textureName: "icons");
+                    }
 
                     // Draw main sprite B
                     sprite_B.Scale = new Vector2f(-1f, 1f);
@@ -271,7 +322,9 @@ public static class Program {
                     if (charB_selected != null && !ready_charB) {
                         UI.DrawRectangle(77, 67, 6, 6, fill_color: Color.White);
                         UI.DrawRectangle(77, 68, 4, 4, fill_color: charB_selected.current_palette_color);  
-                    } 
+                    } else {
+                        for (int i = 0; i < Data.characters.Count; i++) UI.DrawText(i == pointer_charB ? ")" : "(", (i * 10) - ((Data.characters.Count - 1) * 5) + 77, 55, textureName: "icons");
+                    }
 
                     // Draw shoulder buttons
                     UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
@@ -426,11 +479,9 @@ public static class Program {
                     break;
 
                 case PostBattle:
-                    window.Draw(stage.thumb);
+                    stage_thumb.Texture = stage.thumb;
+                    window.Draw(stage_thumb);
                     window.Draw(fade90);
-
-                    face_up = InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D");
-                    face_hold = InputManager.Key_hold("A") || InputManager.Key_hold("B") || InputManager.Key_hold("C") || InputManager.Key_hold("D");
 
                     stage.SetMusicVolume((stage.music != null) ? Math.Max(0, stage.music.Volume - 0.5f) : 0);
 
@@ -449,19 +500,19 @@ public static class Program {
                         pointer += 1;
 
                     // Do option
-                    if (UI.DrawButton(Language.GetText("rematch"), 0, 0, spacing: Config.spacing_medium, action: face_up, click: face_hold, hover: pointer == 0, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) {
+                    if (UI.DrawButton(Language.GetText("rematch"), 0, 0, spacing: Config.spacing_medium, action: InputManager.faceButtonUp, click: InputManager.faceButtonHold, hover: pointer == 0, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) {
                         Camera.SetChars(stage.character_A, stage.character_B);
                         Camera.SetLimits(stage.length, stage.height);
                         stage.LockPlayers();
                         ChangeState(Battle);
 
-                    } if (UI.DrawButton(Language.GetText("menu"), 0, 20, spacing: Config.spacing_medium, action: face_up, click: face_hold, hover: pointer == 1, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
+                    } if (UI.DrawButton(Language.GetText("menu"), 0, 20, spacing: Config.spacing_medium, action: InputManager.faceButtonUp, click: InputManager.faceButtonHold, hover: pointer == 1, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
                         stage.StopMusic();
                         stage.UnloadStage();
                         InputManager.ResetAI();
-                        ChangeState(SelectStage);
+                        ChangeState(MainMenu);
 
-                    } if (UI.DrawButton(Language.GetText("exit game"), 0, 40, spacing: Config.spacing_medium, action: face_up, click: face_hold, hover: pointer == 2, font: "default medium", hover_font: "default medium red", click_font: "default medium click"))
+                    } if (UI.DrawButton(Language.GetText("exit game"), 0, 40, spacing: Config.spacing_medium, action: InputManager.faceButtonUp, click: InputManager.faceButtonHold, hover: pointer == 2, font: "default medium", hover_font: "default medium red", click_font: "default medium click"))
                         window.Close();
 
                     break;
@@ -507,23 +558,16 @@ public static class Program {
                         pointer = pointer >= 8 ? 0 : pointer + 1;
 
                     // Do option
-                    if (pointer == 0)
-                    {
+                    if (pointer == 0) {
                         if (InputManager.Key_down("Left") && Config.Main_Volume > 0) Config.Main_Volume -= 1;
                         else if (InputManager.Key_down("Right") && Config.Main_Volume < 100) Config.Main_Volume += 1;
-                    }
-                    else if (pointer == 1)
-                    {
+                    } else if (pointer == 1) {
                         if (InputManager.Key_down("Left") && Config._music_volume > 0) Config._music_volume -= 1;
                         else if (InputManager.Key_down("Right") && Config._music_volume < 100) Config._music_volume += 1;
-                    }
-                    else if (pointer == 2 && (InputManager.Key_down("Left") || InputManager.Key_down("Right")))
-                    {
+                    } else if (pointer == 2 && (InputManager.Key_down("Left") || InputManager.Key_down("Right"))) {
                         Config.Vsync = !Config.Vsync;
                         window.SetVerticalSyncEnabled(Config.Vsync);
-                    }
-                    else if (pointer == 3 && (InputManager.Key_down("Left") || InputManager.Key_down("Right")))
-                    {
+                    } else if (pointer == 3 && (InputManager.Key_down("Left") || InputManager.Key_down("Right"))) {
                         Config.Fullscreen = !Config.Fullscreen;
                         window.Close();
                         if (Config.Fullscreen == true) window = new RenderWindow(VideoMode.DesktopMode, Config.GameTitle, Styles.Default, SFML.Window.State.Fullscreen);
@@ -533,29 +577,19 @@ public static class Program {
                         window.SetVerticalSyncEnabled(Config.Vsync);
                         window.SetMouseCursorVisible(false);
                         window.SetView(view);
-                    }
-                    else if (pointer == 4)
-                    {
+                    } else if (pointer == 4) {
                         if (InputManager.Key_down("Left") && Config.round_length > 1) Config.round_length -= 1;
                         else if (InputManager.Key_down("Right") && Config.round_length < 99) Config.round_length += 1;
-                    }
-                    else if (pointer == 5)
-                    {
+                    } else if (pointer == 5) {
                         if (InputManager.Key_down("Left") && Config.max_rounds > 1) Config.max_rounds -= 1;
                         else if (InputManager.Key_down("Right") && Config.max_rounds < 5) Config.max_rounds += 1;
-                    }
-                    else if (pointer == 6)
-                    {
+                    } else if (pointer == 6) {
                         if (InputManager.Key_down("Left") && Config.hit_stop_time > 0) Config.hit_stop_time -= 1;
                         else if (InputManager.Key_down("Right")) Config.hit_stop_time += 1;
-                    }
-                    else if (pointer == 7)
-                    {
+                    } else if (pointer == 7) {
                         if (InputManager.Key_down("Left") && Config.input_window_time > 1) Config.input_window_time -= 1;
                         else if (InputManager.Key_down("Right")) Config.input_window_time += 1;
-                    }
-                    else if (pointer == 8)
-                    {
+                    } else if (pointer == 8) {
                         if (InputManager.Key_down("Left") && Config.Language > 0) Config.Language -= 1;
                         else if (InputManager.Key_down("Right") && Config.Language < Language.Supported.Length - 1) Config.Language += 1;
                     }
@@ -608,7 +642,7 @@ public static class Program {
         foreach (var character in Data.characters) {
             if (character.GetType() == typeof(Character)) continue;
             character.LoadPalette();
-            character.LoadTextures(do_index: true);
+            character.LoadTextures();
             character.LoadSounds();
             character.SetThumb();
         }
@@ -617,6 +651,7 @@ public static class Program {
             if (stage.GetType() == typeof(Stage)) continue;
             stage.LoadTextures();
             stage.LoadSounds();
+            stage.SetThumb();
         }
 
         Hitspark hs = new Hitspark();

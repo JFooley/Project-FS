@@ -1,8 +1,5 @@
-using Character_Space;
-
 using SFML.System;
 using SFML.Graphics;
-using Stage_Space;
 using SFML.Audio;
 
 public class Particle : Character {

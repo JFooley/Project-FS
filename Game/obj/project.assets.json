@@ -1653,11 +1653,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "A:\\GABRIEL\\Repos\\CS Fighting Game\\game\\Project FS.csproj",
+      "projectUniqueName": "A:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj",
       "projectName": "Project FS",
-      "projectPath": "A:\\GABRIEL\\Repos\\CS Fighting Game\\game\\Project FS.csproj",
+      "projectPath": "A:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj",
       "packagesPath": "C:\\Users\\gabri\\.nuget\\packages\\",
-      "outputPath": "A:\\GABRIEL\\Repos\\CS Fighting Game\\game\\obj\\",
+      "outputPath": "A:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\gabri\\AppData\\Roaming\\NuGet\\NuGet.Config"

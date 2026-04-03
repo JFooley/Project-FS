@@ -2379,7 +2379,6 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\charact
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Ken\Fireball\sprites\visuals.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Ken\sounds\sounds.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\characters\Ken\sprites\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\data\stage_thumbs.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\data\visuals.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\fonts\fonts.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\Assets\particles\Hitspark\sounds\sounds.dat

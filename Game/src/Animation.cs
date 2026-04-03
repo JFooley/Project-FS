@@ -1,4 +1,3 @@
-using Character_Space;
 using SFML.System;
 
     public class Animation {

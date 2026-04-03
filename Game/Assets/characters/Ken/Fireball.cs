@@ -1,4 +1,3 @@
-using Character_Space;
 using SFML.System;
 using SFML.Graphics;
 using SFML.Audio;
@@ -25,36 +24,36 @@ public class Fireball : Character {
         var kenFB1 = new GenericBox(1, 139, 115, 163, 143);
         
         var KenFireballFrames = new List<Frame> { 
-            new FrameData(21, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(22, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(23, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(24, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(25, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(26, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(27, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(28, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(29, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(210, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(211, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(212, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(213, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(214, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(215, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(216, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(217, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(218, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(219, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(220, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData(221, 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (1)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (2)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (3)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (4)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (5)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (6)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (7)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (8)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (9)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (10)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (11)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (12)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (13)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (14)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (15)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (16)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (17)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (18)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (19)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (20)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+            new FrameData("fireball-1 (21)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
         };
 
         var KenFireballFinal = new List<Frame> {
-            new FrameData(12, 0, 0, len: 2, boxes: new List<GenericBox> {}),
-            new FrameData(13, 0, 0, len: 2, boxes: new List<GenericBox> {}),
-            new FrameData(14, 0, 0, len: 2, boxes: new List<GenericBox> {}),
-            new FrameData(15, 0, 0, len: 2, boxes: new List<GenericBox> {}),
-            new FrameData(16, 0, 0, len: 2, boxes: new List<GenericBox> {}),
-            new FrameData(17, 0, 0, len: 2, boxes: new List<GenericBox> {}),
+            new FrameData("fireball-0 (1)", 0, 0, len: 2, boxes: new List<GenericBox> {}),
+            new FrameData("fireball-0 (2)", 0, 0, len: 2, boxes: new List<GenericBox> {}),
+            new FrameData("fireball-0 (3)", 0, 0, len: 2, boxes: new List<GenericBox> {}),
+            new FrameData("fireball-0 (4)", 0, 0, len: 2, boxes: new List<GenericBox> {}),
+            new FrameData("fireball-0 (5)", 0, 0, len: 2, boxes: new List<GenericBox> {}),
+            new FrameData("fireball-0 (6)", 0, 0, len: 2, boxes: new List<GenericBox> {}),
         };
 
         // States

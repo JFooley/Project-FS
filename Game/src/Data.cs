@@ -1,93 +1,68 @@
 using SFML.Audio;
 using SFML.Graphics;
-using Stage_Space;
-using Character_Space;
 using SFML.System;
+
 
 public static class Data {
     public static List<Stage>? stages;
     public static List<Character>? characters;
+    public static Dictionary<string, SoundBuffer> sounds = new Dictionary<string, SoundBuffer>();
     public static Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
     public static Dictionary<string, Texture> thumbs = new Dictionary<string, Texture>();
 
-    public static void SaveTexturesToFile(string fileName, Dictionary<string, Texture> textures) {
-        using (var stream = new FileStream(fileName, FileMode.Create))
-        using (var writer = new BinaryWriter(stream))
-        {
-            writer.Write(textures.Count);
+    public static void SaveTexturesToFile(string fileName, Dictionary<string, byte[]> textures) {
+        using var fs = new FileStream(fileName, FileMode.Create);
+        using var writer = new BinaryWriter(fs);
 
-            foreach (var kvp in textures)
-            {
-                writer.Write(kvp.Key);
-                Image image = kvp.Value.CopyToImage();
+        writer.Write(textures.Count);
 
-                // Escreve dimensões
-                writer.Write(image.Size.X);
-                writer.Write(image.Size.Y);
-
-                // Obtém pixels como byte array (sempre RGBA no SFML)
-                byte[] pixels = image.Pixels;
-                writer.Write(pixels.Length);
-                writer.Write(pixels);
-            }
+        foreach (var pair in textures) {
+            writer.Write(pair.Key);
+            writer.Write(pair.Value.Length);
+            writer.Write(pair.Value);
         }
     }
     public static Dictionary<string, Texture> LoadTexturesFromFile(string fileName, Dictionary<string, Texture> existingTextures = null) {
-        var textures = existingTextures ?? new Dictionary<string, Texture>();
+        var result = existingTextures ?? new Dictionary<string, Texture>();
 
-        using (var stream = new FileStream(fileName, FileMode.Open))
-        using (var reader = new BinaryReader(stream))
-        {
-            int count = reader.ReadInt32();
+        using var fs = new FileStream(fileName, FileMode.Open);
+        using var reader = new BinaryReader(fs);
 
-            for (int i = 0; i < count; i++)
-            {
-                string key = reader.ReadString();
-                uint width = reader.ReadUInt32();
-                uint height = reader.ReadUInt32();
-                int pixelDataLength = reader.ReadInt32();
-                byte[] pixelData = reader.ReadBytes(pixelDataLength);
+        int count = reader.ReadInt32();
 
-                // Cria imagem - SFML sempre usa RGBA para Image
-                Image image = new Image( new Vector2u(width, height));
+        for (int i = 0; i < count; i++) {
+            string name = reader.ReadString();
+            int length = reader.ReadInt32();
+            byte[] data = reader.ReadBytes(length);
 
-                // Copia os dados pixel a pixel
-                for (uint y = 0; y < height; y++)
-                {
-                    for (uint x = 0; x < width; x++)
-                    {
-                        int index = (int)((y * width + x) * 4);
-                        byte r = pixelData[index];
-                        byte g = pixelData[index + 1];
-                        byte b = pixelData[index + 2];
-                        byte a = pixelData[index + 3];
-                        image.SetPixel(new Vector2u(x, y), new Color(r, g, b, a));
-                    }
-                }
+            using var ms = new MemoryStream(data);
 
-                textures[key] = new Texture(image);
+            if (result.ContainsKey(name)) {
+                result[name].Dispose();
             }
+
+            result[name] = new Texture(ms);
         }
 
-        return textures;
+        return result;
     }
-    public static Dictionary<string, Texture> LoadTexturesFromPath(string directoryPath, Dictionary<string, Texture> existingTextures = null, string parentFolder = "") {
-        Dictionary<string, Texture> textures = existingTextures ?? new Dictionary<string, Texture>();
-        string[] files = Directory.GetFiles(directoryPath);
+    public static Dictionary<string, byte[]> LoadTexturesFromPath(string directoryPath, Dictionary<string, byte[]> existingTextures = null, string parentFolder = "") {
+        var textures = existingTextures ?? new Dictionary<string, byte[]>();
 
-        foreach (string file in files) {
+        foreach (string file in Directory.GetFiles(directoryPath)) {
             string extension = Path.GetExtension(file).ToLower();
+
             if (extension == ".png" || extension == ".jpg" || extension == ".jpeg" || extension == ".bmp") {
                 string fileName = Path.GetFileNameWithoutExtension(file);
                 string key = string.IsNullOrEmpty(parentFolder) ? fileName : $"{parentFolder}:{fileName}";
-                textures[key] = new Texture(file);
+                textures[key] = File.ReadAllBytes(file);
             }
         }
 
-        string[] subDirectories = Directory.GetDirectories(directoryPath);
-        foreach (string subDir in subDirectories) {
+        foreach (string subDir in Directory.GetDirectories(directoryPath)) {
             string folderName = Path.GetFileName(subDir);
             string newParent = string.IsNullOrEmpty(parentFolder) ? folderName : $"{parentFolder}:{folderName}";
+
             LoadTexturesFromPath(subDir, textures, newParent);
         }
 
@@ -106,8 +81,8 @@ public static class Data {
             writer.Write(pair.Value);
         }
     }
-    public static Dictionary<string, SoundBuffer> LoadSoundsFromFile(string fileName) {
-        var result = new Dictionary<string, SoundBuffer>();
+    public static Dictionary<string, SoundBuffer> LoadSoundsFromFile(string fileName, Dictionary<string, SoundBuffer> existingSounds = null) {
+        var result = existingSounds ?? new Dictionary<string, SoundBuffer>();
 
         using var fs = new FileStream(fileName, FileMode.Open);
         using var reader = new BinaryReader(fs);
@@ -142,31 +117,4 @@ public static class Data {
 
         return sounds;
     }
-
-    public static void IndexTextureColors(Dictionary<string, Texture> textures, Texture palette) {
-        var palette_img = palette.CopyToImage();
-
-        Dictionary<Color, byte> colorToIndexMap = new Dictionary<Color, byte>();
-        for (uint x = 0; x < palette_img.Size.X; x++) {
-            colorToIndexMap[palette_img.GetPixel(new Vector2u(x, 0))] = (byte) x;
-        }
-
-        foreach (Texture textureEntry in textures.Values) {
-            var temp_img = textureEntry.CopyToImage();
-
-            for (uint y = 0; y < temp_img.Size.Y; y++) {
-                for (uint x = 0; x < temp_img.Size.X; x++) {
-                    
-                    if (temp_img.GetPixel(new Vector2u(x, y)).A == 0) continue;
-
-                    if (colorToIndexMap.TryGetValue(temp_img.GetPixel(new Vector2u(x, y)), out byte index)) {
-                        temp_img.SetPixel(new Vector2u(x, y), new Color(index, index, index, temp_img.GetPixel(new Vector2u(x, y)).A));
-                    }
-                }
-            }
-
-            textureEntry.Update(temp_img);
-        }
-    }
-
 }

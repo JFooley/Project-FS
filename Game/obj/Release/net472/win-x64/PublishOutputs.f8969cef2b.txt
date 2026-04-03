@@ -3,7 +3,6 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\publish\Assets\characters\Ken\Fireball\sp
 A:\GABRIEL\Repos\CS Fighting Game\Game\publish\Assets\characters\Ken\palette.bmp
 A:\GABRIEL\Repos\CS Fighting Game\Game\publish\Assets\characters\Ken\sounds\sounds.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\publish\Assets\characters\Ken\sprites\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\publish\Assets\data\stage_thumbs.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\publish\Assets\data\visuals.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\publish\Assets\fonts\files\text.txt
 A:\GABRIEL\Repos\CS Fighting Game\Game\publish\Assets\fonts\fonts.dat

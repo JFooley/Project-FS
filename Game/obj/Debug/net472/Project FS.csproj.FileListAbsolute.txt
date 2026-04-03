@@ -2366,6 +2366,12 @@ D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Savana
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Savana\sprites\visuals.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Training Stage\sound\sounds.dat
 D:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Training Stage\sprites\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.csproj.AssemblyReference.cache
+A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.GeneratedMSBuildEditorConfig.editorconfig
+A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.AssemblyInfoInputs.cache
+A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.AssemblyInfo.cs
+A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.csproj.CoreCompileInputs.cache
+A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.sourcelink.json
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\palette.bmp
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\fonts\files\text.txt
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\icon.ico
@@ -2388,15 +2394,6 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\csfml-audio.dll
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\csfml-graphics.dll
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\csfml-system.dll
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\csfml-window.dll
-A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.csproj.AssemblyReference.cache
-A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.GeneratedMSBuildEditorConfig.editorconfig
-A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.AssemblyInfoInputs.cache
-A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.AssemblyInfo.cs
-A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.csproj.CoreCompileInputs.cache
-A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.sourcelink.json
-A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.csproj.Up2Date
-A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.exe
-A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.pdb
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\msvcp140.dll
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\sfml-audio-3.dll
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\sfml-graphics-3.dll
@@ -2404,3 +2401,32 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\sfml-system-3.dll
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\sfml-window-3.dll
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\vcruntime140.dll
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\vcruntime140_1.dll
+A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.csproj.Up2Date
+A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.exe
+A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.pdb
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\sounds\sounds.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\sprites\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\data\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Hitspark\sounds\sounds.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Hitspark\sprites\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Particle\sounds\sounds.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Particle\sprites\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Burning Dojo\sound\sounds.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Burning Dojo\sprites\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Japan Fields\sound\sounds.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Japan Fields\sprites\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Night Alley\sound\sounds.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Night Alley\sprites\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\NYC Subway\sound\sounds.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\NYC Subway\sprites\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Rindo-Kan Dojo\sound\sounds.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Rindo-Kan Dojo\sprites\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Midnight Duel\sound\sounds.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Midnight Duel\sprites\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Savana\sound\sounds.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Savana\sprites\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Training Stage\sound\sounds.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Training Stage\sprites\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\Fireball\sounds\sounds.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\Fireball\sprites\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\fonts\fonts.dat
