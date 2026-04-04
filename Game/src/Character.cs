@@ -600,8 +600,7 @@ public abstract class Character : Object_Space.Object {
         sounds.Clear(); 
     }
     public void LoadPalette() {
-        string currentDirectory = Directory.GetCurrentDirectory();
-        this.palette = new Texture(Path.Combine(currentDirectory, this.folder_path, "palette.bmp"));
+        this.palette = new Texture(Path.Combine(this.folder_path, "palette.bmp"));
     }
     public void SetThumb() {
         try {
