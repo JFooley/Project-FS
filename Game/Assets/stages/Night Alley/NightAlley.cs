@@ -1,6 +1,6 @@
 public class NightAlley : Stage {
     public NightAlley()
-        : base("Night Alley", 409, 640, 384, "Assets/stages/Night Alley")
+        : base("Night Alley", 409, 640, 384, Data.GetPath("Assets/stages/Night Alley"))
     {
         this.AmbientLight = new SFML.Graphics.Color(180, 180, 230, 255);
     }
