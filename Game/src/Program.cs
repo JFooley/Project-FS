@@ -57,10 +57,10 @@ public static class Program {
     public static bool AI_playerB = true;
 
     // Shaders
-    public static Shader colorTinterShader = new Shader(null, null, "Assets/shaders/color_tinter.frag");
-    public static Shader colorFillShader = new Shader(null, null, "Assets/shaders/color_fill.frag");
-    public static Shader hueChange = new Shader(null, null, "Assets/shaders/hue_change.frag");
-    public static Shader paletteSwaper = new Shader(null, null, "Assets/shaders/palette_swaper.frag");
+    public static Shader colorTinterShader = new Shader(null, null, Data.GetPath("Assets/shaders/color_tinter.frag"));
+    public static Shader colorFillShader = new Shader(null, null, Data.GetPath("Assets/shaders/color_fill.frag"));
+    public static Shader hueChange = new Shader(null, null, Data.GetPath("Assets/shaders/hue_change.frag"));
+    public static Shader paletteSwaper = new Shader(null, null, Data.GetPath("Assets/shaders/palette_swaper.frag"));
 
     public static void Main() {  
         Config.LoadFromFile();
@@ -73,9 +73,9 @@ public static class Program {
         try {
             Data.LoadTexturesFromFile("Assets/data/visuals.dat", Data.textures);
         } catch (Exception) {
-            var tex_data = Data.LoadTexturesFromPath("Assets/visuals");
-            Data.SaveTexturesToFile("Assets/data/visuals.dat", tex_data);
-            Data.LoadTexturesFromFile("Assets/data/visuals.dat", Data.textures);
+            var tex_data = Data.LoadTexturesFromPath(Data.GetPath("Assets/visuals"));
+            Data.SaveTexturesToFile(Data.GetPath("Assets/data/visuals.dat"), tex_data);
+            Data.LoadTexturesFromFile(Data.GetPath("Assets/data/visuals.dat"), Data.textures);
         }
 
         new UI();
