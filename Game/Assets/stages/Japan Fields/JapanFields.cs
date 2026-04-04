@@ -1,6 +1,6 @@
 public class JapanFields : Stage {
     public JapanFields()
-        : base("Japan Fields", 540, 896, 511, "Assets/stages/Japan Fields")
+        : base("Japan Fields", 540, 896, 511, Data.GetPath("Assets/stages/Japan Fields"))
     {
         this.AmbientLight = new SFML.Graphics.Color(250, 250, 230, 255);
     }
