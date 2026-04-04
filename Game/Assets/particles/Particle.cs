@@ -9,11 +9,11 @@ public class Particle : Character {
     public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
 
     public Particle(string initialState, float startX, float startY, int facing)
-        : base("Particle", initialState, startX, startY, "Assets/particles/Particle") {
+        : base("Particle", initialState, startX, startY, Data.GetPath("Assets/particles/Particle")) {
             this.facing = facing;
             this.own_light = Color.White;
         }
-    public Particle() : base("Particle", "", 0, 0, "Assets/particles/Particle") {}
+    public Particle() : base("Particle", "", 0, 0, Data.GetPath("Assets/particles/Particle")) {}
 
     public override void Load() {
         // Animations
