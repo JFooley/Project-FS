@@ -71,7 +71,7 @@ public static class Program {
         
         // Carregamento de texturas genéricas
         try {
-            Data.LoadTexturesFromFile("Assets/data/visuals.dat", Data.textures);
+            Data.LoadTexturesFromFile(Data.GetPath("Assets/data/visuals.dat"), Data.textures);
         } catch (Exception) {
             var tex_data = Data.LoadTexturesFromPath(Data.GetPath("Assets/visuals"));
             Data.SaveTexturesToFile(Data.GetPath("Assets/data/visuals.dat"), tex_data);
