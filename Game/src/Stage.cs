@@ -2,25 +2,27 @@ using SFML.Graphics;
 using SFML.System;
 using SFML.Audio;
 using UI_space;
-using Input_Space;
 using System.Diagnostics;
 using Language_space;
 
 public class Stage {
     // Basic Infos
-    public string name = "";
+    public string name;
     public string folder_path;
     public Texture thumb;
 
     // Debug infos
     public static bool training_mode = false;
-    public bool pause = false;
-    public bool show_boxs = false;
-    public int block = 0; // 0 - never, 1 - after hit, 2 - always
-    public int parry = 0; // 0 - never, 1 - always
-    public bool refil_life = true;
-    public bool refil_super = true;
-    public int reset_frames = 0;
+    public static bool pause = false;
+    public static bool show_boxs = false;
+    public static int block = 0; // 0 - never, 1 - after hit, 2 - always
+    public static int parry = 0; // 0 - never, 1 - always
+    public static bool refil_life = true;
+    public static bool refil_super = true;
+    public static int reset_frames = 0;
+
+    // Widgets
+    private WGPause wg_pause;
 
     // Battle Info
     public List<Character> OnSceneCharacters = new List<Character> {};
@@ -48,7 +50,7 @@ public class Stage {
     public bool elapse_time = true;
 
     // Technical infos
-    public int floorLine;
+    public int floor_line;
     public int length;
     public int height;
     public int start_point_A;
@@ -58,9 +60,6 @@ public class Stage {
     // Timers
     private Stopwatch timer;
     private Stopwatch matchTimer;
-
-    // Aux
-    private Vector2i pause_pointer = new Vector2i(0,0);
 
     // Animation infos
     public string CurrentState { get; set; }
@@ -80,7 +79,7 @@ public class Stage {
 
     public Stage(string name, int floorLine, int length, int height, string folder_path) {
         this.name = name;
-        this.floorLine = floorLine;
+        this.floor_line = floorLine;
         this.length = length;
         this.height = height;
         this.start_point_A = (int) ((length / 2) - 100);
@@ -89,6 +88,8 @@ public class Stage {
         this.rounds_A = 0;
         this.rounds_B = 0;
         this.CurrentState = "Default";
+
+        this.wg_pause = new WGPause(this);
 
         this.timer = new Stopwatch();
         this.matchTimer = new Stopwatch();
@@ -130,10 +131,10 @@ public class Stage {
         foreach (Character char_object in this.OnSceneCharactersRender) {
             char_object.Bot();
             this.DrawShadow(char_object);
-            char_object.Render(this.show_boxs);
+            char_object.Render(Stage.show_boxs);
         }
         UI.DrawBattleUI(this);
-        foreach (Character part_object in this.OnSceneParticles) part_object.Render(this.show_boxs);
+        foreach (Character part_object in this.OnSceneParticles) part_object.Render(Stage.show_boxs);
 
         // Update chars
         foreach (Character char_object in this.OnSceneCharactersSorted) char_object.Update();
@@ -150,7 +151,7 @@ public class Stage {
 
         // Render Pause menu and Traning assets
         if (Stage.training_mode) this.TrainingMode();
-        if (this.pause) this.PauseScreen();
+        if (Stage.pause) this.PauseScreen();
     }
     private void DoBehavior() {
         // Move characters away from border
@@ -192,118 +193,66 @@ public class Stage {
 
         // Reset frames
         if (this.character_A.hitstop_counter == 0 && this.character_B.hitstop_counter == 0) {
-            this.reset_frames += 1;
+            Stage.reset_frames += 1;
         }
 
         // Parry & Block: After hit (NOT WORKING)
         if (this.character_B.on_hit) {
-            if (this.block == 1) this.character_B.blocking = true;
-            if (this.parry == 1) this.character_B.parring = true;
-            this.reset_frames = 0;
+            if (Stage.block == 1) this.character_B.blocking = true;
+            if (Stage.parry == 1) this.character_B.parring = true;
+            Stage.reset_frames = 0;
         } 
         if (this.character_A.on_hit) {
-            if (this.block == 1) this.character_A.blocking = true;
-            if (this.parry == 1) this.character_A.parring = true;
-            this.reset_frames = 0;
+            if (Stage.block == 1) this.character_A.blocking = true;
+            if (Stage.parry == 1) this.character_A.parring = true;
+            Stage.reset_frames = 0;
         }
 
         // Block: Allways
-        if (this.block == 2) {
+        if (Stage.block == 2) {
             this.character_A.blocking = true;
             this.character_B.blocking = true;
         }
 
         // Parry: Allways
-        if (this.parry == 2) {
+        if (Stage.parry == 2) {
             this.character_A.parring = true;
             this.character_B.parring = true;
         }
 
         // Reset chars life, stun and super bar
-        if (this.reset_frames >= Config.reset_frames) {
+        if (Stage.reset_frames >= Config.reset_frames) {
             if (this.character_B.not_acting_all) {
-                if (this.block != 2) this.character_B.blocking = false;
-                if (this.parry != 2) this.character_B.parring = false;
+                if (Stage.block != 2) this.character_B.blocking = false;
+                if (Stage.parry != 2) this.character_B.parring = false;
 
-                if (this.refil_life) {
+                if (Stage.refil_life) {
                     this.character_B.life_points.X = this.character_B.life_points.Y;
                     this.character_B.dizzy_points.X = this.character_B.dizzy_points.Y;
                 }
-                if (this.refil_super) this.character_B.aura_points.X = this.character_B.aura_points.Y;
+                if (Stage.refil_super) this.character_B.aura_points.X = this.character_B.aura_points.Y;
             }
 
             if (this.character_A.not_acting_all) {
-                if (this.block != 2) this.character_A.blocking = false;
-                if (this.parry != 2) this.character_A.parring = false;
+                if (Stage.block != 2) this.character_A.blocking = false;
+                if (Stage.parry != 2) this.character_A.parring = false;
 
-                if (this.refil_life) {
+                if (Stage.refil_life) {
                     this.character_A.life_points.X = this.character_A.life_points.Y;
                     this.character_A.dizzy_points.X = this.character_A.dizzy_points.Y;
                 }
-                if (this.refil_super) this.character_A.aura_points.X = this.character_A.aura_points.Y;
+                if (Stage.refil_super) this.character_A.aura_points.X = this.character_A.aura_points.Y;
             }
             
-            this.reset_frames = Config.reset_frames;
+            Stage.reset_frames = Config.reset_frames;
         }
     }
     public void PauseScreen() {
         fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
         Program.window.Draw(fade90);
+        Program.window.Draw(fade90);
 
-        var face_release = InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D");
-        var face_hold = InputManager.Key_hold("A") || InputManager.Key_hold("B") || InputManager.Key_hold("C") || InputManager.Key_hold("D");
-
-        // Draw options
-        UI.DrawText(Language.GetText("Pause"), 0, -75, spacing: Config.spacing_medium, textureName: "default medium");
-
-        if (UI.DrawButton(Language.GetText("Settings"), 0, -45, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 0, click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
-            Program.ChangeState(Program.Settings);
-        
-        if (UI.DrawButton(Language.GetText("Controls"), 0, -30, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 1, click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
-            Program.ChangeState(Program.Controls);
-        
-        if (UI.DrawButton(Language.GetText("Training"), 0, -15, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 2, click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
-            Stage.training_mode = !Stage.training_mode;
-        
-        if (training_mode) {
-            if (UI.DrawButton(Language.GetText("Reset Characters"), 0, 0, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 3, click_font: "default small click", hover_font: "default small hover", font: "default small"))
-                this.ResetPlayers();
-        
-            if (UI.DrawButton(Language.GetText("Show hitboxes"), 0, 10, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 4, click_font: "default small click", hover_font: "default small hover", font: "default small"))
-                this.show_boxs = !this.show_boxs;
-        
-            if (UI.DrawButton(block switch { 0 => Language.GetText("Block") + ": " + Language.GetText("Never"), 1 => Language.GetText("Block") + ": " + Language.GetText("After hit"), 2 => Language.GetText("Block") + ": " + Language.GetText("Always"), _ => Language.GetText("Block") + ": " + Language.GetText("Error")}, 0, 20, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 5, click_font: "default small click", hover_font: "default small hover", font: "default small"))
-                this.block = block >= 2 ? 0 : block + 1;
-        
-            if (UI.DrawButton(parry switch { 0 => Language.GetText("Parry") + ": " + Language.GetText("Never"), 1 => Language.GetText("Parry") + ": " + Language.GetText("After hit"), 2 => Language.GetText("Parry") + ": " + Language.GetText("Always"), _ => Language.GetText("Parry") + ": " + Language.GetText("Error")}, 0, 30, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 6, click_font: "default small click", hover_font: "default small hover", font: "default small"))
-                this.parry = parry >= 2 ? 0 : parry + 1;
-        
-            if (UI.DrawButton(refil_life ? Language.GetText("Life") + ": " + Language.GetText("Refil") : Language.GetText("Life") + ": " + Language.GetText("Keep"), 0, 40, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 7, click_font: "default small click", hover_font: "default small hover", font: "default small"))
-                this.refil_life = !this.refil_life;
-        
-            if (UI.DrawButton(refil_super ? Language.GetText("Super") + ": " + Language.GetText("Refil") : Language.GetText("Super") + ": " + Language.GetText("Keep"), 0, 50, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 8, click_font: "default small click", hover_font: "default small hover", font: "default small"))
-                this.refil_super = !this.refil_super;
-        
-        } if (UI.DrawButton(Language.GetText("End match"), 0, 70, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pause_pointer.Y == 9, click_font: "default medium click", hover_font: "default medium red", font: "default medium")) {
-            this.Pause();
-            Program.winner = Program.Drawn;
-            Program.sub_state = Program.MatchEnd;
-            this.show_boxs = false;
-            Stage.training_mode = false;
-            this.block = 0;
-            this.refil_life = true;
-            this.refil_super = true;
-            this.pause_pointer.Y = 0;
-        }       
-
-        // Change option 
-        if (InputManager.Key_down("Up") && this.pause_pointer.Y > 0) {
-            this.pause_pointer.Y -= 1;
-            if (!training_mode && this.pause_pointer.Y < 9 && this.pause_pointer.Y > 2) this.pause_pointer.Y = 2;
-        } else if (InputManager.Key_down("Down") && this.pause_pointer.Y < 9) {
-            this.pause_pointer.Y += 1;
-            if (!training_mode && this.pause_pointer.Y < 9 && this.pause_pointer.Y > 2) this.pause_pointer.Y = 9;
-        }
+        this.wg_pause.Render();
     }
 
     // Spawns
@@ -332,9 +281,9 @@ public class Stage {
     // Visuals
     public void DrawShadow(Character char_obj) {
         if (char_obj.shadow_size != -1) {
-            int shadow_index = (int) (char_obj.shadow_size * (Config.contact_shadow - Math.Min(this.floorLine - char_obj.body.Position.Y, Config.contact_shadow)) / Config.contact_shadow);
+            int shadow_index = (int) (char_obj.shadow_size * (Config.contact_shadow - Math.Min(this.floor_line - char_obj.body.Position.Y, Config.contact_shadow)) / Config.contact_shadow);
             this.shadow.Texture = Data.textures["ui:shadow" + shadow_index];
-            this.shadow.Position = new Vector2f(char_obj.body.Position.X - this.shadow.GetLocalBounds().Width/2, this.floorLine - this.shadow.GetLocalBounds().Height/2 - 55 );
+            this.shadow.Position = new Vector2f(char_obj.body.Position.X - this.shadow.GetLocalBounds().Width/2, this.floor_line - this.shadow.GetLocalBounds().Height/2 - 55 );
             this.shadow.Color = this.AmbientLight;
             Program.window.Draw(this.shadow);
         }
@@ -342,7 +291,7 @@ public class Stage {
 
     // Auxiliary
     public bool CheckRoundEnd() {
-        if (Stage.training_mode || this.pause ) return false;
+        if (Stage.training_mode || Stage.pause ) return false;
         
         bool doEnd = false;
 
@@ -395,11 +344,11 @@ public class Stage {
         this.rounds_B = 0;
     }
     public void Pause() {
-        this.pause = !this.pause;
+        Stage.pause = !Stage.pause;
         this.TogglePlayers();
         this.PauseRoundTime();
         this.PauseTimer();
-        this.ToggleMusicVolume(this.pause, volume_A: 20f);
+        this.ToggleMusicVolume(Stage.pause, volume_A: 20f);
         foreach (Character char_object in this.OnSceneCharacters) char_object.animate = !char_object.animate;
         foreach (Character part_object in this.OnSceneParticles) part_object.animate = ! part_object.animate;
     }
@@ -483,10 +432,10 @@ public class Stage {
         this.character_B.BotEnabled = Program.AI_playerB;
         this.character_B.AIEnabled = Program.AI_playerB;
 
-        this.character_A.floor_line = this.floorLine;
-        this.character_B.floor_line = this.floorLine;
-        this.character_A.body.Position.Y = this.floorLine;
-        this.character_B.body.Position.Y = this.floorLine;
+        this.character_A.floor_line = this.floor_line;
+        this.character_B.floor_line = this.floor_line;
+        this.character_A.body.Position.Y = this.floor_line;
+        this.character_B.body.Position.Y = this.floor_line;
         this.character_A.body.Position.X = this.start_point_A;
         this.character_B.body.Position.X = this.start_point_B;
 

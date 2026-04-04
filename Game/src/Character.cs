@@ -1,7 +1,7 @@
 using SFML.Graphics;
 using SFML.System;
 using SFML.Audio;
-using Input_Space;
+
 using UI_space;
 
 // ----- Default States -------
@@ -138,7 +138,7 @@ public abstract class Character : Object_Space.Object {
     public uint palette_size => this.palette.Size.X;
     public uint palette_quantity => this.palette.Size.Y;
     public uint palette_index = 0;
-    public SFML.Graphics.Color current_palette_color;
+    public Color current_palette_color;
 
     // Gets
     public string current_sprite => current_animation.GetCurrentFrame().Sprite_index;

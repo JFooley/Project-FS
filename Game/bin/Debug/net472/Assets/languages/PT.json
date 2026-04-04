@@ -66,5 +66,8 @@
   "versus player" : "Contra jogador",
   "versus bot" : "Contra Bot",
   "training mode": "Modo de Treinamento",
-  "acessibility" : "Acessibilidade"
+  "acessibility" : "Acessibilidade",
+  "training settings" : "Configurações de treinamento",
+  "enabled" : "Habilitado",
+  "disabled" : "Desabilitado"
 }

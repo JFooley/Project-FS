@@ -2404,9 +2404,12 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\vcruntime140_1.dll
 A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.csproj.Up2Date
 A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.exe
 A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.pdb
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\Fireball\sounds\sounds.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\Fireball\sprites\visuals.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\sounds\sounds.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\sprites\visuals.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\data\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\fonts\fonts.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Hitspark\sounds\sounds.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Hitspark\sprites\visuals.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Particle\sounds\sounds.dat
@@ -2427,6 +2430,3 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Savana
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Savana\sprites\visuals.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Training Stage\sound\sounds.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Training Stage\sprites\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\Fireball\sounds\sounds.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\Fireball\sprites\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\fonts\fonts.dat

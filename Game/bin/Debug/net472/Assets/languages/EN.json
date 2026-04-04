@@ -18,7 +18,7 @@
   "controls" : "Controls", 
   "settings" : "Settings", 
   "random" : "Random", 
-  "player" : "Player", 
+  "player" : "Player",
   "wins" : "Wins", 
   "drawn" : "Drawn", 
   "rematch" : "Rematch", 
@@ -66,5 +66,8 @@
   "versus player" : "Versus Player",
   "versus bot" : "Versus Bot",
   "training mode": "Training mode",
-  "acessibility" : "Acessibility"
+  "acessibility" : "Acessibility",
+  "training settings" : "Training settings",
+  "enabled" : "Enabled",
+  "disabled" : "Disabled"
 }
