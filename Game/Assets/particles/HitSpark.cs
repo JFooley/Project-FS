@@ -8,11 +8,11 @@ public class Hitspark : Character {
     public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
 
     public Hitspark(string initialState, float startX, float startY, int facing)
-        : base("Hitspark", initialState, startX, startY, "Assets/particles/Hitspark") {
+        : base("Hitspark", initialState, startX, startY, Data.GetPath("Assets/particles/Hitspark")) {
             this.facing = facing;
             this.own_light = Color.White;
         }
-    public Hitspark() : base("Hitspark", "", 0, 0, "Assets/particles/Hitspark") {}
+    public Hitspark() : base("Hitspark", "", 0, 0, Data.GetPath("Assets/particles/Hitspark")) {}
 
     public override void Load() {
         // Animations
