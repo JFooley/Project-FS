@@ -90,7 +90,8 @@ public static class Config {
         string jsonString = JsonConvert.SerializeObject(configData, Formatting.Indented);
         File.WriteAllText(filePath, jsonString);
     }
-    public static void LoadFromFile(string filePath = Data.GetPath("Assets/config.json")) {
+    public static void LoadFromFile(string filePath = "") {
+        if (filePath == "") filePath = Data.GetPath("Assets/config.json");
         if (File.Exists(filePath)) {
             string jsonString = File.ReadAllText(filePath);
             var configData = JsonConvert.DeserializeObject<ConfigData>(jsonString);
