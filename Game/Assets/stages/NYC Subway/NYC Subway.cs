@@ -1,7 +1,7 @@
 public class NYCSubway : Stage {
     
     public NYCSubway()
-        : base("NYC Subway", 528, 912, 512, "Assets/stages/NYC Subway")
+        : base("NYC Subway", 528, 912, 512, Data.GetPath("Assets/stages/NYC Subway"))
     {
         this.AmbientLight = new SFML.Graphics.Color(255, 255, 220, 255);
     }
