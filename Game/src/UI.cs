@@ -328,17 +328,16 @@ namespace UI_space {
         private const int Rows = 10;     // Número de linhas
 
         public static void Load() {
-            string currentDirectory = Directory.GetCurrentDirectory();
-            string full_path = Path.Combine(currentDirectory, "Assets/fonts");
+            string full_path = Data.GetPath("Assets/fonts");
             if (!System.IO.Directory.Exists(full_path))
                 throw new System.IO.DirectoryNotFoundException($"O diretório {full_path} não foi encontrado.");
 
             try {
-                Data.LoadTexturesFromFile("Assets/fonts/fonts.dat", BitmapFont.textures);
+                Data.LoadTexturesFromFile(Data.GetPath("Assets/fonts/fonts.dat"), BitmapFont.textures);
             } catch (Exception) {
-                var tex_data = Data.LoadTexturesFromPath("Assets/fonts");
-                Data.SaveTexturesToFile("Assets/fonts/fonts.dat", tex_data);
-                Data.LoadTexturesFromFile("Assets/fonts/fonts.dat", BitmapFont.textures);
+                var tex_data = Data.LoadTexturesFromPath(Data.GetPath("Assets/fonts"));
+                Data.SaveTexturesToFile(Data.GetPath("Assets/fonts/fonts.dat"), tex_data);
+                Data.LoadTexturesFromFile(Data.GetPath("Assets/fonts/fonts.dat"), BitmapFont.textures);
             }
         }
 
