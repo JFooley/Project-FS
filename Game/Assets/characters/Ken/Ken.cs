@@ -18,7 +18,7 @@ public class Ken : Character {
 
     // Constructors
     public Ken(string initialState, int startX, int startY)
-        : base("Ken", initialState, startX, startY, "Assets/characters/Ken")
+        : base("Ken", initialState, startX, startY, Data.GetPath("Assets/characters/Ken"))
     {
         this.life_points = new Vector2i(1000, 1000);
         this.dizzy_points = new Vector2i(500, 500);
@@ -27,7 +27,7 @@ public class Ken : Character {
         this.dash_speed = 8;
         this.move_speed = 3;
     } 
-    public Ken() : base("Ken", "Assets/characters/Ken") { }
+    public Ken() : base("Ken", Data.GetPath("Assets/characters/Ken")) { }
 
     public override Character Copy() {
         var obj = new Ken("Intro", 0, 0);
