@@ -50,13 +50,6 @@ Implementado:
 - Uso de shaders
 - Load unificado e mais eficiente (usando arquivos binários)
 - Inteligência artificial dos BOTs
-
-Deprecated:
-- Física simples
-
-Em desenvolvimento:
-- Conteúdo audiovisual melhorado
-- Mecanica de agarrão
-- Modularização de janelas de menus e botões selecionáveis.
+- Widgets
 
 
