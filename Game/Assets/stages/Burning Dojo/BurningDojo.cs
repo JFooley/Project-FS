@@ -1,6 +1,6 @@
 public class BurningDojo : Stage {
     public BurningDojo()
-        : base("Burning Dojo", 369, 800, 336, "Assets/stages/Burning Dojo")
+        : base("Burning Dojo", 369, 800, 336, Data.GetPath("Assets/stages/Burning Dojo"))
     {
         this.AmbientLight = new SFML.Graphics.Color(190, 160, 150, 255);
     }
