@@ -9,14 +9,14 @@ public class Fireball : Character {
     public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
 
     public Fireball(string initialState, int life_points, float startX, float startY, int team, int facing)
-        : base("Fireball", initialState, startX, startY, "Assets/characters/Ken/Fireball", 1) {
+        : base("Fireball", initialState, startX, startY, Data.GetPath("Assets/characters/Ken/Fireball"), 1) {
             this.player_index = team;
             this.facing = facing;
             this.life_points = new Vector2i(life_points, 0);
             this.shadow_size = 1;
             this.own_light = new Color(255, 255, 255, 255);
         }
-    public Fireball() : base("Fireball", "", 0, 0, "Assets/characters/Ken/Fireball", 1) {}
+    public Fireball() : base("Fireball", "", 0, 0, Data.GetPath("Assets/characters/Ken/Fireball"), 1) {}
 
     public override void Load() {
         // Animations
