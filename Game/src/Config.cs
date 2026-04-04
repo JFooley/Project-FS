@@ -71,7 +71,9 @@ public static class Config {
     public const int spacing_small = -26; 
     public const int spacing_medium = -23;
 
-    public static void SaveToFile(string filePath = Data.GetPath("Assets/config.json")) {
+    public static void SaveToFile(string filePath = "") {
+        if (filePath == "") filePath = Data.GetPath("Assets/config.json");
+
         var configData = new
         {
             Fullscreen,
