@@ -1,6 +1,6 @@
 public class TheSavana : Stage {
     public TheSavana()
-        : base("The Savana", 530, 512, 512, "Assets/stages/The Savana")
+        : base("The Savana", 530, 512, 512, Data.GetPath("Assets/stages/The Savana"))
     {
         this.AmbientLight = new SFML.Graphics.Color(200, 165, 145, 255);
     }
