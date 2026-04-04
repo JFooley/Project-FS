@@ -71,7 +71,7 @@ public static class Config {
     public const int spacing_small = -26; 
     public const int spacing_medium = -23;
 
-    public static void SaveToFile(string filePath = "Assets/config.json") {
+    public static void SaveToFile(string filePath = Data.GetPath("Assets/config.json")) {
         var configData = new
         {
             Fullscreen,
@@ -90,7 +90,7 @@ public static class Config {
         string jsonString = JsonConvert.SerializeObject(configData, Formatting.Indented);
         File.WriteAllText(filePath, jsonString);
     }
-    public static void LoadFromFile(string filePath = "Assets/config.json") {
+    public static void LoadFromFile(string filePath = Data.GetPatg("Assets/config.json")) {
         if (File.Exists(filePath)) {
             string jsonString = File.ReadAllText(filePath);
             var configData = JsonConvert.DeserializeObject<ConfigData>(jsonString);
