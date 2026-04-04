@@ -515,8 +515,7 @@ public class Stage {
         this.character_B = null;
     }
     public void LoadTextures() {
-        string currentDirectory = Directory.GetCurrentDirectory();
-        string full_path = Path.Combine(currentDirectory, this.folder_path, "sprites");
+        string full_path = Path.Combine(this.folder_path, "sprites");
 
         // Verifica se o diretório existe
         if (!System.IO.Directory.Exists(full_path)) {
@@ -544,8 +543,7 @@ public class Stage {
         this.textures.Clear(); // Clear the dictionary
     }
     public void LoadSounds() {
-        string currentDirectory = Directory.GetCurrentDirectory();
-        string full_sound_path = Path.Combine(currentDirectory, this.folder_path, "sound");
+        string full_sound_path = Path.Combine(this.folder_path, "sound");
 
         // Verifica se o diretório existe
         if (!System.IO.Directory.Exists(full_sound_path)) {
