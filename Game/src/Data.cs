@@ -117,4 +117,10 @@ public static class Data {
 
         return sounds;
     }
+
+    public static string GetPath(string relativePath) {
+        string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+        string[] parts = relativePath.Split('/');
+        return Path.Combine(baseDir, Path.Combine(parts));
+    }
 }
