@@ -552,8 +552,7 @@ public abstract class Character : Object_Space.Object {
     
     // Loads
     public void LoadTextures() {
-        string currentDirectory = Directory.GetCurrentDirectory();
-        string full_path = Path.Combine(currentDirectory, this.folder_path, "sprites");
+        string full_path = Path.Combine(this.folder_path, "sprites");
 
         if (!System.IO.Directory.Exists(full_path)) {
             throw new System.IO.DirectoryNotFoundException($"O diretório {full_path} não foi encontrado.");
@@ -578,8 +577,7 @@ public abstract class Character : Object_Space.Object {
         textures.Clear(); // Clear the dictionary
     }
     public void LoadSounds() {
-        string currentDirectory = Directory.GetCurrentDirectory();
-        string full_sound_path = Path.Combine(currentDirectory, this.folder_path, "sounds");
+        string full_sound_path = Path.Combine(this.folder_path, "sounds");
 
         if (!System.IO.Directory.Exists(full_sound_path)) {
             throw new System.IO.DirectoryNotFoundException($"O diretório {full_sound_path} não foi encontrado.");
