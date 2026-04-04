@@ -1,6 +1,6 @@
 public class RindoKanDojo : Stage {
     public RindoKanDojo()
-        : base("Rindo-Kan Dojo", 496, 895, 475, "Assets/stages/Rindo-Kan Dojo")
+        : base("Rindo-Kan Dojo", 496, 895, 475, Data.GetPath("Assets/stages/Rindo-Kan Dojo"))
     {
         this.AmbientLight = new SFML.Graphics.Color(215, 210, 180, 255);
     }
