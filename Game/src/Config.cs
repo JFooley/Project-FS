@@ -71,47 +71,56 @@ public static class Config {
     public const int spacing_small = -26; 
     public const int spacing_medium = -23;
 
-    public static void SaveToFile(string filePath = "") {
-        if (filePath == "") filePath = Data.GetPath("Assets/config.json");
+    public static void SaveToFile() {
+        try {
+            string folder_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Project FS");
 
-        var configData = new
-        {
-            Fullscreen,
-            Vsync,
-            input_window_time,
-            _main_volume,
-            _character_volume,
-            _music_volume,
-            _effect_volume,
-            round_length,
-            hit_stop_time,
-            max_rounds,
-            Language
-        };
+            if (!Directory.Exists(folder_path)) {
+                Directory.CreateDirectory(folder_path);
+            }
 
-        string jsonString = JsonConvert.SerializeObject(configData, Formatting.Indented);
-        File.WriteAllText(filePath, jsonString);
+            string file_path = Path.Combine(folder_path, "config.json");
+
+            var configData = new {
+                Fullscreen,
+                Vsync,
+                input_window_time,
+                _main_volume,
+                _character_volume,
+                _music_volume,
+                _effect_volume,
+                round_length,
+                hit_stop_time,
+                max_rounds,
+                Language
+            };
+
+            string jsonString = JsonConvert.SerializeObject(configData, Formatting.Indented);
+            File.WriteAllText(file_path, jsonString);
+
+        } catch (Exception ex) {
+            Console.WriteLine($"Error saving config file: {ex.Message}");
+        }
     }
     public static void LoadFromFile(string filePath = "") {
         if (filePath == "") filePath = Data.GetPath("Assets/config.json");
         if (File.Exists(filePath)) {
             string jsonString = File.ReadAllText(filePath);
-            var configData = JsonConvert.DeserializeObject<ConfigData>(jsonString);
+                var configData = JsonConvert.DeserializeObject<ConfigData>(jsonString);
 
-            Fullscreen = configData.Fullscreen;
-            Vsync = configData.Vsync;
-            input_window_time = configData.input_window_time;
-            _main_volume = configData._main_volume;
-            _character_volume = configData._character_volume;
-            _music_volume = configData._music_volume;
-            _effect_volume = configData._effect_volume;
-            round_length = configData.round_length;
-            hit_stop_time = configData.hit_stop_time;
-            max_rounds = configData.max_rounds;
-            Language = configData.Language;
+                Fullscreen = configData.Fullscreen;
+                Vsync = configData.Vsync;
+                input_window_time = configData.input_window_time;
+                _main_volume = configData._main_volume;
+                _character_volume = configData._character_volume;
+                _music_volume = configData._music_volume;
+                _effect_volume = configData._effect_volume;
+                round_length = configData.round_length;
+                hit_stop_time = configData.hit_stop_time;
+                max_rounds = configData.max_rounds;
+                Language = configData.Language;
         } else {
-            Console.WriteLine("Config file not found. Using default settings.");
-            Config.SaveToFile(filePath);
+            Config.SaveToFile();
         }
     }
     private class ConfigData {

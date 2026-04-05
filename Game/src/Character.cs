@@ -66,7 +66,7 @@ public struct FightState {
     public string lastState;
 }
 
-public abstract class Character : Object_Space.Object {
+public abstract class Character : Object {
     // Consts
     public const int NOTHING = -1;
     public const int BLOCK = 0;
@@ -505,7 +505,7 @@ public abstract class Character : Object_Space.Object {
         if (!this.current_animation.playing_sound && this.current_sound != "" && sounds.TryGetValue(this.current_sound, out SoundBuffer buffer)) {
             var temp_sound = new Sound(buffer) {
                 Volume = Config.Character_Volume,
-                Pan = (Camera.target.X / Program.stage.length * 2) - 1};
+                Pan = (this.body.Position.X - Camera.X) / (Config.RenderWidth*0.5f)};
             temp_sound.Play();
             active_sounds.Add(temp_sound);
             active_sounds.RemoveAll(s => s.Status == SoundStatus.Stopped);
@@ -516,7 +516,7 @@ public abstract class Character : Object_Space.Object {
         if (sounds.TryGetValue(sound_name, out SoundBuffer buffer)) {
             var temp_sound = new Sound(buffer) {
                 Volume = Config.Character_Volume,
-                Pan = follow_player ? (Camera.target.X / Program.stage.length * 2) - 1 : panning};
+                Pan = follow_player ? (this.body.Position.X - Camera.X) / (Config.RenderWidth*0.5f) : panning};
             temp_sound.Play();
             active_sounds.Add(temp_sound);
             active_sounds.RemoveAll(s => s.Status == SoundStatus.Stopped);

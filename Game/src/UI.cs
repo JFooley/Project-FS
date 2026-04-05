@@ -334,7 +334,8 @@ namespace UI_space {
 
             try {
                 Data.LoadTexturesFromFile(Data.GetPath("Assets/fonts/fonts.dat"), BitmapFont.textures);
-            } catch (Exception) {
+            } catch (Exception e) {
+                Console.WriteLine($"Erro ao carregar {full_path}: {e.Message}");
                 var tex_data = Data.LoadTexturesFromPath(Data.GetPath("Assets/fonts"));
                 Data.SaveTexturesToFile(Data.GetPath("Assets/fonts/fonts.dat"), tex_data);
                 Data.LoadTexturesFromFile(Data.GetPath("Assets/fonts/fonts.dat"), BitmapFont.textures);

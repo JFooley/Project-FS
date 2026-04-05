@@ -529,7 +529,8 @@ public class Stage {
         string dat_path = Path.Combine(full_path, "visuals.dat");
         try {
             Data.LoadTexturesFromFile(dat_path, this.textures);
-        } catch (Exception) {
+        } catch (Exception e) {
+            Console.WriteLine($"Erro ao carregar {dat_path}: {e.Message}");
             var tex_data = Data.LoadTexturesFromPath(full_path);
             Data.SaveTexturesToFile(dat_path, tex_data);
             Data.LoadTexturesFromFile(dat_path, this.textures);

@@ -2372,15 +2372,6 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.AssemblyInfoI
 A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.AssemblyInfo.cs
 A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.csproj.CoreCompileInputs.cache
 A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.sourcelink.json
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\palette.bmp
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\fonts\files\text.txt
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\icon.ico
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\languages\EN.json
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\languages\PT.json
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\color_fill.frag
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\color_tinter.frag
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\hue_change.frag
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\palette_swaper.frag
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Project FS.exe.config
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Project FS.exe
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Project FS.pdb
@@ -2404,6 +2395,15 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\vcruntime140_1.dll
 A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.csproj.Up2Date
 A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.exe
 A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.pdb
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\palette.bmp
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\fonts\files\text.txt
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\icon.ico
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\languages\EN.json
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\languages\PT.json
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\color_fill.frag
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\color_tinter.frag
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\hue_change.frag
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\palette_swaper.frag
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\Fireball\sounds\sounds.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\Fireball\sprites\visuals.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\sounds\sounds.dat

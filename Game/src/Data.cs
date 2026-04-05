@@ -1,14 +1,11 @@
 using SFML.Audio;
 using SFML.Graphics;
-using SFML.System;
-
 
 public static class Data {
-    public static List<Stage>? stages;
-    public static List<Character>? characters;
+    public static List<Stage> stages = new List<Stage>();
+    public static List<Character> characters = new List<Character>();
     public static Dictionary<string, SoundBuffer> sounds = new Dictionary<string, SoundBuffer>();
     public static Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
-    public static Dictionary<string, Texture> thumbs = new Dictionary<string, Texture>();
 
     public static void SaveTexturesToFile(string fileName, Dictionary<string, byte[]> textures) {
         using var fs = new FileStream(fileName, FileMode.Create);
@@ -119,8 +116,8 @@ public static class Data {
     }
 
     public static string GetPath(string relativePath) {
-        string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+        string baseDir = AppContext.BaseDirectory;
         string[] parts = relativePath.Split('/');
-        return Path.Combine(baseDir, Path.Combine(parts));
+        return Path.GetFullPath(Path.Combine(baseDir, Path.Combine(parts))); 
     }
 }
