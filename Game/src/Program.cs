@@ -121,16 +121,12 @@ public static class Program {
         WGMainMenu main_menu_screen = new WGMainMenu();
         WGSelectStage select_stage_screen = new WGSelectStage();
         WGSelectCharacter select_char_screen = new WGSelectCharacter();
+        WGBattle battle_screen = new WGBattle();
         WGPostBattle post_battle_screen = new WGPostBattle();
         WGSettings settings_screen = new WGSettings();
         WGControls controls_screen = new WGControls();
         WGAcessibilityMenu accessibility_screen = new WGAcessibilityMenu();
         WGCredits credits_screen = new WGCredits();
-
-        // Sprites
-        Sprite fight_logo = new Sprite(Data.textures["typography:fight"]);
-        Sprite timesup_logo = new Sprite(Data.textures["typography:timesup"]);
-        Sprite KO_logo = new Sprite(Data.textures["typography:ko"]);        
 
         while (window.IsOpen) {
             window.DispatchEvents();
@@ -178,76 +174,7 @@ public static class Program {
                     break;
 
                 case Battle:
-                    stage.Update();
-
-                    switch (sub_state) {
-                        case Intro:
-                            stage.SetMusicVolume();
-                            stage.StopRoundTime();
-                            stage.ResetTimer();
-                            if (stage.character_A.current_state == "Idle" && stage.character_B.current_state == "Idle") 
-                                sub_state = RoundStart;
-                            break;
-
-                        case RoundStart: // Inicia a round
-                            if (stage.CheckTimer(3))
-                            {
-                                stage.ResetRoundTime();
-                                stage.StartRoundTime();
-                                stage.ReleasePlayers();
-                                sub_state = Battling;
-                            }
-                            else if (stage.CheckTimer(2))
-                            {
-                                fight_logo.Position = new Vector2f(Camera.X - 89, Camera.Y - 54);
-                                window.Draw(fight_logo);
-                            }
-                            else if (stage.CheckTimer(1)) UI.DrawText(Language.GetText("Ready")+"?", 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
-                            else UI.DrawText(Language.GetText("Round") + " " + stage.round, 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
-
-                            break;
-
-                        case Battling: // Durante a batalha
-                            if (stage.CheckRoundEnd()) {
-                                sub_state = RoundEnd;
-                                stage.StopRoundTime();
-                                stage.ResetTimer();
-                            }
-                            break;
-
-                        case RoundEnd: // Fim de round
-                            if (!stage.CheckTimer(3)) {
-                                if (stage.character_A.life_points.X <= 0 || stage.character_B.life_points.X <= 0) {
-                                    KO_logo.Position = new Vector2f(Camera.X - 75, Camera.Y - 54);
-                                    window.Draw(KO_logo);
-                                } else {
-                                    timesup_logo.Position = new Vector2f(Camera.X - 131, Camera.Y - 55);
-                                    window.Draw(timesup_logo);
-                                }
-                            }
-                            if (stage.CheckTimer(4)) {
-                                stage.LockPlayers();
-                                stage.ResetTimer();
-                                if (stage.CheckMatchEnd()) {
-                                    sub_state = MatchEnd;
-                                } else {
-                                    sub_state = RoundStart;
-                                    stage.ResetPlayers();
-                                }
-                            }
-                            break;
-
-                        case MatchEnd: // Fim da partida
-                            Camera.Reset();
-                            stage.ResetMatch();
-                            stage.ResetPlayers(force: true, total_reset: true);
-
-                            sub_state = Intro;
-                            ChangeState(PostBattle);
-                            break;
-
-                    } 
-            
+                    battle_screen.Render();
                     break;
 
                 case PostBattle:
