@@ -30,6 +30,19 @@ public class WGSelectCharacter : Widget {
 
         this.DrawSessionInfo();
 
+        // Ends when chars are selected and ready
+        if (selectorA.state == WGSelector.READY && selectorB.state == WGSelector.READY) {
+            if (UI.blink2Hz) UI.DrawText(Language.GetText("press start"), 0, -90, spacing: Config.spacing_medium);
+            if (InputManager.Key_down("Start") ) {
+                Program.ChangeState(Program.LoadScreen);
+            }
+        }
+    }
+
+    private void Versus() {
+        selectorA.Render(-77, -30, 1, x_scale: 1);
+        selectorB.Render(77, -30, 2, x_scale: -1);
+
         // Shoulder buttons
         UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
         if (UI.DrawButton(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: InputManager.Key_hold("LB"), action: InputManager.Key_up("LB"), click_font: "default small click", hover_font: "default small")) {
@@ -43,23 +56,11 @@ public class WGSelectCharacter : Widget {
         UI.DrawText("F", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
         if (UI.DrawButton(Language.GetText("Controls"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: InputManager.Key_hold("RB"), action: InputManager.Key_up("RB"), click_font: "default small click", hover_font: "default small")) 
             Program.ChangeState(Program.Controls);
-
-        // Ends when chars are selected and ready
-        if (selectorA.state == WGSelector.READY && selectorB.state == WGSelector.READY) {
-            if (UI.blink2Hz) UI.DrawText(Language.GetText("press start"), 0, -90, spacing: Config.spacing_medium);
-            if (InputManager.Key_down("Start") ) {
-                Program.ChangeState(Program.LoadScreen);
-            }
-        }
-    }
-
-    private void Versus() {
-        selectorA.Render(-77, -30, 1, x_scale: 1);
-        selectorB.Render(77, -30, 2, x_scale: -1);
     }
     private void VersusBOT() {
         if (Stage.AI_playerA && Stage.AI_playerB && InputManager.anyKeyA) Stage.AI_playerA = false;
         if (Stage.AI_playerB && Stage.AI_playerA && InputManager.anyKeyB) Stage.AI_playerB = false;
+
         var player = Stage.AI_playerB ? 1 : 2;
         selectorA.Render(0, -30, player, x_scale: 1);
 
@@ -75,10 +76,39 @@ public class WGSelectCharacter : Widget {
             }
         }
 
+        // Shoulder buttons
+        UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
+        if (UI.DrawButton(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: InputManager.Key_hold("LB"), action: InputManager.Key_up("LB"), click_font: "default small click", hover_font: "default small")) {
+            Program.ChangeState(Program.SelectStage);
+            selectorA.selected = null;
+            selectorB.selected = null;
+            selectorA.state = WGSelector.SELECTING_CHAR;
+            selectorB.state = WGSelector.SELECTING_CHAR;
+            Stage.AI_playerA = true;
+            Stage.AI_playerB = true;
+        }
+
+        UI.DrawText("F", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
+        if (UI.DrawButton(Language.GetText("Controls"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: InputManager.Key_hold("RB"), action: InputManager.Key_up("RB"), click_font: "default small click", hover_font: "default small")) 
+            Program.ChangeState(Program.Controls);
     }
     private void Training() {
         selectorA.Render(-77, -30, selectorA.state == WGSelector.READY ? 2 : 1, x_scale: 1);
         selectorB.Render(77, -30, selectorA.state == WGSelector.READY ? 1 : 2, x_scale: -1);
+
+        // Shoulder buttons
+        UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
+        if (UI.DrawButton(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: InputManager.Key_hold("LB"), action: InputManager.Key_up("LB"), click_font: "default small click", hover_font: "default small")) {
+            Program.ChangeState(Program.SelectStage);
+            selectorA.selected = null;
+            selectorB.selected = null;
+            selectorA.state = WGSelector.SELECTING_CHAR;
+            selectorB.state = WGSelector.SELECTING_CHAR;
+        }
+
+        UI.DrawText("F", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
+        if (UI.DrawButton(Language.GetText("Controls"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: InputManager.Key_hold("RB"), action: InputManager.Key_up("RB"), click_font: "default small click", hover_font: "default small")) 
+            Program.ChangeState(Program.Controls);
     }
 
     private void DrawSessionInfo() {
