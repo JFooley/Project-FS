@@ -11,8 +11,8 @@ public class Stage {
     public string folder_path;
     public Texture thumb;
 
-    // Debug infos
-    public static bool training_mode = false;
+    // Stage configs
+    public static bool training_mode => WGBattle.battle_mode == WGBattle.Training;
     public static bool pause = false;
     public static bool show_boxs = false;
     public static int block = 0; // 0 - never, 1 - after hit, 2 - always
@@ -36,6 +36,9 @@ public class Stage {
     public List<Character> OnSceneParticles = new List<Character> {};
     public List<Character> newCharacters = new List<Character> {};
     public List<Character> newParticles = new List<Character> {};
+
+    public static bool AI_playerA = true;
+    public static bool AI_playerB = true;
 
     public Character character_A;
     public Character character_B;
@@ -105,7 +108,7 @@ public class Stage {
         if (!this.character_B.on_hit) this.character_A.combo_counter = 0;
 
         // Pause
-        if (InputManager.Key_down("Start") && Program.sub_state == Program.Battling) this.Pause();
+        if (InputManager.Key_down("Start") && WGBattle.battle_state == WGBattle.Battling) this.Pause();
 
         // Render stage sprite
         if (this.textures.ContainsKey(this.CurrentSprite.Sprite_index)) {
@@ -423,14 +426,14 @@ public class Stage {
         this.character_A = char_A;
         this.character_A.facing = 1;
         this.character_A.player_index = 1;
-        this.character_A.BotEnabled = Program.AI_playerA;
-        this.character_A.AIEnabled = Program.AI_playerA;
+        this.character_A.BotEnabled = Stage.training_mode || Stage.AI_playerA; ;
+        this.character_A.AIEnabled = Stage.AI_playerA;
 
         this.character_B = char_B;
         this.character_B.facing = -1;
         this.character_B.player_index = 2;
-        this.character_B.BotEnabled = Program.AI_playerB;
-        this.character_B.AIEnabled = Program.AI_playerB;
+        this.character_B.BotEnabled = Stage.training_mode || Stage.AI_playerB;
+        this.character_B.AIEnabled = Stage.AI_playerB;
 
         this.character_A.floor_line = this.floor_line;
         this.character_B.floor_line = this.floor_line;

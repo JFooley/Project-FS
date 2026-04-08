@@ -182,8 +182,7 @@ public abstract class Character : Object {
                 this.Behave();
                 this.CheckColisions();
             }
-        }
-        else this.hitstop_counter -= 1;
+        } else this.hitstop_counter -= 1;
     }
     public override void Render(bool drawHitboxes = false) {
         base.Render(drawHitboxes);
@@ -315,7 +314,7 @@ public abstract class Character : Object {
 
         // IA do bot
         if (this.AIEnabled) {
-            var enemy = Program.stage.character_A.player_index == this.player_index ? Program.stage.character_B : Program.stage.character_A;
+            var enemy = Program.stage?.character_A.player_index == this.player_index ? Program.stage.character_B : Program.stage?.character_A;
 
             var AIstate = new FightState {
                 // Distância até o inimigo
@@ -332,7 +331,7 @@ public abstract class Character : Object {
                 enemyIsOnHit = enemy.state.on_hit || enemy.state.on_parry,
                 enemyChangedSide = enemy.facing == this.facing,
                 enemyIsDead = enemy.life_points.X == 0,
-                onCorner = this.body.Position.X < (0.2f * Config.RenderWidth) || this.body.Position.X >= (Program.stage.length - (0.2f * Config.RenderWidth))
+                onCorner = this.body.Position.X < (0.2f * Config.RenderWidth) || this.body.Position.X >= (Program.stage?.length - (0.2f * Config.RenderWidth))
             };
 
             // Atualiza o array de estados de luta

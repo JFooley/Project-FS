@@ -25,16 +25,9 @@ public static class Program {
     public const int AccessibilityMenu = 10;
     public const int Credits = 11;
 
-    // Battle States
-    public const int RoundStart = 1;
-    public const int Battling = 2;
-    public const int RoundEnd = 3;
-    public const int MatchEnd = 4;
-
     // State holders
     public static int game_state;
     public static int last_game_state;
-    public static int sub_state;
 
     // Common objects
     public static Stage? stage;
@@ -53,9 +46,6 @@ public static class Program {
     public static bool loading = false;
     public static double last_frame_time = 0;
 
-    public static bool AI_playerA = true;
-    public static bool AI_playerB = true;
-
     // Shaders
     public static Shader colorTinterShader = new Shader(null, null, Data.GetPath("Assets/shaders/color_tinter.frag"));
     public static Shader colorFillShader = new Shader(null, null, Data.GetPath("Assets/shaders/color_fill.frag"));
@@ -67,7 +57,6 @@ public static class Program {
 
         // Set initial states
         game_state = Intro;
-        sub_state = Intro;
         
         // Carregamento de texturas genéricas
         try {
@@ -163,12 +152,7 @@ public static class Program {
                     Camera.SetLimits(stage.length, stage.height);
 
                     loading = false;
-                    select_char_screen.charA_selected = null;
-                    select_char_screen.charB_selected = null;
-                    select_char_screen.ready_charA = false;
-                    select_char_screen.ready_charB = false;
-                    select_char_screen.pointer_charA = 0;
-                    select_char_screen.pointer_charB = 0;
+                    select_char_screen.Reset();
 
                     ChangeState(Battle);
                     break;

@@ -183,13 +183,9 @@ public class InputManager {
 
 
     }
-    public static void UpdateAI() {
-        if (Program.AI_playerA & InputManager.anyKeyA) Program.AI_playerA = false;
-        if (Program.AI_playerB & InputManager.anyKeyB) Program.AI_playerB = false;
-    }
     public static void ResetAI() {
-        Program.AI_playerA = true;
-        Program.AI_playerB = true;
+        Stage.AI_playerA = true;
+        Stage.AI_playerB = true;
     }
     
     // Key Detection

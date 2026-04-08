@@ -44,7 +44,7 @@ public class WGPause : Widget {
         if (UI.DrawButton(Language.GetText("End match"), 0, 70, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == (Stage.training_mode ? 3 : 2), click_font: "default medium click", hover_font: "default medium red", font: "default medium")) {
             this.stage.Pause();
             Program.winner = Program.Drawn;
-            Program.sub_state = Program.MatchEnd;
+            WGBattle.battle_state = WGBattle.MatchEnd;
             Stage.show_boxs = false;
             Stage.block = 0;
             Stage.refil_life = true;
@@ -83,16 +83,16 @@ public class WGPause : Widget {
         if (UI.DrawButton(Stage.refil_super ? Language.GetText("Super") + ": " + Language.GetText("Refil") : Language.GetText("Super") + ": " + Language.GetText("Keep"), 0, anchor + spacing*3, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pointer.X == 1 && this.pointer.Y == 3, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "left"))
             Stage.refil_super = !Stage.refil_super;
         // 4.0
-        if (UI.DrawButton(Program.AI_playerA ? Language.GetText("player") + " 1 BOT : " + Language.GetText("enabled") : Language.GetText("player") + " 1 BOT: " + Language.GetText("disabled"), -0, anchor + spacing*4, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pointer.X == 0 && this.pointer.Y == 4, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "right")) {
-            Program.AI_playerA = !Program.AI_playerA;
-            Program.stage.character_A.BotEnabled = Program.AI_playerA;
-            Program.stage.character_A.AIEnabled = Program.AI_playerA;
+        if (UI.DrawButton(Stage.AI_playerA ? Language.GetText("player") + " 1 BOT : " + Language.GetText("enabled") : Language.GetText("player") + " 1 BOT: " + Language.GetText("disabled"), -0, anchor + spacing*4, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pointer.X == 0 && this.pointer.Y == 4, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "right")) {
+            Stage.AI_playerA = !Stage.AI_playerA;
+            Program.stage.character_A.BotEnabled = Stage.AI_playerA;
+            Program.stage.character_A.AIEnabled = Stage.AI_playerA;
         }
         // 4.1
-        if (UI.DrawButton(Program.AI_playerB ? Language.GetText("player") + " 2 BOT : " + Language.GetText("enabled") : Language.GetText("player") + " 2 BOT: " + Language.GetText("disabled"), +0, anchor + spacing*4, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pointer.X == 1 && this.pointer.Y == 4, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "left")) {
-            Program.AI_playerB = !Program.AI_playerB;
-            Program.stage.character_B.BotEnabled = Program.AI_playerB;
-            Program.stage.character_B.AIEnabled = Program.AI_playerB;
+        if (UI.DrawButton(Stage.AI_playerB ? Language.GetText("player") + " 2 BOT : " + Language.GetText("enabled") : Language.GetText("player") + " 2 BOT: " + Language.GetText("disabled"), +0, anchor + spacing*4, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pointer.X == 1 && this.pointer.Y == 4, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "left")) {
+            Stage.AI_playerB = !Stage.AI_playerB;
+            Program.stage.character_B.BotEnabled = Stage.AI_playerB;
+            Program.stage.character_B.AIEnabled = Stage.AI_playerB;
         }
             
         // 5

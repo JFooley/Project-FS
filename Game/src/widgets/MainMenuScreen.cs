@@ -37,35 +37,46 @@ public class WGMainMenu : Widget {
 
         // Do option
         if (UI.DrawButton(Language.GetText(main_menu.ElementAt(pointer).Key), 0, -95, spacing: Config.spacing_medium, click: InputManager.faceButtonHold, action: InputManager.faceButtonUp, click_font: "default medium click", hover_font: "default medium white")) {
-            if (main_menu.ElementAt(pointer).Key == "versus player") {
-                Program.AI_playerA = false;
-                Program.AI_playerB = false;
-                Stage.training_mode = false;
-                Program.ChangeState(Program.SelectStage);
+            Stage.AI_playerA = false;
+            Stage.AI_playerB = false;
 
-            } else if (main_menu.ElementAt(pointer).Key == "versus bot") {
-                Program.AI_playerA = false;
-                Program.AI_playerB = true;
-                Stage.training_mode = false;
-                Program.ChangeState(Program.SelectStage);
+            switch (main_menu.ElementAt(pointer).Key) {
+                case "versus player":
+                    Stage.AI_playerA = false;
+                    Stage.AI_playerB = false;
+                    WGBattle.battle_mode = WGBattle.Versus;
+                    Program.ChangeState(Program.SelectStage);
+                    break;
 
-            } else if (main_menu.ElementAt(pointer).Key == "training mode") {
-                Program.AI_playerA = false;
-                Program.AI_playerB = false;
-                Stage.training_mode = true;
-                Program.ChangeState(Program.SelectStage);
+                case "versus bot":
+                    Stage.AI_playerA = true;
+                    Stage.AI_playerB = true;
+                    WGBattle.battle_mode = WGBattle.VersusBot;
+                    Program.ChangeState(Program.SelectStage);
 
-            } else if (main_menu.ElementAt(pointer).Key == "acessibility") {
-                Program.ChangeState(Program.AccessibilityMenu);
+                    break;
+                case "training mode":
+                    Stage.AI_playerA = false;
+                    Stage.AI_playerB = false;
+                    WGBattle.battle_mode = WGBattle.Training;
+                    Program.ChangeState(Program.SelectStage);
 
-            } else if (main_menu.ElementAt(pointer).Key == "controls") {
-                Program.ChangeState(Program.Controls);
+                    break;
+                case "acessibility":
+                    Program.ChangeState(Program.AccessibilityMenu);
 
-            } else if (main_menu.ElementAt(pointer).Key == "settings") {
-                Program.ChangeState(Program.Settings);
+                    break;
+                case "controls":
+                    Program.ChangeState(Program.Controls);
 
-            } else if (main_menu.ElementAt(pointer).Key == "Exit") {
-                Program.window.Close();
+                    break;
+                case "settings":
+                    Program.ChangeState(Program.Settings);
+
+                    break;
+                case "Exit":
+                    Program.window.Close();
+                    break;
             }
         }
     }
