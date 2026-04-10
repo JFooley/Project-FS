@@ -2396,7 +2396,6 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.csproj.Up2Dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.exe
 A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Debug\net472\Project FS.pdb
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\palette.bmp
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\fonts\files\text.txt
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\icon.ico
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\languages\EN.json
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\languages\PT.json
@@ -2404,29 +2403,29 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\color_fil
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\color_tinter.frag
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\hue_change.frag
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\palette_swaper.frag
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\Fireball\sounds\sounds.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\Fireball\sprites\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\sounds\sounds.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\characters\Ken\sprites\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\data\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\fonts\fonts.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Hitspark\sounds\sounds.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Hitspark\sprites\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Particle\sounds\sounds.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\particles\Particle\sprites\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Burning Dojo\sound\sounds.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Burning Dojo\sprites\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Japan Fields\sound\sounds.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Japan Fields\sprites\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Night Alley\sound\sounds.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Night Alley\sprites\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\NYC Subway\sound\sounds.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\NYC Subway\sprites\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Rindo-Kan Dojo\sound\sounds.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Rindo-Kan Dojo\sprites\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Midnight Duel\sound\sounds.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Midnight Duel\sprites\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Savana\sound\sounds.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\The Savana\sprites\visuals.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Training Stage\sound\sounds.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\stages\Training Stage\sprites\visuals.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken-Fireball\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken-Fireball\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\fonts\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Hitspark\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Hitspark\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Particle\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Particle\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Burning Dojo\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Burning Dojo\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Japan Fields\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Japan Fields\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Night Alley\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Night Alley\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\NYC Subway\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\NYC Subway\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Rindo-Kan Dojo\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Rindo-Kan Dojo\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\The Midnight Duel\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\The Midnight Duel\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\The Savana\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\The Savana\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Training Stage\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Training Stage\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\visuals\textures.dat

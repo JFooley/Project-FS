@@ -14,8 +14,8 @@ public class WGPause : Widget {
     }
 
     public override void Render() {
-        var face_release = InputManager.faceButtonUp;
-        var face_hold = InputManager.faceButtonHold;
+        var face_release = Input.faceButtonUp;
+        var face_hold = Input.faceButtonHold;
 
         switch (sub_menu) {
             case 0:
@@ -53,9 +53,9 @@ public class WGPause : Widget {
         }       
 
         // Change option 
-        if (InputManager.Key_down("Up") && this.pointer.Y > 0) {
+        if (Input.Key_down("Up") && this.pointer.Y > 0) {
             this.pointer.Y -= 1;
-        } else if (InputManager.Key_down("Down") && this.pointer.Y < (Stage.training_mode ? 3 : 2)) {
+        } else if (Input.Key_down("Down") && this.pointer.Y < (Stage.training_mode ? 3 : 2)) {
             this.pointer.Y += 1;
         }
     }
@@ -101,15 +101,15 @@ public class WGPause : Widget {
             this.sub_menu = 0;
         }
         // Change option 
-        if (InputManager.Key_down("Up") && this.pointer.Y > 0) {
+        if (Input.Key_down("Up") && this.pointer.Y > 0) {
             this.pointer.Y -= 1;
-        } else if (InputManager.Key_down("Down") && this.pointer.Y < 5) {
+        } else if (Input.Key_down("Down") && this.pointer.Y < 5) {
             this.pointer.Y += 1;
         }
 
-        if (InputManager.Key_down("Left") && this.pointer.X > 0) {
+        if (Input.Key_down("Left") && this.pointer.X > 0) {
             this.pointer.X -= 1;
-        } else if (InputManager.Key_down("Right") && this.pointer.X < 1) {
+        } else if (Input.Key_down("Right") && this.pointer.X < 1) {
             this.pointer.X += 1;
         }
     }

@@ -16,12 +16,12 @@ public static class Config {
     // Battle
     public static int round_length = 90;
     public const int default_round_length = 90;
-    public static int hit_stop_time = 15;
-    public const int default_hit_stop_time = 15;
     public static int max_rounds = 2;
     public const int default_max_rounds = 2;
-    public static int input_window_time = 4;
-    public const int default_input_window_time = 4;
+    public const int input_window_time = 4;
+    public static int hit_stop_time = 15;
+    public const int default_hit_stop_time = 15;
+    public const int default_accessible_hit_stop_time = 22;
 
     // Audio
     public static float _main_volume = 100f;
@@ -59,6 +59,7 @@ public static class Config {
     public const int parry_window = 10;
 
     // Game constants
+    public const int input_buffer_size = 240;
     public const int max_distance = 350;
     public const int reset_frames = 20;
     public const float gravity = 2450f / (Framerate*Framerate);
@@ -84,7 +85,6 @@ public static class Config {
             var configData = new {
                 Fullscreen,
                 Vsync,
-                input_window_time,
                 _main_volume,
                 _character_volume,
                 _music_volume,
@@ -110,7 +110,6 @@ public static class Config {
 
                 Fullscreen = configData.Fullscreen;
                 Vsync = configData.Vsync;
-                input_window_time = configData.input_window_time;
                 _main_volume = configData._main_volume;
                 _character_volume = configData._character_volume;
                 _music_volume = configData._music_volume;
@@ -126,7 +125,6 @@ public static class Config {
     private class ConfigData {
         public bool Fullscreen { get; set; }
         public bool Vsync { get; set; }
-        public int input_window_time { get; set; }
         public float _main_volume { get; set; }
         public float _character_volume { get; set; }
         public float _music_volume { get; set; }

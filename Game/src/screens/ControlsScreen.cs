@@ -14,11 +14,11 @@ public class WGControls : Widget {
         Program.window.Draw(bg);
         Program.window.Draw(frame);
 
-        if (InputManager.Key_up("Left")) pointer = pointer < 1 ? pointer + 1 : 0;
-        else if (InputManager.Key_up("Right")) pointer = pointer > 0 ? pointer - 1 : 1;
+        if (Input.Key_up("Left")) pointer = pointer < 1 ? pointer + 1 : 0;
+        else if (Input.Key_up("Right")) pointer = pointer > 0 ? pointer - 1 : 1;
 
         UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
-        if (UI.DrawButton(Language.GetText("Return"), -182, 67, alignment: "left", action: InputManager.Key_up("LB"), click: InputManager.Key_hold("LB"), hover_font: "default small")) {
+        if (UI.DrawButton(Language.GetText("Return"), -182, 67, alignment: "left", action: Input.Key_up("LB"), click: Input.Key_hold("LB"), hover_font: "default small")) {
             if (Program.last_game_state == Program.Battle) Camera.LockCamera();
             Program.ChangeState(Program.last_game_state);
         }

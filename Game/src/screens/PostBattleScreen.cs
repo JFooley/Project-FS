@@ -23,27 +23,27 @@ public class WGPostBattle : Widget {
         UI.DrawText(winner_text, 0, -100, spacing: Config.spacing_medium, textureName: "default medium");
 
         // Change option
-        if (InputManager.Key_down("Up") && pointer > 0)
+        if (Input.Key_down("Up") && pointer > 0)
             pointer -= 1;
-        else if (InputManager.Key_down("Down") && pointer < 2)
+        else if (Input.Key_down("Down") && pointer < 2)
             pointer += 1;
 
         // Do option
-        if (UI.DrawButton(Language.GetText("rematch"), 0, 0, spacing: Config.spacing_medium, action: InputManager.faceButtonUp, click: InputManager.faceButtonHold, hover: pointer == 0, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) {
+        if (UI.DrawButton(Language.GetText("rematch"), 0, 0, spacing: Config.spacing_medium, action: Input.faceButtonUp, click: Input.faceButtonHold, hover: pointer == 0, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) {
             Camera.SetChars(Program.stage?.character_A, Program.stage?.character_B);
             Camera.SetLimits(Program.stage.length, Program.stage.height);
             Program.stage?.LockPlayers();
             Program.ChangeState(Program.Battle);
             pointer = 0;
 
-        } if (UI.DrawButton(Language.GetText("menu"), 0, 20, spacing: Config.spacing_medium, action: InputManager.faceButtonUp, click: InputManager.faceButtonHold, hover: pointer == 1, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
+        } if (UI.DrawButton(Language.GetText("menu"), 0, 20, spacing: Config.spacing_medium, action: Input.faceButtonUp, click: Input.faceButtonHold, hover: pointer == 1, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
             Program.stage?.StopMusic();
             Program.stage?.UnloadStage();
-            InputManager.ResetAI();
+            Input.ResetAI();
             Program.ChangeState(Program.MainMenu);
             pointer = 0;
 
-        } if (UI.DrawButton(Language.GetText("exit game"), 0, 40, spacing: Config.spacing_medium, action: InputManager.faceButtonUp, click: InputManager.faceButtonHold, hover: pointer == 2, font: "default medium", hover_font: "default medium hover", click_font: "default medium click"))
+        } if (UI.DrawButton(Language.GetText("exit game"), 0, 40, spacing: Config.spacing_medium, action: Input.faceButtonUp, click: Input.faceButtonHold, hover: pointer == 2, font: "default medium", hover_font: "default medium hover", click_font: "default medium click"))
             Program.window.Close();
     }
 }

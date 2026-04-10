@@ -35,30 +35,27 @@ public class WGSettings : Widget {
         UI.DrawText(Language.GetText("Hitstop"), -170, -14, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 6 ? "default small hover" : "default small");
         UI.DrawText("< " + (Config.hit_stop_time == Config.default_hit_stop_time ? Language.GetText("Default") : Config.hit_stop_time + " " + Language.GetText("frames")) + " >", 0, -14, spacing: Config.spacing_small, textureName: pointer == 6 ? "default small red" : "default small");
         //7
-        UI.DrawText(Language.GetText("Input window"), -170, -04, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 7 ? "default small hover" : "default small");
-        UI.DrawText("< " + (Config.input_window_time == Config.default_input_window_time ? Language.GetText("Default") : Config.input_window_time + " " + Language.GetText("frames")) + " >", 0, -04, spacing: Config.spacing_small, textureName: pointer == 7 ? "default small red" : "default small");
-        //8
-        UI.DrawText(Language.GetText("Language"), -170, 6, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 8 ? "default small hover" : "default small");
-        UI.DrawText("< " + Language.GetText(Language.Supported[Config.Language]) + " >", 0, 6, spacing: Config.spacing_small, textureName: pointer == 8 ? "default small red" : "default small");
+        UI.DrawText(Language.GetText("Language"), -170, -4, alignment: "left", spacing: Config.spacing_small, textureName: pointer == 8 ? "default small hover" : "default small");
+        UI.DrawText("< " + Language.GetText(Language.Supported[Config.Language]) + " >", 0, -4, spacing: Config.spacing_small, textureName: pointer == 7 ? "default small red" : "default small");
 
 
         // Change option 
-        if (InputManager.Key_down("Up"))
-            pointer = pointer <= 0 ? 8 : pointer - 1;
-        else if (InputManager.Key_down("Down"))
-            pointer = pointer >= 8 ? 0 : pointer + 1;
+        if (Input.Key_down("Up"))
+            pointer = pointer <= 0 ? 7 : pointer - 1;
+        else if (Input.Key_down("Down"))
+            pointer = pointer >= 7 ? 0 : pointer + 1;
 
         // Do option
         if (pointer == 0) {
-            if (InputManager.Key_down("Left") && Config.Main_Volume > 0) Config.Main_Volume -= 1;
-            else if (InputManager.Key_down("Right") && Config.Main_Volume < 100) Config.Main_Volume += 1;
+            if (Input.Key_down("Left") && Config.Main_Volume > 0) Config.Main_Volume -= 1;
+            else if (Input.Key_down("Right") && Config.Main_Volume < 100) Config.Main_Volume += 1;
         } else if (pointer == 1) {
-            if (InputManager.Key_down("Left") && Config._music_volume > 0) Config._music_volume -= 1;
-            else if (InputManager.Key_down("Right") && Config._music_volume < 100) Config._music_volume += 1;
-        } else if (pointer == 2 && (InputManager.Key_down("Left") || InputManager.Key_down("Right"))) {
+            if (Input.Key_down("Left") && Config._music_volume > 0) Config._music_volume -= 1;
+            else if (Input.Key_down("Right") && Config._music_volume < 100) Config._music_volume += 1;
+        } else if (pointer == 2 && (Input.Key_down("Left") || Input.Key_down("Right"))) {
             Config.Vsync = !Config.Vsync;
             Program.window.SetVerticalSyncEnabled(Config.Vsync);
-        } else if (pointer == 3 && (InputManager.Key_down("Left") || InputManager.Key_down("Right"))) {
+        } else if (pointer == 3 && (Input.Key_down("Left") || Input.Key_down("Right"))) {
             Config.Fullscreen = !Config.Fullscreen;
             Program.window.Close();
             if (Config.Fullscreen == true) Program.window = new RenderWindow(VideoMode.DesktopMode, Config.GameTitle, Styles.Default, SFML.Window.State.Fullscreen);
@@ -69,25 +66,22 @@ public class WGSettings : Widget {
             Program.window.SetMouseCursorVisible(false);
             Program.window.SetView(Program.view);
         } else if (pointer == 4) {
-            if (InputManager.Key_down("Left") && Config.round_length > 1) Config.round_length -= 1;
-            else if (InputManager.Key_down("Right") && Config.round_length < 99) Config.round_length += 1;
+            if (Input.Key_down("Left") && Config.round_length > 1) Config.round_length -= 1;
+            else if (Input.Key_down("Right") && Config.round_length < 99) Config.round_length += 1;
         } else if (pointer == 5) {
-            if (InputManager.Key_down("Left") && Config.max_rounds > 1) Config.max_rounds -= 1;
-            else if (InputManager.Key_down("Right") && Config.max_rounds < 5) Config.max_rounds += 1;
+            if (Input.Key_down("Left") && Config.max_rounds > 1) Config.max_rounds -= 1;
+            else if (Input.Key_down("Right") && Config.max_rounds < 5) Config.max_rounds += 1;
         } else if (pointer == 6) {
-            if (InputManager.Key_down("Left") && Config.hit_stop_time > 0) Config.hit_stop_time -= 1;
-            else if (InputManager.Key_down("Right")) Config.hit_stop_time += 1;
+            if (Input.Key_down("Left") && Config.hit_stop_time > 0) Config.hit_stop_time -= 1;
+            else if (Input.Key_down("Right")) Config.hit_stop_time += 1;
         } else if (pointer == 7) {
-            if (InputManager.Key_down("Left") && Config.input_window_time > 1) Config.input_window_time -= 1;
-            else if (InputManager.Key_down("Right")) Config.input_window_time += 1;
-        } else if (pointer == 8) {
-            if (InputManager.Key_down("Left") && Config.Language > 0) Config.Language -= 1;
-            else if (InputManager.Key_down("Right") && Config.Language < Language.Supported.Length - 1) Config.Language += 1;
+            if (Input.Key_down("Left") && Config.Language > 0) Config.Language -= 1;
+            else if (Input.Key_down("Right") && Config.Language < Language.Supported.Length - 1) Config.Language += 1;
         }
 
         // Return option
         UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
-        if (UI.DrawButton(Language.GetText("save and exit"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: InputManager.Key_hold("LB"), action: InputManager.Key_up("LB"), click_font: "default small click", hover_font: "default small")) {
+        if (UI.DrawButton(Language.GetText("save and exit"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: Input.Key_hold("LB"), action: Input.Key_up("LB"), click_font: "default small click", hover_font: "default small")) {
             Config.SaveToFile();
             Camera.LockCamera();
             Program.ChangeState(Program.last_game_state);

@@ -12,7 +12,7 @@ namespace Language_space {
         }
 
         private static void LoadAllLanguages() {
-            var languagesDir = Data.GetPath("Assets/languages");
+            var languagesDir = Data.GetPath("assets/languages");
             if (!Directory.Exists(languagesDir)) {
                 Console.WriteLine($"Diretório de idiomas não encontrado: {languagesDir}");
                 return;

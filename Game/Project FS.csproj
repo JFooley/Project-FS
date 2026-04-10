@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <ApplicationIcon>Assets/icon.ico</ApplicationIcon>
+    <ApplicationIcon>assets/icon.ico</ApplicationIcon>
     <LangVersion>10.0</LangVersion> 
     <OutputType>Exe</OutputType>
     <TargetFramework>net472</TargetFramework>
@@ -19,17 +19,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="Assets\**\*">
+    <None Update="assets\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Remove="**\*.png" />
     <None Remove="**\*.jpg" />
-    <None Remove="**\*.xcf" />
     <None Remove="**\*.wav" />
     <None Remove="**\*.mp3" />
+    <None Remove="**\*.xcf" />
     <None Remove="**\*.py" />
-    <None Remove="**\misc" />
-    <None Remove="**\config.json" />
+    <None Remove="tools" />
+    <None Remove="assets_raw" />
   </ItemGroup>
 
   

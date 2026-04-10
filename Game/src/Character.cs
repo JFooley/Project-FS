@@ -113,7 +113,7 @@ public abstract class Character : Object {
     public bool on_air => this.body.Position.Y < this.floor_line;
     public bool crounching => this.state.low;
 
-    public bool can_parry => (not_acting_all && parring) || (not_acting_all && InputManager.Key_press("Left", input_window: this.state.air? Config.parry_window/2 : Config.parry_window, player: this.player_index, facing: this.facing));
+    public bool can_parry => (not_acting_all && parring) || (not_acting_all && Input.Key_press("Left", input_window: this.state.air? Config.parry_window/2 : Config.parry_window, player: this.player_index, facing: this.facing));
     public bool can_dash => not_acting && !this.state.on_parry;
     public bool has_hit = false; 
 
@@ -308,9 +308,9 @@ public abstract class Character : Object {
 
         // Realiza as ações programadas
         if (this.BOT.moveQueue.Count > 0)
-            InputManager.SetKey(this.BOT.moveQueue.Dequeue(), player: this.player_index, facing: this.facing);
+            Input.SetKey(this.BOT.moveQueue.Dequeue(), player: this.player_index, facing: this.facing);
         if (this.BOT.actionQueue.Count > 0)
-            InputManager.SetKey(this.BOT.actionQueue.Dequeue(), player: this.player_index, facing: this.facing);
+            Input.SetKey(this.BOT.actionQueue.Dequeue(), player: this.player_index, facing: this.facing);
 
         // IA do bot
         if (this.AIEnabled) {
@@ -364,11 +364,11 @@ public abstract class Character : Object {
     }
     public bool isBlockingHigh() {
         if ((this.not_acting_all || this.state.on_block) && (this.blocking_high || this.blocking)) return true;
-        return (this.not_acting || (this.state.on_block && !this.state.low)) && InputManager.Key_hold("Left", player: this.player_index, facing: this.facing) && !InputManager.Key_hold("Down", player: this.player_index, facing: this.facing);
+        return (this.not_acting || (this.state.on_block && !this.state.low)) && Input.Key_hold("Left", player: this.player_index, facing: this.facing) && !Input.Key_hold("Down", player: this.player_index, facing: this.facing);
     }
     public bool isBlockingLow() {
         if ((this.not_acting_all || this.state.on_block) && (this.blocking_low || this.blocking)) return true;
-        return (this.not_acting_low || (this.state.on_block && this.state.low)) && InputManager.Key_hold("Left", player: this.player_index, facing: this.facing) && InputManager.Key_hold("Down", player: this.player_index);
+        return (this.not_acting_low || (this.state.on_block && this.state.low)) && Input.Key_hold("Left", player: this.player_index, facing: this.facing) && Input.Key_hold("Down", player: this.player_index);
     }
     public void Stun(Character enemy, int advantage, bool hit = true, bool airbone = false, bool sweep = false, bool force_crounch = false, bool force_stand = false, bool raw_value = false) {
         if (hit || this.life_points.X == 0) { // Hit stun states
@@ -404,33 +404,33 @@ public abstract class Character : Object {
     }
     public void CheckColisions() {               
         // Para cada character no stage
-        foreach (var charB in Program.stage.OnSceneCharacters) {
-            if (charB == this) continue;
+        foreach (var enemy in Program.stage.OnSceneCharacters) {
+            if (enemy == this) continue;
             
             foreach (GenericBox boxA in this.current_boxes) {
                 if (boxA.type != GenericBox.HITBOX && boxA.type != GenericBox.PUSHBOX && boxA.type != GenericBox.GRABBOX) continue;
                 
-                foreach (GenericBox boxB in charB.current_boxes) {
+                foreach (GenericBox boxB in enemy.current_boxes) {
                     if (boxB.type == GenericBox.HURTBOX && boxB.type == GenericBox.PUSHBOX) continue;
                     
-                    if (GenericBox.Intersects(boxA, boxB, this, charB)) {
+                    if (GenericBox.Intersects(boxA, boxB, this, enemy)) {
                         if (boxA.type == GenericBox.PUSHBOX && boxB.type == GenericBox.PUSHBOX) {
                             // A body push B
-                            GenericBox.Colide(boxA, boxB, this, charB);
+                            GenericBox.Colide(boxA, boxB, this, enemy);
 
-                        } else if (this.player_index != charB.player_index && this.has_hit == false && charB.state.can_be_hit && this.type >= charB.type && (boxA.type == GenericBox.HITBOX || boxA.type == GenericBox.GRABBOX) && boxB.type == GenericBox.HURTBOX) { 
+                        } else if (this.player_index != enemy.player_index && this.has_hit == false && enemy.state.can_be_hit && this.type >= enemy.type && (boxA.type == GenericBox.HITBOX || boxA.type == GenericBox.GRABBOX) && boxB.type == GenericBox.HURTBOX) { 
                             // A hit B
                             this.has_hit = true;
                             
-                            int hit_type = DefineColisionType(charB);
+                            int hit_type = DefineColisionType(enemy);
 
                             if (hit_type == Character.NOTHING) continue;
                             if (hit_type == Character.PARRY) {
-                                charB.ChangeState("Parry", reset: true);
-                                charB.aura_points.X = Math.Min(charB.aura_points.Y, charB.aura_points.X + 10);
+                                enemy.ChangeState("Parry", reset: true);
+                                enemy.aura_points.X = Math.Min(enemy.aura_points.Y, enemy.aura_points.X + 10);
                             }
                             
-                            stage.Hitstop(this.state.hitstop, hit_type: hit_type, character: charB);
+                            stage.Hitstop(this.state.hitstop, hit_type: hit_type, on_hit_char: enemy);
                             
                             if (this.player_index == 1) stage.character_A.combo_counter += hit_type == Character.HIT ? 1 : 0; 
                             else stage.character_B.combo_counter += hit_type == Character.HIT ? 1 : 0;
@@ -501,21 +501,16 @@ public abstract class Character : Object {
         return null; 
     }
     public void PlayFrameSound() {
-        if (!this.current_animation.playing_sound && this.current_sound != "" && sounds.TryGetValue(this.current_sound, out SoundBuffer buffer)) {
-            var temp_sound = new Sound(buffer) {
-                Volume = Config.Character_Volume,
-                Pan = (this.body.Position.X - Camera.X) / (Config.RenderWidth*0.5f)};
-            temp_sound.Play();
-            active_sounds.Add(temp_sound);
-            active_sounds.RemoveAll(s => s.Status == SoundStatus.Stopped);
-            this.current_animation.playing_sound = true;
-        }
+        if (!this.current_animation.playing_sound && this.current_sound != "") this.PlaySound(this.current_sound, follow_player: true);
     }
-    public void PlaySound(string sound_name, float panning = 0, bool follow_player = true) {
-        if (sounds.TryGetValue(sound_name, out SoundBuffer buffer)) {
+    public void PlaySound(string sound_string, float panning = 0, bool follow_player = true) {
+        string[] sound = sound_string.Split(' ');
+        if (sounds.TryGetValue(sound[0], out SoundBuffer buffer)) {
             var temp_sound = new Sound(buffer) {
                 Volume = Config.Character_Volume,
-                Pan = follow_player ? (this.body.Position.X - Camera.X) / (Config.RenderWidth*0.5f) : panning};
+                Pan = follow_player ? (this.body.Position.X - Camera.X) / (Config.RenderWidth*0.5f) : panning,
+                Pitch = sound_string.Contains("--RP") ? 1 + AI.rand.Next(-1, 2)/10 : 1,
+            };
             temp_sound.Play();
             active_sounds.Add(temp_sound);
             active_sounds.RemoveAll(s => s.Status == SoundStatus.Stopped);
@@ -551,22 +546,14 @@ public abstract class Character : Object {
     
     // Loads
     public void LoadTextures() {
-        string full_path = Path.Combine(this.folder_path, "sprites");
+        string full_path = this.folder_path;
 
         if (!System.IO.Directory.Exists(full_path)) {
             throw new System.IO.DirectoryNotFoundException($"O diretório {full_path} não foi encontrado.");
         }
 
-        string dat_path = Path.Combine(full_path, "visuals.dat");
-        try {
-            Data.LoadTexturesFromFile(dat_path, this.textures);
-        } catch (Exception) {
-            var tex_data = Data.LoadTexturesFromPath(full_path);
-            Data.SaveTexturesToFile(dat_path, tex_data);
-            Data.LoadTexturesFromFile(dat_path, this.textures);
-        }
-
-
+        string dat_path = Path.Combine(full_path, "textures.dat");
+        Data.LoadTexturesFromFile(dat_path, this.textures);
     }
     public void UnloadTextures() {
         foreach (var image in textures.Values)
@@ -576,20 +563,14 @@ public abstract class Character : Object {
         textures.Clear(); // Clear the dictionary
     }
     public void LoadSounds() {
-        string full_sound_path = Path.Combine(this.folder_path, "sounds");
+        string full_sound_path = this.folder_path;
 
         if (!System.IO.Directory.Exists(full_sound_path)) {
             throw new System.IO.DirectoryNotFoundException($"O diretório {full_sound_path} não foi encontrado.");
         }
 
-        string dat_path = Path.Combine(full_sound_path, "sounds.dat");
-        try {
-            this.sounds = Data.LoadSoundsFromFile(dat_path);
-        } catch (Exception) {
-            var sound_bytes = Data.LoadSoundsFromPath(full_sound_path);
-            Data.SaveSoundsToFile(dat_path, sound_bytes);
-            this.sounds = Data.LoadSoundsFromFile(dat_path);
-        }
+        string dat_path = Path.Combine(full_sound_path, "audio.dat");
+        this.sounds = Data.LoadSoundsFromFile(dat_path);
     }
     public void UnloadSounds() {
         foreach (var sound in sounds.Values)

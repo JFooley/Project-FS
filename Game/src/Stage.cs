@@ -108,7 +108,7 @@ public class Stage {
         if (!this.character_B.on_hit) this.character_A.combo_counter = 0;
 
         // Pause
-        if (InputManager.Key_down("Start") && WGBattle.battle_state == WGBattle.Battling) this.Pause();
+        if (Input.Key_down("Start") && WGBattle.battle_state == WGBattle.Battling) this.Pause();
 
         // Render stage sprite
         if (this.textures.ContainsKey(this.CurrentSprite.Sprite_index)) {
@@ -355,23 +355,26 @@ public class Stage {
         foreach (Character char_object in this.OnSceneCharacters) char_object.animate = !char_object.animate;
         foreach (Character part_object in this.OnSceneParticles) part_object.animate = ! part_object.animate;
     }
-    public void Hitstop(string amount, int hit_type, Character character) {
+    public void Hitstop(string amount, int hit_type, Character on_hit_char) {
+        uint frames;
+
         if (hit_type == Character.PARRY) {
+            frames = (uint) Config.hit_stop_time * 1/2;
             switch (amount) {
                 case "Light":
-                        this.StopFor(lenght: (Config.hit_stop_time * 1/3) + character.current_animation.lenght + Config.parry_advantage * 2, target: character, target_lenght: Config.hit_stop_time * 1/3);
+                        this.StopFor(lenght: (Config.hit_stop_time * 1/3) + on_hit_char.current_animation.lenght + Config.parry_advantage * 2, target: on_hit_char, target_lenght: Config.hit_stop_time * 1/3);
                     break;
 
                 case "Medium":
-                        this.StopFor(lenght: (Config.hit_stop_time * 1/3) + character.current_animation.lenght + Config.parry_advantage * 3/2, target: character, target_lenght: Config.hit_stop_time * 1/3);
+                        this.StopFor(lenght: (Config.hit_stop_time * 1/3) + on_hit_char.current_animation.lenght + Config.parry_advantage * 3/2, target: on_hit_char, target_lenght: Config.hit_stop_time * 1/3);
                     break;
 
                 case "Heavy":
-                        this.StopFor(lenght: (Config.hit_stop_time * 1/3) + character.current_animation.lenght + Config.parry_advantage, target: character, target_lenght: Config.hit_stop_time * 1/3);
+                        this.StopFor(lenght: (Config.hit_stop_time * 1/3) + on_hit_char.current_animation.lenght + Config.parry_advantage, target: on_hit_char, target_lenght: Config.hit_stop_time * 1/3);
                     break;
 
                 default:
-                    this.StopFor(lenght: (Config.hit_stop_time * 1/3) + character.current_animation.lenght + Config.parry_advantage * 2, target: character, target_lenght: Config.hit_stop_time * 1/3);
+                    this.StopFor(lenght: (Config.hit_stop_time * 1/3) + on_hit_char.current_animation.lenght + Config.parry_advantage * 2, target: on_hit_char, target_lenght: Config.hit_stop_time * 1/3);
                     break;
             }
 
@@ -379,21 +382,35 @@ public class Stage {
             switch (amount) {
                 case "Light":
                     this.StopFor(Config.hit_stop_time * 1/2);
+                    frames = (uint) Config.hit_stop_time * 1/2;
                     break;
 
                 case "Medium":
                     this.StopFor(Config.hit_stop_time * 2/3);
+                    frames = (uint) Config.hit_stop_time * 2/3;
                     break;
 
                 case "Heavy":
                     this.StopFor(Config.hit_stop_time);
+                    frames = (uint) Config.hit_stop_time;
                     break;
 
                 default:
                     this.StopFor(Config.hit_stop_time * 1/2);
+                    frames = (uint) Config.hit_stop_time * 1/2;
                     break;
             }
         }
+
+
+        if (on_hit_char.player_index == Input.PLAYER_A) {
+            if (Accessibility.defend_feedback) Input.SetVibration(Input.PLAYER_A, Accessibility.defend_feedback_intensity, 0, frames);
+            if (Accessibility.atack_feedback) Input.SetVibration(Input.PLAYER_B, 0, Accessibility.atack_feedback_intensity, frames);
+        } else if (on_hit_char.player_index == Input.PLAYER_B) {
+            if (Accessibility.defend_feedback) Input.SetVibration(Input.PLAYER_B, Accessibility.defend_feedback_intensity, 0, frames);
+            if (Accessibility.atack_feedback) Input.SetVibration(Input.PLAYER_A, 0, Accessibility.atack_feedback_intensity, frames);
+        }
+
     }
     public void StopFor(int lenght, int target_lenght = 0, Character target = null) {
         foreach (var entity in this.OnSceneCharacters) entity.hitstop_counter = lenght;
@@ -518,7 +535,7 @@ public class Stage {
         this.character_B = null;
     }
     public void LoadTextures() {
-        string full_path = Path.Combine(this.folder_path, "sprites");
+        string full_path = this.folder_path;
 
         // Verifica se o diretório existe
         if (!System.IO.Directory.Exists(full_path)) {
@@ -529,15 +546,8 @@ public class Stage {
         this.shadow = new Sprite(Data.textures["ui:shadow1"]);
 
         // Verifica se o arquivo binário existe, senão, carrega as texturas e cria ele
-        string dat_path = Path.Combine(full_path, "visuals.dat");
-        try {
-            Data.LoadTexturesFromFile(dat_path, this.textures);
-        } catch (Exception e) {
-            Console.WriteLine($"Erro ao carregar {dat_path}: {e.Message}");
-            var tex_data = Data.LoadTexturesFromPath(full_path);
-            Data.SaveTexturesToFile(dat_path, tex_data);
-            Data.LoadTexturesFromFile(dat_path, this.textures);
-        }
+        string dat_path = Path.Combine(full_path, "textures.dat");
+        Data.LoadTexturesFromFile(dat_path, this.textures);
     }
     public void UnloadTextures() {
         foreach (var image in this.textures.Values)
@@ -547,7 +557,7 @@ public class Stage {
         this.textures.Clear(); // Clear the dictionary
     }
     public void LoadSounds() {
-        string full_sound_path = Path.Combine(this.folder_path, "sound");
+        string full_sound_path = this.folder_path;
 
         // Verifica se o diretório existe
         if (!System.IO.Directory.Exists(full_sound_path)) {
@@ -555,14 +565,8 @@ public class Stage {
         }
 
         // Verifica se o arquivo binário existe, senão, carrega os sons e cria ele
-        string dat_path = Path.Combine(full_sound_path, "sounds.dat");
-        try {
-            this.sounds = Data.LoadSoundsFromFile(dat_path);
-        } catch (Exception) {
-            var sound_bytes = Data.LoadSoundsFromPath(full_sound_path);
-            Data.SaveSoundsToFile(dat_path, sound_bytes);
-            Data.LoadSoundsFromFile(dat_path, this.sounds);
-        }
+        string dat_path = Path.Combine(full_sound_path, "audio.dat");
+        this.sounds = Data.LoadSoundsFromFile(dat_path);
 
         // setta a musica
         if (this.sounds.ContainsKey("music")) this.music = new Sound(this.sounds["music"]);

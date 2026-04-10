@@ -6,7 +6,7 @@ using SFML.System;
 namespace UI_space {
     public class UI {
         private static int elapsed = 0;
-        public static double frame_counter = 0;
+        public static uint frame_counter = 0;
 
         // Clocks
         public static bool blink30Hz = true;
@@ -328,18 +328,11 @@ namespace UI_space {
         private const int Rows = 10;     // Número de linhas
 
         public static void Load() {
-            string full_path = Data.GetPath("Assets/fonts");
+            string full_path = Data.GetPath("assets/fonts");
             if (!System.IO.Directory.Exists(full_path))
                 throw new System.IO.DirectoryNotFoundException($"O diretório {full_path} não foi encontrado.");
 
-            try {
-                Data.LoadTexturesFromFile(Data.GetPath("Assets/fonts/fonts.dat"), BitmapFont.textures);
-            } catch (Exception e) {
-                Console.WriteLine($"Erro ao carregar {full_path}: {e.Message}");
-                var tex_data = Data.LoadTexturesFromPath(Data.GetPath("Assets/fonts"));
-                Data.SaveTexturesToFile(Data.GetPath("Assets/fonts/fonts.dat"), tex_data);
-                Data.LoadTexturesFromFile(Data.GetPath("Assets/fonts/fonts.dat"), BitmapFont.textures);
-            }
+            Data.LoadTexturesFromFile(Data.GetPath("assets/fonts/textures.dat"), BitmapFont.textures);
         }
 
         public static void Rename(string old_name, string new_name) {

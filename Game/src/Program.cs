@@ -47,10 +47,10 @@ public static class Program {
     public static double last_frame_time = 0;
 
     // Shaders
-    public static Shader colorTinterShader = new Shader(null, null, Data.GetPath("Assets/shaders/color_tinter.frag"));
-    public static Shader colorFillShader = new Shader(null, null, Data.GetPath("Assets/shaders/color_fill.frag"));
-    public static Shader hueChange = new Shader(null, null, Data.GetPath("Assets/shaders/hue_change.frag"));
-    public static Shader paletteSwaper = new Shader(null, null, Data.GetPath("Assets/shaders/palette_swaper.frag"));
+    public static Shader colorTinterShader = new Shader(null, null, Data.GetPath("assets/shaders/color_tinter.frag"));
+    public static Shader colorFillShader = new Shader(null, null, Data.GetPath("assets/shaders/color_fill.frag"));
+    public static Shader hueChange = new Shader(null, null, Data.GetPath("assets/shaders/hue_change.frag"));
+    public static Shader paletteSwaper = new Shader(null, null, Data.GetPath("assets/shaders/palette_swaper.frag"));
 
     public static void Main() {  
         Config.LoadFromFile();
@@ -59,19 +59,13 @@ public static class Program {
         game_state = Intro;
         
         // Carregamento de texturas genéricas
-        try {
-            Data.LoadTexturesFromFile(Data.GetPath("Assets/data/visuals.dat"), Data.textures);
-        } catch (Exception) {
-            var tex_data = Data.LoadTexturesFromPath(Data.GetPath("Assets/visuals"));
-            Data.SaveTexturesToFile(Data.GetPath("Assets/data/visuals.dat"), tex_data);
-            Data.LoadTexturesFromFile(Data.GetPath("Assets/data/visuals.dat"), Data.textures);
-        }
+        Data.LoadTexturesFromFile(Data.GetPath("assets/visuals/textures.dat"), Data.textures);
 
         new UI();
 
         // Inicializações
         Language.Initialize();
-        new InputManager(autoDetectDevice: true);
+        new Input(autoDetectDevice: true);
         new Camera();
 
         // Crie uma janela
@@ -119,7 +113,7 @@ public static class Program {
 
         while (window.IsOpen) {
             window.DispatchEvents();
-            InputManager.Update();
+            Input.Update();
             UI.Update();
             Camera.Update();
             frametimer.Restart();
