@@ -56,9 +56,9 @@ public class InputManager {
     public static int[] buttonState = new int[3];
     public static int[] buttonLastState = new int[3];
 
-    public static bool anyKey => InputManager.buttonState[DEFAULT] > 0;
-    public static bool anyKeyA => InputManager.buttonState[PLAYER_A] > 0;
-    public static bool anyKeyB => InputManager.buttonState[PLAYER_B] > 0;
+    public static bool[] anyKey => new bool[] { InputManager.buttonState[DEFAULT] > 0, InputManager.buttonState[PLAYER_A] > 0, InputManager.buttonState[PLAYER_B] > 0 };
+    public static bool anyKeyA => anyKey[PLAYER_A];
+    public static bool anyKeyB => anyKey[PLAYER_B];
 
     public static bool faceButtonUp => InputManager.Key_up("A") || InputManager.Key_up("B") || InputManager.Key_up("C") || InputManager.Key_up("D");
     public static bool faceButtonHold => InputManager.Key_hold("A") || InputManager.Key_hold("B") || InputManager.Key_hold("C") || InputManager.Key_hold("D");
