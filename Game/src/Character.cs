@@ -509,7 +509,7 @@ public abstract class Character : Object {
             var temp_sound = new Sound(buffer) {
                 Volume = Config.Character_Volume,
                 Pan = follow_player ? (this.body.Position.X - Camera.X) / (Config.RenderWidth*0.5f) : panning,
-                Pitch = sound_string.Contains("--RP") ? 1 + AI.rand.Next(-1, 2)/10 : 1,
+                Pitch = sound_string.Contains("--RP") ? 1 + (float) AI.rand.Next(-1, 2) / 10 : 1,
             };
             temp_sound.Play();
             active_sounds.Add(temp_sound);

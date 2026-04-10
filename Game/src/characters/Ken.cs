@@ -339,7 +339,7 @@ public class Ken : Character {
         };
 
         var jumpFrames = new List<Frame> {
-            new FrameData(14720, 0, 0, len: 3, boxes: new List<GenericBox> { airPuxbox, new GenericBox(1, 99, 85, 149, 155)}, sound: "golpe_2 --RP"),
+            new FrameData(14720, 0, 0, len: 3, boxes: new List<GenericBox> { airPuxbox, new GenericBox(1, 99, 85, 149, 155)}, sound: "salto --RP"),
             new FrameData(14721, 0, 0, len: 3, boxes: new List<GenericBox> { airPuxbox, new GenericBox(1, 99, 85, 149, 155)}),
             new FrameData(14722, 0, 0, len: 3, boxes: new List<GenericBox> { airPuxbox, new GenericBox(1, 99, 85, 149, 155)}),
             new FrameData(14723, 0, 0, len: 3, boxes: new List<GenericBox> { airPuxbox, new GenericBox(1, 99, 85, 149, 155)}),
@@ -353,7 +353,7 @@ public class Ken : Character {
         };
 
         var jumpForward = new List<Frame> {
-            new FrameData(14732, 0, 0, len: 3, boxes: new List<GenericBox> { airPuxbox, new GenericBox(1, 126, 82, 143, 99), new GenericBox(1, 96, 95, 144, 123), new GenericBox(1, 105, 123, 155, 158), new GenericBox(1, 101, 156, 135, 190) }, sound: "golpe_2 --RP"),
+            new FrameData(14732, 0, 0, len: 3, boxes: new List<GenericBox> { airPuxbox, new GenericBox(1, 126, 82, 143, 99), new GenericBox(1, 96, 95, 144, 123), new GenericBox(1, 105, 123, 155, 158), new GenericBox(1, 101, 156, 135, 190) }, sound: "salto --RP"),
             new FrameData(14733, 0, 0, len: 3, boxes: new List<GenericBox> { airPuxbox, new GenericBox(1, 149, 96, 165, 113), new GenericBox(1, 102, 97, 158, 145), new GenericBox(1, 95, 145, 124, 180) }),
             new FrameData(14734, 0, 0, len: 3, boxes: new List<GenericBox> { airPuxbox, new GenericBox(1, 144, 115, 164, 138), new GenericBox(1, 95, 101, 152, 150) }),
             new FrameData(14735, 0, 0, len: 3, boxes: new List<GenericBox> { airPuxbox, new GenericBox(1, 93, 104, 155, 147) }),
@@ -372,7 +372,7 @@ public class Ken : Character {
         };
 
         var JumpBackward = new List<Frame> {
-            new FrameData(14741, 0, 0, len: 3, boxes: new List<GenericBox> { airPuxbox, new GenericBox(1, 119, 80, 138, 98), new GenericBox(1, 93, 94, 140, 124), new GenericBox(1, 107, 123, 149, 185) }, sound: "golpe_2 --RP"),
+            new FrameData(14741, 0, 0, len: 3, boxes: new List<GenericBox> { airPuxbox, new GenericBox(1, 119, 80, 138, 98), new GenericBox(1, 93, 94, 140, 124), new GenericBox(1, 107, 123, 149, 185) }, sound: "salto --RP"),
             new FrameData(14740, 0, 0, len: 3, boxes: new List<GenericBox> { airPuxbox, new GenericBox(1, 114, 82, 135, 99), new GenericBox(1, 93, 90, 137, 125), new GenericBox(1, 107, 115, 155, 144), new GenericBox(1, 120, 143, 152, 191) }),
             new FrameData(14739, 0, 0, len: 3, boxes: new List<GenericBox> { airPuxbox, new GenericBox(1, 84, 91, 136, 141), new GenericBox(1, 136, 107, 162, 168) }),
             new FrameData(14738, 0, 0, len: 3, boxes: new List<GenericBox> { airPuxbox, new GenericBox(1, 88, 96, 149, 145) }),
@@ -571,9 +571,9 @@ public class Ken : Character {
             new FrameData(14888, 0, 0, len: 3, boxes: new List<GenericBox> { pushbox }, sound: "step1 --RP"),
             new FrameData(14889, 0, 0, len: 3, boxes: new List<GenericBox> { pushbox }, sound: "step2 --RP"),
             new FrameData(14890, 0, 0, len: 3, boxes: new List<GenericBox> { pushbox }, sound: "step1 --RP"),
-            new FrameData(14891, 0, 0, len: 3, boxes: new List<GenericBox> { pushbox }),
-            new FrameData(14892, 0, 0, len: 3, boxes: new List<GenericBox> { pushbox }),
-            new FrameData(14893, 0, 0, len: 3, boxes: new List<GenericBox> { pushbox }),
+            new FrameData(14891, 0, 0, len: 3, boxes: new List<GenericBox> { pushbox }, sound: "step2 --RP"),
+            new FrameData(14892, 0, 0, len: 3, boxes: new List<GenericBox> { pushbox }, sound: "step1 --RP"),
+            new FrameData(14893, 0, 0, len: 3, boxes: new List<GenericBox> { pushbox }, sound: "step2 --RP"),
             new FrameData(14894, 0, 0, len: 3, boxes: new List<GenericBox> { pushbox }),
             new FrameData(14895, 0, 0, len: 3, boxes: new List<GenericBox> { pushbox }),
             new FrameData(14896, 0, 0, len: 3, boxes: new List<GenericBox> { pushbox }),
@@ -603,7 +603,7 @@ public class Ken : Character {
             new FrameData(14977, 0, 0, len: 4, boxes: new List<GenericBox> { pushbox }),
             new FrameData(14978, 0, 0, len: 4, boxes: new List<GenericBox> { pushbox }),
             new FrameData(14979, 0, 0, len: 4, boxes: new List<GenericBox> { pushbox }),
-            new FrameData(14980, 0, 0, len: 4, boxes: new List<GenericBox> { pushbox }),
+            new FrameData(14980, 0, 0, len: 4, boxes: new List<GenericBox> { pushbox }, sound: "salto --RP"),
             new FrameData(14981, 0, 0, len: 4, boxes: new List<GenericBox> { pushbox }),
             new FrameData(14982, 0, 0, len: 4, boxes: new List<GenericBox> { pushbox }),
             new FrameData(14983, 0, 0, len: 4, boxes: new List<GenericBox> { pushbox }),
