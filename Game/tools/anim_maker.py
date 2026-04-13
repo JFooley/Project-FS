@@ -57,10 +57,10 @@ class AnimationData:
                 "Sprite_index": sprite_name,
                 "DeltaX": frame["movement_x"],
                 "DeltaY": frame["movement_y"],
+                "Boxes": boxes,
                 "lenght": 1,
                 "Sound_index": "",
-                "hasHit": True,
-                "Boxes": boxes
+                "hasHit": True
             })
 
         with open(filename, "w") as f:
