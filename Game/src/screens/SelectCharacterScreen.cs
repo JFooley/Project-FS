@@ -10,6 +10,9 @@ public class WGSelectCharacter : Widget {
     public Character? charA_selected => selectorA.selected;
     public Character? charB_selected => selectorB.selected;
 
+    private bool A_flag = false;
+    private bool B_flag = false; 
+
     private Sprite char_bg = new Sprite(Data.textures["screens:bgchar"]);
 
     public override void Render() {
@@ -34,6 +37,8 @@ public class WGSelectCharacter : Widget {
         if (selectorA.state == WGSelector.READY && selectorB.state == WGSelector.READY) {
             if (UI.blink2Hz) UI.DrawText(Language.GetText("press start"), 0, -90, spacing: Config.spacing_medium);
             if (Input.Key_down("Start") ) {
+                this.A_flag = false;
+                this.B_flag = false;
                 Program.ChangeState(Program.LoadScreen);
             }
         }
@@ -67,11 +72,11 @@ public class WGSelectCharacter : Widget {
         if (selectorA.state == WGSelector.READY) {
             if (player == 1) {
                 selectorB.selected = Data.characters[AI.rand.Next(0, Data.characters.Count)].Copy();
-                if (selectorA.selected?.name == selectorB.selected?.name) selectorB.selected?.ChangePalette(AI.rand.Next(0, (int) (selectorB.selected.palette_quantity - 2)));
+                if (selectorA.selected?.name == selectorB.selected?.name && selectorA.selected?.palette_index == 0) selectorB.selected?.SetPalette(AI.rand.Next(0, (int) (selectorB.selected.palette_quantity - 2)));
                 selectorB.state = WGSelector.READY;
             } else {
                 selectorA.selected = Data.characters[AI.rand.Next(0, Data.characters.Count)].Copy();
-                if (selectorA.selected?.name == selectorA.selected?.name) selectorA.selected?.ChangePalette(AI.rand.Next(0, (int) (selectorA.selected.palette_quantity - 2)));
+                if (selectorB.selected?.name == selectorA.selected?.name && selectorB.selected?.palette_index == 0) selectorA.selected?.SetPalette(AI.rand.Next(0, (int) (selectorA.selected.palette_quantity - 2)));
                 selectorA.state = WGSelector.READY;
             }
         }
@@ -93,8 +98,12 @@ public class WGSelectCharacter : Widget {
             Program.ChangeState(Program.Controls);
     }
     private void Training() {
-        selectorA.Render(-77, -30, selectorA.state == WGSelector.READY ? 2 : 1, x_scale: 1);
-        selectorB.Render(77, -30, selectorA.state == WGSelector.READY ? 1 : 2, x_scale: -1);
+        // CONSERTAR ISSO
+        selectorA.Render(-77, -30, this.B_flag ? 0 : 1, x_scale: 1);
+        selectorB.Render(77, -30, this.A_flag ? 0 : 2, x_scale: -1);
+
+        if (selectorA.state == WGSelector.READY) this.A_flag = true;
+        if (selectorB.state == WGSelector.READY) this.B_flag = true;
 
         // Shoulder buttons
         UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
@@ -104,6 +113,8 @@ public class WGSelectCharacter : Widget {
             selectorB.selected = null;
             selectorA.state = WGSelector.SELECTING_CHAR;
             selectorB.state = WGSelector.SELECTING_CHAR;
+            this.A_flag = false;
+            this.B_flag = false;
         }
 
         UI.DrawText("F", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
@@ -163,27 +174,23 @@ public class WGSelector : Widget {
         }
 
         // Buttons
-        if (state != READY && UI.DrawButton("<   ", x, y, hover: true, click: Input.Key_hold("Left", player: player), action: Input.Key_down("Left", player: player), hover_font: "default small", font: "", spacing: 0)) {
+        if (state != READY && UI.DrawButton("<   ", x, y, hover: true, click: Input.Key_hold("Left", player), action: Input.Key_up("Left", player) || (Input.Key_hold_for("Left", Config.hold_time, player) && UI.Clock(Config.hold_clock)), hover_font: "default small", font: "", spacing: 0)) {
             if (state == SELECTING_CHAR) pointer = pointer > 0 ? pointer - 1 : Data.characters.Count - 1;
-            else if (state == SELECTING_PALETTE) selected.ChangePalette(-1);
+            else if (state == SELECTING_PALETTE) selected.SetPalette(-1);
         } 
         
-        if (state != READY && UI.DrawButton("   >", x, y, hover: true, click: Input.Key_hold("Right", player: player), action: Input.Key_down("Right", player: player), hover_font: "default small", font: "", spacing: 0)) {
+        if (state != READY && UI.DrawButton("   >", x, y, hover: true, click: Input.Key_hold("Right", player), action: Input.Key_up("Right", player) || (Input.Key_hold_for("Right", Config.hold_time, player) && UI.Clock(Config.hold_clock)), hover_font: "default small", font: "", spacing: 0)) {
             if (state == SELECTING_CHAR) pointer = pointer < Data.characters.Count - 1 ? pointer + 1 : 0;
-            else if (state == SELECTING_PALETTE) selected.ChangePalette(1);
+            else if (state == SELECTING_PALETTE) selected.SetPalette(1);
         }
 
-        if (UI.DrawButton(Data.characters[pointer].name, x, y + info_y_offset - 10, spacing: Config.spacing_small, action: Input.Key_down("A", player: player), click: Input.Key_hold("A", player: player), hover_font: "default small")) {
+        if (UI.DrawButton(Data.characters[pointer].name, x, y + info_y_offset - 10, spacing: Config.spacing_small, action: Input.Key_up("A", player), click: Input.Key_hold("A", player: player), hover_font: "default small")) {
             if (state == SELECTING_CHAR) {
                 selected = Data.characters[pointer].Copy();
                 state = SELECTING_PALETTE;
 
             } else if (state == SELECTING_PALETTE) {
                 state = READY;
-
-            } else if (state == READY) {
-                state = SELECTING_CHAR;
-                selected = null;
             }
         }
     }

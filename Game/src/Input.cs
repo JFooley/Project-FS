@@ -214,6 +214,13 @@ public class Input {
     public static bool Key_hold(string key, int player = DEFAULT, int facing = 1) {
         return (buttonState[player] & (1 << keysTranslationMap[facing][key])) != 0;
     }
+    public static bool Key_hold_for(string key, int frames, int player = DEFAULT, int facing = 1) {
+        List<int> bufferList = buffers[player].ToList();
+        for (int i = bufferList.Count() - 1; i > bufferList.Count() - frames; i--) {
+            if ((bufferList[i] & (1 << keysTranslationMap[facing][key])) == 0) return false;
+        }
+        return true;
+    }
     public static bool Key_change(string key, int player = DEFAULT, int facing = 1) {
         return (buttonState[player] & (1 << keysTranslationMap[facing][key])) != (buttonLastState[player] & (1 << keysTranslationMap[facing][key]));
     }
@@ -271,7 +278,7 @@ public class Input {
         }
         return false;
     }
-    
+
     // Key Manipulation
     public static void SetKey(string key, int player, int facing = 1) {
         if (key == "") return;

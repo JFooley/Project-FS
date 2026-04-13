@@ -68,6 +68,10 @@ public static class Config {
     public const int last_hit_stop_time = 20;
     public const int contact_shadow = 100;
 
+    // Visual
+    public const int hold_time = 20;
+    public const int hold_clock = 10;
+
     // Text
     public const int spacing_small = -26; 
     public const int spacing_medium = -23;

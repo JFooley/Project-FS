@@ -40,18 +40,22 @@ public class WGSettings : Widget {
 
 
         // Change option 
-        if (Input.Key_down("Up"))
+        if (Input.Key_down("Up") || (Input.Key_hold_for("Up", Config.hold_time) && UI.Clock(Config.hold_clock)))
             pointer = pointer <= 0 ? 7 : pointer - 1;
-        else if (Input.Key_down("Down"))
+        else if (Input.Key_down("Down") || (Input.Key_hold_for("Down", Config.hold_time) && UI.Clock(Config.hold_clock)))
             pointer = pointer >= 7 ? 0 : pointer + 1;
 
         // Do option
         if (pointer == 0) {
-            if (Input.Key_down("Left") && Config.Main_Volume > 0) Config.Main_Volume -= 1;
-            else if (Input.Key_down("Right") && Config.Main_Volume < 100) Config.Main_Volume += 1;
+            if ((Input.Key_down("Left") || (Input.Key_hold_for("Left", Config.hold_time) && UI.Clock(Config.hold_clock))) && Config.Main_Volume > 0) 
+                Config.Main_Volume -= 1;
+            else if ((Input.Key_down("Right") || (Input.Key_hold_for("Right", Config.hold_time) && UI.Clock(Config.hold_clock))) && Config.Main_Volume < 100) 
+                Config.Main_Volume += 1;
         } else if (pointer == 1) {
-            if (Input.Key_down("Left") && Config._music_volume > 0) Config._music_volume -= 1;
-            else if (Input.Key_down("Right") && Config._music_volume < 100) Config._music_volume += 1;
+            if ((Input.Key_down("Left") || (Input.Key_hold_for("Left", Config.hold_time) && UI.Clock(Config.hold_clock))) && Config._music_volume > 0) 
+                Config._music_volume -= 1;
+            else if ((Input.Key_down("Right") || (Input.Key_hold_for("Right", Config.hold_time) && UI.Clock(Config.hold_clock))) && Config._music_volume < 100) 
+                Config._music_volume += 1;
         } else if (pointer == 2 && (Input.Key_down("Left") || Input.Key_down("Right"))) {
             Config.Vsync = !Config.Vsync;
             Program.window.SetVerticalSyncEnabled(Config.Vsync);

@@ -5,8 +5,12 @@ using SFML.Audio;
 public class Fireball : Character {
     private static Dictionary<string, Texture> textures_local = new Dictionary<string, Texture>();
     public override Dictionary<string, Texture> textures {get => textures_local; protected set => textures_local = value ?? new Dictionary<string, Texture>();}
+    
     private static Dictionary<string, SoundBuffer> sounds_local = new Dictionary<string, SoundBuffer>();
     public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
+    
+    private static Dictionary<string, List<Frame>> animations_local = new Dictionary<string, List<Frame>>();
+    public override Dictionary<string, List<Frame>> animations { get => animations_local; protected set => animations_local = value ?? new Dictionary<string, List<Frame>>();}
 
     public Fireball(string initialState, int life_points, float startX, float startY, int team, int facing)
         : base("Ken-Fireball", initialState, startX, startY, Data.GetPath("Assets/characters/Ken-Fireball"), 1) {
@@ -15,11 +19,14 @@ public class Fireball : Character {
             this.life_points = new Vector2i(life_points, 0);
             this.shadow_size = 1;
             this.own_light = new Color(255, 255, 255, 255);
-        }
-    public Fireball() : base("Ken-Fireball", "", 0, 0, Data.GetPath("Assets/characters/Ken-Fireball"), 1) {}
-
+    }
+    public Fireball()
+        : base("Ken-Fireball", "", 0, 0, Data.GetPath("Assets/characters/Ken-Fireball"), 1) {
+            this.shadow_size = 1;
+            this.own_light = new Color(255, 255, 255, 255);
+    }
     public override void Load() {
-        var a = Data.LoadAnimationDat(Path.Combine(this.folder_path, "animations.dat"));
+        var a = this.animations;
     
         this.states = new Dictionary<string, State> {
             {"Ken1", new State(a["KenFireballFrames"], "Ken1", 7, can_harm: true)},
@@ -146,6 +153,4 @@ public class Fireball : Character {
         this.life_points.X -= 1;
         return base.DefineColisionType(target);
     }
-
-
 }

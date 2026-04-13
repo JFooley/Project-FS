@@ -30,9 +30,9 @@ public class WGMainMenu : Widget {
         }
 
         // Change option
-        if (Input.Key_down("Left"))
+        if (Input.Key_down("Left") || (Input.Key_hold_for("Left", Config.hold_time) && UI.Clock(Config.hold_clock)))
             pointer = pointer <= 0 ? main_menu.Count - 1 : pointer - 1;
-        else if (Input.Key_down("Right"))
+        else if (Input.Key_down("Right") || (Input.Key_hold_for("Right", Config.hold_time) && UI.Clock(Config.hold_clock)))
             pointer = pointer >= main_menu.Count - 1 ? 0 : pointer + 1;
 
         // Do option

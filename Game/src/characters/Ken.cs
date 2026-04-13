@@ -3,16 +3,22 @@ using System.IO.Compression;
 using SFML.Graphics;
 using SFML.Audio;
 using UI_space;
+using System.Runtime.InteropServices;
 
 public class Ken : Character {
     private static Dictionary<string, Texture> _shared_textures = new Dictionary<string, Texture>();
     public override Dictionary<string, Texture> textures {get => _shared_textures; protected set => _shared_textures = value ?? new Dictionary<string, Texture>();}
+    
     private static Dictionary<string, SoundBuffer> _shared_sounds = new Dictionary<string, SoundBuffer>();
     public override Dictionary<string, SoundBuffer> sounds {get => _shared_sounds; protected set => _shared_sounds = value ?? new Dictionary<string, SoundBuffer>();}
-    private static Texture? _shared_palette;
-    public override Texture palette {get => _shared_palette; protected set => _shared_palette = value;}
+    
+    private static Dictionary<string, List<Frame>> _shared_animations = new Dictionary<string, List<Frame>>();
+    public override Dictionary<string, List<Frame>> animations { get => _shared_animations; protected set => _shared_animations = value ?? new Dictionary<string, List<Frame>>();}
 
-    private Fireball? current_fireball; 
+    private static Texture? _shared_palette;
+    public override Texture palette {get => _shared_palette ?? new Texture(Data.textures["other:placeholder"]); protected set => _shared_palette = value;}
+
+    private Fireball? current_fireball = null;
 
     // Constructors
     public Ken(string initialState, int startX, int startY)
@@ -23,7 +29,6 @@ public class Ken : Character {
         this.aura_points = new Vector2i(0, 100);
     } 
     public Ken() : base("Ken", Data.GetPath("Assets/characters/Ken")) { }
-
     public override Character Copy() {
         var obj = new Ken("Intro", 0, 0);
         obj.Load();
@@ -33,8 +38,10 @@ public class Ken : Character {
         var fb = new Fireball();
         fb.LoadTextures();
         fb.LoadSounds();
+        fb.LoadAnimations();
+        fb.Load();
 
-        var a = Data.LoadAnimationDat(Path.Combine(this.folder_path, "animations.dat"));
+        var a = this.animations;
 
         this.states = new Dictionary<string, State> {
             // Basic
@@ -202,18 +209,18 @@ public class Ken : Character {
         if (this.current_fireball != null && this.current_fireball.remove) this.current_fireball = null;
         if (this.current_fireball == null && Input.Key_sequence("Down Right C", 10, player: this.player_index, facing: this.facing) && ((this.not_acting || this.not_acting_low) || (this.has_hit && (this.current_state == "MediumP" || this.current_state == "LightP" || this.current_state == "LowLightK")))) {
             this.ChangeState("LightHaduken");
-        } else if (this.current_state == "LightHaduken" && this.current_anim_frame_index == 3 && this.current_fireball == null) {
+        } else if (this.current_state == "LightHaduken" && this.current_anim_frame_index == 3) {
             this.spawnFireball("Ken1", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, X_offset: 25);
         } 
         if (this.current_fireball == null && Input.Key_sequence("Down Right D", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low)) {
             this.ChangeState("HeavyHaduken");
-        } else if (this.current_state == "HeavyHaduken" && this.current_anim_frame_index == 4 && this.current_fireball == null) {
+        } else if (this.current_state == "HeavyHaduken" && this.current_anim_frame_index == 4) {
             this.spawnFireball("Ken2", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, X_offset: 25);
         }
         if (this.current_fireball == null && Input.Key_sequence("Down Right RB", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low) && Character.CheckAuraPoints(this, 50)) {
             Character.UseSuperPoints(this, 50);
             this.ChangeState("HadukenEX");
-        } else if (this.current_state == "HadukenEX" && this.current_anim_frame_index == 4 && this.current_fireball == null) {
+        } else if (this.current_state == "HadukenEX" && this.current_anim_frame_index == 4) {
             this.spawnFireball("Ken3", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, life_points: 2, X_offset: 25);
             this.PlaySound("EX");
         }
@@ -955,7 +962,7 @@ public class Ken : Character {
         var fb = new Fireball(state, life_points, X + X_offset * facing, Y + Y_offset, team, facing);
         fb.ChangeState(state, reset: true);
         fb.Load();
-        Program.stage.newCharacters.Add(fb);
+        Program.stage?.newCharacters.Add(fb);
         this.current_fireball = fb;
     }
 }

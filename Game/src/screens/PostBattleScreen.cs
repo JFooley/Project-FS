@@ -23,9 +23,9 @@ public class WGPostBattle : Widget {
         UI.DrawText(winner_text, 0, -100, spacing: Config.spacing_medium, textureName: "default medium");
 
         // Change option
-        if (Input.Key_down("Up") && pointer > 0)
+        if ((Input.Key_down("Up") || (Input.Key_hold_for("Up", Config.hold_time) && UI.Clock(Config.hold_clock))) && pointer > 0)
             pointer -= 1;
-        else if (Input.Key_down("Down") && pointer < 2)
+        else if ((Input.Key_down("Down") || (Input.Key_hold_for("Down", Config.hold_time) && UI.Clock(Config.hold_clock))) && pointer < 2)
             pointer += 1;
 
         // Do option

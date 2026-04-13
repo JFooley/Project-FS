@@ -5,8 +5,12 @@ using SFML.Audio;
 public class Particle : Character {
     private static Dictionary<string, Texture> textures_local = new Dictionary<string, Texture>();
     public override Dictionary<string, Texture> textures {get => textures_local; protected set => textures_local = value ?? new Dictionary<string, Texture>();}
+    
     private static Dictionary<string, SoundBuffer> sounds_local = new Dictionary<string, SoundBuffer>();
     public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
+    
+    private static Dictionary<string, List<Frame>> _shared_animations = new Dictionary<string, List<Frame>>();
+    public override Dictionary<string, List<Frame>> animations { get => _shared_animations; protected set => _shared_animations = value ?? new Dictionary<string, List<Frame>>();}
 
     public Particle(string initialState, float startX, float startY, int facing)
         : base("Particle", initialState, startX, startY, Data.GetPath("Assets/particles/Particle")) {
@@ -16,9 +20,9 @@ public class Particle : Character {
     public Particle() : base("Particle", "", 0, 0, Data.GetPath("Assets/particles/Particle")) {}
 
     public override void Load() {
-        var a = Data.LoadAnimationDat(Path.Combine(this.folder_path, "animations.dat"));
+        var a = this.animations;
 
-        var animations = new Dictionary<string, State> {
+        this.states = new Dictionary<string, State> {
             {"SALighting", new State(a["SAGathering"], "SALighting_tail", 60)},
             {"SALighting_tail", new State(a["SALighting"], "Remove", 60)},
             {"SABlink", new State(a["SAGathering"], "SABlink_tail", 60)},
@@ -26,8 +30,6 @@ public class Particle : Character {
             {"Shungoku", new State(a["Shungoku"], "Remove", 15)},
             {"Shungoku_text", new State(a["Shungoku_text"], "Remove", 15)},
         };
-
-        this.states = animations;
     }
     
     public override void Render(bool drawHitboxes = false) {

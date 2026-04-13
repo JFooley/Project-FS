@@ -2,7 +2,6 @@ using SFML.Graphics;
 using SFML.System;
 using UI_space;
 using Language_space;
-using System.CodeDom;
 
 class WGBattle : Widget {
     // Battle States

@@ -28,9 +28,9 @@ public class WGSelectStage : Widget {
         if (UI.DrawButton(Language.GetText("Controls"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("RB"), action: Input.Key_up("RB"), click_font: "default small click", hover_font: "default small")) 
             Program.ChangeState(Program.Controls);
 
-        if (Input.Key_down("Left"))
+        if (Input.Key_down("Left") || (Input.Key_hold_for("Left", Config.hold_time) && UI.Clock(Config.hold_clock)))
             pointer = pointer <= 0 ? Data.stages.Count - 1 : pointer - 1;
-        else if (Input.Key_down("Right"))
+        else if (Input.Key_down("Right") || (Input.Key_hold_for("Right", Config.hold_time) && UI.Clock(Config.hold_clock)))
             pointer = pointer >= Data.stages.Count - 1 ? 0 : pointer + 1;
 
         if (UI.DrawButton(Language.GetText(Data.stages[pointer].name), 0, -95, spacing: Config.spacing_medium, click: Input.faceButtonHold, action: Input.faceButtonUp, click_font: "default medium click", hover_font: "default medium white")) {

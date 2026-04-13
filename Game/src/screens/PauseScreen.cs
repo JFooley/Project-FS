@@ -53,9 +53,9 @@ public class WGPause : Widget {
         }       
 
         // Change option 
-        if (Input.Key_down("Up") && this.pointer.Y > 0) {
+        if ((Input.Key_down("Up") || (Input.Key_hold_for("Up", Config.hold_time) && UI.Clock(Config.hold_clock))) && this.pointer.Y > 0) {
             this.pointer.Y -= 1;
-        } else if (Input.Key_down("Down") && this.pointer.Y < (Stage.training_mode ? 3 : 2)) {
+        } else if ((Input.Key_down("Down") || (Input.Key_hold_for("Down", Config.hold_time) && UI.Clock(Config.hold_clock))) && this.pointer.Y < (Stage.training_mode ? 3 : 2)) {
             this.pointer.Y += 1;
         }
     }
@@ -101,15 +101,15 @@ public class WGPause : Widget {
             this.sub_menu = 0;
         }
         // Change option 
-        if (Input.Key_down("Up") && this.pointer.Y > 0) {
+        if ((Input.Key_down("Up") || (Input.Key_hold_for("Up", Config.hold_time) && UI.Clock(Config.hold_clock))) && this.pointer.Y > 0) {
             this.pointer.Y -= 1;
-        } else if (Input.Key_down("Down") && this.pointer.Y < 5) {
+        } else if ((Input.Key_down("Down") || (Input.Key_hold_for("Down", Config.hold_time) && UI.Clock(Config.hold_clock))) && this.pointer.Y < 5) {
             this.pointer.Y += 1;
         }
 
-        if (Input.Key_down("Left") && this.pointer.X > 0) {
+        if ((Input.Key_down("Left") || (Input.Key_hold_for("Left", Config.hold_time) && UI.Clock(Config.hold_clock))) && this.pointer.X > 0) {
             this.pointer.X -= 1;
-        } else if (Input.Key_down("Right") && this.pointer.X < 1) {
+        } else if ((Input.Key_down("Right") || (Input.Key_hold_for("Right", Config.hold_time) && UI.Clock(Config.hold_clock))) && this.pointer.X < 1) {
             this.pointer.X += 1;
         }
     }

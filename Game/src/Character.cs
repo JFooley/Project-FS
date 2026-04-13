@@ -126,14 +126,17 @@ public abstract class Character : Object {
     public Dictionary<string, State> states = new Dictionary<string, State>{};
     public abstract Dictionary<string, Texture> textures { get; protected set;}
     public abstract Dictionary<string, SoundBuffer> sounds { get; protected set;}
+    public abstract Dictionary<string, List<Frame>> animations { get; protected set;}
     private static List<Sound> active_sounds = new List<Sound>();
 
     // Visuals
     public Texture thumb;
     public Color light_tint => Program.stage.AmbientLight;
     public Color own_light = Color.Transparent;
+
     public int shadow_size = 2;
     public bool has_frame_change => this.last_anim_frame_index != this.current_anim_frame_index;
+
     public virtual Texture palette {get; protected set;}
     public uint palette_size => this.palette.Size.X;
     public uint palette_quantity => this.palette.Size.Y;
@@ -546,41 +549,44 @@ public abstract class Character : Object {
     
     // Loads
     public void LoadTextures() {
-        string full_path = this.folder_path;
-
-        if (!System.IO.Directory.Exists(full_path)) {
-            throw new System.IO.DirectoryNotFoundException($"O diretório {full_path} não foi encontrado.");
-        }
-
-        string dat_path = Path.Combine(full_path, "textures.dat");
-        Data.LoadTexturesDat(dat_path, this.textures);
+        Data.LoadTexturesDat(Path.Combine(this.folder_path, "textures.dat"), this.textures);
     }
     public void UnloadTextures() {
-        foreach (var image in textures.Values)
-        {
+        foreach (var image in textures.Values) {
             image.Dispose(); // Free the memory used by the image
         }
         textures.Clear(); // Clear the dictionary
     }
     public void LoadSounds() {
-        string full_sound_path = this.folder_path;
-
-        if (!System.IO.Directory.Exists(full_sound_path)) {
-            throw new System.IO.DirectoryNotFoundException($"O diretório {full_sound_path} não foi encontrado.");
-        }
-
-        string dat_path = Path.Combine(full_sound_path, "audio.dat");
-        this.sounds = Data.LoadSoundsDat(dat_path);
+        this.sounds = Data.LoadSoundsDat(Path.Combine(this.folder_path, "audio.dat"));
     }
     public void UnloadSounds() {
-        foreach (var sound in sounds.Values)
-        {
+        foreach (var sound in sounds.Values) {
             sound.Dispose(); // Free the memory used by the image
         }
         sounds.Clear(); 
     }
+    public void LoadAnimations() {
+        this.animations = Data.LoadAnimationDat(Path.Combine(this.folder_path, "animations.dat"));
+    }
+    public void UnloadAnimations() {
+        foreach (var ani in animations.Values) {
+            ani.Clear();
+        }
+        animations.Clear();
+    }
+    
     public void LoadPalette() {
         this.palette = new Texture(Path.Combine(this.folder_path, "palette.bmp"));
+    }
+    public void SetPalette(int add_to_index = 0) {
+        var temp_index = (int) (this.palette_index + add_to_index) % this.palette_quantity;
+
+        if (temp_index < 0) temp_index += this.palette_quantity;
+
+        this.palette_index = (uint) temp_index;
+
+        this.current_palette_color = this.palette.CopyToImage().GetPixel(new Vector2u(0, this.palette_index));
     }
     public void SetThumb() {
         try {
@@ -589,15 +595,6 @@ public abstract class Character : Object {
         } catch (Exception) {
             this.thumb = new Texture(new Vector2u(1,1));
         }
-    }
-    public void ChangePalette(int add_to_index = 0) {
-        var temp_index = (int) (this.palette_index + add_to_index) % this.palette_quantity;
-
-        if (temp_index < 0) temp_index += this.palette_quantity;
-
-        this.palette_index = (uint) temp_index;
-
-        this.current_palette_color = this.palette.CopyToImage().GetPixel(new Vector2u(0, this.palette_index));
     }
     
     // General Load
@@ -608,6 +605,7 @@ public abstract class Character : Object {
     public override void Unload() {
         this.UnloadSounds();
         this.UnloadTextures();
+        this.UnloadAnimations();
     }
     
 }

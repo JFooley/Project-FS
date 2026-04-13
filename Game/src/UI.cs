@@ -1,4 +1,5 @@
 
+using System.Net.NetworkInformation;
 using Language_space;
 using SFML.Graphics;
 using SFML.System;
@@ -45,7 +46,6 @@ namespace UI_space {
             UI.hud = new Sprite(Data.textures["ui:hud"]);
             UI.Load();
         }
-
         public static void Update() {
             UI.frame_counter++;
             UI.blink30Hz = UI.frame_counter % (60/30) == 0 ? UI.blink30Hz = !UI.blink30Hz : UI.blink30Hz;
@@ -53,6 +53,11 @@ namespace UI_space {
             UI.blink4Hz = UI.frame_counter % (60/4) == 0 ? UI.blink4Hz = !UI.blink4Hz : UI.blink4Hz;
             UI.blink2Hz = UI.frame_counter % (60/2) == 0 ? UI.blink2Hz = !UI.blink2Hz : UI.blink2Hz;
             UI.blink1Hz = UI.frame_counter % 60 == 0 ? UI.blink1Hz = !UI.blink1Hz : UI.blink1Hz;;
+        }
+        
+        // Timing aux
+        public static bool Clock(int frequency) {
+            return UI.frame_counter % frequency == 0;
         }
 
         // Loads
@@ -70,7 +75,6 @@ namespace UI_space {
             UI.elapsed = UI.frame_counter % 30 == 0 ? (int) (1 / Program.last_frame_time) : UI.elapsed;
             UI.DrawText(UI.elapsed.ToString() + " - " + Program.last_frame_time.ToString("F5"), 0, 82, spacing: Config.spacing_small, textureName: textureName);
         }
-
         public static void DrawText(string text, float X, float Y, float spacing = 0, string alignment = "center", bool absolutePosition = false, string textureName = "default medium") {
             float totalWidth = 0;
             float pos_X, pos_Y;
@@ -109,7 +113,6 @@ namespace UI_space {
                 offset_X += sprite.GetGlobalBounds().Width + spacing;
             }
         }
-
         public static void DrawRectangle(float X, float Y, float width, float height, SFML.Graphics.Color? outline_color = null, SFML.Graphics.Color? fill_color = null, string alignment = "center", bool absolutePosition = false) {
             RectangleShape rectangle;
             float pos_X = absolutePosition ? X : Camera.X + X;
@@ -137,7 +140,6 @@ namespace UI_space {
 
             Program.window.Draw(rectangle);
         }
-    
         public static void DrawBar(float X, float Y, float currentValue, float maxValue, string textureName, string alignment = "center", bool mirrored = false, SFML.Graphics.Color? color = null, bool grow_inverted = true, bool absolutePosition = false) {
             if (!Data.textures.ContainsKey(textureName)) return;
             
@@ -194,7 +196,6 @@ namespace UI_space {
             
             Program.window.Draw(barSprite, renderStates);
         }
-        
         public static bool DrawButton(string text, float pos_X, float pos_Y, bool action = false, bool hover = true, bool click = false, float spacing = Config.spacing_small, string alignment = "center", bool absolutePosition = false, string font = "default small white", string hover_font = "default small hover", string click_font = "default small click") {
             if (click && hover) {
                 UI.DrawText(text, pos_X, pos_Y, spacing: spacing, alignment: alignment, absolutePosition: absolutePosition, textureName: click_font);
@@ -283,7 +284,6 @@ namespace UI_space {
             UI.DrawText(string.Concat(Enumerable.Repeat("-", Math.Max(Config.max_rounds - stage.rounds_A, 0))) + string.Concat(Enumerable.Repeat("*", stage.rounds_A)), -20, -91, spacing: -19, alignment: "right", textureName: "icons");
             UI.DrawText(string.Concat(Enumerable.Repeat("*", stage.rounds_B)) + string.Concat(Enumerable.Repeat("-", Math.Max(Config.max_rounds - stage.rounds_B, 0))),  20, -91, spacing: -19, alignment: "left", textureName: "icons");
         }
-        
         public static void Load() {
             BitmapFont.Load();
             BitmapFont.Rename("font1", "1");

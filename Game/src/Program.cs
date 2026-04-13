@@ -194,6 +194,7 @@ public static class Program {
             character.LoadPalette();
             character.LoadTextures();
             character.LoadSounds();
+            character.LoadAnimations();
             character.SetThumb();
         }
 
@@ -209,9 +210,11 @@ public static class Program {
 
         hs.LoadTextures();
         hs.LoadSounds();
+        hs.LoadAnimations();
 
         pt.LoadTextures();
         pt.LoadSounds();
+        pt.LoadAnimations();
 
         loading = false;
         ChangeState(StartScreen);

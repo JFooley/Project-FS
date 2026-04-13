@@ -14,8 +14,10 @@ public class WGControls : Widget {
         Program.window.Draw(bg);
         Program.window.Draw(frame);
 
-        if (Input.Key_up("Left")) pointer = pointer < 1 ? pointer + 1 : 0;
-        else if (Input.Key_up("Right")) pointer = pointer > 0 ? pointer - 1 : 1;
+        if (Input.Key_up("Left") || (Input.Key_hold_for("Left", Config.hold_time) && UI.Clock(Config.hold_clock))) 
+            pointer = pointer < 1 ? pointer + 1 : 0;
+        else if (Input.Key_up("Right") || (Input.Key_hold_for("Right", Config.hold_time) && UI.Clock(Config.hold_clock))) 
+            pointer = pointer > 0 ? pointer - 1 : 1;
 
         UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
         if (UI.DrawButton(Language.GetText("Return"), -182, 67, alignment: "left", action: Input.Key_up("LB"), click: Input.Key_hold("LB"), hover_font: "default small")) {
