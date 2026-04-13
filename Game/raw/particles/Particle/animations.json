@@ -1,0 +1,1110 @@
+{
+    "SAGathering": [
+        {
+            "Sprite_index": "11",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "super_art",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "12",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "13",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "14",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "15",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "16",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "17",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "18",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "19",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "110",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "111",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "112",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "113",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "114",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "115",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "116",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "117",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "118",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "119",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "120",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "121",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "122",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "123",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "124",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "125",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "126",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "127",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "128",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "129",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "130",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "131",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "132",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        }
+    ],
+    "SALighting": [
+        {
+            "Sprite_index": "133",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "134",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "135",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "136",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "137",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "138",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "139",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "140",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "141",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "142",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "143",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "144",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "145",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "146",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "147",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "148",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "149",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "150",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "151",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "152",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "153",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "154",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        }
+    ],
+    "SABlink": [
+        {
+            "Sprite_index": "29",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "210",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "211",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "212",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "213",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "214",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "215",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "216",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "217",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "218",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "219",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "220",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "221",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        }
+    ],
+    "Shungoku": [
+        {
+            "Sprite_index": "323",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "323",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "323",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "323",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "323",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "323",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "323",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "323",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "323",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "323",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "323",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "323",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "323",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "30",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "31",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "32",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "33",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "34",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "35",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "36",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "37",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "38",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "39",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "310",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "311",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "312",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "313",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "314",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "315",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "316",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "explosão",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "317",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "318",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "319",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "320",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "321",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "322",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "323",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "324",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "325",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "326",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        }
+    ],
+    "Shungoku_text": [
+        {
+            "Sprite_index": "511",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "512",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "513",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "514",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "515",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "516",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "516",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "516",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "516",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "516",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "517",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "518",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "519",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "520",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "521",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 1,
+            "Sound_index": "",
+            "hasHit": true
+        }
+    ]
+}

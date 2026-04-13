@@ -59,7 +59,7 @@ public static class Program {
         game_state = Intro;
         
         // Carregamento de texturas genéricas
-        Data.LoadTexturesFromFile(Data.GetPath("assets/visuals/textures.dat"), Data.textures);
+        Data.LoadTexturesDat(Data.GetPath("assets/visuals/textures.dat"), Data.textures);
 
         new UI();
 

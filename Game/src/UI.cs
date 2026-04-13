@@ -332,7 +332,7 @@ namespace UI_space {
             if (!System.IO.Directory.Exists(full_path))
                 throw new System.IO.DirectoryNotFoundException($"O diretório {full_path} não foi encontrado.");
 
-            Data.LoadTexturesFromFile(Data.GetPath("assets/fonts/textures.dat"), BitmapFont.textures);
+            Data.LoadTexturesDat(Data.GetPath("assets/fonts/textures.dat"), BitmapFont.textures);
         }
 
         public static void Rename(string old_name, string new_name) {

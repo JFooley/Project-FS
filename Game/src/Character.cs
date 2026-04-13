@@ -553,7 +553,7 @@ public abstract class Character : Object {
         }
 
         string dat_path = Path.Combine(full_path, "textures.dat");
-        Data.LoadTexturesFromFile(dat_path, this.textures);
+        Data.LoadTexturesDat(dat_path, this.textures);
     }
     public void UnloadTextures() {
         foreach (var image in textures.Values)
@@ -570,7 +570,7 @@ public abstract class Character : Object {
         }
 
         string dat_path = Path.Combine(full_sound_path, "audio.dat");
-        this.sounds = Data.LoadSoundsFromFile(dat_path);
+        this.sounds = Data.LoadSoundsDat(dat_path);
     }
     public void UnloadSounds() {
         foreach (var sound in sounds.Values)

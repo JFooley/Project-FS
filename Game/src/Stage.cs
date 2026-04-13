@@ -547,7 +547,7 @@ public class Stage {
 
         // Verifica se o arquivo binário existe, senão, carrega as texturas e cria ele
         string dat_path = Path.Combine(full_path, "textures.dat");
-        Data.LoadTexturesFromFile(dat_path, this.textures);
+        Data.LoadTexturesDat(dat_path, this.textures);
     }
     public void UnloadTextures() {
         foreach (var image in this.textures.Values)
@@ -566,7 +566,7 @@ public class Stage {
 
         // Verifica se o arquivo binário existe, senão, carrega os sons e cria ele
         string dat_path = Path.Combine(full_sound_path, "audio.dat");
-        this.sounds = Data.LoadSoundsFromFile(dat_path);
+        this.sounds = Data.LoadSoundsDat(dat_path);
 
         // setta a musica
         if (this.sounds.ContainsKey("music")) this.music = new Sound(this.sounds["music"]);

@@ -2429,3 +2429,7 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\The Savana
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Training Stage\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Training Stage\textures.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\visuals\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken-Fireball\animations.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken\animations.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Hitspark\animations.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Particle\animations.dat

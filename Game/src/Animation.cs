@@ -88,7 +88,7 @@ using SFML.System;
         public float width;
         public float height;
 
-        public int type; // 0 Hitbox, 1 Hurtbox, 2 Pushbox, 3 Grabbox
+        public int type;
         public int quadsize = 250;
 
         public GenericBox(int type, int x1, int y1, int x2, int y2) {   
@@ -165,7 +165,7 @@ using SFML.System;
             this.hasHit = hasHit;
         }
 
-        public FrameData() {}
+        public FrameData() {this.Boxes = new List<GenericBox>(){};}
     }
 
     public class Frame {
@@ -173,7 +173,7 @@ using SFML.System;
         public string Sprite_index;
         public string Sound_index;
 
-        protected Frame() {}
+        protected Frame() {this.Sprite_index = ""; this.Sound_index = "";}
 
         public Frame(int sprite_index, int len = 1, string sound = "") {
             this.Sprite_index = sprite_index.ToString();

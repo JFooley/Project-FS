@@ -1,0 +1,732 @@
+{
+    "KenFireballFrames": [
+        {
+            "Sprite_index": "fireball-1 (1)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (2)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (3)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (4)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (5)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (6)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (7)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (8)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (9)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (10)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (11)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (12)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (13)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (14)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (15)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (16)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (17)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (18)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (19)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (20)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        },
+        {
+            "Sprite_index": "fireball-1 (21)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [
+                {
+                    "type": 1,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                },
+                {
+                    "type": 0,
+                    "pA": {
+                        "x": 139.0,
+                        "y": 115.0
+                    },
+                    "pB": {
+                        "x": 163.0,
+                        "y": 143.0
+                    }
+                }
+            ],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": false
+        }
+    ],
+    "KenFireballFinal": [
+        {
+            "Sprite_index": "fireball-0 (1)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "fireball-0 (2)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "fireball-0 (3)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "fireball-0 (4)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "fireball-0 (5)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": true
+        },
+        {
+            "Sprite_index": "fireball-0 (6)",
+            "DeltaX": 0.0,
+            "DeltaY": 0.0,
+            "Boxes": [],
+            "lenght": 2,
+            "Sound_index": "",
+            "hasHit": true
+        }
+    ]
+}

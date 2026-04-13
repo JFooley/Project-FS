@@ -1,5 +1,7 @@
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\characters\Ken-Fireball\animations.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\characters\Ken-Fireball\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\characters\Ken-Fireball\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\characters\Ken\animations.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\characters\Ken\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\characters\Ken\palette.bmp
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\characters\Ken\textures.dat
@@ -7,8 +9,10 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\icon.ico
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\languages\EN.json
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\languages\PT.json
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Hitspark\animations.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Hitspark\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Hitspark\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Particle\animations.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Particle\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Particle\textures.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\shaders\color_fill.frag

@@ -32,15 +32,76 @@ class AnimationData:
             return self.frames_data[frame_index]
         return None
     
-    def save_to_file(self, filename):
-        """Salva os dados em um arquivo JSON"""
-        with open(filename, 'w') as f:
-            json.dump(self.frames_data, f, indent=2)
+    def save_to_file(self, filename, prefix=None):
+        anim_name = os.path.splitext(os.path.basename(filename))[0]
+
+        result = {
+            anim_name: []
+        }
+
+        for frame in self.frames_data:
+            base_name = os.path.splitext(os.path.basename(frame['file']))[0]
+
+            # 🔥 aplica prefixo só se existir
+            sprite_name = f"{prefix}:{base_name}" if prefix else base_name
+
+            boxes = []
+            for x1, y1, x2, y2, t in frame['hitboxes']:
+                boxes.append({
+                    "type": t,
+                    "pA": {"x": x1, "y": y1},
+                    "pB": {"x": x2, "y": y2}
+                })
+
+            result[anim_name].append({
+                "Sprite_index": sprite_name,
+                "DeltaX": frame["movement_x"],
+                "DeltaY": frame["movement_y"],
+                "lenght": 1,
+                "Sound_index": "",
+                "hasHit": True,
+                "Boxes": boxes
+            })
+
+        with open(filename, "w") as f:
+            json.dump(result, f, indent=2)
     
     def load_from_file(self, filename):
-        """Carrega os dados de um arquivo JSON"""
         with open(filename, 'r') as f:
-            self.frames_data = json.load(f)
+            data = json.load(f)
+
+        self.frames_data.clear()
+
+        anim_name = next(iter(data))
+        frames = data[anim_name]
+
+        for frame in frames:
+            sprite = frame.get("Sprite_index", "")
+            dx = frame.get("DeltaX", 0)
+            dy = frame.get("DeltaY", 0)
+
+            # 🔥 hitboxes
+            hitboxes = []
+            for b in frame.get("Boxes", []):
+                t = b["type"]
+                x1 = b["pA"]["x"]
+                y1 = b["pA"]["y"]
+                x2 = b["pB"]["x"]
+                y2 = b["pB"]["y"]
+
+                hitboxes.append((x1, y1, x2, y2, t))
+
+            if ":" in sprite:
+                sprite = sprite.split(":", 1)[1]
+
+            file_path = sprite + ".png"
+
+            self.frames_data.append({
+                "file": file_path,
+                "movement_x": dx,
+                "movement_y": dy,
+                "hitboxes": hitboxes
+            })
 
 class FrameMovementApp:
     def __init__(self, root, files, repeticao, scale=2):
@@ -56,8 +117,8 @@ class FrameMovementApp:
         for file_path in files:
             self.animation_data.add_frame(file_path, 0, 0, [])
 
-        self.window_width = 400 * self.scale
-        self.window_height = 300 * self.scale
+        self.window_width = 350 * self.scale
+        self.window_height = 250 * self.scale
         self.canvas = tk.Canvas(root, width=self.window_width, height=self.window_height, bg="white")
         self.canvas.pack()
 
@@ -111,7 +172,7 @@ class FrameMovementApp:
         self.absolute_pos_label.pack()
 
         # Botão para salvar progresso
-        self.save_btn = tk.Button(root, text="Salvar Progresso", command=self.save_progress)
+        self.save_btn = tk.Button(root, text="Salvar JSON", command=self.save_progress_with_prefix)
         self.save_btn.pack(pady=5)
 
         self.canvas.focus_set()
@@ -350,7 +411,24 @@ class FrameMovementApp:
         if filename:
             self.animation_data.save_to_file(filename)
             messagebox.showinfo("Sucesso", f"Progresso salvo em {filename}")
-    
+
+    def save_progress_with_prefix(self):
+        self.save_current_data()
+
+        filename = filedialog.asksaveasfilename(
+            defaultextension=".json",
+            filetypes=[("JSON files", "*.json"), ("All files", "*.*")]
+        )
+
+        if filename:
+            prefix = getattr(self, "export_prefix", None)
+            self.animation_data.save_to_file(filename, prefix=prefix)
+            messagebox.showinfo("Sucesso", f"Progresso salvo em {filename}")
+
+    def save_json(self, filename):
+        prefix = getattr(self, "export_prefix", None)
+        self.animation_data.save_to_file(filename, prefix=prefix)
+
     # Eventos de movimento
     def move_left(self, event):
         self.X -= 1 * self.scale
@@ -419,7 +497,6 @@ class FrameMovementApp:
         if self.hitboxes:
             self.hitboxes.pop()
             self.redraw()
-
 
 class ImageSelectorApp:
     def __init__(self, root):
@@ -497,6 +574,23 @@ class ImageSelectorApp:
         # Adiciona tooltip para mostrar caminho completo
         self.listbox.bind('<<ListboxSelect>>', self.show_file_path)
 
+        # Prefixo
+        prefix_frame = tk.Frame(main_frame)
+        prefix_frame.pack(pady=5)
+
+        tk.Label(prefix_frame, text="Prefixo Sprite:").pack(side=tk.LEFT, padx=5)
+
+        self.prefix_var = tk.StringVar(value="")
+        prefix_entry = tk.Entry(prefix_frame, textvariable=self.prefix_var, width=20)
+        prefix_entry.pack(side=tk.LEFT, padx=5)
+
+        self.use_prefix_var = tk.BooleanVar(value=False)
+        tk.Checkbutton(
+            prefix_frame,
+            text="Usar prefixo",
+            variable=self.use_prefix_var
+        ).pack(side=tk.LEFT, padx=5)
+
     def show_file_path(self, event):
         """Mostra o caminho completo do arquivo selecionado"""
         selection = self.listbox.curselection()
@@ -563,7 +657,15 @@ class ImageSelectorApp:
         if filename:
             try:
                 with open(filename, 'r') as f:
-                    data = json.load(f)
+                    self.animation_data.load_from_file(filename)
+
+                    self.files.clear()
+                    self.listbox.delete(0, tk.END)
+
+                    for frame in self.animation_data.frames_data:
+                        file_path = frame['file']
+                        self.files.append(file_path)
+                        self.listbox.insert(tk.END, os.path.basename(file_path))
                 
                 # Limpa a lista atual
                 self.files.clear()
@@ -610,26 +712,14 @@ class ImageSelectorApp:
         self.root.destroy()
         
         # Inicia a aplicação principal
+        prefix = self.prefix_var.get() if self.use_prefix_var.get() else None
         root = tk.Tk()
         app = FrameMovementApp(root, self.files, 60/framerate, scale=scale)
+        app.export_prefix = prefix  # 🔥 injeta no editor
         root.mainloop()
-        
-        # Imprime todos os dados ao final
-        print("\n" + "="*50)
-        print("DADOS FINAIS DA ANIMAÇÃO:")
-        print("="*50)
-        for i in range(len(app.files)):
-            frame_data = app.animation_data.get_frame(i)
-            if frame_data:
-                frame_name = os.path.splitext(app.files[i])[-2]
-                hitbox_str = ', '.join([f'new GenericBox({t}, {int(x1)}, {int(y1)}, {int(x2)}, {int(y2)})' 
-                                      for x1, y1, x2, y2, t in frame_data['hitboxes']])
-                print(f'new FrameData("{frame_name}", {frame_data["movement_x"] / app.repeticao}f, {frame_data["movement_y"] / app.repeticao}f, new List<GenericBox> {{ {hitbox_str} }}),')
-        print("="*50)
         
         input("------------- Finalizado -------------")
         input()
-
 
 if __name__ == "__main__":
     root = tk.Tk()

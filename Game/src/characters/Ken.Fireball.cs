@@ -19,52 +19,14 @@ public class Fireball : Character {
     public Fireball() : base("Ken-Fireball", "", 0, 0, Data.GetPath("Assets/characters/Ken-Fireball"), 1) {}
 
     public override void Load() {
-        // Animations
-        var kenFB0 = new GenericBox(0, 139, 115, 163, 143);
-        var kenFB1 = new GenericBox(1, 139, 115, 163, 143);
-        
-        var KenFireballFrames = new List<Frame> { 
-            new FrameData("fireball-1 (1)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (2)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (3)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (4)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (5)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (6)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (7)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (8)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (9)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (10)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (11)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (12)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (13)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (14)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (15)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (16)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (17)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (18)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (19)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (20)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
-            new FrameData("fireball-1 (21)", 0, 0, len: 2, boxes: new List<GenericBox> {kenFB1, kenFB0}, hasHit: false),
+        var a = Data.LoadAnimationDat(Path.Combine(this.folder_path, "animations.dat"));
+    
+        this.states = new Dictionary<string, State> {
+            {"Ken1", new State(a["KenFireballFrames"], "Ken1", 7, can_harm: true)},
+            {"Ken2", new State(a["KenFireballFrames"], "Ken2", 7, can_harm: true)},
+            {"Ken3", new State(a["KenFireballFrames"], "Ken3", 7, glow: true, can_harm: true)},
+            {"KenExit", new State(a["KenFireballFinal"], "Remove", 7)},
         };
-
-        var KenFireballFinal = new List<Frame> {
-            new FrameData("fireball-0 (1)", 0, 0, len: 2, boxes: new List<GenericBox> {}),
-            new FrameData("fireball-0 (2)", 0, 0, len: 2, boxes: new List<GenericBox> {}),
-            new FrameData("fireball-0 (3)", 0, 0, len: 2, boxes: new List<GenericBox> {}),
-            new FrameData("fireball-0 (4)", 0, 0, len: 2, boxes: new List<GenericBox> {}),
-            new FrameData("fireball-0 (5)", 0, 0, len: 2, boxes: new List<GenericBox> {}),
-            new FrameData("fireball-0 (6)", 0, 0, len: 2, boxes: new List<GenericBox> {}),
-        };
-
-        // States
-        var animations = new Dictionary<string, State> {
-            {"Ken1", new State(KenFireballFrames, "Ken1", 7, can_harm: true)},
-            {"Ken2", new State(KenFireballFrames, "Ken2", 7, can_harm: true)},
-            {"Ken3", new State(KenFireballFrames, "Ken3", 7, glow: true, can_harm: true)},
-            {"KenExit", new State(KenFireballFinal, "Remove", 7)},
-        };
-
-        this.states = animations;
     }
     public override void Behave() {
         base.Behave();
