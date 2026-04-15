@@ -74,7 +74,7 @@ public static class Config {
 
     // Text
     public const int spacing_small = -26; 
-    public const int spacing_medium = -23;
+    public const int spacing_medium = -24;
 
     public static void SaveToFile() {
         try {

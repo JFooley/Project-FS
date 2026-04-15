@@ -7,7 +7,6 @@ public class Accessibility{
     public static bool distance_radar;
     public static bool atack_feedback = true;
     public static float atack_feedback_intensity = 0.8f;
-    public static bool defend_feedback = true;
     public static float defend_feedback_intensity = 0.3f;
 
     // Options values

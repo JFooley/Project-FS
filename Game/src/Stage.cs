@@ -404,10 +404,10 @@ public class Stage {
 
 
         if (on_hit_char.player_index == Input.PLAYER_A) {
-            if (Accessibility.defend_feedback) Input.SetVibration(Input.PLAYER_A, Accessibility.defend_feedback_intensity, 0, frames);
+            if (Accessibility.atack_feedback) Input.SetVibration(Input.PLAYER_A, Accessibility.defend_feedback_intensity, 0, frames);
             if (Accessibility.atack_feedback) Input.SetVibration(Input.PLAYER_B, 0, Accessibility.atack_feedback_intensity, frames);
         } else if (on_hit_char.player_index == Input.PLAYER_B) {
-            if (Accessibility.defend_feedback) Input.SetVibration(Input.PLAYER_B, Accessibility.defend_feedback_intensity, 0, frames);
+            if (Accessibility.atack_feedback) Input.SetVibration(Input.PLAYER_B, Accessibility.defend_feedback_intensity, 0, frames);
             if (Accessibility.atack_feedback) Input.SetVibration(Input.PLAYER_A, 0, Accessibility.atack_feedback_intensity, frames);
         }
 

@@ -7,7 +7,7 @@ public class WGAccessibilityMenu : Widget {
     private Sprite bg = new Sprite(Data.textures["screens:accessibility_bg"]);
 
     private int pointer = 0;
-    private int size = 5;
+    private int size = 4;
     private Vector2i anchor = new Vector2i(-170, -74);
     private int n = 10;
 
@@ -37,13 +37,9 @@ public class WGAccessibilityMenu : Widget {
         // 3
         if (UI.DrawButton(Language.GetText("atack feedback") + ": " + Language.GetText(Accessibility.atack_feedback ? "enabled" : "disabled"), anchor.X, anchor.Y+3*n, hover: this.pointer == 3, click: Input.faceButtonHold, action: Input.faceButtonUp, spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left"))
             Accessibility.atack_feedback = !Accessibility.atack_feedback;
-        
-        // 4
-        if (UI.DrawButton(Language.GetText("defense feedback") + ": " + Language.GetText(Accessibility.defend_feedback ? "enabled" : "disabled"), anchor.X, anchor.Y+4*n, hover: this.pointer == 4, click: Input.faceButtonHold, action: Input.faceButtonUp, spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left"))
-            Accessibility.defend_feedback = !Accessibility.defend_feedback;
 
-        // 5
-        if (UI.DrawButton(Language.GetText("save and exit"), anchor.X, anchor.Y+6*n, hover: this.pointer == 5, click: Input.faceButtonHold, action: Input.faceButtonUp, spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left")) {
+        // 4
+        if (UI.DrawButton(Language.GetText("save and exit"), anchor.X, anchor.Y+5*n, hover: this.pointer == 4, click: Input.faceButtonHold, action: Input.faceButtonUp, spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left")) {
             Accessibility.SaveToFile();
             Camera.LockCamera();
             Program.ChangeState(Program.last_game_state);
@@ -68,7 +64,7 @@ public class WGAccessibilitySounds : Widget {
         Camera.UnlockCamera();
         Program.window.Draw(bg);
 
-        UI.DrawText(Language.GetText("Sound's list"), -80, -107, spacing: Config.spacing_medium);
+        UI.DrawText(Language.GetText("Sounds list"), -80, -107, spacing: Config.spacing_medium);
 
         // Change option 
         if (Input.Key_down("Up") || (Input.Key_hold_for("Up", Config.hold_time) && UI.Clock(Config.hold_clock))) {

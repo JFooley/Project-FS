@@ -127,10 +127,10 @@ public class WGPause : Widget {
         if (UI.DrawButton(Language.GetText("Accessibility menu"), 0, -45, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == 0, click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
             Program.ChangeState(Program.AccessibilityMenu);
         // 1
-        if (UI.DrawButton(Language.GetText("Sound's list"), 0, -30, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == 1, click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
+        if (UI.DrawButton(Language.GetText("Sounds list"), 0, -30, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == 1, click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
             Program.ChangeState(Program.AccessibilitySounds);
         // 2
-        if (UI.DrawButton(Language.GetText("Return"), 0, -10, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == 2, click_font: "default medium click", hover_font: "default medium hover", font: "default medium")) {
+        if (UI.DrawButton(Language.GetText("Return"), 0, 70, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == 2, click_font: "default medium click", hover_font: "default medium hover", font: "default medium")) {
             pointer.X = 0;
             pointer.Y = 0;
             sub_menu = 0;
