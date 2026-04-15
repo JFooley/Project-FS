@@ -23,7 +23,8 @@ public static class Program {
     public const int Settings = 8;
     public const int Controls = 9;
     public const int AccessibilityMenu = 10;
-    public const int Credits = 11;
+    public const int AccessibilitySounds = 11;
+    public const int Credits = 12;
 
     // State holders
     public static int game_state;
@@ -108,7 +109,8 @@ public static class Program {
         WGPostBattle post_battle_screen = new WGPostBattle();
         WGSettings settings_screen = new WGSettings();
         WGControls controls_screen = new WGControls();
-        WGAcessibilityMenu accessibility_screen = new WGAcessibilityMenu();
+        WGAccessibilityMenu accessibility_screen = new WGAccessibilityMenu();
+        WGAccessibilitySounds accessibility_sounds_screen = new WGAccessibilitySounds();
         WGCredits credits_screen = new WGCredits();
 
         while (window.IsOpen) {
@@ -169,6 +171,10 @@ public static class Program {
 
                 case AccessibilityMenu:
                     accessibility_screen.Render();
+                    break;
+                
+                case AccessibilitySounds:
+                    accessibility_sounds_screen.Render();
                     break;
 
                 case Credits:

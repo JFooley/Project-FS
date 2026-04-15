@@ -11,9 +11,9 @@ public class WGMainMenu : Widget {
         { new KeyValuePair<string, Texture>("versus bot", Data.textures["screens:versus_bot"]) },
         { new KeyValuePair<string, Texture>("training mode", Data.textures["screens:training_mode"]) },
         { new KeyValuePair<string, Texture>("controls", Data.textures["screens:controls"]) },
-        { new KeyValuePair<string, Texture>("acessibility", Data.textures["screens:acessibility"]) },
+        { new KeyValuePair<string, Texture>("accessibility", Data.textures["screens:accessibility"]) },
         { new KeyValuePair<string, Texture>("settings", Data.textures["screens:settings"]) },
-        { new KeyValuePair<string, Texture>("Exit", Data.textures["screens:exit"]) }
+        { new KeyValuePair<string, Texture>("exit game", Data.textures["screens:exit"]) }
     };
 
     public override void Render() {
@@ -62,7 +62,7 @@ public class WGMainMenu : Widget {
                     Program.ChangeState(Program.SelectStage);
 
                     break;
-                case "acessibility":
+                case "accessibility":
                     Program.ChangeState(Program.AccessibilityMenu);
 
                     break;
@@ -74,7 +74,7 @@ public class WGMainMenu : Widget {
                     Program.ChangeState(Program.Settings);
 
                     break;
-                case "Exit":
+                case "exit game":
                     Program.window.Close();
                     break;
             }

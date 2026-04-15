@@ -11,8 +11,8 @@ public class WGSelectStage : Widget {
         stage_thumb.Texture = Data.stages[pointer].thumb;
         Program.window.Draw(stage_thumb);
         Program.window.Draw(frame);
-        for (int i = 0; i < Data.stages.Count; i++) 
-            UI.DrawText(i == pointer ? ")" : "(", (i * 10) - ((Data.stages.Count - 1) * 5), -80, textureName: "icons");
+        
+        for (int i = 0; i < Data.stages.Count; i++) UI.DrawText(i == pointer ? ")" : "(", (i * 10) - ((Data.stages.Count - 1) * 5), -80, textureName: "icons");
         
         // draw texts
         UI.DrawText(Program.playerA_wins.ToString(), -Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "left");

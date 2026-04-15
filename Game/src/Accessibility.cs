@@ -13,8 +13,6 @@ public class Accessibility{
     // Options values
     public static float TTS_speed = 1f;
 
-
-
     // Data
     private static Sound? current_sound;
     private static bool must_finish;
@@ -22,7 +20,7 @@ public class Accessibility{
 
     public Accessibility() {}
 
-    public void Update() {
+    public static void Update() {
         if (!accessibility) return;
 
         // Play the next sound leting it finish if it's prioritary
@@ -37,9 +35,12 @@ public class Accessibility{
         }
     }
 
-    public void EnqueueSound(SoundBuffer sound, float volume = 100, float pan = 0, bool must_finish = false) {
+    public static void EnqueueSound(SoundBuffer sound, float volume = 100, float pan = 0, bool must_finish = false) {
         object[] sound_obj = new object[] {sound, volume, pan, must_finish};
         Accessibility.sound_queue.Enqueue(sound_obj);
     }
-    public void Context() {}
+    public static void Context() {}
+
+    public static void SaveToFile() {}
+    public static void LoadToFile() {}   
 }

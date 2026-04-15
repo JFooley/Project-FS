@@ -125,8 +125,8 @@ public class WGSelectCharacter : Widget {
     private void DrawSessionInfo() {
         UI.DrawText(Program.playerA_wins.ToString(), 0, 63, alignment: "right");
         UI.DrawText(Program.playerB_wins.ToString(), 0, 63, alignment: "left" );
-        UI.DrawText(Language.GetText(Stage.AI_playerA ? "COM" : "P1"), -15, 63, textureName: "default small", alignment: "right", spacing: Config.spacing_small);
-        UI.DrawText(Language.GetText(Stage.AI_playerB ? "COM" : "P2"),  15, 63, textureName: "default small", alignment:  "left", spacing: Config.spacing_small);
+        UI.DrawText(Stage.AI_playerA ? "COM" : "P1", -15, 63, textureName: "default small", alignment: "right", spacing: Config.spacing_small);
+        UI.DrawText(Stage.AI_playerB ? "COM" : "P2",  15, 63, textureName: "default small", alignment:  "left", spacing: Config.spacing_small);
     }
     public void Reset() {
         selectorA.Reset();

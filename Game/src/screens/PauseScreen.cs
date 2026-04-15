@@ -3,14 +3,12 @@ using SFML.System;
 using UI_space;
 
 public class WGPause : Widget {
-    private Vector2i pointer;
-    private int sub_menu;
+    private Vector2i pointer = new Vector2i(0, 0);
+    private int sub_menu = 0;
     private Stage stage;
 
     public WGPause(Stage stage) {
         this.stage = stage;
-        this.pointer = new Vector2i(0, 0);
-        this.sub_menu = 0;
     }
 
     public override void Render() {
@@ -24,24 +22,33 @@ public class WGPause : Widget {
             case 1:
                 Training(face_hold, face_release);
                 break;
+            case 2:
+                Accessibility(face_hold, face_release);
+                break;
         }
     }
 
     private void Main(bool face_hold, bool face_release) {
         UI.DrawText(Language.GetText("Pause"), 0, -75, spacing: Config.spacing_medium, textureName: "default medium");
 
+        // 0 
         if (UI.DrawButton(Language.GetText("Settings"), 0, -45, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == 0, click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
             Program.ChangeState(Program.Settings);
-        
+        // 1
         if (UI.DrawButton(Language.GetText("Controls"), 0, -30, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == 1, click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
             Program.ChangeState(Program.Controls);
-        
-        if (Stage.training_mode && UI.DrawButton(Language.GetText("Training settings"), 0, -15, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == 2, click_font: "default medium click", hover_font: "default medium hover", font: "default medium")) {
+        // 2
+        if (UI.DrawButton(Language.GetText("Accessibility"), 0, -15, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == 2, click_font: "default medium click", hover_font: "default medium hover", font: "default medium")) {
+            this.sub_menu = 2;
+            this.pointer = new Vector2i(0, 0);
+        }
+        // 3
+        if (Stage.training_mode && UI.DrawButton(Language.GetText("Training settings"), 0, 0, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == 3, click_font: "default medium click", hover_font: "default medium hover", font: "default medium")) {
             this.sub_menu = 1;
             this.pointer = new Vector2i(0, 0);
         }
-
-        if (UI.DrawButton(Language.GetText("End match"), 0, 70, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == (Stage.training_mode ? 3 : 2), click_font: "default medium click", hover_font: "default medium red", font: "default medium")) {
+        // 4
+        if (UI.DrawButton(Language.GetText("End match"), 0, 70, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == (Stage.training_mode ? 4 : 3), click_font: "default medium click", hover_font: "default medium red", font: "default medium")) {
             this.stage.Pause();
             Program.winner = Program.Drawn;
             WGBattle.battle_state = WGBattle.MatchEnd;
@@ -55,7 +62,7 @@ public class WGPause : Widget {
         // Change option 
         if ((Input.Key_down("Up") || (Input.Key_hold_for("Up", Config.hold_time) && UI.Clock(Config.hold_clock))) && this.pointer.Y > 0) {
             this.pointer.Y -= 1;
-        } else if ((Input.Key_down("Down") || (Input.Key_hold_for("Down", Config.hold_time) && UI.Clock(Config.hold_clock))) && this.pointer.Y < (Stage.training_mode ? 3 : 2)) {
+        } else if ((Input.Key_down("Down") || (Input.Key_hold_for("Down", Config.hold_time) && UI.Clock(Config.hold_clock))) && this.pointer.Y < (Stage.training_mode ? 4 : 3)) {
             this.pointer.Y += 1;
         }
     }
@@ -111,6 +118,29 @@ public class WGPause : Widget {
             this.pointer.X -= 1;
         } else if ((Input.Key_down("Right") || (Input.Key_hold_for("Right", Config.hold_time) && UI.Clock(Config.hold_clock))) && this.pointer.X < 1) {
             this.pointer.X += 1;
+        }
+    }
+    private void Accessibility(bool face_hold, bool face_release) {
+        UI.DrawText(Language.GetText("Accessibility"), 0, -75, spacing: Config.spacing_medium, textureName: "default medium");
+        
+        // 0 
+        if (UI.DrawButton(Language.GetText("Accessibility menu"), 0, -45, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == 0, click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
+            Program.ChangeState(Program.AccessibilityMenu);
+        // 1
+        if (UI.DrawButton(Language.GetText("Sound's list"), 0, -30, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == 1, click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
+            Program.ChangeState(Program.AccessibilitySounds);
+        // 2
+        if (UI.DrawButton(Language.GetText("Return"), 0, -10, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: this.pointer.Y == 2, click_font: "default medium click", hover_font: "default medium hover", font: "default medium")) {
+            pointer.X = 0;
+            pointer.Y = 0;
+            sub_menu = 0;
+        }
+
+        // Change option 
+        if ((Input.Key_down("Up") || (Input.Key_hold_for("Up", Config.hold_time) && UI.Clock(Config.hold_clock))) && this.pointer.Y > 0) {
+            this.pointer.Y -= 1;
+        } else if ((Input.Key_down("Down") || (Input.Key_hold_for("Down", Config.hold_time) && UI.Clock(Config.hold_clock))) && this.pointer.Y < 2) {
+            this.pointer.Y += 1;
         }
     }
 }

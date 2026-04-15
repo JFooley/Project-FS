@@ -51,6 +51,7 @@ namespace Language_space {
             try {
                 return _languageData[Config.Language][text.ToLower()];
             } catch (KeyNotFoundException) {
+                Console.WriteLine("Missing translation in " + _languageData[Config.Language]["_language"] + ": " + text);
                 return text;
             }
         }

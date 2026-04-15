@@ -2,6 +2,7 @@
   "_language": "English",
   "_code": "EN",
   "max aura" : "Max Aura", 
+  "round" : "round",
   "burning dojo" : "Burning Dojo", 
   "the midnight duel" : "The Midnight Duel", 
   "japan fields" : "Japan Fields", 
@@ -41,6 +42,7 @@
   "frames" : "frames", 
   "default" : "Default", 
   "hitstop" : "Hitstop", 
+  "v-sync" : "V-sync",
   "input window" : "Input window", 
   "window mode" : "Window mode", 
   "fullscreen" : "Fullscreen", 
@@ -66,8 +68,15 @@
   "versus player" : "Versus Player",
   "versus bot" : "Versus Bot",
   "training mode": "Training",
-  "acessibility" : "Acessibility",
+  "accessibility" : "Accessibility",
   "training settings" : "Training settings",
   "enabled" : "Enabled",
-  "disabled" : "Disabled"
+  "disabled" : "Disabled",
+  "text-to-speech" : "Text-to-speech",
+  "tts speed" : "TTS speed",
+  "high contrast" : "High contrast",
+  "atack feedback" : "Atack feedback",
+  "defense feedback" : "Defense feedback",
+  "sound's list" : "Sound's list",
+  "accessibility menu" : "Accessibility menu"
 }
