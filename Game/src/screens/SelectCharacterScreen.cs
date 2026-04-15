@@ -184,7 +184,7 @@ public class WGSelector : Widget {
             else if (state == SELECTING_PALETTE) selected.SetPalette(1);
         }
 
-        if (UI.DrawButton(Data.characters[pointer].name, x, y + info_y_offset - 10, spacing: Config.spacing_small, action: Input.Key_up("A", player), click: Input.Key_hold("A", player: player), hover_font: "default small")) {
+        if (UI.DrawButton(Data.characters[pointer].name, x, y + info_y_offset - 10, spacing: Config.spacing_small, action: Input.Key_up("A", player), click: Input.Key_hold("A", player: player) && this.state != READY, hover_font: "default small")) {
             if (state == SELECTING_CHAR) {
                 selected = Data.characters[pointer].Copy();
                 state = SELECTING_PALETTE;

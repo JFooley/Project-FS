@@ -258,8 +258,8 @@ namespace UI_space {
             UI.DrawBar(-stun_bar_X, stun_bar_Y, stunB, 150, "ui:stunbar", alignment: "right", mirrored: true, color: bar_stun, grow_inverted: true);
             
             // Names
-            UI.DrawText(stage.character_A.name, -182, -94, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
-            UI.DrawText(stage.character_B.name, 182, -94, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
+            UI.DrawText(stage.character_A.name, -181, -93, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
+            UI.DrawText(stage.character_B.name, 181, -93, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
 
             UI.DrawBar(-177, -81, 1, 1, "ui:croma", color: stage.character_A.current_palette_color, alignment: "left", mirrored: false);
             UI.DrawBar(177, -81, 1, 1, "ui:croma", color: stage.character_B.current_palette_color, alignment: "right", mirrored: true);
