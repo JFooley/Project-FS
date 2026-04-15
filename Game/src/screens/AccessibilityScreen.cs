@@ -40,7 +40,7 @@ public class WGAccessibilityMenu : Widget {
 
         // 4
         if (UI.DrawButton(Language.GetText("save and exit"), anchor.X, anchor.Y+5*n, hover: this.pointer == 4, click: Input.faceButtonHold, action: Input.faceButtonUp, spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left")) {
-            Accessibility.SaveToFile();
+            Config.SaveToFile();
             Camera.LockCamera();
             Program.ChangeState(Program.last_game_state);
             pointer = 0;

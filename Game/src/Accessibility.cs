@@ -3,14 +3,14 @@ using SFML.Audio;
 public class Accessibility{
     public static bool accessibility => TTS || high_contrast || distance_radar || atack_feedback;
     public static bool TTS;
-    public static bool high_contrast;
-    public static bool distance_radar;
+    public static bool high_contrast = false;
+    public static bool distance_radar = false;
     public static bool atack_feedback = true;
-    public static float atack_feedback_intensity = 0.8f;
-    public static float defend_feedback_intensity = 0.3f;
 
     // Options values
     public static float TTS_speed = 1f;
+    public const float atack_feedback_intensity = 0.8f;
+    public const float defend_feedback_intensity = 0.3f;
 
     // Data
     private static Sound? current_sound;
@@ -39,7 +39,4 @@ public class Accessibility{
         Accessibility.sound_queue.Enqueue(sound_obj);
     }
     public static void Context() {}
-
-    public static void SaveToFile() {}
-    public static void LoadToFile() {}   
 }

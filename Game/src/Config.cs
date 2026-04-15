@@ -96,7 +96,12 @@ public static class Config {
                 round_length,
                 hit_stop_time,
                 max_rounds,
-                Language
+                Language,
+                Accessibility.TTS,
+                Accessibility.TTS_speed,
+                Accessibility.high_contrast,
+                Accessibility.distance_radar,
+                Accessibility.atack_feedback
             };
 
             string jsonString = JsonConvert.SerializeObject(configData, Formatting.Indented);
@@ -106,10 +111,17 @@ public static class Config {
             Console.WriteLine($"Error saving config file: {ex.Message}");
         }
     }
-    public static void LoadFromFile(string filePath = "") {
-        if (filePath == "") filePath = Data.GetPath("Assets/config.json");
-        if (File.Exists(filePath)) {
-            string jsonString = File.ReadAllText(filePath);
+    public static void LoadFromFile() {
+            string folder_path = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), "Project FS");
+
+            if (!Directory.Exists(folder_path)) {
+                Directory.CreateDirectory(folder_path);
+            }
+
+            string file_path = Path.Combine(folder_path, "config.json");
+
+        if (File.Exists(file_path)) {
+            string jsonString = File.ReadAllText(file_path);
                 var configData = JsonConvert.DeserializeObject<ConfigData>(jsonString);
 
                 Fullscreen = configData.Fullscreen;
@@ -122,11 +134,18 @@ public static class Config {
                 hit_stop_time = configData.hit_stop_time;
                 max_rounds = configData.max_rounds;
                 Language = configData.Language;
+                Accessibility.TTS = configData.TTS;
+                Accessibility.TTS_speed = configData.TTS_speed;
+                Accessibility.high_contrast = configData.high_contrast;
+                Accessibility.distance_radar = configData.distance_radar;
+                Accessibility.atack_feedback = configData.atack_feedback;
+                
         } else {
             Config.SaveToFile();
         }
     }
     private class ConfigData {
+        // Geral
         public bool Fullscreen { get; set; }
         public bool Vsync { get; set; }
         public float _main_volume { get; set; }
@@ -137,5 +156,11 @@ public static class Config {
         public int hit_stop_time { get; set; }
         public int max_rounds { get; set; }
         public int Language { get; set; }
+        // Acessibilidade
+        public bool TTS { get; set; }
+        public float TTS_speed { get; set; }
+        public bool high_contrast { get; set; }
+        public bool distance_radar { get; set; }
+        public bool atack_feedback { get; set; }
     }
 }
