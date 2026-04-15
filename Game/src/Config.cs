@@ -73,7 +73,7 @@ public static class Config {
     public const int hold_clock = 10;
 
     // Text
-    public const int spacing_small = -26; 
+    public const int spacing_small = -25; 
     public const int spacing_medium = -24;
 
     public static void SaveToFile() {

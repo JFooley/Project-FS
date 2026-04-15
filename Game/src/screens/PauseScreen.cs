@@ -90,13 +90,13 @@ public class WGPause : Widget {
         if (UI.DrawButton(Stage.refil_super ? Language.GetText("Super") + ": " + Language.GetText("Refil") : Language.GetText("Super") + ": " + Language.GetText("Keep"), 0, anchor + spacing*3, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pointer.X == 1 && this.pointer.Y == 3, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "left"))
             Stage.refil_super = !Stage.refil_super;
         // 4.0
-        if (UI.DrawButton(Stage.AI_playerA ? Language.GetText("player") + " 1 BOT : " + Language.GetText("enabled") : Language.GetText("player") + " 1 BOT: " + Language.GetText("disabled"), -0, anchor + spacing*4, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pointer.X == 0 && this.pointer.Y == 4, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "right")) {
+        if (UI.DrawButton(Stage.AI_playerA ? Language.GetText("player") + " 1 BOT : " + Language.GetText("on") : Language.GetText("player") + " 1 BOT: " + Language.GetText("off"), -0, anchor + spacing*4, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pointer.X == 0 && this.pointer.Y == 4, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "right")) {
             Stage.AI_playerA = !Stage.AI_playerA;
             Program.stage.character_A.BotEnabled = Stage.AI_playerA;
             Program.stage.character_A.AIEnabled = Stage.AI_playerA;
         }
         // 4.1
-        if (UI.DrawButton(Stage.AI_playerB ? Language.GetText("player") + " 2 BOT : " + Language.GetText("enabled") : Language.GetText("player") + " 2 BOT: " + Language.GetText("disabled"), +0, anchor + spacing*4, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pointer.X == 1 && this.pointer.Y == 4, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "left")) {
+        if (UI.DrawButton(Stage.AI_playerB ? Language.GetText("player") + " 2 BOT : " + Language.GetText("on") : Language.GetText("player") + " 2 BOT: " + Language.GetText("off"), +0, anchor + spacing*4, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: this.pointer.X == 1 && this.pointer.Y == 4, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "left")) {
             Stage.AI_playerB = !Stage.AI_playerB;
             Program.stage.character_B.BotEnabled = Stage.AI_playerB;
             Program.stage.character_B.AIEnabled = Stage.AI_playerB;

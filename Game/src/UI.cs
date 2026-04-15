@@ -320,12 +320,15 @@ namespace UI_space {
             'y', 'z', '!', '@', '#', '$', '%', '^', '&', '*',
             '(', ')', '_', '+', '-', '=', '[', ']', '{', '}',
             ';', ':', '\'', '"', '\\', '|', ',', '.', '<', '>',
-            '/', '?', '¿', '\u0020', '«', '»', '•', '°', 'µ', '~'
+            '/', '?', '¿', '\u0020', '«', '»', 'ç', '°', 'Ç', '~',
+            'ã', 'Ã', 'á', 'Á', 'â', 'Â', 'à', 'À', 'é', 'É',
+            'è', 'È', 'ê', 'Ê', 'ó', 'Ó', 'ô', 'Ô', 'õ', 'Õ',
+            'ú', 'Ú', 'ù', 'Ù', 'û', 'Û', 'í', 'Í', 'ì', 'Ì'
         };
 
         private const int CellSize = 32; // Tamanho de cada célula
         private const int Columns = 10;  // Número de colunas
-        private const int Rows = 10;     // Número de linhas
+        private const int Rows = 13;     // Número de linhas
 
         public static void Load() {
             string full_path = Data.GetPath("assets/fonts");

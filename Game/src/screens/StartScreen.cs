@@ -7,7 +7,7 @@ public class WGStart : Widget {
 
     public override void Render() {
         Program.window.Draw(main_bg);
-        UI.DrawText("by JFooley", 0, 76, spacing: Config.spacing_small - 1, textureName: "default small");
+        UI.DrawText("by JFooley", 0, 76, spacing: Config.spacing_small, textureName: "default small");
 
         if (UI.DrawButton(Language.GetText("press start"), 0, 50, spacing: Config.spacing_medium, click: Input.Key_hold("Start"), action: Input.Key_up("Start"), hover_font: UI.blink2Hz ? "default medium white" : "", click_font: "default medium click")) {
             Program.ChangeState(Program.MainMenu);
