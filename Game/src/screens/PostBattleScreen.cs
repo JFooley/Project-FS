@@ -4,7 +4,7 @@ using SFML.Graphics;
 
 public class WGPostBattle : Widget {
     Sprite stage_thumb = new Sprite(Program.stage?.thumb);
-    Sprite fade90 = new Sprite(Data.textures["screens:90fade"]);
+    Sprite fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = new Color(255, 255, 255, 230)};
     string winner_text = "";
     int pointer = 0;
 
@@ -13,7 +13,7 @@ public class WGPostBattle : Widget {
         Program.window.Draw(stage_thumb);
         Program.window.Draw(fade90);
 
-        if (Program.stage?.music != null) Program.stage.SetMusicVolume(Math.Max(0, Program.stage.music.Volume - 0.5f));
+        if (Program.stage?.music != null) Program.stage.music.Volume = Math.Max(0, Program.stage.music.Volume - 0.5f);
 
         if (Program.winner == Program.Drawn) winner_text = Language.GetText("Drawn");
         else winner_text = Language.GetText("Player") + " " + Program.winner + " " + Language.GetText("Wins");

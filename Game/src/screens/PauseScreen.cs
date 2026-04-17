@@ -1,5 +1,6 @@
 using Language_space;
 using SFML.System;
+using SFML.Graphics;
 using UI_space;
 
 public class WGPause : Widget {
@@ -7,11 +8,16 @@ public class WGPause : Widget {
     private int sub_menu = 0;
     private Stage stage;
 
+    private Sprite fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = new Color(255, 255, 255, 230)};
+
     public WGPause(Stage stage) {
         this.stage = stage;
     }
 
     public override void Render() {
+        fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
+        Program.window.Draw(fade90);
+
         var face_release = Input.faceButtonUp;
         var face_hold = Input.faceButtonHold;
 

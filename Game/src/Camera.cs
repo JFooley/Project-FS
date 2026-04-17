@@ -65,9 +65,9 @@ public class Camera {
         Camera.lock_on_players = false;
         Camera.Center();
     }
-    public static void SetChars(Character charA, Character charB) {
-        Camera.CharA = charA;
-        Camera.CharB = charB;
+    public static void SetChars(Character? charA, Character? charB) {
+        if (charA != null) Camera.CharA = charA;
+        if (charB != null) Camera.CharB = charB;
         Camera.lock_on_players = true;
         Camera.Center();
     }

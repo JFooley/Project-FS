@@ -2,6 +2,7 @@ using SFML.Graphics;
 using SFML.System;
 using UI_space;
 using Language_space;
+using System.Runtime.InteropServices;
 
 class WGBattle : Widget {
     // Battle States
@@ -18,19 +19,24 @@ class WGBattle : Widget {
 
     public static int battle_state = Intro;
     public static int battle_mode = Versus;
-    Sprite fight_logo = new Sprite(Data.textures["typography:fight"]);
-    Sprite timesup_logo = new Sprite(Data.textures["typography:timesup"]);
-    Sprite KO_logo = new Sprite(Data.textures["typography:ko"]); 
+    private Sprite fight_logo = new Sprite(Data.textures["typography:fight"]);
+    private Sprite timesup_logo = new Sprite(Data.textures["typography:timesup"]);
+    private Sprite KO_logo = new Sprite(Data.textures["typography:ko"]); 
+    private Sprite fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = Color.White};
 
     public override void Render() {
         Program.stage?.Update();
 
         switch (WGBattle.battle_state) {
             case Intro:
-                Program.stage.SetMusicVolume();
-                Program.stage.StopRoundTime();
-                Program.stage.ResetTimer();
-                if (Program.stage.character_A.current_state == "Idle" && Program.stage.character_B.current_state == "Idle") 
+                this.fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
+                this.fade90.Color = new Color(255, 255, 255, (byte) Math.Max(0, this.fade90.Color.A - 15));
+                Program.window.Draw(fade90);
+
+                Program.stage?.SetMusicVolume();
+                Program.stage?.StopRoundTime();
+                Program.stage?.ResetTimer();
+                if (Program.stage?.character_A.current_state == "Idle" && Program.stage?.character_B.current_state == "Idle" && fade90.Color.A == 0) 
                     WGBattle.battle_state = RoundStart;
                 break;
 
@@ -45,8 +51,10 @@ class WGBattle : Widget {
                     fight_logo.Position = new Vector2f(Camera.X - 89, Camera.Y - 54);
                     Program.window.Draw(fight_logo);
                 }
-                else if (Program.stage.CheckTimer(1)) UI.DrawText(Language.GetText("Ready")+"?", 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
-                else UI.DrawText(Language.GetText("Round") + " " + Program.stage.round, 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
+                else if (Program.stage.CheckTimer(1)) 
+                    UI.DrawText(Language.GetText("Ready")+"?", 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
+                else 
+                    UI.DrawText(Language.GetText("Round") + " " + Program.stage.round, 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
 
                 break;
 
@@ -81,12 +89,17 @@ class WGBattle : Widget {
                 break;
 
             case MatchEnd: // Fim da partida
-                Camera.Reset();
-                Program.stage.ResetMatch();
-                Program.stage.ResetPlayers(force: true, total_reset: true);
+                this.fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
+                this.fade90.Color = new Color(255, 255, 255, (byte) Math.Min(255, this.fade90.Color.A + 15));
+                Program.window.Draw(fade90);
 
-                WGBattle.battle_state = Intro;
-                Program.ChangeState(Program.PostBattle);
+                if (this.fade90.Color.A == 255) {
+                    Camera.Reset();
+                    Program.stage?.ResetMatch();
+                    Program.stage?.ResetPlayers(force: true, total_reset: true);
+                    WGBattle.battle_state = Intro;
+                    Program.ChangeState(Program.PostBattle);   
+                }
                 break;
         } 
     }

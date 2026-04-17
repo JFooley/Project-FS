@@ -77,7 +77,6 @@ public class Stage {
 
     // Visual info
     public Color AmbientLight = new Color(255, 255, 255, 255);
-    private Sprite fade90 = new Sprite(Data.textures["screens:90fade"]);
     private Sprite shadow;
 
     public Stage(string name, int floorLine, int length, int height, string folder_path) {
@@ -251,10 +250,6 @@ public class Stage {
         }
     }
     public void PauseScreen() {
-        fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
-        Program.window.Draw(fade90);
-        Program.window.Draw(fade90);
-
         this.wg_pause.Render();
     }
 
@@ -504,7 +499,8 @@ public class Stage {
     
     // Music
     public void SetMusicVolume(float amount = 100) {
-        if (this.music != null) this.music.Volume = amount * (Config.Music_Volume / 100);
+        amount = Math.Min(100, Math.Max(0, amount));
+        if (this.music != null) this.music.Volume = amount * (Config.Music_Volume / 100f);
     }
     public void StopMusic() {
         this.music?.Stop();
