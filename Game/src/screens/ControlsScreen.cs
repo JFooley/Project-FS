@@ -19,8 +19,8 @@ public class WGControls : Widget {
         else if (Input.Key_up("Right") || (Input.Key_hold_for("Right", Config.hold_time) && UI.Clock(Config.hold_clock))) 
             pointer = pointer > 0 ? pointer - 1 : 1;
 
-        UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
-        if (UI.DrawButton(Language.GetText("Return"), -182, 67, alignment: "left", action: Input.Key_up("LB"), click: Input.Key_hold("LB"), hover_font: "default small")) {
+        UI.DrawText("Q", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
+        if (UI.DrawButton(Language.GetText("Return"), 182, 67, alignment: "right", action: Input.Key_up("B"), click: Input.Key_hold("B"), hover_font: "default small")) {
             if (Program.last_game_state == Program.Battle) Camera.LockCamera();
             Program.ChangeState(Program.last_game_state);
         }

@@ -237,7 +237,7 @@ namespace UI_space {
             var full_A = stage.character_A.aura_points.X == stage.character_A.aura_points.Y;
             var aura_color_A = stage.character_A.aura_points.X >= stage.character_A.aura_points.Y/2 && !(full_A && UI.blink10Hz) ? UI.bar_super_full : UI.bar_super;
             UI.DrawBar(super_bar_X, super_bar_Y, superA, 117, "ui:aurabar", alignment: "left", mirrored: false, color: aura_color_A, grow_inverted: false);
-            if (stage.character_A.aura_points.X == stage.character_A.aura_points.Y && UI.blink2Hz) UI.DrawText(UI.superBarMsg, -193, 73, spacing: Config.spacing_medium, alignment: "left", textureName: "default small white");
+            if (stage.character_A.aura_points.X == stage.character_A.aura_points.Y && UI.blink2Hz) UI.DrawText(UI.superBarMsg, -193, 73, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
                         
             // Super bar B
             var superB_scale = stage.character_B.aura_points.X * 117 / stage.character_B.aura_points.Y;
@@ -245,7 +245,7 @@ namespace UI_space {
             var full_B = stage.character_B.aura_points.X == stage.character_B.aura_points.Y;
             var aura_color_B = stage.character_B.aura_points.X >= stage.character_B.aura_points.Y/2 && !(full_B && UI.blink10Hz) ? UI.bar_super_full : UI.bar_super;
             UI.DrawBar(-super_bar_X, super_bar_Y, superB, 117, "ui:aurabar", alignment: "right", mirrored: true, color: aura_color_B, grow_inverted: false);
-            if (stage.character_B.aura_points.X == stage.character_B.aura_points.Y && UI.blink2Hz) UI.DrawText(UI.superBarMsg, 193, 73, spacing: Config.spacing_medium, alignment: "right", textureName: "default small white");
+            if (stage.character_B.aura_points.X == stage.character_B.aura_points.Y && UI.blink2Hz) UI.DrawText(UI.superBarMsg, 193, 73, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
 
             // Stun bar A
             var stunA_scale = ( stage.character_A.dizzy_points.Y - stage.character_A.dizzy_points.X) * 150 / stage.character_A.dizzy_points.Y;

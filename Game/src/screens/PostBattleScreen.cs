@@ -29,21 +29,21 @@ public class WGPostBattle : Widget {
             pointer += 1;
 
         // Do option
-        if (UI.DrawButton(Language.GetText("rematch"), 0, 0, spacing: Config.spacing_medium, action: Input.faceButtonUp, click: Input.faceButtonHold, hover: pointer == 0, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) {
+        if (UI.DrawButton(Language.GetText("rematch"), 0, 0, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: pointer == 0, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) {
             Camera.SetChars(Program.stage?.character_A, Program.stage?.character_B);
             Camera.SetLimits(Program.stage.length, Program.stage.height);
             Program.stage?.LockPlayers();
             Program.ChangeState(Program.Battle);
             pointer = 0;
 
-        } if (UI.DrawButton(Language.GetText("menu"), 0, 20, spacing: Config.spacing_medium, action: Input.faceButtonUp, click: Input.faceButtonHold, hover: pointer == 1, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
+        } if (UI.DrawButton(Language.GetText("menu"), 0, 20, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: pointer == 1, font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
             Program.stage?.StopMusic();
             Program.stage?.UnloadStage();
             Input.ResetAI();
             Program.ChangeState(Program.MainMenu);
             pointer = 0;
 
-        } if (UI.DrawButton(Language.GetText("exit game"), 0, 40, spacing: Config.spacing_medium, action: Input.faceButtonUp, click: Input.faceButtonHold, hover: pointer == 2, font: "default medium", hover_font: "default medium hover", click_font: "default medium click"))
+        } if (UI.DrawButton(Language.GetText("exit game"), 0, 40, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: pointer == 2, font: "default medium", hover_font: "default medium hover", click_font: "default medium click"))
             Program.window.Close();
     }
 }

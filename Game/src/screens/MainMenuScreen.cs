@@ -23,8 +23,8 @@ public class WGMainMenu : Widget {
             UI.DrawText(i == pointer ? ")" : "(", (i * 10) - ((main_menu.Count - 1) * 5), -80, textureName: "icons");
         
         // Shoulder buttons
-        UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
-        if (UI.DrawButton(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: Input.Key_hold("LB"), action: Input.Key_up("LB"), click_font: "default small click", hover_font: "default small")) {
+        UI.DrawText("Q", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
+        if (UI.DrawButton(Language.GetText("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
             Program.ChangeState(Program.StartScreen);
             pointer = 0;
         }
@@ -36,7 +36,7 @@ public class WGMainMenu : Widget {
             pointer = pointer >= main_menu.Count - 1 ? 0 : pointer + 1;
 
         // Do option
-        if (UI.DrawButton(Language.GetText(main_menu.ElementAt(pointer).Key), 0, -95, spacing: Config.spacing_medium, click: Input.faceButtonHold, action: Input.faceButtonUp, click_font: "default medium click", hover_font: "default medium white")) {
+        if (UI.DrawButton(Language.GetText(main_menu.ElementAt(pointer).Key), 0, -95, spacing: Config.spacing_medium, click: Input.Key_down("A"), action: Input.Key_up("A"), click_font: "default medium click", hover_font: "default medium white")) {
             Stage.AI_playerA = false;
             Stage.AI_playerB = false;
 

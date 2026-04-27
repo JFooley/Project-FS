@@ -168,7 +168,7 @@ public class Ken : Character {
             this.SA_flag = false;
 
         } else if (this.current_state == "SA1" && this.current_anim_frame_index == 3 && this.has_frame_change) {
-            this.stage.spawnParticle("SALighting", this.body.Position.X, this.body.Position.Y, X_offset: 50, Y_offset: -120, facing: this.facing);
+            this.stage.PSSuper("SALighting", this.body.Position.X, this.body.Position.Y, X_offset: 50, Y_offset: -120, facing: this.facing);
             this.stage.StopFor(50);
 
         } else if (this.current_state == "SA1" && this.current_animation.on_last_frame && this.SA_flag) {
@@ -648,8 +648,8 @@ public class Ken : Character {
                 break;
                 
             case "Shungoku":
-                this.stage.spawnParticle("Shungoku", target.body.Position.X, this.body.Position.Y, Y_offset: -125, facing: this.facing);
-                this.stage.spawnParticle("Shungoku_text", Camera.X, Camera.Y);
+                this.stage.PSSuper("Shungoku", target.body.Position.X, this.body.Position.Y, Y_offset: -125, facing: this.facing);
+                this.stage.PSSuper("Shungoku_text", Camera.X, Camera.Y);
                 this.stage.StopFor(40 * 4); // 40 frames a 15 fps
 
                 this.ChangeState("Shungoku_End");
@@ -964,5 +964,11 @@ public class Ken : Character {
         fb.Load();
         Program.stage?.newCharacters.Add(fb);
         this.current_fireball = fb;
+    }
+    public void spawnShungoku(string state, float X, float Y, int facing) {
+        var fb = new Shungokusatso(state, X, Y, facing);
+        fb.ChangeState(state, reset: true);
+        fb.Load();
+        Program.stage?.newCharacters.Add(fb);
     }
 }

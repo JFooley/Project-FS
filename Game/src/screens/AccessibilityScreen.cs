@@ -18,7 +18,7 @@ public class WGAccessibilityMenu : Widget {
         UI.DrawText(Language.GetText("accessibility"), -80, -107, spacing: Config.spacing_medium);
         
         // 0
-        if (UI.DrawButton(Language.GetText("text-to-speech") + ": " + Language.GetText(Accessibility.TTS ? "enabled" : "disabled"), anchor.X, anchor.Y, hover: this.pointer == 0, click: Input.faceButtonHold, action: Input.faceButtonUp, spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left"))
+        if (UI.DrawButton(Language.GetText("text-to-speech") + ": " + Language.GetText(Accessibility.TTS ? "enabled" : "disabled"), anchor.X, anchor.Y, hover: this.pointer == 0, click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left"))
             Accessibility.TTS = !Accessibility.TTS;
 
         // 1
@@ -31,15 +31,15 @@ public class WGAccessibilityMenu : Widget {
         }
 
         // 2
-        if (UI.DrawButton(Language.GetText("high contrast") + ": " + Language.GetText(Accessibility.high_contrast ? "enabled" : "disabled"), anchor.X, anchor.Y+2*n, hover: this.pointer == 2, click: Input.faceButtonHold, action: Input.faceButtonUp, spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left"))
+        if (UI.DrawButton(Language.GetText("high contrast") + ": " + Language.GetText(Accessibility.high_contrast ? "enabled" : "disabled"), anchor.X, anchor.Y+2*n, hover: this.pointer == 2, click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left"))
             Accessibility.high_contrast = !Accessibility.high_contrast;
 
         // 3
-        if (UI.DrawButton(Language.GetText("atack feedback") + ": " + Language.GetText(Accessibility.atack_feedback ? "enabled" : "disabled"), anchor.X, anchor.Y+3*n, hover: this.pointer == 3, click: Input.faceButtonHold, action: Input.faceButtonUp, spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left"))
+        if (UI.DrawButton(Language.GetText("atack feedback") + ": " + Language.GetText(Accessibility.atack_feedback ? "enabled" : "disabled"), anchor.X, anchor.Y+3*n, hover: this.pointer == 3, click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left"))
             Accessibility.atack_feedback = !Accessibility.atack_feedback;
 
         // 4
-        if (UI.DrawButton(Language.GetText("save and exit"), anchor.X, anchor.Y+5*n, hover: this.pointer == 4, click: Input.faceButtonHold, action: Input.faceButtonUp, spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left")) {
+        if (UI.DrawButton(Language.GetText("save and exit"), anchor.X, anchor.Y+5*n, hover: this.pointer == 4, click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left")) {
             Config.SaveToFile();
             Camera.LockCamera();
             Program.ChangeState(Program.last_game_state);
@@ -73,8 +73,8 @@ public class WGAccessibilitySounds : Widget {
             this.pointer = this.pointer >= size ? 0 : pointer + 1;
         }
 
-        UI.DrawText("E", -194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "left");
-        if (UI.DrawButton(Language.GetText("Return"), -182, 67, spacing: Config.spacing_small, alignment: "left", click: Input.Key_hold("LB"), action: Input.Key_up("LB"), click_font: "default small click", hover_font: "default small")) {
+        UI.DrawText("Q", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
+        if (UI.DrawButton(Language.GetText("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
             Program.ChangeState(Program.last_game_state);
             Camera.LockCamera();
             this.pointer = 0;

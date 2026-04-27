@@ -173,11 +173,11 @@ public class Stage {
         
         // Keep characters facing each other
         if (this.character_A.body.Position.X < this.character_B.body.Position.X) {
-            if (this.character_A.not_acting) this.character_A.facing = 1;
-            if (this.character_B.not_acting) this.character_B.facing = -1;
+            if (this.character_A.not_acting || this.character_A.not_acting_low) this.character_A.facing = 1;
+            if (this.character_B.not_acting || this.character_B.not_acting_low) this.character_B.facing = -1;
         } else {
-            if (this.character_A.not_acting) this.character_A.facing = -1;
-            if (this.character_B.not_acting) this.character_B.facing = 1;
+            if (this.character_A.not_acting || this.character_A.not_acting_low) this.character_A.facing = -1;
+            if (this.character_B.not_acting || this.character_B.not_acting_low) this.character_B.facing = 1;
         }
         
         this.DoSpecialBehaviour();
@@ -254,13 +254,13 @@ public class Stage {
     }
 
     // Spawns
-    public void spawnParticle(String state, float X, float Y, int facing = 1, int X_offset = 0, int Y_offset = 0) {
-        var par = new Particle(state, X + X_offset * facing, Y + Y_offset, facing);
+    public void PSSuper(String state, float X, float Y, int facing = 1, int X_offset = 0, int Y_offset = 0) {
+        var par = new Super(state, X + X_offset * facing, Y + Y_offset, facing);
         par.ChangeState(state, reset: true);
         par.Load();
         this.newParticles.Add(par);
     }
-    public void spawnHitspark(int hit, float X, float Y, int facing, int X_offset = 0, int Y_offset = 0) {
+    public void PSHitspark(int hit, float X, float Y, int facing, int X_offset = 0, int Y_offset = 0) {
         string state;
         if (hit == Character.PARRY) {
             state = "Parry";

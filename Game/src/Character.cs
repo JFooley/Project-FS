@@ -52,7 +52,6 @@ public class AI {
     }
 }
 public struct FightState {
-    public float distance;
     public float enemyDistance;
     public bool enemyIsIdle;
     public bool enemyIsOnHit;
@@ -62,6 +61,7 @@ public struct FightState {
     public bool enemyIsCrouching;
     public bool enemyChangedSide;
     public bool enemyIsDead;
+    public bool enemyOnCorner;
     public bool onCorner;
     public string lastState;
 }
@@ -93,6 +93,7 @@ public abstract class Character : Object {
     public Vector2i dizzy_points = new Vector2i(500, 500);
     public Vector2i aura_points = new Vector2i(0, 100);
     public Vector2f visual_position => new Vector2f(this.body.Position.X - 125, this.body.Position.Y - 250);
+    public Vector2f visual_center => new Vector2f(this.body.Position.X, this.body.Position.Y - 125);
     public int move_speed = 0;
     public int dash_speed = 0;
     public int jump_hight = 79;
@@ -320,11 +321,7 @@ public abstract class Character : Object {
             var enemy = Program.stage?.character_A.player_index == this.player_index ? Program.stage.character_B : Program.stage?.character_A;
 
             var AIstate = new FightState {
-                // Distância até o inimigo
-                distance = Math.Abs(this.body.Position.X - enemy.body.Position.X),
                 enemyDistance = Math.Abs(this.body.Position.X - enemy.body.Position.X) / Config.RenderWidth,
-                
-                // Estado
                 lastState = this.last_state,
                 enemyIsIdle = enemy.state.not_busy,
                 enemyIsAttacking = enemy.state.can_harm && !enemy.state.not_busy,
@@ -334,7 +331,8 @@ public abstract class Character : Object {
                 enemyIsOnHit = enemy.state.on_hit || enemy.state.on_parry,
                 enemyChangedSide = enemy.facing == this.facing,
                 enemyIsDead = enemy.life_points.X == 0,
-                onCorner = this.body.Position.X < (0.2f * Config.RenderWidth) || this.body.Position.X >= (Program.stage?.length - (0.2f * Config.RenderWidth))
+                enemyOnCorner = enemy.body.Position.X < (0.2f * Config.RenderWidth) || enemy.body.Position.X >= (Program.stage?.length - (0.2f * Config.RenderWidth)),
+                onCorner = this.body.Position.X < (0.2f * Config.RenderWidth) || this.body.Position.X >= (Program.stage?.length - (0.2f * Config.RenderWidth)) 
             };
 
             // Atualiza o array de estados de luta
@@ -438,7 +436,7 @@ public abstract class Character : Object {
                             if (this.player_index == 1) stage.character_A.combo_counter += hit_type == Character.HIT ? 1 : 0; 
                             else stage.character_B.combo_counter += hit_type == Character.HIT ? 1 : 0;
 
-                            stage.spawnHitspark(hit_type, boxA.getRealB(this).X - (boxA.width * 1/3), (boxA.getRealA(this).Y + boxA.getRealB(this).Y) / 2 + 125, this.facing);
+                            stage.PSHitspark(hit_type, boxA.getRealB(this).X - (boxA.width * 1/3), (boxA.getRealA(this).Y + boxA.getRealB(this).Y) / 2 + 125, this.facing);
                         }
                     }
                 }

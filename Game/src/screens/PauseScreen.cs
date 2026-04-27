@@ -18,8 +18,8 @@ public class WGPause : Widget {
         fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
         Program.window.Draw(fade90);
 
-        var face_release = Input.faceButtonUp;
-        var face_hold = Input.faceButtonHold;
+        var face_release = Input.Key_up("A");
+        var face_hold = Input.Key_hold("A");
 
         switch (sub_menu) {
             case 0:

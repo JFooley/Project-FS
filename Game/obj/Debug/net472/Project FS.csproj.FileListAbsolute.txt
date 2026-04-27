@@ -2410,8 +2410,6 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken\te
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\fonts\textures.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Hitspark\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Hitspark\textures.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Particle\audio.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Particle\textures.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Burning Dojo\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Burning Dojo\textures.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Japan Fields\audio.dat
@@ -2432,4 +2430,9 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\visuals\textures.
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken-Fireball\animations.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken\animations.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Hitspark\animations.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Particle\animations.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Shungokusatso\animations.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Shungokusatso\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Shungokusatso\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Super\animations.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Super\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Super\textures.dat

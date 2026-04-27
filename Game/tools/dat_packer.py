@@ -174,9 +174,13 @@ def main():
     pack_textures("raw/particles/Hitspark/sprites", "assets/particles/Hitspark")
     pack_audio("raw/particles/Hitspark/sounds", "assets/particles/Hitspark")
 
-    pack_animations("raw/particles/Particle/animations.json", "assets/particles/Particle")
-    pack_textures("raw/particles/Particle/sprites", "assets/particles/Particle")
-    pack_audio("raw/particles/Particle/sounds", "assets/particles/Particle")
+    pack_animations("raw/particles/Super/animations.json", "assets/particles/Super")
+    pack_textures("raw/particles/Super/sprites", "assets/particles/Super")
+    pack_audio("raw/particles/Super/sounds", "assets/particles/Super")
+
+    pack_animations("raw/particles/Shungokusatso/animations.json", "assets/particles/Shungokusatso")
+    pack_textures("raw/particles/Shungokusatso/sprites", "assets/particles/Shungokusatso")
+    pack_audio("raw/particles/Shungokusatso/sounds", "assets/particles/Shungokusatso")
 
     # Characters
     pack_animations("raw/characters/Ken/animations.json", "assets/characters/Ken")

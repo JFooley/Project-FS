@@ -12,9 +12,12 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Hitspark\animations.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Hitspark\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Hitspark\textures.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Particle\animations.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Particle\audio.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Particle\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Shungokusatso\animations.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Shungokusatso\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Shungokusatso\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Super\animations.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Super\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Super\textures.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\shaders\color_fill.frag
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\shaders\color_tinter.frag
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\shaders\hue_change.frag

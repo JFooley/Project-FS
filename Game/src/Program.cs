@@ -80,6 +80,13 @@ public static class Program {
         // Cria uma view
         window.SetView(view);
 
+        // Carregamento das partículas
+        Data.particles = new List<Character> {
+            new Hitspark(),
+            new Super(),
+            new Shungokusatso()
+        };
+
         // Carregamento dos personagens
         Data.characters = new List<Character> {
             new Ken(),
@@ -211,16 +218,11 @@ public static class Program {
             stage.SetThumb();
         }
 
-        Hitspark hs = new Hitspark();
-        Particle pt = new Particle();
-
-        hs.LoadTextures();
-        hs.LoadSounds();
-        hs.LoadAnimations();
-
-        pt.LoadTextures();
-        pt.LoadSounds();
-        pt.LoadAnimations();
+        foreach (var particle in Data.particles) {
+            particle.LoadTextures();
+            particle.LoadSounds();
+            particle.LoadAnimations();
+        }
 
         loading = false;
         ChangeState(StartScreen);
