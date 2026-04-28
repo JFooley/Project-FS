@@ -21,7 +21,7 @@ public static class Config {
     public const int input_window_time = 4;
     public static int hit_stop_time = 15;
     public const int default_hit_stop_time = 15;
-    public const int default_accessible_hit_stop_time = 25;
+    public const int default_accessible_hit_stop_time = 22;
 
     // Audio
     public static float _main_volume = 100f;
