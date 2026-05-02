@@ -213,10 +213,10 @@ public abstract class Character : Object {
         } else last_sprites = new Sprite[3];
 
         // Draw current sprite
-        if (this.palette != null) {
-            Program.window.Draw(temp_sprite, this.SetSwaperShader(
-                this.own_light == Color.Transparent ? this.light_tint : this.own_light)
-            );
+        if (Accessibility.high_contrast) {
+            Program.window.Draw(temp_sprite, this.SetHighContrastShader(this.current_palette_color));
+        } else if (this.palette != null) {
+            Program.window.Draw(temp_sprite, this.SetSwaperShader(this.own_light == Color.Transparent ? this.light_tint : this.own_light));
         } else {
             Program.window.Draw(temp_sprite);
         }
@@ -528,14 +528,6 @@ public abstract class Character : Object {
         this.body.SetVelocity(this, 0, 0, raw_set: true);
         this.facing = facing;
     }
-    public static RenderStates SetSwaperShader(Texture palette, uint palette_size, uint palette_quantity, uint palette_index, Color light) {
-        Program.paletteSwaper.SetUniform("palette", palette);
-        Program.paletteSwaper.SetUniform("palette_size", palette_size);
-        Program.paletteSwaper.SetUniform("palette_quantity", palette_quantity);
-        Program.paletteSwaper.SetUniform("palette_index", palette_index);
-        Program.paletteSwaper.SetUniform("light", new Vector3f(light.R / 255f, light.G / 255f, light.B / 255f));
-        return new RenderStates(Program.paletteSwaper);
-    }
     public RenderStates SetSwaperShader(Color light, int palette_index = -1) {
         Program.paletteSwaper.SetUniform("palette", this.palette);
         Program.paletteSwaper.SetUniform("palette_size", this.palette_size);
@@ -543,6 +535,11 @@ public abstract class Character : Object {
         Program.paletteSwaper.SetUniform("palette_index", palette_index == -1 ? this.palette_index : (uint) palette_index);
         Program.paletteSwaper.SetUniform("light", new Vector3f(light.R / 255f, light.G / 255f, light.B / 255f));
         return new RenderStates(Program.paletteSwaper);
+    }
+    public RenderStates SetHighContrastShader(Color fillColor) {
+        Program.highContrastShader.SetUniform("direction", this.player_index);
+        Program.highContrastShader.SetUniform("fillColor", new Vector3f(fillColor.R, fillColor.G, fillColor.B));
+        return new RenderStates(Program.highContrastShader);
     }
     
     // Loads

@@ -1,11 +1,12 @@
+using System.Drawing;
 using SFML.Audio;
 
 public class Accessibility{
-    public static bool accessibility => TTS || high_contrast || distance_radar || atack_feedback;
-    public static bool TTS;
+    public static bool accessibility = false;
+    public static bool TTS = false;
     public static bool high_contrast = false;
     public static bool distance_radar = false;
-    public static bool atack_feedback = true;
+    public static bool atack_feedback = false;
 
     // Options values
     public static float TTS_speed = 1f;
@@ -17,8 +18,8 @@ public class Accessibility{
     private static bool must_finish;
     private static Queue<object[]> sound_queue = new Queue<object[]>{};
 
-    public Accessibility() {}
-
+    // Colors
+    public static SFML.Graphics.Color bar_graylife => new SFML.Graphics.Color(255, 255, 255);
     public static void Update() {
         if (!accessibility) return;
 

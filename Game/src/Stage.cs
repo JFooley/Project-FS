@@ -113,6 +113,7 @@ public class Stage {
         if (this.textures.ContainsKey(this.CurrentSprite.Sprite_index)) {
             Sprite temp_sprite = new Sprite(this.textures[this.CurrentSprite.Sprite_index]);
             temp_sprite.Position = new Vector2f(0, 0);
+            temp_sprite.Color = Accessibility.high_contrast ? Color.Black : Color.White;
             Program.window.Draw(temp_sprite);
         }
 

@@ -19,6 +19,9 @@ public class WGAccessibilityMenu : Widget {
 
         UI.DrawText(Language.GetText("accessibility"), -80, -107, spacing: Config.spacing_medium);
         
+        // COLOCAR OPÇÃO DE ATIVAÇÃO DE ACESSIBILIDADE GERAL DEIXA AS OUTRAS OPÇÕES ENABLED.
+        // LEMBRAR DE COLOCAR NO SAVE TAMBÉM
+
         // 0
         if (UI.DrawButton(Language.GetText("text-to-speech") + ": " + Language.GetText(Accessibility.TTS ? "enabled" : "disabled"), anchor.X, anchor.Y, hover: selector.is_on(0, 0), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left"))
             Accessibility.TTS = !Accessibility.TTS;

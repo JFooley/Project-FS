@@ -19,10 +19,10 @@ namespace UI_space {
         private static int graylife_A = 150;
         private static int graylife_B = 150;
 
-        public static SFML.Graphics.Color bar_graylife = new SFML.Graphics.Color(195, 248, 233);
+        public static SFML.Graphics.Color bar_graylife => Accessibility.high_contrast ? Accessibility.bar_graylife : new SFML.Graphics.Color(195, 248, 233);
         public static SFML.Graphics.Color bar_fulllife = new SFML.Graphics.Color(44, 191, 54);
         public static SFML.Graphics.Color bar_life = new SFML.Graphics.Color(60, 166, 136);
-        public static SFML.Graphics.Color bar_super = new SFML.Graphics.Color(5, 110, 150);
+        public static SFML.Graphics.Color bar_super =  new SFML.Graphics.Color(5, 110, 150);
         public static SFML.Graphics.Color bar_super_full = new SFML.Graphics.Color(0, 185, 255);
         public static SFML.Graphics.Color bar_stun = new SFML.Graphics.Color(242, 65, 12);
 

@@ -52,6 +52,7 @@ public static class Program {
     public static Shader colorFillShader = new Shader(null, null, Data.GetPath("assets/shaders/color_fill.frag"));
     public static Shader hueChange = new Shader(null, null, Data.GetPath("assets/shaders/hue_change.frag"));
     public static Shader paletteSwaper = new Shader(null, null, Data.GetPath("assets/shaders/palette_swaper.frag"));
+    public static Shader highContrastShader = new Shader(null, null, Data.GetPath("assets/shaders/high_contrast.frag"));
 
     public static void Main() {  
         Config.LoadFromFile();
