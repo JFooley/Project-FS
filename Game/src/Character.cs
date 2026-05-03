@@ -94,8 +94,6 @@ public abstract class Character : Object {
     public Vector2i aura_points = new Vector2i(0, 100);
     public Vector2f visual_position => new Vector2f(this.body.Position.X - 125, this.body.Position.Y - 250);
     public Vector2f visual_center => new Vector2f(this.body.Position.X, this.body.Position.Y - 125);
-    public int move_speed = 0;
-    public int dash_speed = 0;
     public int jump_hight = 79;
     public int push_box_width = 25;
 
@@ -110,6 +108,8 @@ public abstract class Character : Object {
     public bool not_acting_air => this.state.not_busy && !this.state.low && this.state.air && this.on_air;
     public bool not_acting_all => not_acting || not_acting_air || not_acting_low;
 
+    public bool on_parry => this.state.on_parry;
+    public bool on_block => this.state.on_block;
     public bool on_hit => this.state.on_hit;
     public bool on_air => this.body.Position.Y < this.floor_line;
     public bool crounching => this.state.low;
@@ -430,7 +430,7 @@ public abstract class Character : Object {
                                 enemy.aura_points.X = Math.Min(enemy.aura_points.Y, enemy.aura_points.X + 10);
                             }
                             
-                            stage.Hitstop(this.state.hitstop, hit_type: hit_type, on_hit_char: enemy);
+                            stage.Hitstop(this.state.hitstop, hit_type: hit_type, on_hit_char: enemy, hitting_char: this);
                             
                             if (this.player_index == 1) stage.character_A.combo_counter += hit_type == Character.HIT ? 1 : 0; 
                             else stage.character_B.combo_counter += hit_type == Character.HIT ? 1 : 0;
@@ -493,6 +493,10 @@ public abstract class Character : Object {
             this.current_state = new_state;
             this.has_hit = false;
         }
+
+        if (current_state == "Falling") {
+            
+        }
     }
     public Sprite GetCurrentSprite() {
         if (textures.TryGetValue(this.current_sprite, out Texture texture)) {
@@ -507,7 +511,7 @@ public abstract class Character : Object {
         string[] sound = sound_string.Split(' ');
         if (sounds.TryGetValue(sound[0], out SoundBuffer buffer)) {
             var temp_sound = new Sound(buffer) {
-                Volume = Config.Character_Volume,
+                Volume = Accessibility.audio_cue ? Config.Character_Volume * 0.5f : Config.Character_Volume,
                 Pan = follow_player ? (this.body.Position.X - Camera.X) / (Config.RenderWidth*0.5f) : panning,
                 Pitch = sound_string.Contains("--RP") ? 1 + (float) AI.rand.Next(-1, 2) / 10 : 1,
             };
@@ -603,5 +607,3 @@ public abstract class Character : Object {
     }
     
 }
-
-

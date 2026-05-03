@@ -131,7 +131,7 @@ public class Stage {
         this.PlayMusic();
 
         // Accessibility
-        if (Accessibility.distance_radar && WGBattle.battle_state == WGBattle.Battling && !Stage.pause) Accessibility.Radar(this.character_A, this.character_B);
+        if (Accessibility.audio_cue && WGBattle.battle_state == WGBattle.Battling && !Stage.pause) Accessibility.AudioCue(this.character_A, this.character_B);
 
         // Render chars
         foreach (Character char_object in this.OnSceneCharactersRender) {
@@ -353,7 +353,7 @@ public class Stage {
         foreach (Character char_object in this.OnSceneCharacters) char_object.animate = !char_object.animate;
         foreach (Character part_object in this.OnSceneParticles) part_object.animate = ! part_object.animate;
     }
-    public void Hitstop(string amount, int hit_type, Character on_hit_char) {
+    public void Hitstop(string amount, int hit_type, Character on_hit_char, Character hitting_char) {
         uint frames;
 
         if (hit_type == Character.PARRY) {
@@ -400,16 +400,8 @@ public class Stage {
             }
         }
 
-        // Ruble
-        if (!Accessibility.atack_feedback) return;
-        if (on_hit_char.player_index == Input.PLAYER_A) {
-            Input.SetVibration(Input.PLAYER_A, Accessibility.defend_feedback_intensity, 0, frames);
-            Input.SetVibration(Input.PLAYER_B, 0, Accessibility.atack_feedback_intensity, frames);
-        } else if (on_hit_char.player_index == Input.PLAYER_B) {
-            Input.SetVibration(Input.PLAYER_B, Accessibility.defend_feedback_intensity, 0, frames);
-            Input.SetVibration(Input.PLAYER_A, 0, Accessibility.atack_feedback_intensity, frames);
-        }
-
+        // Atack feedback
+        if (Accessibility.haptic_feedback) Accessibility.HapticFeedback(on_hit_char, hitting_char, frames);
     }
     public void StopFor(int lenght, int target_lenght = 0, Character target = null) {
         foreach (var entity in this.OnSceneCharacters) entity.hitstop_counter = lenght;

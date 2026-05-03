@@ -75,9 +75,9 @@
   "text-to-speech" : "Text-to-speech",
   "tts speed" : "TTS speed",
   "high contrast" : "High contrast",
-  "atack feedback" : "Atack feedback",
+  "haptic feedback" : "Haptic feedback",
   "sounds list" : "Sounds list",
   "accessibility menu" : "Accessibility menu",
   "first to" : "First to",
-  "distance radar" : "Distance radar"
+  "sound cues" : "Sound cues"
 }

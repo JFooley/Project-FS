@@ -75,10 +75,10 @@
   "text-to-speech" : "Síntese de fala",
   "tts speed" : "Velocidade da SDF",
   "high contrast" : "Alto contraste",
-  "atack feedback" : "Feedback de ataque",
+  "haptic feedback" : "Feedback háptico",
   "sounds list" : "Lista de sons",
   "accessibility menu" : "Menu de acessibilidade",
   "first to" : "Primeiro a",
-  "distance radar" : "Radar de distância"
+  "sound cues" : "Dicas sonoras"
 
 }

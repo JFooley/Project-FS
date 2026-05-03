@@ -90,6 +90,7 @@ public class Fireball : Character {
 
         switch (this.current_state) {
             case "Ken1":
+                Character.Push(target: target, self: this, Config.light_pushback);
                 this.SetVelocity(raw_set: true);
 
                 if (target.isBlocking()) {
@@ -108,6 +109,7 @@ public class Fireball : Character {
                 break;
 
             case "Ken2":
+                Character.Push(target: target, self: this, Config.light_pushback);
                 this.SetVelocity(raw_set: true);
 
                 if (target.isBlocking()) {
@@ -126,6 +128,7 @@ public class Fireball : Character {
                 break;
             
             case "Ken3":
+                Character.Push(target: target, self: this, Config.light_pushback);
                 this.SetVelocity(raw_set: true);
 
                 if (target.isBlocking()) {

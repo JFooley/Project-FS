@@ -21,7 +21,7 @@ public static class Config {
     public const int input_window_time = 4;
     public static int hit_stop_time = 15;
     public const int default_hit_stop_time = 15;
-    public const int default_accessible_hit_stop_time = 22;
+    public const int default_accessible_hit_stop_time = 20;
 
     // Audio
     public static float _main_volume = 100f;
@@ -41,7 +41,7 @@ public static class Config {
     }
     public static float Music_Volume
     {
-        get { return Accessibility.distance_radar ? _music_volume  * (_main_volume / 100) * 0.2f : _music_volume  * (_main_volume / 100); }
+        get { return Accessibility.audio_cue ? _music_volume  * (_main_volume / 100) * 0.2f : _music_volume  * (_main_volume / 100); }
         set { _music_volume = value; }
     }
     public static float Effect_Volume
@@ -100,8 +100,8 @@ public static class Config {
                 Accessibility.TTS,
                 Accessibility.TTS_speed,
                 Accessibility.high_contrast,
-                Accessibility.distance_radar,
-                Accessibility.atack_feedback
+                Accessibility.audio_cue,
+                Accessibility.haptic_feedback
             };
 
             string jsonString = JsonConvert.SerializeObject(configData, Formatting.Indented);
@@ -137,8 +137,8 @@ public static class Config {
                 Accessibility.TTS = configData.TTS;
                 Accessibility.TTS_speed = configData.TTS_speed;
                 Accessibility.high_contrast = configData.high_contrast;
-                Accessibility.distance_radar = configData.distance_radar;
-                Accessibility.atack_feedback = configData.atack_feedback;
+                Accessibility.audio_cue = configData.audio_cue;
+                Accessibility.haptic_feedback = configData.haptic_feedback;
                 
         } else {
             Config.SaveToFile();
@@ -160,7 +160,7 @@ public static class Config {
         public bool TTS { get; set; }
         public float TTS_speed { get; set; }
         public bool high_contrast { get; set; }
-        public bool distance_radar { get; set; }
-        public bool atack_feedback { get; set; }
+        public bool audio_cue { get; set; }
+        public bool haptic_feedback { get; set; }
     }
 }

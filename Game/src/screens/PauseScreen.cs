@@ -69,8 +69,6 @@ public class WGPause : Widget {
             Stage.refil_super = true;
             s_main.pointer = new Vector2i(0, 0);
         }
-
-        if (Input.Key_down("B")) s_main.pointer = new Vector2i(0, Stage.training_mode ? 4 : 3);
     }
     private void Training(bool face_hold, bool face_release) {
         s_tra.Update();

@@ -8,13 +8,13 @@ using SFML.System;
         public int anim_frame_index;
         public int logic_frame_index;
         public bool on_last_frame = false;
+        public bool on_first_frame => logic_frame_index == 0;
         public bool ended = false;
         public bool playing_sound = false;
 
         // infos
         public int lenght;
         public bool loop;
-        public int framerate;
 
         public Animation(List<Frame> frames, bool loop = true) {
             this.Frames = frames;
@@ -22,7 +22,6 @@ using SFML.System;
             this.lenght = 0;
             foreach (var frame in frames) { this.lenght += frame.lenght; };
             this.loop = loop;
-            this.framerate = 60;
             this.logic_frame_index = 0;
         }
 
@@ -30,12 +29,11 @@ using SFML.System;
             if (anim_frame_index > Frames.Count() - 1) return this.Frames.Last().GetType() == typeof(FrameData) ? (FrameData) this.Frames.Last() : new FrameData();
             else return this.Frames[anim_frame_index].GetType() == typeof(FrameData) ? (FrameData) this.Frames[anim_frame_index] : new FrameData();
         }
-
         public Frame GetCurrentFrameSimple() {
             if (anim_frame_index > Frames.Count() - 1) return this.Frames.Last();
             else return this.Frames[anim_frame_index];
         }
-
+        
         public bool AdvanceFrame() {
             if (this.ended && this.loop) this.Reset();
 
@@ -62,7 +60,6 @@ using SFML.System;
 
             return advanced;
         }
-
         public void Reset() {
             anim_frame_index = 0;
             logic_frame_index = 0;
@@ -71,9 +68,6 @@ using SFML.System;
             playing_sound = false;
             ended = false;
         }
-    
-        // public static Animation LoadFromFile() {}
-        // public static void SaveToFile() {}
     }
 
     public class GenericBox {

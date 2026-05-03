@@ -33,16 +33,18 @@ public class WGAccessibilityMenu : Widget {
         }
 
         // 2 
-        if (UI.DrawButton(Language.GetText("distance radar") + ": " + Language.GetText(Accessibility.distance_radar ? "enabled" : "disabled"), anchor.X, anchor.Y+2*n, hover: selector.is_on(0, 2), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left"))
-            Accessibility.distance_radar = !Accessibility.distance_radar;
+        if (UI.DrawButton(Language.GetText("sound cues") + ": " + Language.GetText(Accessibility.audio_cue ? "enabled" : "disabled"), anchor.X, anchor.Y+2*n, hover: selector.is_on(0, 2), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left")) {
+            Accessibility.audio_cue = !Accessibility.audio_cue;
+            Config.hit_stop_time = Accessibility.audio_cue ? Config.default_accessible_hit_stop_time : Config.default_hit_stop_time;
+        }
 
         // 3
         if (UI.DrawButton(Language.GetText("high contrast") + ": " + Language.GetText(Accessibility.high_contrast ? "enabled" : "disabled"), anchor.X, anchor.Y+3*n, hover: selector.is_on(0, 3), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left"))
             Accessibility.high_contrast = !Accessibility.high_contrast;
 
         // 4
-        if (UI.DrawButton(Language.GetText("atack feedback") + ": " + Language.GetText(Accessibility.atack_feedback ? "enabled" : "disabled"), anchor.X, anchor.Y+4*n, hover: selector.is_on(0, 4), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left"))
-            Accessibility.atack_feedback = !Accessibility.atack_feedback;
+        if (UI.DrawButton(Language.GetText("haptic feedback") + ": " + Language.GetText(Accessibility.haptic_feedback ? "enabled" : "disabled"), anchor.X, anchor.Y+4*n, hover: selector.is_on(0, 4), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left"))
+            Accessibility.haptic_feedback = !Accessibility.haptic_feedback;
 
         // 5
         if (UI.DrawButton(Language.GetText("save and exit"), anchor.X, anchor.Y+6*n, hover: selector.is_on(0, 5), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left")) {

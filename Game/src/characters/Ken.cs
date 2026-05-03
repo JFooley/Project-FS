@@ -99,10 +99,10 @@ public class Ken : Character {
             { "AirTatso", new State(a["airTatsoFrames"], "Landing", 3, change_on_ground: true, change_on_end: false, air: true, can_harm: true)},
             { "AirTatsoEX", new State(a["airTatsoFrames"], "Landing", 3, change_on_ground: true, change_on_end: false, glow: true, trace: true, air: true, can_harm: true)},
             // Other
-            { "Falling", new State(a["fallingFrames"], "OnGround", on_hit: true, can_be_hit: false)},
-            { "Sweeped", new State(a["sweepedFrames"], "Falling", low: true, can_be_hit: false)},
-            { "OnGround", new State(a["OnGroundFrames"], "Wakeup", low: true, can_be_hit: false)},
-            { "Wakeup", new State(a["wakeupFrames"], "Idle", can_be_hit: false)},
+            { "Falling", new State(a["fallingFrames"], "OnGround", can_be_hit: false)},
+            { "Sweeped", new State(a["sweepedFrames"], "Falling", on_hit: true, low: true, can_be_hit: false)},
+            { "OnGround", new State(a["OnGroundFrames"], "WakeUp", low: true, can_be_hit: false)},
+            { "WakeUp", new State(a["wakeupFrames"], "Idle", can_be_hit: false)},
             // Bonus
             { "Intro", new State(a["introFrames"], "Idle", can_be_hit: false)},
         };
