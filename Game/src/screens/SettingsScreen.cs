@@ -46,15 +46,15 @@ public class WGSettings : Widget {
         // Do option
         switch (selector.pointer.Y) {
             case 0:
-                if ((Input.Key_down("Left") || (Input.Key_hold_for("Left", Config.hold_time) && UI.Clock(Config.hold_clock))) && Config.Main_Volume > 0) 
+                if ((Input.Key_down("Left") || (Input.Key_hold_for("Left", Config.hold_time) && UI.ForEach(Config.hold_clock - 5))) && Config.Main_Volume > 0) 
                     Config.Main_Volume -= 1;
-                else if ((Input.Key_down("Right") || (Input.Key_hold_for("Right", Config.hold_time) && UI.Clock(Config.hold_clock))) && Config.Main_Volume < 100) 
+                else if ((Input.Key_down("Right") || (Input.Key_hold_for("Right", Config.hold_time) && UI.ForEach(Config.hold_clock - 5))) && Config.Main_Volume < 100) 
                     Config.Main_Volume += 1;
                 break;
             case 1:
-                if ((Input.Key_down("Left") || (Input.Key_hold_for("Left", Config.hold_time) && UI.Clock(Config.hold_clock))) && Config._music_volume > 0) 
+                if ((Input.Key_down("Left") || (Input.Key_hold_for("Left", Config.hold_time) && UI.ForEach(Config.hold_clock - 5))) && Config._music_volume > 0) 
                     Config._music_volume -= 1;
-                else if ((Input.Key_down("Right") || (Input.Key_hold_for("Right", Config.hold_time) && UI.Clock(Config.hold_clock))) && Config._music_volume < 100) 
+                else if ((Input.Key_down("Right") || (Input.Key_hold_for("Right", Config.hold_time) && UI.ForEach(Config.hold_clock - 5))) && Config._music_volume < 100) 
                     Config._music_volume += 1;
                 break;
             case 2:

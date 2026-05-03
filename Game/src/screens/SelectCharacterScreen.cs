@@ -173,12 +173,12 @@ public class WGSelector : Widget {
         }
 
         // Buttons
-        if (state != READY && UI.DrawButton("<   ", x, y, hover: true, click: Input.Key_hold("Left", player), action: Input.Key_up("Left", player) || (Input.Key_hold_for("Left", Config.hold_time, player) && UI.Clock(Config.hold_clock)), hover_font: "default small", font: "", spacing: 0)) {
+        if (state != READY && UI.DrawButton("<   ", x, y, hover: true, click: Input.Key_hold("Left", player), action: Input.Key_up("Left", player) || (Input.Key_hold_for("Left", Config.hold_time, player) && UI.ForEach(Config.hold_clock)), hover_font: "default small", font: "", spacing: 0)) {
             if (state == SELECTING_CHAR) pointer = pointer > 0 ? pointer - 1 : Data.characters.Count - 1;
             else if (state == SELECTING_PALETTE) selected.SetPalette(-1);
         } 
         
-        if (state != READY && UI.DrawButton("   >", x, y, hover: true, click: Input.Key_hold("Right", player), action: Input.Key_up("Right", player) || (Input.Key_hold_for("Right", Config.hold_time, player) && UI.Clock(Config.hold_clock)), hover_font: "default small", font: "", spacing: 0)) {
+        if (state != READY && UI.DrawButton("   >", x, y, hover: true, click: Input.Key_hold("Right", player), action: Input.Key_up("Right", player) || (Input.Key_hold_for("Right", Config.hold_time, player) && UI.ForEach(Config.hold_clock)), hover_font: "default small", font: "", spacing: 0)) {
             if (state == SELECTING_CHAR) pointer = pointer < Data.characters.Count - 1 ? pointer + 1 : 0;
             else if (state == SELECTING_PALETTE) selected.SetPalette(1);
         }

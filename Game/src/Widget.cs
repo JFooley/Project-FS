@@ -16,17 +16,17 @@ public class Selector : Widget {
     }
 
     public void Update(int player = 0) {
-        if (Input.Key_down("Up", player) || (Input.Key_hold_for("Up", Config.hold_time, player) && UI.Clock(Config.hold_clock))) {
+        if (Input.Key_down("Up", player) || (Input.Key_hold_for("Up", Config.hold_time, player) && UI.ForEach(Config.hold_clock))) {
             this.pointer.Y = this.pointer.Y <= 0 ? options.Count - 1 : pointer.Y - 1;
             this.pointer.X = Math.Min(this.pointer.X, options[this.pointer.Y] - 1);
-        } else if (Input.Key_down("Down", player) || (Input.Key_hold_for("Down", Config.hold_time, player) && UI.Clock(Config.hold_clock))) {
+        } else if (Input.Key_down("Down", player) || (Input.Key_hold_for("Down", Config.hold_time, player) && UI.ForEach(Config.hold_clock))) {
             this.pointer.Y = this.pointer.Y >= options.Count - 1 ? 0 : pointer.Y + 1;
             this.pointer.X = Math.Min(this.pointer.X, options[this.pointer.Y] - 1);
         }
 
-        if (Input.Key_down("Left", player) || (Input.Key_hold_for("Left", Config.hold_time, player) && UI.Clock(Config.hold_clock))) {
+        if (Input.Key_down("Left", player) || (Input.Key_hold_for("Left", Config.hold_time, player) && UI.ForEach(Config.hold_clock))) {
             this.pointer.X = this.pointer.X <= 0 ? options[this.pointer.Y] - 1 : pointer.X - 1;
-        } else if (Input.Key_down("Right", player) || (Input.Key_hold_for("Right", Config.hold_time, player) && UI.Clock(Config.hold_clock))) {
+        } else if (Input.Key_down("Right", player) || (Input.Key_hold_for("Right", Config.hold_time, player) && UI.ForEach(Config.hold_clock))) {
             this.pointer.X = this.pointer.X >= options[this.pointer.Y] - 1 ? 0 : pointer.X + 1;
         }
     }

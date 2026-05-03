@@ -726,7 +726,6 @@ public class Ken : Character {
 
     }
     public override void SelectAction(FightState f_state) {
-        // return;
         if (f_state.enemyIsDead) return;
         if (this.state.can_harm && !this.on_hit && !this.state.on_block && !this.state.on_parry) return;
 
@@ -738,7 +737,7 @@ public class Ken : Character {
         }
         
         if (f_state.enemyIsAirborne && f_state.enemyDistance <= 0.3f) { // Anti air
-            var choise = AI.rand.Next(0, 4);
+            var choise = AI.rand.Next(0, 6);
             if (choise == 0) { // Shoryuken
                 this.BOT.EnqueueAction("Right *", 2);
                 this.BOT.EnqueueAction("Down *", 2);

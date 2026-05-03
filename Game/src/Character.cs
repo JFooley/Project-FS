@@ -377,23 +377,22 @@ public abstract class Character : Object {
                 this.ChangeState("Sweeped", reset: true);
                 return;
             } else if (airbone || (this.life_points.X <= 0 && !Program.stage.MustWait()) || (this.state.air && this.state.on_hit)) {
+                this.facing = -enemy.facing;
                 this.ChangeState("Airboned", reset: true);
                 if (this.life_points.X <= 0) this.SetVelocity(X: -Config.heavy_pushback, Y: 50);
-                this.facing = -enemy.facing;
                 return;
             } else if ((this.crounching && !force_stand) || force_crounch) {
+                this.facing = -enemy.facing;
                 this.ChangeState("OnHitLow", reset: true);
             } else {
+                this.facing = -enemy.facing;
                 this.ChangeState("OnHit", reset: true);
             }
-
-            this.facing = -enemy.facing;
-            this.body.Velocity.X = Math.Abs(this.body.Velocity.X) * enemy.facing;
 
         } else { // Block stun states
             this.facing = -enemy.facing;
             if (this.crounching) this.ChangeState("OnBlockLow", reset: true);
-                else this.ChangeState("OnBlock", reset: true);
+            else this.ChangeState("OnBlock", reset: true);
         }
     
         // Set stun frames

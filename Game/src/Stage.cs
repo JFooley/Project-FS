@@ -113,7 +113,7 @@ public class Stage {
         if (this.textures.ContainsKey(this.CurrentSprite.Sprite_index)) {
             Sprite temp_sprite = new Sprite(this.textures[this.CurrentSprite.Sprite_index]);
             temp_sprite.Position = new Vector2f(0, 0);
-            temp_sprite.Color = Accessibility.high_contrast ? Color.Black : Color.White;
+            temp_sprite.Color = Accessibility.high_contrast ? new Color(15, 15, 15, 255) : Color.White;
             Program.window.Draw(temp_sprite);
         }
 
@@ -130,14 +130,17 @@ public class Stage {
         // Keep music playing
         this.PlayMusic();
 
+        // Accessibility
+        if (Accessibility.distance_radar && WGBattle.battle_state == WGBattle.Battling && !Stage.pause) Accessibility.Radar(this.character_A, this.character_B);
+
         // Render chars
         foreach (Character char_object in this.OnSceneCharactersRender) {
             char_object.Bot();
             this.DrawShadow(char_object);
             char_object.Render(Stage.show_boxs);
         }
-        UI.DrawBattleUI(this);
         foreach (Character part_object in this.OnSceneParticles) part_object.Render(Stage.show_boxs);
+        UI.DrawBattleUI(this);
 
         // Update chars
         foreach (Character char_object in this.OnSceneCharactersSorted) char_object.Update();
@@ -186,7 +189,6 @@ public class Stage {
     public virtual void DoSpecialBehaviour() {}
     public void TrainingMode() {
         this.ResetRoundTime();
-        if (Config.debug) UI.ShowFramerate("default small white");
 
         // Show life points
         UI.DrawText(this.character_A.life_points.X.ToString(), -18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
@@ -398,13 +400,14 @@ public class Stage {
             }
         }
 
-
+        // Ruble
+        if (!Accessibility.atack_feedback) return;
         if (on_hit_char.player_index == Input.PLAYER_A) {
-            if (Accessibility.atack_feedback) Input.SetVibration(Input.PLAYER_A, Accessibility.defend_feedback_intensity, 0, frames);
-            if (Accessibility.atack_feedback) Input.SetVibration(Input.PLAYER_B, 0, Accessibility.atack_feedback_intensity, frames);
+            Input.SetVibration(Input.PLAYER_A, Accessibility.defend_feedback_intensity, 0, frames);
+            Input.SetVibration(Input.PLAYER_B, 0, Accessibility.atack_feedback_intensity, frames);
         } else if (on_hit_char.player_index == Input.PLAYER_B) {
-            if (Accessibility.atack_feedback) Input.SetVibration(Input.PLAYER_B, Accessibility.defend_feedback_intensity, 0, frames);
-            if (Accessibility.atack_feedback) Input.SetVibration(Input.PLAYER_A, 0, Accessibility.atack_feedback_intensity, frames);
+            Input.SetVibration(Input.PLAYER_B, Accessibility.defend_feedback_intensity, 0, frames);
+            Input.SetVibration(Input.PLAYER_A, 0, Accessibility.atack_feedback_intensity, frames);
         }
 
     }

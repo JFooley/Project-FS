@@ -141,6 +141,9 @@ def main():
     # Visuals
     pack_textures("raw/visuals", "assets/visuals")
 
+    # Sounds
+    pack_audio("raw/sounds", "assets/sounds")
+
     # Fonts
     pack_textures("raw/fonts", "assets/fonts")
 

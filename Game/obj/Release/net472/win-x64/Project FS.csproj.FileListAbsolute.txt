@@ -2437,3 +2437,4 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\assets\particl
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\assets\particles\Super\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\assets\particles\Super\textures.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\assets\shaders\high_contrast.frag
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\assets\sounds\audio.dat

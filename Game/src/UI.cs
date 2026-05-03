@@ -1,5 +1,4 @@
 
-using System.Net.NetworkInformation;
 using Language_space;
 using SFML.Graphics;
 using SFML.System;
@@ -28,7 +27,6 @@ namespace UI_space {
 
         // visuals
         private static Sprite hud;
-        private static Dictionary<string, Dictionary<char, Sprite>> font_textures;
         private static string superBarMsg = "max aura";
 
         // Positions
@@ -42,9 +40,8 @@ namespace UI_space {
         private static int stun_bar_X = -178;
 
         public UI() {
-            font_textures = new Dictionary<string, Dictionary<char, Sprite>>();
             UI.hud = new Sprite(Data.textures["ui:hud"]);
-            UI.Load();
+            BitmapFont.Load();
         }
         public static void Update() {
             UI.frame_counter++;
@@ -56,62 +53,52 @@ namespace UI_space {
         }
         
         // Timing aux
-        public static bool Clock(int frequency) {
-            return UI.frame_counter % frequency == 0;
-        }
-
-        // Loads
-        public static void LoadFontSprites(float size, string textureName) {
-            Dictionary<char, Sprite> characterSprites = new Dictionary<char, Sprite>(); // Cria grupo de sprites
-            foreach (char c in BitmapFont.characters) {
-                Sprite sprite = BitmapFont.GetCharacterSprite(c, size, textureName);
-                if (sprite != null) characterSprites[c] = sprite;
-            }
-            UI.font_textures[textureName] = characterSprites;
+        public static bool ForEach(float frames) {
+            return frames > 0 ? UI.frame_counter % frames == 0 : true;
         }
 
         // Draw Callers
         public static void ShowFramerate(string textureName) {
-            UI.elapsed = UI.frame_counter % 30 == 0 ? (int) (1 / Program.last_frame_time) : UI.elapsed;
+            UI.elapsed = UI.frame_counter % 60 == 0 ? (int) (1 / Program.last_frame_time) : UI.elapsed;
             UI.DrawText(UI.elapsed.ToString() + " - " + Program.last_frame_time.ToString("F5"), 0, 82, spacing: Config.spacing_small, textureName: textureName);
         }
         public static void DrawText(string text, float X, float Y, float spacing = 0, string alignment = "center", bool absolutePosition = false, string textureName = "default medium") {
-            float totalWidth = 0;
-            float pos_X, pos_Y;
+            if (!BitmapFont.textures.TryGetValue(textureName, out var texture)) return;
+
+            float totalWidth = text.Length > 0 ? text.Length * (BitmapFont.CellSize + spacing) - spacing : 0;
             float offset_X = X;
-            List<Sprite> text_sprites = new List<Sprite> {};
-
-            // Checa se a textura existe
-            if (!UI.font_textures.TryGetValue(textureName, out Dictionary<char, Sprite> dict)) return;
-
-            // Calcular a largura total do texto
-            foreach (char c in text) {
-                if (dict.TryGetValue(c, out Sprite letter)) {
-                    var sprite = new Sprite(letter);
-                    totalWidth += sprite.GetGlobalBounds().Width + spacing;
-                    text_sprites.Add(sprite);
-                }
-            }
             
-            // Compensa o primeiro caractere
-            totalWidth -= spacing;
+            if (alignment == "center") offset_X -= totalWidth / 2f;
+            else if (alignment == "right") offset_X -= totalWidth;
 
-            // Ajustar posição se centralizado
-            if (alignment == "center") {
-                offset_X -= (int) totalWidth / 2; 
-            } else if (alignment == "right") {
-                offset_X -= totalWidth; 
+            VertexArray vertices = new VertexArray(PrimitiveType.Triangles);
+
+            float currentX = absolutePosition ? X + offset_X : Camera.X + offset_X;
+            float currentY = absolutePosition ? Y : Camera.Y + Y;
+
+            foreach (char c in text) {
+                IntRect rect = BitmapFont.GetCharacter(c);
+
+                float w = rect.Width;
+                float h = rect.Height;
+
+                float tx = rect.Left;
+                float ty = rect.Top;
+
+                // 6 vértices (2 triângulos para cada caractere)
+                vertices.Append(new Vertex(new Vector2f(currentX, currentY), new Vector2f(tx, ty))); // v0
+                vertices.Append(new Vertex(new Vector2f(currentX + w, currentY), new Vector2f(tx + w, ty))); // v1
+                vertices.Append(new Vertex(new Vector2f(currentX, currentY + h), new Vector2f(tx, ty + h))); // v2
+
+                vertices.Append(new Vertex(new Vector2f(currentX, currentY + h), new Vector2f(tx, ty + h))); // v2
+                vertices.Append(new Vertex(new Vector2f(currentX + w, currentY), new Vector2f(tx + w, ty))); // v1
+                vertices.Append(new Vertex(new Vector2f(currentX + w, currentY + h), new Vector2f(tx + w, ty + h))); // v3
+
+                currentX += w + spacing;
             }
 
-            // Define a posição base
-            pos_X = absolutePosition ? X : Camera.X;
-            pos_Y = absolutePosition ? Y : Camera.Y;
-
-            foreach (Sprite sprite in text_sprites) {   
-                sprite.Position = new Vector2f(pos_X + offset_X, pos_Y + Y);
-                Program.window.Draw(sprite);
-                offset_X += sprite.GetGlobalBounds().Width + spacing;
-            }
+            RenderStates states = new RenderStates(texture);
+            Program.window.Draw(vertices, states);
         }
         public static void DrawRectangle(float X, float Y, float width, float height, SFML.Graphics.Color? outline_color = null, SFML.Graphics.Color? fill_color = null, string alignment = "center", bool absolutePosition = false) {
             RectangleShape rectangle;
@@ -284,33 +271,12 @@ namespace UI_space {
             UI.DrawText(string.Concat(Enumerable.Repeat("-", Math.Max(Config.max_rounds - stage.rounds_A, 0))) + string.Concat(Enumerable.Repeat("*", stage.rounds_A)), -20, -91, spacing: -19, alignment: "right", textureName: "icons");
             UI.DrawText(string.Concat(Enumerable.Repeat("*", stage.rounds_B)) + string.Concat(Enumerable.Repeat("-", Math.Max(Config.max_rounds - stage.rounds_B, 0))),  20, -91, spacing: -19, alignment: "left", textureName: "icons");
         }
-        public static void Load() {
-            BitmapFont.Load();
-            BitmapFont.Rename("font1", "1");
-
-            UI.LoadFontSprites(32, "default medium");
-            UI.LoadFontSprites(32, "default medium grad");
-            UI.LoadFontSprites(32, "default medium white");
-            UI.LoadFontSprites(32, "default medium red");
-            UI.LoadFontSprites(32, "default medium click");
-            UI.LoadFontSprites(32, "default medium hover");
-
-            UI.LoadFontSprites(32, "default small");
-            UI.LoadFontSprites(32, "default small grad");
-            UI.LoadFontSprites(32, "default small white");
-            UI.LoadFontSprites(32, "default small red");
-            UI.LoadFontSprites(32, "default small click");
-            UI.LoadFontSprites(32, "default small hover");
-
-            UI.LoadFontSprites(32, "1");
-            UI.LoadFontSprites(32, "icons");
-        }
     }
 
     public static class BitmapFont {
-        private static Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
-
-        public static char[] characters = {
+        public static Dictionary<string, Texture> textures = new Dictionary<string, Texture>();
+        public static Dictionary<char, int> charIndex = new Dictionary<char, int>();
+        private static char[] characters = {
             '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
             'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J',
             'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T',
@@ -326,44 +292,29 @@ namespace UI_space {
             'ú', 'Ú', 'ù', 'Ù', 'û', 'Û', 'í', 'Í', 'ì', 'Ì'
         };
 
-        private const int CellSize = 32; // Tamanho de cada célula
-        private const int Columns = 10;  // Número de colunas
-        private const int Rows = 13;     // Número de linhas
+        public const int CellSize = 32; // Tamanho de cada célula
+        public const int Columns = 10;  // Número de colunas
+        public const int Rows = 13;     // Número de linhas
 
         public static void Load() {
+            for (int i = 0; i < characters.Length; i++) charIndex[characters[i]] = i;
+
             string full_path = Data.GetPath("assets/fonts");
             if (!System.IO.Directory.Exists(full_path))
                 throw new System.IO.DirectoryNotFoundException($"O diretório {full_path} não foi encontrado.");
 
             Data.LoadTexturesDat(Data.GetPath("assets/fonts/textures.dat"), BitmapFont.textures);
         }
-
-        public static void Rename(string old_name, string new_name) {
-            textures[new_name] = textures[old_name];
-            textures.Remove(old_name);
-        }
-
-        public static Sprite GetCharacterSprite(char character, float size, string textureName) {
-            if (!textures.ContainsKey(textureName)) {
-                return null; // Retorna null se a textura não for encontrada
-            }
-
-            Texture texture = textures[textureName];
-
-            // Encontra o índice do caractere no array
-            int index = Array.IndexOf(characters, character);
+        public static IntRect GetCharacter(char character) {
+            if (!charIndex.TryGetValue(character, out int index)) index = -1;
             if (index == -1 || index >= Columns * Rows) {
-                return null; // Retorna null se o caractere não for encontrado
+                index = charIndex[' '];
             }
 
-            // Calcula a posição na textura
-            int x = (index % Columns) * CellSize;
-            int y = (index / Columns) * CellSize;
+            int x = index % Columns * CellSize;
+            int y = index / Columns * CellSize;
 
-            // Cria um sprite do caractere
-            Sprite sprite = new Sprite(texture, new IntRect(new Vector2i(x, y), new Vector2i(CellSize, CellSize)));
-            sprite.Scale = new Vector2f(size / CellSize, size / CellSize); // Ajusta o tamanho
-            return sprite;
+            return new IntRect(new Vector2i(x, y), new Vector2i(CellSize, CellSize));
         }
     }
 

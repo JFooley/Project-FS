@@ -1,13 +1,13 @@
 using Newtonsoft.Json;
 
 namespace Language_space {
-    public static class Language {
+    public class Language {
         public static string[] Supported { get; private set; } = Array.Empty<string>();
         public static string[] LanguageCodes { get; private set; } = Array.Empty<string>();
         
         private static List<Dictionary<string, string>> _languageData = new();
 
-        public static void Initialize() {
+        public Language() {
             LoadAllLanguages();
         }
 

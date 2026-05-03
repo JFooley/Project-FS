@@ -63,10 +63,12 @@ public static class Program {
         // Carregamento de texturas genéricas
         Data.LoadTexturesDat(Data.GetPath("assets/visuals/textures.dat"), Data.textures);
 
-        new UI();
+        // Carregamento de sons genéricos
+        Data.LoadSoundsDat(Data.GetPath("assets/sounds/audio.dat"), Data.sounds);
 
-        // Inicializações
-        Language.Initialize();
+        new UI();
+        new Accessibility();
+        new Language();
         new Input(autoDetectDevice: true);
         new Camera();
 
@@ -122,11 +124,11 @@ public static class Program {
         WGCredits credits_screen = new WGCredits();
 
         while (window.IsOpen) {
+            frametimer.Restart();
             window.DispatchEvents();
             Input.Update();
             UI.Update();
             Camera.Update();
-            frametimer.Restart();
 
             switch (game_state) {
                 case Intro:
@@ -192,6 +194,7 @@ public static class Program {
 
             // Finally
             last_frame_time = frametimer.Elapsed.TotalMilliseconds/1000;
+            if (Config.debug) UI.ShowFramerate("default small white");
             window.Display();
             window.Clear();            
         }

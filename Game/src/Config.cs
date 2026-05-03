@@ -41,7 +41,7 @@ public static class Config {
     }
     public static float Music_Volume
     {
-        get { return _music_volume  * (_main_volume / 100); }
+        get { return Accessibility.distance_radar ? _music_volume  * (_main_volume / 100) * 0.2f : _music_volume  * (_main_volume / 100); }
         set { _music_volume = value; }
     }
     public static float Effect_Volume

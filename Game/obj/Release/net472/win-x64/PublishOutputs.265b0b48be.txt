@@ -23,6 +23,7 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\shaders\high_contrast.frag
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\shaders\hue_change.frag
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\shaders\palette_swaper.frag
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\sounds\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\stages\Burning Dojo\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\stages\Burning Dojo\textures.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\stages\Japan Fields\audio.dat
