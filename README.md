@@ -51,5 +51,10 @@ Implementado:
 - Load unificado e mais eficiente (usando arquivos binários)
 - Inteligência artificial dos BOTs
 - Widgets
-
+- Recursos de acessibilidade: Alto contraste
+- Recursos de acessibilidade: Indicação sonora de altura do golpe
+- Recursos de acessibilidade: Indicação sonora dinamica de proximidade dos jogadores
+- Recursos de acessibilidade: Feedback háptico de contato do golpe e intensidade
+- Recursos de acessibilidade: Indicação sonora de sweep/wake up
+- Recursos de acessibilidade: Feedback sonoro de navegação nos menus
 
