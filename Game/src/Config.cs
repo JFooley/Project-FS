@@ -41,7 +41,7 @@ public static class Config {
     }
     public static float Music_Volume
     {
-        get { return Accessibility.audio_cue ? _music_volume  * (_main_volume / 100) * 0.2f : _music_volume  * (_main_volume / 100); }
+        get { return Accessibility.distance_cue ? _music_volume  * (_main_volume / 100) * 0.2f : _music_volume  * (_main_volume / 100); }
         set { _music_volume = value; }
     }
     public static float Effect_Volume
@@ -56,7 +56,7 @@ public static class Config {
     public const float heavy_pushback = 5.5f;
 
     public const int parry_advantage = 2;
-    public const int parry_window = 10;
+    public const int parry_window = 8;
 
     // Game constants
     public const int input_buffer_size = 240;
@@ -99,9 +99,12 @@ public static class Config {
                 Language,
                 Accessibility.TTS,
                 Accessibility.TTS_speed,
+                Accessibility.fall_get_up_cue,
+                Accessibility.distance_cue,
+                Accessibility.atack_hight_cue,
+                Accessibility.navigation_cue,
                 Accessibility.high_contrast,
-                Accessibility.audio_cue,
-                Accessibility.haptic_feedback
+                Accessibility.atack_haptic_feedback,
             };
 
             string jsonString = JsonConvert.SerializeObject(configData, Formatting.Indented);
@@ -137,9 +140,12 @@ public static class Config {
                 Accessibility.TTS = configData.TTS;
                 Accessibility.TTS_speed = configData.TTS_speed;
                 Accessibility.high_contrast = configData.high_contrast;
-                Accessibility.audio_cue = configData.audio_cue;
-                Accessibility.haptic_feedback = configData.haptic_feedback;
-                
+                Accessibility.distance_cue = configData.distance_cue;
+                Accessibility.atack_haptic_feedback = configData.atack_haptic_feedback;
+                Accessibility.fall_get_up_cue = configData.fall_get_up_cue;
+                Accessibility.atack_hight_cue = configData.atack_hight_cue;
+                Accessibility.navigation_cue = configData.navigation_cue;
+
         } else {
             Config.SaveToFile();
         }
@@ -159,8 +165,11 @@ public static class Config {
         // Acessibilidade
         public bool TTS { get; set; }
         public float TTS_speed { get; set; }
+        public bool fall_get_up_cue { get; set; }
+        public bool distance_cue { get; set; }
+        public bool atack_hight_cue { get; set; }
+        public bool navigation_cue { get; set; }
         public bool high_contrast { get; set; }
-        public bool audio_cue { get; set; }
-        public bool haptic_feedback { get; set; }
+        public bool atack_haptic_feedback { get; set; }
     }
 }

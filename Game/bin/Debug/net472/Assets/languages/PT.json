@@ -24,6 +24,8 @@
   "drawn" : "Empate",
   "rematch" : "Revanche" ,
   "change stage" : "Mudar estágio",
+  "change character" : "Mudar personagem",
+  "back to menu" : "Voltar ao menu",
   "ready" : "Pronto",
   "exit game" : "Sair do jogo",
   "pause" : "Pausa",
@@ -77,8 +79,11 @@
   "high contrast" : "Alto contraste",
   "haptic feedback" : "Feedback háptico",
   "sounds list" : "Lista de sons",
-  "accessibility menu" : "Menu de acessibilidade",
+  "accessibility settings" : "Configurações de acessibilidade",
   "first to" : "Primeiro a",
-  "sound cues" : "Dicas sonoras"
-
+  "fall/get up" : "Queda/levantar",
+  "players distance" : "Distância dos jogadores",
+  "atack height" : "Altura do ataque",
+  "navigation sounds" : "Sons de navegação",
+  "spacialized audio" : "Áudio espacializado"
 }

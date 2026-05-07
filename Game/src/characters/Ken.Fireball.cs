@@ -83,11 +83,6 @@ public class Fireball : Character {
     public override int ImposeBehavior(Character target) {
         int hit = Character.NOTHING;
 
-        if (target.name == "Fireball") {
-            target.life_points.X -= 1;
-            return Character.HIT;
-        };
-
         switch (this.current_state) {
             case "Ken1":
                 Character.Push(target: target, self: this, Config.light_pushback);

@@ -6,7 +6,7 @@
             "DeltaY": 0.0,
             "Boxes": [],
             "lenght": 1,
-            "Sound_index": "on_hit_1",
+            "Sound_index": "on_hit --RP",
             "hasHit": true
         },
         {
@@ -98,7 +98,7 @@
             "DeltaY": 0.0,
             "Boxes": [],
             "lenght": 1,
-            "Sound_index": "on_hit_2",
+            "Sound_index": "on_hit --RP",
             "hasHit": true
         },
         {
@@ -190,7 +190,7 @@
             "DeltaY": 0.0,
             "Boxes": [],
             "lenght": 1,
-            "Sound_index": "on_hit_3",
+            "Sound_index": "on_hit --RP",
             "hasHit": true
         },
         {
@@ -338,7 +338,7 @@
             "DeltaY": 0.0,
             "Boxes": [],
             "lenght": 2,
-            "Sound_index": "",
+            "Sound_index": "parry",
             "hasHit": true
         },
         {
@@ -347,7 +347,7 @@
             "DeltaY": 0.0,
             "Boxes": [],
             "lenght": 2,
-            "Sound_index": "parry",
+            "Sound_index": "",
             "hasHit": true
         },
         {

@@ -1,1 +1,2 @@
-Game/bin
+bin/**
+obj/**

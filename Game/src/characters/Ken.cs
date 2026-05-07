@@ -290,7 +290,6 @@ public class Ken : Character {
 
         switch (this.current_state) {
             case "LightP":
-                Character.Push(target: target, self: this, Config.light_pushback);
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 3);
@@ -299,11 +298,11 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 13, 50);
                     target.Stun(this, 6);
                 }
+                Character.Push(target: target, self: this, Config.light_pushback);
                 Character.AddAuraPoints(target, this, hit);
                 break;
                 
             case "LowLightP":
-                Character.Push(target: target, self: this, Config.light_pushback);
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 3);
@@ -312,11 +311,11 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 13, 50);
                     target.Stun(this, 6);
                 }
+                Character.Push(target: target, self: this, Config.light_pushback);
                 Character.AddAuraPoints(target, this, hit);
                 break;
 
             case "AirLightP":
-                Character.Push(target: target, self: this, Config.light_pushback, force_push: true);
                 if (target.isBlockingHigh()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 7);
@@ -325,11 +324,11 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 50, 100);
                     target.Stun(this, 7);
                 }
+                Character.Push(target: target, self: this, Config.light_pushback, force_push: true);
                 Character.AddAuraPoints(target, this, hit);
                 break;
 
             case "LightK":
-                Character.Push(target: target, self: this, Config.light_pushback);
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 2);
@@ -338,11 +337,11 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 44, 50);
                     target.Stun(this, 2);
                 }
+                Character.Push(target: target, self: this, Config.light_pushback);
                 Character.AddAuraPoints(target, this, hit);
                 break;
                 
             case "LowLightK":
-                Character.Push(target: target, self: this, Config.light_pushback);
                 if (target.isBlockingLow()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -4);
@@ -351,11 +350,11 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 85, 50);
                     target.Stun(this, -3);
                 }
+                Character.Push(target: target, self: this, Config.light_pushback);
                 Character.AddAuraPoints(target, this, hit);
                 break;
             
             case "AirLightK":
-                Character.Push(target: target, self: this, Config.light_pushback, force_push: true);
                 if (target.isBlockingHigh()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 10);
@@ -364,11 +363,11 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 90, 150);
                     target.Stun(this, 10);
                 }
+                Character.Push(target: target, self: this, Config.light_pushback, force_push: true);
                 Character.AddAuraPoints(target, this, hit);
                 break;
 
             case "MediumP":
-                Character.Push(target: target, self: this, Config.medium_pushback);
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -2);
@@ -377,11 +376,11 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 100, 172);
                     target.Stun(this, 0);
                 }
+                Character.Push(target: target, self: this, Config.medium_pushback);
                 Character.AddAuraPoints(target, this, hit, self_amount: 16);
                 break;
 
             case "LowMediumP":
-                Character.Push(target: target, self: this, Config.medium_pushback);
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 3);
@@ -390,11 +389,11 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 90, 100);
                     target.Stun(this, 4);
                 }
+                Character.Push(target: target, self: this, Config.medium_pushback);
                 Character.AddAuraPoints(target, this, hit, self_amount: 16);
                 break;
 
             case "AirMediumP":
-                Character.Push(target: target, self: this, Config.medium_pushback, force_push: true);
                 if (target.isBlockingHigh()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 10);
@@ -403,11 +402,11 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 100, 180);
                     target.Stun(this, 10);
                 }
+                Character.Push(target: target, self: this, Config.medium_pushback, force_push: true);
                 Character.AddAuraPoints(target, this, hit, self_amount: 16);
                 break;
 
             case "MediumK":
-                Character.Push(target: target, self: this, Config.medium_pushback);
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -6);
@@ -416,11 +415,11 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 120, 235);
                     target.Stun(this, 0);
                 }
+                Character.Push(target: target, self: this, Config.medium_pushback);
                 Character.AddAuraPoints(target, this, hit, self_amount: 16);
                 break;
 
             case "LowMediumK":
-                Character.Push(target: target, self: this, Config.medium_pushback);
                 if (target.isBlockingLow()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -14);
@@ -430,11 +429,11 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 110, 200);
                     target.Stun(target, 0, sweep: true);
                 }
+                Character.Push(target: target, self: this, Config.medium_pushback);
                 Character.AddAuraPoints(target, this, hit, self_amount: 16);
                 break;
 
             case "AirMediumK":
-                Character.Push(target: target, self: this, Config.medium_pushback, force_push: true);
                 if (target.isBlockingHigh()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 13);
@@ -443,11 +442,11 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 125, 235);
                     target.Stun(this, 13);
                 }
+                Character.Push(target: target, self: this, Config.medium_pushback, force_push: true);
                 Character.AddAuraPoints(target, this, hit, self_amount: 16);
                 break;
 
             case "BackMediumK":
-                Character.Push(target: target, self: this, Config.heavy_pushback);
                 if (target.isBlockingHigh()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 1);
@@ -457,11 +456,11 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 56, 94);
                     target.Stun(this, 10);
                 }
+                Character.Push(target: target, self: this, Config.heavy_pushback);
                 Character.AddAuraPoints(target, this, hit, self_amount: 6);
                 break;
 
             case "BackMediumP":
-                Character.Push(target: target, self: this, Config.heavy_pushback);
                 if (target.isBlockingHigh()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 1);
@@ -471,11 +470,11 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 56, 94);
                     target.Stun(this, 10);
                 }
+                Character.Push(target: target, self: this, Config.heavy_pushback);
                 Character.AddAuraPoints(target, this, hit, self_amount: 16);
                 break;
 
             case "CloseMP":
-                Character.Push(target: target, self: this, Config.medium_pushback);
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -2);
@@ -485,6 +484,7 @@ public class Ken : Character {
                     Character.Damage(target: target, self: this, 80, 100);
                     target.Stun(this, 0);
                 }
+                Character.Push(target: target, self: this, Config.medium_pushback);
                 Character.AddAuraPoints(target, this, hit);
                 break;
             
@@ -514,9 +514,9 @@ public class Ken : Character {
                     if (this.current_anim_frame_index >= 3) {
                         target.Stun(this, 0, airbone: true);
                         Character.Push(target: target, self: this, Config.medium_pushback, Y_amount: 100f, airbone: true);
-
-                    } else target.Stun(this, 0);
-
+                    } else {
+                        target.Stun(this, 0);
+                    }
                     Character.Damage(target: target, self: this, 100, 85);
                 }
                 Character.AddAuraPoints(target, this, hit, self_amount: 16);
@@ -534,9 +534,9 @@ public class Ken : Character {
                     if (this.current_anim_frame_index >= 3) {
                         target.Stun(this, 0, airbone: true);
                         Character.Push(target: target, self: this, Config.medium_pushback, Y_amount: 110f, airbone: true);
-
-                    } else target.Stun(this, 0);
-                    
+                    } else {
+                        target.Stun(this, 0);
+                    }
                     Character.Damage(target: target, self: this, 120, 85);
 
                 }
@@ -549,8 +549,8 @@ public class Ken : Character {
                     target.BlockStun(this, 12, raw_value: true);
                 } else {
                     hit = Character.HIT;
-                    Character.Damage(target: target, self: this, 66, 203);
                     target.Stun(this, 15, raw_value: true);
+                    Character.Damage(target: target, self: this, 66, 203);
                 }
                 Character.Push(target: target, self: this, Config.light_pushback);
                 Character.AddAuraPoints(target, this, hit);
@@ -605,8 +605,8 @@ public class Ken : Character {
                 } else {
                     hit = Character.HIT;
                     target.Stun(this, -6, airbone: true);
-                    Character.Push(target: target, self: this, 2f, Y_amount: 50, airbone: true);
                     Character.Damage(target: target, self: this, 80, 140);
+                    Character.Push(target: target, self: this, 2f, Y_amount: 50, airbone: true);
                 }
                 Character.AddAuraPoints(target, this, hit, self_amount: 4);
                 break;
@@ -615,13 +615,13 @@ public class Ken : Character {
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 30, raw_value: true);
-                    Character.Push(target: target, self: this, Config.heavy_pushback);
                     Character.Damage(target: target, self: this, 5, 0);
+                    Character.Push(target: target, self: this, Config.heavy_pushback);
                 } else {
                     hit = Character.HIT;
                     target.Stun(this, 10, force_stand: true);
-                    Character.Push(target: target, self: this, 1, Y_amount: 20);
                     Character.Damage(target: target, self: this, 45, 35);
+                    Character.Push(target: target, self: this, 1, Y_amount: 20);
                     this.SA_flag = true;
                 }
                 break;
@@ -949,7 +949,7 @@ public class Ken : Character {
                 this.BOT.EnqueueAction("", AI.rand.Next(10, 30)); // Nothing
         }
     
-        this.BOT.EnqueueAction("", AI.rand.Next(5, 10));
+        this.BOT.EnqueueAction("", AI.rand.Next(5, 20));
     }
 
     // Other

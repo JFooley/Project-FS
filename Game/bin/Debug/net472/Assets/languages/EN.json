@@ -24,6 +24,8 @@
   "drawn" : "Drawn", 
   "rematch" : "Rematch", 
   "change stage" : "Change stage", 
+  "change character" : "Change character",
+  "back to menu" : "Back to menu",
   "ready" : "Ready", 
   "exit game" : "Exit game", 
   "pause" : "Pause", 
@@ -77,7 +79,11 @@
   "high contrast" : "High contrast",
   "haptic feedback" : "Haptic feedback",
   "sounds list" : "Sounds list",
-  "accessibility menu" : "Accessibility menu",
+  "accessibility settings" : "Accessibility settings",
   "first to" : "First to",
-  "sound cues" : "Sound cues"
+  "fall/get up" : "Fall/get up", 
+  "players distance" : "Players distance",
+  "atack height" : "Atack height",
+  "navigation sounds" : "Navigation sounds",
+  "spacialized audio" : "Spacialized audio"
 }

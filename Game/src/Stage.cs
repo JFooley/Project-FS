@@ -131,15 +131,19 @@ public class Stage {
         this.PlayMusic();
 
         // Accessibility
-        if (Accessibility.audio_cue && WGBattle.battle_state == WGBattle.Battling && !Stage.pause) Accessibility.AudioCue(this.character_A, this.character_B);
-
+        if (WGBattle.battle_state == WGBattle.Battling && !Stage.pause) {
+            Accessibility.DistanceAudioCue(this.character_A, this.character_B);
+            Accessibility.FallWakeUpAudioCue(this.character_A, this.character_B);
+        }
         // Render chars
         foreach (Character char_object in this.OnSceneCharactersRender) {
             char_object.Bot();
             this.DrawShadow(char_object);
             char_object.Render(Stage.show_boxs);
         }
-        foreach (Character part_object in this.OnSceneParticles) part_object.Render(Stage.show_boxs);
+        foreach (Character part_object in this.OnSceneParticles) {
+            part_object.Render(Stage.show_boxs);
+        }
         UI.DrawBattleUI(this);
 
         // Update chars
@@ -400,8 +404,9 @@ public class Stage {
             }
         }
 
-        // Atack feedback
-        if (Accessibility.haptic_feedback) Accessibility.HapticFeedback(on_hit_char, hitting_char, frames);
+        // Accessibility
+        Accessibility.AtackHapticFeedback(on_hit_char, hitting_char, frames);
+        Accessibility.AtackHeightAudioCue(this.character_A, this.character_B);
     }
     public void StopFor(int lenght, int target_lenght = 0, Character target = null) {
         foreach (var entity in this.OnSceneCharacters) entity.hitstop_counter = lenght;

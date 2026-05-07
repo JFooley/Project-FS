@@ -1,7 +1,7 @@
 using SFML.System;
 
     public class Animation {
-        public List<Frame> Frames { get; private set; }
+        private List<Frame> Frames { get; set; }
 
         // logic
         private int frame_counter;
@@ -11,6 +11,7 @@ using SFML.System;
         public bool on_first_frame => logic_frame_index == 0;
         public bool ended = false;
         public bool playing_sound = false;
+        private bool advanced = false;
 
         // infos
         public int lenght;
@@ -37,7 +38,7 @@ using SFML.System;
         public bool AdvanceFrame() {
             if (this.ended && this.loop) this.Reset();
 
-            bool advanced = false;
+            advanced = false;
 
             logic_frame_index++;
             frame_counter++;

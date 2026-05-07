@@ -116,16 +116,16 @@ public class WGPause : Widget {
     }
     private void Accessibility(bool face_hold, bool face_release) {
         s_acc.Update();
-        UI.DrawText(Language.GetText("Accessibility"), 0, -75, spacing: Config.spacing_medium, textureName: "default medium");
+        UI.DrawText(Language.GetText("accessibility"), 0, -75, spacing: Config.spacing_medium, textureName: "default medium");
         
         // 0 
-        if (UI.DrawButton(Language.GetText("Accessibility menu"), 0, -45, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: s_acc.is_on(0, 0), click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
+        if (UI.DrawButton(Language.GetText("accessibility settings"), 0, -45, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: s_acc.is_on(0, 0), click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
             Program.ChangeState(Program.AccessibilityMenu);
         // 1
-        if (UI.DrawButton(Language.GetText("Sounds list"), 0, -30, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: s_acc.is_on(0, 1), click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
+        if (UI.DrawButton(Language.GetText("sounds list"), 0, -30, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: s_acc.is_on(0, 1), click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
             Program.ChangeState(Program.AccessibilitySounds);
         // 2
-        if (UI.DrawButton(Language.GetText("Return"), 0, 70, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: s_acc.is_on(0, 2), click_font: "default medium click", hover_font: "default medium hover", font: "default medium") || Input.Key_down("B")) {
+        if (UI.DrawButton(Language.GetText("return"), 0, 70, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: s_acc.is_on(0, 2), click_font: "default medium click", hover_font: "default medium hover", font: "default medium") || Input.Key_down("B")) {
             s_acc.pointer = new Vector2i(0, 0);
             sub_menu = 0;
         }

@@ -27,8 +27,8 @@ public static class Program {
     public const int Credits = 12;
 
     // State holders
-    public static int game_state;
-    public static int last_game_state;
+    public static int state;
+    public static int previous_state;
 
     // Common objects
     public static Stage? stage;
@@ -58,7 +58,7 @@ public static class Program {
         Config.LoadFromFile();
 
         // Set initial states
-        game_state = Intro;
+        state = Intro;
         
         // Carregamento de texturas genéricas
         Data.LoadTexturesDat(Data.GetPath("assets/visuals/textures.dat"), Data.textures);
@@ -130,7 +130,7 @@ public static class Program {
             UI.Update();
             Camera.Update();
 
-            switch (game_state) {
+            switch (state) {
                 case Intro:
                     intro_screen.Render();
                     break;
@@ -201,8 +201,8 @@ public static class Program {
     }
 
     public static void ChangeState(int new_state) {
-        last_game_state = game_state;
-        game_state = new_state;
+        previous_state = state;
+        state = new_state;
     }
 
     public static void MainLoader() {

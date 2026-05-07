@@ -7,7 +7,7 @@ public class WGPostBattle : Widget {
     Sprite stage_thumb = new Sprite(Program.stage?.thumb);
     Sprite fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = new Color(255, 255, 255, 230)};
     string winner_text = "";
-    private Selector selector = new Selector(new List<int> {1, 1, 1});
+    private Selector selector = new Selector(new List<int> {1, 1, 1, 1});
 
     public override void Render() {
         selector.Update();
@@ -32,14 +32,22 @@ public class WGPostBattle : Widget {
             Program.ChangeState(Program.Battle);
             selector.pointer = new Vector2i(0, 0);
 
-        } if (UI.DrawButton(Language.GetText("menu"), 0, 20, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: selector.is_on(0,1), font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
+        } if (UI.DrawButton(Language.GetText("change stage"), 0, 15, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: selector.is_on(0,1), font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
+            Program.stage?.StopMusic();
+            Program.ChangeState(Program.SelectStage);
+            selector.pointer = new Vector2i(0, 0);
+
+        } if (UI.DrawButton(Language.GetText("change character"), 0, 30, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: selector.is_on(0,2), font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
+            Program.stage?.StopMusic();
+            Program.ChangeState(Program.SelectChar);
+            selector.pointer = new Vector2i(0, 0);
+
+        } if (UI.DrawButton(Language.GetText("back to menu"), 0, 45, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: selector.is_on(0,3), font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) {
             Program.stage?.StopMusic();
             Program.stage?.UnloadStage();
             Input.ResetAI();
             Program.ChangeState(Program.MainMenu);
             selector.pointer = new Vector2i(0, 0);
-
-        } if (UI.DrawButton(Language.GetText("exit game"), 0, 40, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: selector.is_on(0,2), font: "default medium", hover_font: "default medium hover", click_font: "default medium click"))
-            Program.window.Close();
+        }
     }
 }

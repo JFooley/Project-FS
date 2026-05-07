@@ -17,8 +17,8 @@ public class WGControls : Widget {
 
         UI.DrawText("Q", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
         if (UI.DrawButton(Language.GetText("Return"), 182, 67, alignment: "right", action: Input.Key_up("B"), click: Input.Key_hold("B"), hover_font: "default small")) {
-            if (Program.last_game_state == Program.Battle) Camera.LockCamera();
-            Program.ChangeState(Program.last_game_state);
+            if (Program.previous_state == Program.Battle) Camera.LockCamera();
+            Program.ChangeState(Program.previous_state);
         }
     }
 }

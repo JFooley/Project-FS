@@ -2735,7 +2735,7 @@
                 }
             ],
             "lenght": 3,
-            "Sound_index": "",
+            "Sound_index": "golpe_2 --RP",
             "hasHit": true
         },
         {
@@ -3019,7 +3019,7 @@
                 }
             ],
             "lenght": 3,
-            "Sound_index": "",
+            "Sound_index": "golpe_1 --RP",
             "hasHit": true
         },
         {
@@ -3945,7 +3945,7 @@
                 }
             ],
             "lenght": 3,
-            "Sound_index": "",
+            "Sound_index": "golpe_2 --RP",
             "hasHit": true
         },
         {
@@ -4598,7 +4598,7 @@
                 }
             ],
             "lenght": 2,
-            "Sound_index": "",
+            "Sound_index": "golpe_2 --RP",
             "hasHit": true
         },
         {
@@ -5086,7 +5086,7 @@
                 }
             ],
             "lenght": 3,
-            "Sound_index": "",
+            "Sound_index": "golpe_2 --RP",
             "hasHit": true
         },
         {
@@ -6988,7 +6988,7 @@
                 }
             ],
             "lenght": 2,
-            "Sound_index": "",
+            "Sound_index": "golpe_2 --RP",
             "hasHit": true
         },
         {
@@ -7564,7 +7564,7 @@
                 }
             ],
             "lenght": 3,
-            "Sound_index": "",
+            "Sound_index": "golpe_2 --RP",
             "hasHit": true
         },
         {
@@ -7944,7 +7944,7 @@
                 }
             ],
             "lenght": 3,
-            "Sound_index": "",
+            "Sound_index": "golpe_3 --RP",
             "hasHit": true
         },
         {
@@ -8161,7 +8161,7 @@
                 }
             ],
             "lenght": 3,
-            "Sound_index": "golpe_2 --RP",
+            "Sound_index": "",
             "hasHit": true
         },
         {
@@ -8825,7 +8825,7 @@
                 }
             ],
             "lenght": 2,
-            "Sound_index": "",
+            "Sound_index": "golpe_3 --RP",
             "hasHit": true
         },
         {
@@ -9477,7 +9477,7 @@
                 }
             ],
             "lenght": 3,
-            "Sound_index": "",
+            "Sound_index": "golpe_3 --RP",
             "hasHit": true
         },
         {
@@ -9901,7 +9901,7 @@
                 }
             ],
             "lenght": 3,
-            "Sound_index": "golpe_2 --RP",
+            "Sound_index": "golpe_3 --RP",
             "hasHit": true
         },
         {
@@ -11578,7 +11578,7 @@
                 }
             ],
             "lenght": 3,
-            "Sound_index": "",
+            "Sound_index": "dash --RP",
             "hasHit": true
         },
         {
@@ -11740,7 +11740,7 @@
                 }
             ],
             "lenght": 3,
-            "Sound_index": "",
+            "Sound_index": "dash",
             "hasHit": true
         },
         {

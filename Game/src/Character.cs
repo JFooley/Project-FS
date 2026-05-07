@@ -116,7 +116,7 @@ public abstract class Character : Object {
 
     public bool can_parry => (not_acting_all && parring) || (not_acting_all && Input.Key_press("Left", input_window: this.state.air? Config.parry_window/2 : Config.parry_window, player: this.player_index, facing: this.facing));
     public bool can_dash => not_acting && !this.state.on_parry;
-    public bool has_hit = false; 
+    public bool has_hit = false;
 
     public bool blocking_high = false;
     public bool blocking_low = false;
@@ -150,9 +150,9 @@ public abstract class Character : Object {
     public List<GenericBox> current_boxes => current_animation.GetCurrentFrame().Boxes;
     public int current_anim_frame_index => current_animation.anim_frame_index;
     public int current_logic_frame_index => current_animation.logic_frame_index;
+    public int last_anim_frame_index = -1;
     public Animation current_animation => states[current_state].animation;
     public State state => states[current_state];
-    public int last_anim_frame_index = -1;
 
     // Flags and counters
     public int combo_counter = 0;
@@ -179,14 +179,15 @@ public abstract class Character : Object {
 
     // Every Frame methods
     public override void Update() { // Render > Behave > Colide > Animate
-        base.Update();
         if (this.hitstop_counter <= 0) {
             if (this.animate) this.Animate();
             if (this.behave) {
                 this.Behave();
                 this.CheckColisions();
             }
-        } else this.hitstop_counter -= 1;
+        } else {
+            this.hitstop_counter -= 1;
+        }
     }
     public override void Render(bool drawHitboxes = false) {
         base.Render(drawHitboxes);
@@ -511,8 +512,8 @@ public abstract class Character : Object {
         string[] sound = sound_string.Split(' ');
         if (sounds.TryGetValue(sound[0], out SoundBuffer buffer)) {
             var temp_sound = new Sound(buffer) {
-                Volume = Accessibility.audio_cue ? Config.Character_Volume * 0.5f : Config.Character_Volume,
-                Pan = follow_player ? (this.body.Position.X - Camera.X) / (Config.RenderWidth*0.5f) : panning,
+                Volume = Accessibility.distance_cue ? Config.Character_Volume * 0.5f : Config.Character_Volume,
+                Pan = follow_player && Accessibility.spacialized_audio? (this.body.Position.X - Camera.X) / (Config.RenderWidth*0.5f) : panning,
                 Pitch = sound_string.Contains("--RP") ? 1 + (float) AI.rand.Next(-1, 2) / 10 : 1,
             };
             temp_sound.Play();

@@ -55,10 +55,9 @@ public class WGSelectCharacter : Widget {
         selectorA.Render(-77 - offset, -30, 1, x_scale: 1);
         selectorB.Render(77 + offset, -30, 2, x_scale: -1);
 
-        // Shoulder buttons
         UI.DrawText("Q", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
         if (UI.DrawButton(Language.GetText("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
-            Program.ChangeState(Program.SelectStage);
+            Program.ChangeState(Program.previous_state);
             selectorA.selected = null;
             selectorB.selected = null;
             selectorA.state = WGSelector.SELECTING_CHAR;
@@ -86,10 +85,9 @@ public class WGSelectCharacter : Widget {
             }
         }
 
-        // Shoulder buttons
         UI.DrawText("Q", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
         if (UI.DrawButton(Language.GetText("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
-            Program.ChangeState(Program.SelectStage);
+            Program.ChangeState(Program.previous_state);
             selectorA.selected = null;
             selectorB.selected = null;
             selectorA.state = WGSelector.SELECTING_CHAR;
@@ -100,17 +98,15 @@ public class WGSelectCharacter : Widget {
         }
     }
     private void Training() {
-        // CONSERTAR ISSO
         selectorA.Render(-77 - offset, -30, this.B_flag ? 0 : 1, x_scale: 1);
         selectorB.Render(77 + offset, -30, this.A_flag ? 0 : 2, x_scale: -1);
 
         if (selectorA.state == WGSelector.READY) this.A_flag = true;
         if (selectorB.state == WGSelector.READY) this.B_flag = true;
 
-        // Shoulder buttons
         UI.DrawText("Q", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
         if (UI.DrawButton(Language.GetText("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
-            Program.ChangeState(Program.SelectStage);
+            Program.ChangeState(Program.previous_state);
             selectorA.selected = null;
             selectorB.selected = null;
             selectorA.state = WGSelector.SELECTING_CHAR;
@@ -173,17 +169,17 @@ public class WGSelector : Widget {
         }
 
         // Buttons
-        if (state != READY && UI.DrawButton("<   ", x, y, hover: true, click: Input.Key_hold("Left", player), action: Input.Key_up("Left", player) || (Input.Key_hold_for("Left", Config.hold_time, player) && UI.ForEach(Config.hold_clock)), hover_font: "default small", font: "", spacing: 0)) {
+        if (state != READY && UI.DrawButton("<   ", x, y, hover: true, click: Input.Key_hold("Left", player), action: Input.Key_up("Left", player) || (Input.Key_hold_for("Left", Config.hold_time, player) && UI.ForEach(Config.hold_clock)), button_sound: 1, hover_font: "default small", font: "", spacing: 0)) {
             if (state == SELECTING_CHAR) pointer = pointer > 0 ? pointer - 1 : Data.characters.Count - 1;
             else if (state == SELECTING_PALETTE) selected.SetPalette(-1);
         } 
         
-        if (state != READY && UI.DrawButton("   >", x, y, hover: true, click: Input.Key_hold("Right", player), action: Input.Key_up("Right", player) || (Input.Key_hold_for("Right", Config.hold_time, player) && UI.ForEach(Config.hold_clock)), hover_font: "default small", font: "", spacing: 0)) {
+        if (state != READY && UI.DrawButton("   >", x, y, hover: true, click: Input.Key_hold("Right", player), action: Input.Key_up("Right", player) || (Input.Key_hold_for("Right", Config.hold_time, player) && UI.ForEach(Config.hold_clock)), button_sound: 1, hover_font: "default small", font: "", spacing: 0)) {
             if (state == SELECTING_CHAR) pointer = pointer < Data.characters.Count - 1 ? pointer + 1 : 0;
             else if (state == SELECTING_PALETTE) selected.SetPalette(1);
         }
 
-        if (UI.DrawButton(Data.characters[pointer].name, x, y + info_y_offset - 10, spacing: Config.spacing_small, action: Input.Key_up("A", player), click: Input.Key_hold("A", player: player) && this.state != READY, hover_font: "default small")) {
+        if (UI.DrawButton(Data.characters[pointer].name, x, y + info_y_offset - 10, spacing: Config.spacing_small, action: Input.Key_up("A", player), click: Input.Key_hold("A", player: player) && this.state != READY, hover_font: "default small", button_sound: 0)) {
             if (state == SELECTING_CHAR) {
                 selected = Data.characters[pointer].Copy();
                 state = SELECTING_PALETTE;

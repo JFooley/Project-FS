@@ -1,5 +1,6 @@
 
 using Language_space;
+using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
 
@@ -29,6 +30,11 @@ namespace UI_space {
         private static Sprite hud;
         private static string superBarMsg = "max aura";
 
+        // Sounds
+        private static Sound neutral_sound;
+        private static Sound forward_sound;
+        private static Sound back_sound;
+
         // Positions
         private static int life_bar_Y = -93;
         private static int life_bar_X =  -180;
@@ -41,6 +47,9 @@ namespace UI_space {
 
         public UI() {
             UI.hud = new Sprite(Data.textures["ui:hud"]);
+            UI.neutral_sound = new Sound(Data.sounds["ui:change"]) {Volume = Config.Effect_Volume};
+            UI.forward_sound = new Sound(Data.sounds["ui:forward"]) {Volume = Config.Effect_Volume};
+            UI.back_sound = new Sound(Data.sounds["ui:back"]) {Volume = Config.Effect_Volume};
             BitmapFont.Load();
         }
         public static void Update() {
@@ -183,7 +192,7 @@ namespace UI_space {
             
             Program.window.Draw(barSprite, renderStates);
         }
-        public static bool DrawButton(string text, float pos_X, float pos_Y, bool action = false, bool hover = true, bool click = false, float spacing = Config.spacing_small, string alignment = "center", bool absolutePosition = false, string font = "default small white", string hover_font = "default small hover", string click_font = "default small click") {
+        public static bool DrawButton(string text, float pos_X, float pos_Y, bool action = false, bool hover = true, bool click = false, float spacing = Config.spacing_small, string alignment = "center", bool absolutePosition = false, int button_sound = 1, string font = "default small white", string hover_font = "default small hover", string click_font = "default small click") {
             if (click && hover) {
                 UI.DrawText(text, pos_X, pos_Y, spacing: spacing, alignment: alignment, absolutePosition: absolutePosition, textureName: click_font);
             } else if (hover) {
@@ -192,8 +201,26 @@ namespace UI_space {
                 UI.DrawText(text, pos_X, pos_Y, spacing: spacing, alignment: alignment, absolutePosition: absolutePosition, textureName: font);
             }
 
-            if (action && hover) return true;
-            else return false;
+            if (action && hover) {
+                if (Accessibility.navigation_cue) {
+                    switch (button_sound) {
+                        case 0:
+                            UI.neutral_sound.Play();
+                            break;
+                        case 1:
+                            UI.forward_sound.Play();
+                            break;
+                        case 2:
+                            UI.back_sound.Play();
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                return true;
+            } else {
+                return false;
+            }
         }
 
         // Battle UI
