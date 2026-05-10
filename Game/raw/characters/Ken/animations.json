@@ -33,7 +33,7 @@
             "DeltaY": 0,
             "Boxes": [],
             "lenght": 30,
-            "Sound_index": "",
+            "Sound_index": "yataze",
             "hasHit": true
         }
     ],
@@ -107,7 +107,7 @@
             "DeltaY": 0,
             "Boxes": [],
             "lenght": 5,
-            "Sound_index": "",
+            "Sound_index": "ykesse",
             "hasHit": true
         },
         {
@@ -360,7 +360,7 @@
             "DeltaY": 0,
             "Boxes": [],
             "lenght": 10,
-            "Sound_index": "",
+            "Sound_index": "ykesse",
             "hasHit": true
         },
         {
