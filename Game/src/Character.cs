@@ -174,10 +174,12 @@ public abstract class Character : Object {
         this.current_state = initialState;
         this.ChangeState(initialState, reset: true);
     }
-    public Character(string name, string folder_path) {
+    public Character(string name, string initialState, string folder_path) {
         this.name = name;
         this.folder_path = folder_path;
         this.current_palette_color = this.palette != null ? this.palette.CopyToImage().GetPixel(new Vector2u(0, this.palette_index)) : Color.White;
+        this.current_state = initialState;
+        this.ChangeState(initialState, reset: true);
     }
 
     // Every Frame methods

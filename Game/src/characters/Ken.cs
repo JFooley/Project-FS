@@ -27,7 +27,7 @@ public class Ken : Character {
         this.dizzy_points = new Vector2i(500, 500);
         this.aura_points = new Vector2i(0, 100);
     } 
-    public Ken() : base("Ken", Data.GetPath("Assets/characters/Ken")) { }
+    public Ken() : base("Ken", "Idle", Data.GetPath("Assets/characters/Ken")) { }
     public override Character Copy() {
         var obj = new Ken("Intro", 0, 0);
         obj.Load();

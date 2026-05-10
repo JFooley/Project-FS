@@ -5,7 +5,7 @@
             "DeltaX": 0,
             "DeltaY": 0,
             "Boxes": [],
-            "lenght": 2,
+            "lenght": 4,
             "Sound_index": "",
             "hasHit": true
         },
@@ -14,7 +14,7 @@
             "DeltaX": 0,
             "DeltaY": 0,
             "Boxes": [],
-            "lenght": 3,
+            "lenght": 5,
             "Sound_index": "",
             "hasHit": true
         },
@@ -23,7 +23,7 @@
             "DeltaX": 0,
             "DeltaY": 0,
             "Boxes": [],
-            "lenght": 3,
+            "lenght": 5,
             "Sound_index": "",
             "hasHit": true
         },
