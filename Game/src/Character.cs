@@ -6,16 +6,17 @@ using UI_space;
 
 // ----- Default States -------
 // Intro
-// Idle
+// Win
 
+// Idle
 // WalkingForward
 // WalkingBackward
 
-// JumpForward
 // Jump
+// JumpForward
 // JumpBackward
 // JumpFalling
-// FallingAfter
+// Landing
 
 // Crouching
 
@@ -28,7 +29,6 @@ using UI_space;
 // OnHitLow
 // OnBlock
 // OnBlockLow
-
 // Parry
 // AirParry
 
@@ -67,6 +67,8 @@ public struct FightState {
 }
 
 public abstract class Character : Object {
+    protected static Frame[][] F(params Frame[][] frames) => frames;
+
     // Consts
     public const int NOTHING = -1;
     public const int BLOCK = 0;
@@ -127,7 +129,7 @@ public abstract class Character : Object {
     public Dictionary<string, State> states = new Dictionary<string, State>{};
     public abstract Dictionary<string, Texture> textures { get; protected set;}
     public abstract Dictionary<string, SoundBuffer> sounds { get; protected set;}
-    public abstract Dictionary<string, List<Frame>> animations { get; protected set;}
+    public abstract Dictionary<string, Frame[]> animations { get; protected set;}
     private static List<Sound> active_sounds = new List<Sound>();
 
     // Visuals
@@ -145,8 +147,8 @@ public abstract class Character : Object {
     public Color current_palette_color;
 
     // Gets
-    public string current_sprite => current_animation.GetCurrentFrame().Sprite_index;
-    public string current_sound => current_animation.GetCurrentFrame().Sound_index;
+    public string current_sprite => current_animation.GetCurrentFrame().sprite_index;
+    public string current_sound => current_animation.GetCurrentFrame().sound_index;
     public List<GenericBox> current_boxes => current_animation.GetCurrentFrame().Boxes;
     public int current_anim_frame_index => current_animation.anim_frame_index;
     public int current_logic_frame_index => current_animation.logic_frame_index;
@@ -164,12 +166,13 @@ public abstract class Character : Object {
         this.folder_path = folderPath;
         this.name = name;
         this.type = type;
-        this.current_state = initialState;
         this.last_state = initialState;
         base.body.Position.X = startX; 
         base.body.Position.Y = startY;
         this.floor_line = startY;
         this.current_palette_color = this.palette != null ? this.palette.CopyToImage().GetPixel(new Vector2u(0, this.palette_index)) : Color.White;
+        this.current_state = initialState;
+        this.ChangeState(initialState, reset: true);
     }
     public Character(string name, string folder_path) {
         this.name = name;
@@ -296,17 +299,18 @@ public abstract class Character : Object {
     public override void Animate() {   
         // Update body.Position
         this.body.Update(this);
-        this.body.Position.X += current_animation.GetCurrentFrame().DeltaX * this.facing;
-        this.body.Position.Y += current_animation.GetCurrentFrame().DeltaY * this.facing;
 
         // Advance to the next frame and reset hit if necessary
         this.last_anim_frame_index = this.current_anim_frame_index;
-        if (current_animation.AdvanceFrame() && current_animation.GetCurrentFrame().hasHit == false) this.has_hit = false;
+        if (current_animation.AdvanceFrame() && current_animation.GetCurrentFrame().keep_hit == false) this.has_hit = false;
 
         // Change state, if necessary
         if ((state.change_on_end && this.current_animation.ended) || (state.change_on_ground && !this.on_air)) {
             this.ChangeState(this.state.post_state);
         }
+
+        this.body.Position.X += current_animation.GetCurrentFrame().delta_X * this.facing;
+        this.body.Position.Y += current_animation.GetCurrentFrame().delta_Y * this.facing;
     }
     public void Bot() {
         if (!this.BotEnabled || !this.behave) return;
@@ -493,10 +497,7 @@ public abstract class Character : Object {
             if (current_state != new_state || reset) this.current_animation.Reset();
             this.current_state = new_state;
             this.has_hit = false;
-        }
-
-        if (current_state == "Falling") {
-            
+            if (this.state.variation_amount > 1) this.state.variation_index = AI.rand.Next(0, this.state.variation_amount);
         }
     }
     public Sprite GetCurrentSprite() {
@@ -569,9 +570,6 @@ public abstract class Character : Object {
         this.animations = Data.LoadAnimationDat(Path.Combine(this.folder_path, "animations.dat"));
     }
     public void UnloadAnimations() {
-        foreach (var ani in animations.Values) {
-            ani.Clear();
-        }
         animations.Clear();
     }
     

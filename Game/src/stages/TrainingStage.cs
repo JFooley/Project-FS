@@ -7,7 +7,7 @@ public class TrainingStage : Stage {
 
     public override void LoadStage() {
         var animations = new Dictionary<string, State> {
-            { "Default", new State(new List<Frame> {new Frame(0, len: 60)}, "Default")},
+            { "Default", new State(F(new Frame[] {new Frame(0, len: 60)}), "Default")},
         };
 
         this.states = animations;

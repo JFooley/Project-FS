@@ -53,21 +53,21 @@ public static class Data {
 
         return result;
     }
-    public static Dictionary<string, List<Frame>> LoadAnimationDat(string path, bool have_data = true) {
-        var result = new Dictionary<string, List<Frame>>();
+    public static Dictionary<string, Frame[]> LoadAnimationDat(string path, bool have_data = true) {
+        var result = new Dictionary<string, Frame[]>();
 
         using var fs = new FileStream(path, FileMode.Open);
         using var br = new BinaryReader(fs);
 
         int animCount = br.ReadInt32();
 
-        for (int i = 0; i < animCount; i++) {
+        for (int i = 0; i < animCount; i++) { // For animation
             string animName = br.ReadString();
             int frameCount = br.ReadInt32();
 
-            var frames = new List<Frame>(frameCount);
+            var frames = new Frame[frameCount];
 
-            for (int j = 0; j < frameCount; j++) {
+            for (int j = 0; j < frameCount; j++) { // For frame animation
                 string sprite = br.ReadString();
                 float dx = br.ReadSingle();
                 float dy = br.ReadSingle();
@@ -89,8 +89,8 @@ public static class Data {
                     boxes.Add(new GenericBox(type, ax, ay, bx, by));
                 }
 
-                if (have_data) frames.Add(new FrameData(sprite, dx, dy, boxes, len, sound, hasHit));
-                else frames.Add(new Frame(sprite, len, sound));
+                if (have_data) frames[j] = new FrameData(sprite, dx, dy, boxes, len, sound, hasHit);
+                else frames[j] = new Frame(sprite, len, sound);
             }
 
             result[animName] = frames;

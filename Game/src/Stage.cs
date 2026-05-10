@@ -6,6 +6,8 @@ using System.Diagnostics;
 using Language_space;
 
 public class Stage {
+    protected static Frame[][] F(params Frame[][] frames) => frames;
+    
     // Basic Infos
     public string name;
     public string folder_path;
@@ -110,8 +112,8 @@ public class Stage {
         if (Input.Key_down("Start") && WGBattle.battle_state == WGBattle.Battling) this.Pause();
 
         // Render stage sprite
-        if (this.textures.ContainsKey(this.CurrentSprite.Sprite_index)) {
-            Sprite temp_sprite = new Sprite(this.textures[this.CurrentSprite.Sprite_index]);
+        if (this.textures.ContainsKey(this.CurrentSprite.sprite_index)) {
+            Sprite temp_sprite = new Sprite(this.textures[this.CurrentSprite.sprite_index]);
             temp_sprite.Position = new Vector2f(0, 0);
             temp_sprite.Color = Accessibility.high_contrast ? new Color(15, 15, 15, 255) : Color.White;
             Program.window.Draw(temp_sprite);
@@ -188,6 +190,11 @@ public class Stage {
             if (this.character_B.not_acting || this.character_B.not_acting_low) this.character_B.facing = 1;
         }
         
+        if (WGBattle.battle_state == WGBattle.RoundEnd) {
+            if (this.character_A.not_acting || this.character_A.not_acting_low) this.character_A.ChangeState("Win");
+            if (this.character_B.not_acting || this.character_B.not_acting_low) this.character_B.ChangeState("Win");
+        }
+
         this.DoSpecialBehaviour();
     }
     public virtual void DoSpecialBehaviour() {}

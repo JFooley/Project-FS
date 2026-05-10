@@ -1,18 +1,23 @@
 using Newtonsoft.Json;
+using SFML.Audio;
 
 namespace Language_space {
     public class Language {
         public static string[] Supported { get; private set; } = Array.Empty<string>();
         public static string[] LanguageCodes { get; private set; } = Array.Empty<string>();
         
-        private static List<Dictionary<string, string>> _languageData = new();
+        private static List<Dictionary<string, string>> _languageData;
+        private static Dictionary<string, SoundBuffer> tts_audios;
 
         public Language() {
+            _languageData = new List<Dictionary<string, string>>();
+            tts_audios = new Dictionary<string, SoundBuffer>();
             LoadAllLanguages();
         }
 
         private static void LoadAllLanguages() {
             var languagesDir = Data.GetPath("assets/languages");
+
             if (!Directory.Exists(languagesDir)) {
                 Console.WriteLine($"Diretório de idiomas não encontrado: {languagesDir}");
                 return;
@@ -44,16 +49,46 @@ namespace Language_space {
 
             Supported = supportedList.ToArray();
             LanguageCodes = codeList.ToArray();
-            _languageData = languageDataList;            
+            _languageData = languageDataList;     
+
+            try {
+                Data.LoadSoundsDat(Data.GetPath("assets/languages/audio.dat"), Language.tts_audios);
+            } catch (Exception e) {
+                Console.WriteLine("Erro ao carregar dados de text-to-speak: " + e.Message);
+            }
+                   
         }
 
-        public static string GetText(string text) {
+        public static string GetText(string strings) {
+            string text = "";
+
+            // foreach (string s in strings) {
+            //     try {
+            //         text += _languageData[Config.Language][s.ToLower()];
+            //     } catch (KeyNotFoundException) {
+            //         text += s;
+            //     }
+            // }
+
             try {
-                return _languageData[Config.Language][text.ToLower()];
+                text += _languageData[Config.Language][strings.ToLower()];
             } catch (KeyNotFoundException) {
-                Console.WriteLine("Missing translation in " + _languageData[Config.Language]["_language"] + ": " + text);
-                return text;
+                text += strings;
+                
             }
+
+            return text;
+        }
+        public static SoundBuffer[] GetTTS(string[] strings) {
+            SoundBuffer[] buffers = {};
+
+            foreach (string s in strings) {
+                try {
+                    buffers.Append(tts_audios[_languageData[Config.Language]["_code"] + ":" + s]);
+                } catch (KeyNotFoundException) {}
+            }
+
+            return buffers;
         }
     }
 }

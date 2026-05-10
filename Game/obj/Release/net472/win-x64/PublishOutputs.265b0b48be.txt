@@ -7,6 +7,7 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\characters\Ken\textures.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\fonts\textures.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\icon.ico
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\languages\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\languages\EN.json
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\languages\PT.json
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\win-x64\publish\assets\particles\Hitspark\animations.dat

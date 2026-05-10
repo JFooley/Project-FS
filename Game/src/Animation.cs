@@ -1,7 +1,7 @@
 using SFML.System;
 
     public class Animation {
-        private List<Frame> Frames { get; set; }
+        private Frame[] frames { get; set; }
 
         // logic
         private int frame_counter;
@@ -17,8 +17,8 @@ using SFML.System;
         public int lenght;
         public bool loop;
 
-        public Animation(List<Frame> frames, bool loop = true) {
-            this.Frames = frames;
+        public Animation(Frame[] frames, bool loop = true) {
+            this.frames = frames;
             this.anim_frame_index = 0;
             this.lenght = 0;
             foreach (var frame in frames) { this.lenght += frame.lenght; };
@@ -27,12 +27,12 @@ using SFML.System;
         }
 
         public FrameData GetCurrentFrame() {
-            if (anim_frame_index > Frames.Count() - 1) return this.Frames.Last().GetType() == typeof(FrameData) ? (FrameData) this.Frames.Last() : new FrameData();
-            else return this.Frames[anim_frame_index].GetType() == typeof(FrameData) ? (FrameData) this.Frames[anim_frame_index] : new FrameData();
+            if (anim_frame_index > frames.Count() - 1) return this.frames.Last().GetType() == typeof(FrameData) ? (FrameData) this.frames.Last() : new FrameData();
+            else return this.frames[anim_frame_index].GetType() == typeof(FrameData) ? (FrameData) this.frames[anim_frame_index] : new FrameData();
         }
         public Frame GetCurrentFrameSimple() {
-            if (anim_frame_index > Frames.Count() - 1) return this.Frames.Last();
-            else return this.Frames[anim_frame_index];
+            if (anim_frame_index > frames.Count() - 1) return this.frames.Last();
+            else return this.frames[anim_frame_index];
         }
         
         public bool AdvanceFrame() {
@@ -43,21 +43,21 @@ using SFML.System;
             logic_frame_index++;
             frame_counter++;
 
-            if (frame_counter >= this.Frames[anim_frame_index].lenght) { // Frame length reached
+            if (frame_counter >= this.frames[anim_frame_index].lenght) { // Frame length reached
                 frame_counter = 0;
 
                 if (logic_frame_index >= this.lenght) { // Animation end reached
                     logic_frame_index -= 1;
                     ended = true;
 
-                } else if (anim_frame_index < Frames.Count() - 1) { // Advance animation frame
+                } else if (anim_frame_index < frames.Count() - 1) { // Advance animation frame
                     anim_frame_index++;
                     playing_sound = false;
                     advanced = true;
                 }
             }
 
-            this.on_last_frame = (anim_frame_index == Frames.Count() - 1) && (frame_counter >= this.Frames[anim_frame_index].lenght - 1); // On last frame check
+            this.on_last_frame = (anim_frame_index == frames.Count() - 1) && (frame_counter >= this.frames[anim_frame_index].lenght - 1); // On last frame check
 
             return advanced;
         }
@@ -135,29 +135,19 @@ using SFML.System;
     }
 
     public class FrameData : Frame{
-        public bool hasHit;
-        public float DeltaX;
-        public float DeltaY;
+        public bool keep_hit;
+        public float delta_X;
+        public float delta_Y;
         public List<GenericBox> Boxes;
 
-        public FrameData(int sprite_index, float deltaX, float deltaY, List<GenericBox> boxes, int len = 1, string sound = "", bool hasHit = true) {
-            this.Sprite_index = sprite_index.ToString();
-            this.DeltaX = deltaX;
-            this.DeltaY = deltaY;
-            this.Boxes = boxes;
-            this.Sound_index = sound;
-            this.lenght = len;
-            this.hasHit = hasHit;
-        }
-
         public FrameData(string sprite_index, float deltaX, float deltaY, List<GenericBox> boxes, int len = 1, string sound = "", bool hasHit = true) {
-            this.Sprite_index = sprite_index;
-            this.DeltaX = deltaX;
-            this.DeltaY = deltaY;
+            this.sprite_index = sprite_index;
+            this.delta_X = deltaX;
+            this.delta_Y = deltaY;
             this.Boxes = boxes;
-            this.Sound_index = sound;
+            this.sound_index = sound;
             this.lenght = len;
-            this.hasHit = hasHit;
+            this.keep_hit = hasHit;
         }
 
         public FrameData() {this.Boxes = new List<GenericBox>(){};}
@@ -165,20 +155,20 @@ using SFML.System;
 
     public class Frame {
         public int lenght;
-        public string Sprite_index;
-        public string Sound_index;
+        public string sprite_index;
+        public string sound_index;
 
-        protected Frame() {this.Sprite_index = ""; this.Sound_index = "";}
+        protected Frame() {this.sprite_index = ""; this.sound_index = "";}
 
         public Frame(int sprite_index, int len = 1, string sound = "") {
-            this.Sprite_index = sprite_index.ToString();
-            this.Sound_index = sound;
+            this.sprite_index = sprite_index.ToString();
+            this.sound_index = sound;
             this.lenght = len;
         }
 
         public Frame(string sprite_index, int len = 1, string sound = "") {
-            this.Sprite_index = sprite_index;
-            this.Sound_index = sound;
+            this.sprite_index = sprite_index;
+            this.sound_index = sound;
             this.lenght = len;
         }
     }

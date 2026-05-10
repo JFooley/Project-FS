@@ -12,8 +12,8 @@ public class Ken : Character {
     private static Dictionary<string, SoundBuffer> _shared_sounds = new Dictionary<string, SoundBuffer>();
     public override Dictionary<string, SoundBuffer> sounds {get => _shared_sounds; protected set => _shared_sounds = value ?? new Dictionary<string, SoundBuffer>();}
     
-    private static Dictionary<string, List<Frame>> _shared_animations = new Dictionary<string, List<Frame>>();
-    public override Dictionary<string, List<Frame>> animations { get => _shared_animations; protected set => _shared_animations = value ?? new Dictionary<string, List<Frame>>();}
+    private static Dictionary<string, Frame[]> _shared_animations = new Dictionary<string, Frame[]>();
+    public override Dictionary<string, Frame[]> animations { get => _shared_animations; protected set => _shared_animations = value ?? new Dictionary<string, Frame[]>();}
 
     private static Texture? _shared_palette;
     public override Texture palette {get => _shared_palette ?? new Texture(Data.textures["other:placeholder"]); protected set => _shared_palette = value;}
@@ -22,8 +22,7 @@ public class Ken : Character {
 
     // Constructors
     public Ken(string initialState, int startX, int startY)
-        : base("Ken", initialState, startX, startY, Data.GetPath("Assets/characters/Ken"))
-    {
+        : base("Ken", initialState, startX, startY, Data.GetPath("Assets/characters/Ken")) {
         this.life_points = new Vector2i(1000, 1000);
         this.dizzy_points = new Vector2i(500, 500);
         this.aura_points = new Vector2i(0, 100);
@@ -44,67 +43,72 @@ public class Ken : Character {
         var a = this.animations;
 
         this.states = new Dictionary<string, State> {
+            { "Intro", new State(F(a["introFrames1"], a["introFrames2"], a["introFrames3"]), "Idle", can_be_hit: false)},
+            { "Win", new State(F(a["win"]), "Idle", change_on_end: false, loop: false)},
             // Basic
-            { "Idle", new State(a["idleFrames"], "Idle", not_busy: true)},
-            { "OnBlock", new State(a["OnBlockFrames"], "Idle", on_block: true)}, 
-            { "OnBlockLow", new State(a["OnBlockLowFrames"], "Crouching", low: true, on_block: true)},
-            { "OnHit", new State(a["OnHitFrames"], "Idle", on_hit: true)},
-            { "OnHitLow", new State(a["OnHitLowFrames"], "Crouching", low: true, on_hit: true)},
-            { "Airboned", new State(a["AirbonedFrames"], "Falling", change_on_ground: true, change_on_end: false, loop: false, air: true, on_hit: true)},
-            { "Parry", new State(a["parryFrames"], "Idle", 6, glow: true, is_parry: true)},
-            { "AirParry", new State(a["airParryFrames"], "JumpFalling", 6, glow: true, air: true, is_parry: true)},
+            { "Idle", new State(F(a["idleFrames"]), "Idle", not_busy: true)},
+            { "OnBlock", new State(F(a["OnBlockFrames"]), "Idle", on_block: true)}, 
+            { "OnBlockLow", new State(F(a["OnBlockLowFrames"]), "Crouching", low: true, on_block: true)},
+            { "OnHit", new State(F(a["OnHitFrames"]), "Idle", on_hit: true)},
+            { "OnHitLow", new State(F(a["OnHitLowFrames"]), "Crouching", low: true, on_hit: true)},
+            { "Airboned", new State(F(a["AirbonedFrames"]), "Falling", change_on_ground: true, change_on_end: false, loop: false, air: true, on_hit: true)},
+            { "Parry", new State(F(a["parryFrames"]), "Idle", 6, glow: true, is_parry: true)},
+            { "AirParry", new State(F(a["airParryFrames"]), "JumpFalling", 6, glow: true, air: true, is_parry: true)},
             // Normals
-            { "LightP", new State(a["LPFrames"], "Idle", 0, can_harm: true)},
-            { "LowLightP", new State(a["lowLPFrames"], "Crouching", 0, low: true, can_harm: true)},
-            { "AirLightP", new State(a["airLPFrames"], "Idle", 0, change_on_end: false, change_on_ground: true, loop: false, air: true, can_harm: true)},
-            { "LightK", new State(a["LKFrames"], "Idle", 0, can_harm: true)},
-            { "LowLightK", new State(a["lowLKFrames"], "Crouching", 1, hitstop: "Medium", low: true, can_harm: true)},
-            { "AirLightK", new State(a["airLKFrames"], "Idle", 0, change_on_end: false, change_on_ground: true, loop: false, air: true, can_harm: true)},
-            { "MediumP", new State(a["MPFrames"], "Idle", 1, hitstop: "Medium", can_harm: true)},
-            { "LowMediumP", new State(a["lowMPFrames"], "Crouching", 1, hitstop: "Medium", low: true, can_harm: true)},
-            { "AirMediumP", new State(a["airMPFrames"], "Idle", 1, hitstop: "Medium", change_on_end: false, change_on_ground: true, loop: false, air: true, can_harm: true)},
-            { "BackMediumP", new State(a["backMPframes"], "Idle", 2, hitstop: "Heavy", can_harm: true)},
-            { "MediumK", new State(a["MKFrames"], "Idle", 1, hitstop: "Medium", can_harm: true)},
-            { "LowMediumK", new State(a["lowMKFrames"], "Crouching", 2, hitstop: "Heavy", low: true, can_harm: true)},
-            { "AirMediumK", new State(a["airMKFrames"], "Idle", 1, hitstop: "Medium", change_on_end: false, change_on_ground: true, loop: false, air: true, can_harm: true)},
-            { "BackMediumK", new State(a["BackMKFrames"], "Idle", 1, can_harm: true)},
-            { "CloseMP", new State(a["cl_HPFrames"], "Idle", 1, hitstop: "Medium", can_harm: true)},
+            { "LightP", new State(F(a["LPFrames"]), "Idle", 0, can_harm: true)},
+            { "LowLightP", new State(F(a["lowLPFrames"]), "Crouching", 0, low: true, can_harm: true)},
+            { "AirLightP", new State(F(a["airLPFrames"]), "Idle", 0, change_on_end: false, change_on_ground: true, loop: false, air: true, can_harm: true)},
+            { "LightK", new State(F(a["LKFrames"]), "Idle", 0, can_harm: true)},
+            { "LowLightK", new State(F(a["lowLKFrames"]), "Crouching", 1, hitstop: "Medium", low: true, can_harm: true)},
+            { "AirLightK", new State(F(a["airLKFrames"]), "Idle", 0, change_on_end: false, change_on_ground: true, loop: false, air: true, can_harm: true)},
+            { "MediumP", new State(F(a["MPFrames"]), "Idle", 1, hitstop: "Medium", can_harm: true)},
+            { "LowMediumP", new State(F(a["lowMPFrames"]), "Crouching", 1, hitstop: "Medium", low: true, can_harm: true)},
+            { "AirMediumP", new State(F(a["airMPFrames"]), "Idle", 1, hitstop: "Medium", change_on_end: false, change_on_ground: true, loop: false, air: true, can_harm: true)},
+            { "BackMediumP", new State(F(a["backMPframes"]), "Idle", 2, hitstop: "Heavy", can_harm: true)},
+            { "MediumK", new State(F(a["MKFrames"]), "Idle", 1, hitstop: "Medium", can_harm: true)},
+            { "LowMediumK", new State(F(a["lowMKFrames"]), "Crouching", 2, hitstop: "Heavy", low: true, can_harm: true)},
+            { "AirMediumK", new State(F(a["airMKFrames"]), "Idle", 1, hitstop: "Medium", change_on_end: false, change_on_ground: true, loop: false, air: true, can_harm: true)},
+            { "BackMediumK", new State(F(a["BackMKFrames"]), "Idle", 1, can_harm: true)},
+            { "CloseMP", new State(F(a["cl_HPFrames"]), "Idle", 1, hitstop: "Medium", can_harm: true)},
+            // Throw
+            { "Throw", new State(F(a["throw"]), "Idle", 0, can_harm: true)},
+            { "ThrowLeft", new State(F(a["throwLeft"]), "Idle", 0, can_harm: true)},
+            { "ThrowRight", new State(F(a["throwRight"]), "Idle", 0, can_harm: true)},
+            // { "onThrow_KEN_RIGHT", new State(F(a["onThrow_KEN_RIGHT"]), "Falling", 5, has_gravity: false)},
             // Movement
-            { "WalkingForward", new State(a["walkingForwardFrames"], "WalkingForward", not_busy: true)},
-            { "WalkingBackward", new State(a["walkingBackwardFrames"], "WalkingBackward", not_busy: true)},
-            { "DashForward", new State(a["dashForwardFrames"], "Idle", 20)},
-            { "DashBackward", new State(a["dashBackwardFrames"], "Idle", 20)},
-            { "Jump", new State(a["jumpFrames"], "JumpFalling", not_busy: true, air: true)},
-            { "JumpForward", new State(a["jumpForward"], "JumpFalling", not_busy: true, air: true)}, 
-            { "JumpBackward", new State(a["JumpBackward"], "JumpFalling", not_busy: true, air: true)},
-            { "JumpFalling", new State(a["jumpFallingFrames"], "Landing", not_busy: true, change_on_end: false, change_on_ground: true, loop: false, air: true)},
-            { "Landing", new State(a["landingFrames"], "Idle", not_busy: true)},
-            { "CrouchingIn", new State(a["crouchingInFrames"], "Crouching", not_busy: true, low: true)},
-            { "Crouching", new State(a["crouchingFrames"], "Crouching", not_busy: true, low: true)},
+            { "WalkingForward", new State(F(a["walkingForwardFrames"]), "WalkingForward", not_busy: true)},
+            { "WalkingBackward", new State(F(a["walkingBackwardFrames"]), "WalkingBackward", not_busy: true)},
+            { "DashForward", new State(F(a["dashForwardFrames"]), "Idle", 20)},
+            { "DashBackward", new State(F(a["dashBackwardFrames"]), "Idle", 20)},
+            { "Jump", new State(F(a["jumpFrames"]), "JumpFalling", not_busy: true, air: true)},
+            { "JumpForward", new State(F(a["jumpForward"]), "JumpFalling", not_busy: true, air: true)}, 
+            { "JumpBackward", new State(F(a["JumpBackward"]), "JumpFalling", not_busy: true, air: true)},
+            { "JumpFalling", new State(F(a["jumpFallingFrames"]), "Landing", not_busy: true, change_on_end: false, change_on_ground: true, loop: false, air: true)},
+            { "Landing", new State(F(a["landingFrames"]), "Idle", not_busy: true)},
+            { "CrouchingIn", new State(F(a["crouchingInFrames"]), "Crouching", not_busy: true, low: true)},
+            { "Crouching", new State(F(a["crouchingFrames"]), "Crouching", not_busy: true, low: true)},
             // Super
-            { "SA1", new State(a["SA1"], "MediumK", 4, trace: true, drama_wait: true, can_harm: true)},
-            { "SA1_tail", new State(a["SA1_tail"], "SA1_exit", 4, trace: true, air: true, drama_wait: true, can_harm: true)},
-            { "SA1_exit", new State(a["SA1_exit"], "JumpFalling", 4)},
+            { "SA1", new State(F(a["SA1"]), "MediumK", 4, trace: true, drama_wait: true, can_harm: true)},
+            { "SA1_tail", new State(F(a["SA1_tail"]), "SA1_exit", 4, trace: true, air: true, drama_wait: true, can_harm: true)},
+            { "SA1_exit", new State(F(a["SA1_exit"]), "JumpFalling", 4)},
             // Specials
-            { "LightShory", new State(a["lightShoryFrames"], "ShoryFalling", 3, hitstop: "Heavy", air: true, can_harm: true)},
-            { "HeavyShory", new State(a["heavyShoryFrames"], "ShoryFalling", 3, hitstop: "Heavy", air: true, can_harm: true)},
-            { "ShoryEX", new State(a["EXShoryFrames"], "ShoryFalling", 3, hitstop: "Heavy", glow: true, trace: true, air: true, can_be_hit: false, can_harm: true)},
-            { "ShoryFalling", new State(a["shoryFallingFrames"], "Landing", change_on_end: false, change_on_ground: true, loop: false, air: true, can_harm: true)},
-            { "LightHaduken", new State(a["hadukenFrames"], "Idle", 3, hitstop: "Medium", air: true, can_harm: true)},
-            { "HeavyHaduken", new State(a["hadukenFrames"], "Idle", 3, hitstop: "Medium", can_harm: true)},
-            { "HadukenEX", new State(a["hadukenFrames"], "Idle", 3, hitstop: "Heavy", glow: true, trace: true, can_harm: true)},
-            { "LightTatso", new State(a["lightTatsoFrames"], "Landing", 3, hitstop: "Light", can_harm: true)},
-            { "HeavyTatso", new State(a["heavyTatsoFrames"], "Landing", 3, hitstop: "Light", can_harm: true)},
-            { "TatsoEX", new State(a["EXTatsoFrames"], "Landing", 3, hitstop: "Light", glow: true, trace: true, can_harm: true)},
-            { "AirTatso", new State(a["airTatsoFrames"], "Landing", 3, change_on_ground: true, change_on_end: false, air: true, can_harm: true)},
-            { "AirTatsoEX", new State(a["airTatsoFrames"], "Landing", 3, change_on_ground: true, change_on_end: false, glow: true, trace: true, air: true, can_harm: true)},
+            { "LightShory", new State(F(a["lightShoryFrames"]), "ShoryFalling", 3, hitstop: "Heavy", air: true, can_harm: true)},
+            { "HeavyShory", new State(F(a["heavyShoryFrames"]), "ShoryFalling", 3, hitstop: "Heavy", air: true, can_harm: true)},
+            { "ShoryEX", new State(F(a["EXShoryFrames"]), "ShoryFalling", 3, hitstop: "Heavy", glow: true, trace: true, air: true, can_be_hit: false, can_harm: true)},
+            { "ShoryFalling", new State(F(a["shoryFallingFrames"]), "Landing", change_on_end: false, change_on_ground: true, loop: false, air: true, can_harm: true)},
+            { "LightHaduken", new State(F(a["hadukenFrames"]), "Idle", 3, hitstop: "Medium", air: true, can_harm: true)},
+            { "HeavyHaduken", new State(F(a["hadukenFrames"]), "Idle", 3, hitstop: "Medium", can_harm: true)},
+            { "HadukenEX", new State(F(a["hadukenFrames"]), "Idle", 3, hitstop: "Heavy", glow: true, trace: true, can_harm: true)},
+            { "LightTatso", new State(F(a["lightTatsoFrames"]), "Landing", 3, hitstop: "Light", can_harm: true)},
+            { "HeavyTatso", new State(F(a["heavyTatsoFrames"]), "Landing", 3, hitstop: "Light", can_harm: true)},
+            { "TatsoEX", new State(F(a["EXTatsoFrames"]), "Landing", 3, hitstop: "Light", glow: true, trace: true, can_harm: true)},
+            { "AirTatso", new State(F(a["airTatsoFrames"]), "Landing", 3, change_on_ground: true, change_on_end: false, air: true, can_harm: true)},
+            { "AirTatsoEX", new State(F(a["airTatsoFrames"]), "Landing", 3, change_on_ground: true, change_on_end: false, glow: true, trace: true, air: true, can_harm: true)},
             // Other
-            { "Falling", new State(a["fallingFrames"], "OnGround", can_be_hit: false)},
-            { "Sweeped", new State(a["sweepedFrames"], "Falling", on_hit: true, low: true, can_be_hit: false)},
-            { "OnGround", new State(a["OnGroundFrames"], "WakeUp", low: true, can_be_hit: false)},
-            { "WakeUp", new State(a["wakeupFrames"], "Idle", can_be_hit: false)},
-            // Bonus
-            { "Intro", new State(a["introFrames"], "Idle", can_be_hit: false)},
+            { "Falling", new State(F(a["fallingFrames"]), "OnGround", can_be_hit: false)},
+            { "Sweeped", new State(F(a["sweepedFrames"]), "Falling", on_hit: true, low: true, can_be_hit: false)},
+            { "OnGround", new State(F(a["OnGroundFrames"]), "WakeUp", low: true, can_be_hit: false)},
+            { "WakeUp", new State(F(a["wakeupFrames"]), "Idle", can_be_hit: false)},
         };
     }
     public override void Behave() {
@@ -256,6 +260,11 @@ public class Ken : Character {
             this.PlaySound("EX");
             this.PlaySound("tatso");            
         } 
+
+        // Throw
+        // if (Input.Key_press("LB", this.player_index, this.facing) && this.not_acting) {
+        //     this.ChangeState("Throw");
+        // }
 
         // Normals plus
         if (Input.Key_sequence("D", Config.hit_stop_time, player: this.player_index, facing: this.facing) && this.has_hit && this.current_state == "LightP") {
@@ -488,6 +497,15 @@ public class Ken : Character {
                 Character.AddAuraPoints(target, this, hit);
                 break;
             
+            case "Throw":
+                if (Input.Key_hold("Left", this.player_index, this.facing)) {
+                    this.ChangeState("ThrowLeft");
+                } else {
+                    this.ChangeState("ThrowRight");
+                    target.ChangeState("onThrow_KEN_RIGHT");
+                }
+                break;
+
             case "LightShory":
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;

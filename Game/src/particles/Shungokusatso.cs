@@ -9,8 +9,8 @@ public class Shungokusatso : Character {
     private static Dictionary<string, SoundBuffer> sounds_local = new Dictionary<string, SoundBuffer>();
     public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
     
-    private static Dictionary<string, List<Frame>> _shared_animations = new Dictionary<string, List<Frame>>();
-    public override Dictionary<string, List<Frame>> animations { get => _shared_animations; protected set => _shared_animations = value ?? new Dictionary<string, List<Frame>>();}
+    private static Dictionary<string, Frame[]> _shared_animations = new Dictionary<string, Frame[]>();
+    public override Dictionary<string, Frame[]> animations { get => _shared_animations; protected set => _shared_animations = value ?? new Dictionary<string, Frame[]>();}
 
     public Shungokusatso(string initialState, float startX, float startY, int facing)
         : base("Shungokusatso", initialState, startX, startY, Data.GetPath("Assets/particles/Shungokusatso")) {
@@ -23,8 +23,8 @@ public class Shungokusatso : Character {
         var a = this.animations;
 
         this.states = new Dictionary<string, State> {
-            {"Shungoku", new State(a["Shungoku"], "Remove", 15)},
-            {"Shungoku_text", new State(a["Shungoku_text"], "Remove", 15)},
+            {"Shungoku", new State(F(a["Shungoku"]), "Remove", 15)},
+            {"Shungoku_text", new State(F(a["Shungoku_text"]), "Remove", 15)},
         };
     }
     

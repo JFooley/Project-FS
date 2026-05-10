@@ -7,7 +7,7 @@ public class NYCSubway : Stage {
     }
 
     public override void LoadStage() {
-        var day = new List<Frame> {
+        var day = new Frame[] {
             new Frame(10, len: 3),
             new Frame(11, len: 3),
             new Frame(12, len: 3),
@@ -55,7 +55,7 @@ public class NYCSubway : Stage {
         };
 
         var animations = new Dictionary<string, State> {
-            { "day", new State(day, "day")},
+            { "day", new State(F(day), "day")},
         };
 
         this.CurrentState = "day";

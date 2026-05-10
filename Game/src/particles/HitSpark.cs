@@ -8,8 +8,8 @@ public class Hitspark : Character {
     private static Dictionary<string, SoundBuffer> sounds_local = new Dictionary<string, SoundBuffer>();
     public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
 
-    private static Dictionary<string, List<Frame>> _shared_animations = new Dictionary<string, List<Frame>>();
-    public override Dictionary<string, List<Frame>> animations { get => _shared_animations; protected set => _shared_animations = value ?? new Dictionary<string, List<Frame>>();}
+    private static Dictionary<string, Frame[]> _shared_animations = new Dictionary<string, Frame[]>();
+    public override Dictionary<string, Frame[]> animations { get => _shared_animations; protected set => _shared_animations = value ?? new Dictionary<string, Frame[]>();}
 
     public Hitspark(string initialState, float startX, float startY, int facing)
         : base("Hitspark", initialState, startX, startY, Data.GetPath("Assets/particles/Hitspark")) {
@@ -22,11 +22,11 @@ public class Hitspark : Character {
         var a = this.animations;
         
         this.states = new Dictionary<string, State> {
-            {"Hit1", new State(a["Hit1"], "Remove")},
-            {"Hit2", new State(a["Hit2"], "Remove")},
-            {"Hit3", new State(a["Hit3"], "Remove")},
-            {"Parry", new State(a["Parry"], "Remove")},
-            {"Block", new State(a["Block"], "Remove")},
+            {"Hit1", new State(F(a["Hit1"]), "Remove")},
+            {"Hit2", new State(F(a["Hit2"]), "Remove")},
+            {"Hit3", new State(F(a["Hit3"]), "Remove")},
+            {"Parry", new State(F(a["Parry"]), "Remove")},
+            {"Block", new State(F(a["Block"]), "Remove")},
         };
     }
 

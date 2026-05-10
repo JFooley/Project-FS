@@ -144,6 +144,9 @@ def main():
     # Sounds
     pack_audio("raw/sounds", "assets/sounds")
 
+    # Languages sounds
+    pack_audio("raw/languages", "assets/languages")
+
     # Fonts
     pack_textures("raw/fonts", "assets/fonts")
 

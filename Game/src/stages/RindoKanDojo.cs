@@ -7,7 +7,7 @@ public class RindoKanDojo : Stage {
 
     public override void LoadStage() {
         var animations = new Dictionary<string, State> {
-            { "Default", new State(new List<Frame> {new Frame(0, 60)}, "Default", 1)},
+            { "Default", new State(F(new Frame[] {new Frame(0, 60)}), "Default", 1)},
         };
 
         this.states = animations;

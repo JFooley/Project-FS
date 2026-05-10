@@ -9,8 +9,8 @@ public class Fireball : Character {
     private static Dictionary<string, SoundBuffer> sounds_local = new Dictionary<string, SoundBuffer>();
     public override Dictionary<string, SoundBuffer> sounds {get => sounds_local; protected set => sounds_local = value ?? new Dictionary<string, SoundBuffer>();}
     
-    private static Dictionary<string, List<Frame>> animations_local = new Dictionary<string, List<Frame>>();
-    public override Dictionary<string, List<Frame>> animations { get => animations_local; protected set => animations_local = value ?? new Dictionary<string, List<Frame>>();}
+    private static Dictionary<string, Frame[]> animations_local = new Dictionary<string, Frame[]>();
+    public override Dictionary<string, Frame[]> animations { get => animations_local; protected set => animations_local = value ?? new Dictionary<string, Frame[]>();}
 
     public Fireball(string initialState, int life_points, float startX, float startY, int team, int facing)
         : base("Ken-Fireball", initialState, startX, startY, Data.GetPath("Assets/characters/Ken-Fireball"), 1) {
@@ -29,10 +29,10 @@ public class Fireball : Character {
         var a = this.animations;
     
         this.states = new Dictionary<string, State> {
-            {"Ken1", new State(a["KenFireballFrames"], "Ken1", 7, can_harm: true)},
-            {"Ken2", new State(a["KenFireballFrames"], "Ken2", 7, can_harm: true)},
-            {"Ken3", new State(a["KenFireballFrames"], "Ken3", 7, glow: true, can_harm: true)},
-            {"KenExit", new State(a["KenFireballFinal"], "Remove", 7)},
+            {"Ken1", new State(F(a["KenFireballFrames"]), "Ken1", 7, can_harm: true)},
+            {"Ken2", new State(F(a["KenFireballFrames"]), "Ken2", 7, can_harm: true)},
+            {"Ken3", new State(F(a["KenFireballFrames"]), "Ken3", 7, glow: true, can_harm: true)},
+            {"KenExit", new State(F(a["KenFireballFinal"]), "Remove", 7)},
         };
     }
     public override void Behave() {
