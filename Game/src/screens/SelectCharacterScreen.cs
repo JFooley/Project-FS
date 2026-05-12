@@ -56,8 +56,8 @@ public class WGSelectCharacter : Widget {
         selectorB.Render(77 + offset, -30, 2, x_scale: -1);
 
         UI.DrawText("Q", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
-        if (UI.DrawButton(Language.GetText("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
-            Program.ChangeState(Program.previous_state);
+        if (UI.DrawButton(Language.TLT("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
+            Program.ChangeState(Program.SelectStage);
             selectorA.selected = null;
             selectorB.selected = null;
             selectorA.state = WGSelector.SELECTING_CHAR;
@@ -86,8 +86,8 @@ public class WGSelectCharacter : Widget {
         }
 
         UI.DrawText("Q", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
-        if (UI.DrawButton(Language.GetText("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
-            Program.ChangeState(Program.previous_state);
+        if (UI.DrawButton(Language.TLT("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
+            Program.ChangeState(Program.SelectStage);
             selectorA.selected = null;
             selectorB.selected = null;
             selectorA.state = WGSelector.SELECTING_CHAR;
@@ -105,7 +105,7 @@ public class WGSelectCharacter : Widget {
         if (selectorB.state == WGSelector.READY) this.B_flag = true;
 
         UI.DrawText("Q", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
-        if (UI.DrawButton(Language.GetText("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
+        if (UI.DrawButton(Language.TLT("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
             Program.ChangeState(Program.previous_state);
             selectorA.selected = null;
             selectorB.selected = null;
@@ -161,7 +161,7 @@ public class WGSelector : Widget {
 
         // Info
         if (state == READY) { 
-            UI.DrawText(Language.GetText("ready"), x, y, textureName: "default small", spacing: Config.spacing_small);
+            UI.DrawText(Language.TLT("ready"), x, y, textureName: "default small", spacing: Config.spacing_small);
         } else if (state == SELECTING_CHAR) {
             for (int i = 0; i < Data.characters.Count; i++) UI.DrawText(i == pointer ? ")" : "(", (i * 10) - ((Data.characters.Count - 1) * 5) + x, y + info_y_offset, textureName: "icons");
         } else if (state == SELECTING_PALETTE) {

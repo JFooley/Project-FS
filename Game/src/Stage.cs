@@ -44,8 +44,8 @@ public class Stage {
 
     public Character character_A;
     public Character character_B;
-    public Vector2f last_pos_A => character_A.body.LastPosition;
-    public Vector2f last_pos_B => character_B.body.LastPosition;
+    public Vector2f last_pos_A => character_A.body.last_position;
+    public Vector2f last_pos_B => character_B.body.last_position;
     public int rounds_A;
     public int rounds_B;
     public int round => rounds_A + rounds_B + 1;
@@ -167,22 +167,22 @@ public class Stage {
     }
     private void DoBehavior() {
         // Move characters away from border
-        character_A.body.Position.X = Math.Max(character_A.push_box_width, Math.Min(character_A.body.Position.X, this.length - character_A.push_box_width));
-        character_B.body.Position.X = Math.Max(character_B.push_box_width, Math.Min(character_B.body.Position.X, this.length - character_B.push_box_width));
+        character_A.body.position.X = Math.Max(character_A.push_box_width, Math.Min(character_A.body.position.X, this.length - character_A.push_box_width));
+        character_B.body.position.X = Math.Max(character_B.push_box_width, Math.Min(character_B.body.position.X, this.length - character_B.push_box_width));
 
         // Keep characters close 
-        float deltaS = Math.Abs(character_A.body.Position.X - character_B.body.Position.X);
+        float deltaS = Math.Abs(character_A.body.position.X - character_B.body.position.X);
         if (deltaS >= Config.max_distance) {
-            if ((character_A.facing == 1 && character_A.body.Position.X < last_pos_A.X) || (character_A.facing == -1 && character_A.body.Position.X > last_pos_A.X)) {
-                character_A.body.Position.X = this.last_pos_A.X;
+            if ((character_A.facing == 1 && character_A.body.position.X < last_pos_A.X) || (character_A.facing == -1 && character_A.body.position.X > last_pos_A.X)) {
+                character_A.body.position.X = this.last_pos_A.X;
             }
-            if ((character_B.facing == 1 && character_B.body.Position.X < last_pos_B.X) || (character_B.facing == -1 && character_B.body.Position.X > last_pos_B.X)) {
-                character_B.body.Position.X = this.last_pos_B.X;
+            if ((character_B.facing == 1 && character_B.body.position.X < last_pos_B.X) || (character_B.facing == -1 && character_B.body.position.X > last_pos_B.X)) {
+                character_B.body.position.X = this.last_pos_B.X;
             }
         }
         
         // Keep characters facing each other
-        if (this.character_A.body.Position.X < this.character_B.body.Position.X) {
+        if (this.character_A.body.position.X < this.character_B.body.position.X) {
             if (this.character_A.not_acting || this.character_A.not_acting_low) this.character_A.facing = 1;
             if (this.character_B.not_acting || this.character_B.not_acting_low) this.character_B.facing = -1;
         } else {
@@ -274,12 +274,12 @@ public class Stage {
         par.Load();
         this.newParticles.Add(par);
     }
-    public void PSHitspark(int hit, float X, float Y, int facing, int X_offset = 0, int Y_offset = 0) {
+    public void PSHitspark(int hit, float X, float Y, int facing, string weight = "Light", int X_offset = 0, int Y_offset = 0) {
         string state;
         if (hit == Character.PARRY) {
             state = "Parry";
         } else if (hit == Character.HIT) {
-            state = "Hit" + AI.rand.Next(1, 4);
+            state = "Hit" + weight;
         } else if (hit == Character.BLOCK){
             state = "Block";
         } else return;
@@ -293,9 +293,9 @@ public class Stage {
     // Visuals
     public void DrawShadow(Character char_obj) {
         if (char_obj.shadow_size != -1) {
-            int shadow_index = (int) (char_obj.shadow_size * (Config.contact_shadow - Math.Min(this.floor_line - char_obj.body.Position.Y, Config.contact_shadow)) / Config.contact_shadow);
+            int shadow_index = (int) (char_obj.shadow_size * (Config.contact_shadow - Math.Min(this.floor_line - char_obj.body.position.Y, Config.contact_shadow)) / Config.contact_shadow);
             this.shadow.Texture = Data.textures["ui:shadow" + shadow_index];
-            this.shadow.Position = new Vector2f(char_obj.body.Position.X - this.shadow.GetLocalBounds().Width/2, this.floor_line - this.shadow.GetLocalBounds().Height/2 - 55 );
+            this.shadow.Position = new Vector2f(char_obj.body.position.X - this.shadow.GetLocalBounds().Width/2, this.floor_line - this.shadow.GetLocalBounds().Height/2 - 55 );
             this.shadow.Color = this.AmbientLight;
             Program.window.Draw(this.shadow);
         }
@@ -305,46 +305,61 @@ public class Stage {
     public bool CheckRoundEnd() {
         if (Stage.training_mode || Stage.pause ) return false;
         
-        bool doEnd = false;
-
         if (this.round_time == 0) {
-            if (character_A.life_points.X <= character_B.life_points.X) {
+            if (character_A.life_points.X < character_B.life_points.X) {
                 this.rounds_B += 1;
-            } 
-            if (character_A.life_points.X >= character_B.life_points.X) {
+                WGBattle.round_winner = WGBattle.PlayerB;
+
+            } else if (character_A.life_points.X > character_B.life_points.X) {
                 this.rounds_A += 1;
-            } 
+                WGBattle.round_winner = WGBattle.PlayerA;
+
+            } else {
+                this.rounds_A += 1;
+                this.rounds_B += 1;
+                WGBattle.round_winner = WGBattle.Drawn;
+            }
 
             return true;
         }
 
-        if (character_A.life_points.X <= 0 && !character_B.state.drama_wait) {
-            this.rounds_B += 1;
-            doEnd = true;
-            // Spawn efeito de hit do KO
+        bool doEnd = false;
+
+        if (!character_A.state.drama_wait && !character_B.state.drama_wait) {
+            if (character_A.life_points.X == character_B.life_points.X && character_A.life_points.X <= 0) {
+                this.rounds_A += 1;
+                this.rounds_B += 1;
+                WGBattle.round_winner = WGBattle.Drawn;
+                doEnd = true;
+
+            } else if (character_A.life_points.X <= 0) {
+                this.rounds_B += 1;
+                WGBattle.round_winner = WGBattle.PlayerB;
+                doEnd = true;
+
+            } else if (character_B.life_points.X <= 0) {
+                this.rounds_A += 1;
+                WGBattle.round_winner = WGBattle.PlayerA;
+                doEnd = true;
+            }
+
+            if (doEnd) this.StopFor(Config.last_hit_stop_time);
         }
-        if (character_B.life_points.X <= 0 && !character_A.state.drama_wait) {
-            this.rounds_A += 1;
-            doEnd = true;
-            // Spawn efeito de hit do KO
-        }
-        
-        if (doEnd) this.StopFor(Config.last_hit_stop_time);
 
         return doEnd;
     }
     public bool CheckMatchEnd() {       
         if (this.rounds_A == this.rounds_B && this.rounds_A >= Config.max_rounds) {
-            Program.winner = Program.Drawn;
+            WGBattle.match_winner = WGBattle.Drawn;
             return true;
         }
         else if (this.rounds_A >= Config.max_rounds) {
-            Program.winner = Program.PlayerA;
+            WGBattle.match_winner = WGBattle.PlayerA;
             Program.playerA_wins += 1;
             return true;
         }
         else if (this.rounds_B >= Config.max_rounds) {
-            Program.winner = Program.PlayerB;
+            WGBattle.match_winner = WGBattle.PlayerB;
             Program.playerB_wins += 1;
             return true;
         }
@@ -457,10 +472,10 @@ public class Stage {
 
         this.character_A.floor_line = this.floor_line;
         this.character_B.floor_line = this.floor_line;
-        this.character_A.body.Position.Y = this.floor_line;
-        this.character_B.body.Position.Y = this.floor_line;
-        this.character_A.body.Position.X = this.start_point_A;
-        this.character_B.body.Position.X = this.start_point_B;
+        this.character_A.body.position.Y = this.floor_line;
+        this.character_B.body.position.Y = this.floor_line;
+        this.character_A.body.position.X = this.start_point_A;
+        this.character_B.body.position.X = this.start_point_B;
 
         this.OnSceneCharacters = new List<Character> {this.character_A, this.character_B};
         this.LockPlayers();

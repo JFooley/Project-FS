@@ -17,6 +17,14 @@ class WGBattle : Widget {
     public const int VersusBot = 1;
     public const int Training = 2;
 
+    // Winner
+    public const int Drawn = 0;
+    public const int PlayerA = 1;
+    public const int PlayerB = 2;
+
+    public static int match_winner = 0;
+    public static int round_winner = 0;
+
     public static int battle_state = Intro;
     public static int battle_mode = Versus;
     private Sprite fight_logo = new Sprite(Data.textures["typography:fight"]);
@@ -36,7 +44,7 @@ class WGBattle : Widget {
                 Program.stage?.SetMusicVolume();
                 Program.stage?.StopRoundTime();
                 Program.stage?.ResetTimer();
-                if (Program.stage?.character_A.current_state == "Idle" && Program.stage?.character_B.current_state == "Idle" && fade90.Color.A == 0) 
+                if (Program.stage.character_A.state.not_busy && Program.stage.character_B.state.not_busy && fade90.Color.A == 0) 
                     WGBattle.battle_state = RoundStart;
                 break;
 
@@ -52,9 +60,9 @@ class WGBattle : Widget {
                     Program.window.Draw(fight_logo);
                 }
                 else if (Program.stage.CheckTimer(1)) 
-                    UI.DrawText(Language.GetText("Ready")+"?", 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
+                    UI.DrawText(Language.TLT("Ready", "?"), 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
                 else 
-                    UI.DrawText(Language.GetText("Round") + " " + Program.stage.round, 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
+                    UI.DrawText(Language.TLT("Round", " " + Program.stage.round), 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
 
                 break;
 
@@ -67,16 +75,7 @@ class WGBattle : Widget {
                 break;
 
             case RoundEnd: // Fim de round
-                if (!Program.stage.CheckTimer(3)) {
-                    if (Program.stage.character_A.life_points.X <= 0 || Program.stage.character_B.life_points.X <= 0) {
-                        KO_logo.Position = new Vector2f(Camera.X - 75, Camera.Y - 54);
-                        Program.window.Draw(KO_logo);
-                    } else {
-                        timesup_logo.Position = new Vector2f(Camera.X - 131, Camera.Y - 55);
-                        Program.window.Draw(timesup_logo);
-                    }
-                }
-                if (Program.stage.CheckTimer(4)) {
+                if (Program.stage.CheckTimer(6)) {
                     Program.stage.LockPlayers();
                     Program.stage.ResetTimer();
                     if (Program.stage.CheckMatchEnd()) {
@@ -85,7 +84,23 @@ class WGBattle : Widget {
                         WGBattle.battle_state = RoundStart;
                         Program.stage.ResetPlayers();
                     }
-                }
+
+                } else if (Program.stage.CheckTimer(3)) {
+                    if (WGBattle.round_winner == Drawn) {
+                        UI.DrawText(Language.TLT("Draw"), 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
+                    } else {
+                        UI.DrawText(Language.TLT(WGBattle.round_winner == 1 ? "player 1" : "player 2", " ", "wins"), 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
+                    }
+
+                } else if (!Program.stage.CheckTimer(3)) {
+                    if (Program.stage.character_A.life_points.X <= 0 || Program.stage.character_B.life_points.X <= 0) {
+                        KO_logo.Position = new Vector2f(Camera.X - 75, Camera.Y - 54);
+                        Program.window.Draw(KO_logo);
+                    } else {
+                        timesup_logo.Position = new Vector2f(Camera.X - 131, Camera.Y - 55);
+                        Program.window.Draw(timesup_logo);
+                    }
+                } 
                 break;
 
             case MatchEnd: // Fim da partida

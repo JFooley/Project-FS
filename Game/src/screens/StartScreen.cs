@@ -9,7 +9,7 @@ public class WGStart : Widget {
         Program.window.Draw(main_bg);
         UI.DrawText("by JFooley", 0, 76, spacing: Config.spacing_small, textureName: "default small");
 
-        if (UI.DrawButton(Language.GetText("press start"), 0, 50, spacing: Config.spacing_medium, click: Input.Key_hold("Start"), action: Input.Key_up("Start"), button_sound: 2, hover_font: UI.blink2Hz ? "default medium white" : "", click_font: "default medium click")) {
+        if (UI.DrawButton(Language.TLT("press start"), 0, 50, spacing: Config.spacing_medium, click: Input.Key_hold("Start"), action: Input.Key_up("Start"), button_sound: 2, hover_font: UI.blink2Hz ? "default medium white" : "", click_font: "default medium click")) {
             Program.ChangeState(Program.MainMenu);
         }
     }

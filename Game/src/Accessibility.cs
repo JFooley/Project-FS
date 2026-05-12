@@ -15,8 +15,8 @@ public class Accessibility{
     public static bool navigation_cue = true;
 
     public static float TTS_speed = 1f;
-    public const float atack_feedback_intensity = 0.8f;
-    public const float defend_feedback_intensity = 0.1f;
+    public const float atack_feedback_intensity = 1f;
+    public const float defend_feedback_intensity = 0.2f;
 
     // Radar Data
     private static Sound radar_beep_BA;
@@ -36,8 +36,8 @@ public class Accessibility{
     public static SFML.Graphics.Color bar_graylife => new SFML.Graphics.Color(255, 255, 255);
 
     public Accessibility() {
-        Accessibility.radar_beep_AB = new Sound(Data.sounds["accessibility:beepAB"]) {Volume = Config.Effect_Volume};
-        Accessibility.radar_beep_BA = new Sound(Data.sounds["accessibility:beepBA"]) {Volume = Config.Effect_Volume};
+        Accessibility.radar_beep_AB = new Sound(Data.sounds["accessibility:beepSAB"]) {Volume = Config.Effect_Volume};
+        Accessibility.radar_beep_BA = new Sound(Data.sounds["accessibility:beepSBA"]) {Volume = Config.Effect_Volume};
 
         Accessibility.falling_sound = new Sound(Data.sounds["accessibility:falling"]) {Volume = Config.Effect_Volume};
         Accessibility.wake_up_sound = new Sound(Data.sounds["accessibility:wake_up"]) {Volume = Config.Effect_Volume};
@@ -55,7 +55,7 @@ public class Accessibility{
     public static void DistanceAudioCue(Character char_A, Character char_B) {
         if (!Accessibility.distance_cue) return;
 
-        float pos_diff = char_B.body.Position.X - char_A.body.Position.X;
+        float pos_diff = char_B.body.position.X - char_A.body.position.X;
         float distance = Math.Abs(pos_diff) / Config.RenderWidth;
 
         float frequency = 20;

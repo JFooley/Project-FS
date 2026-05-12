@@ -59,22 +59,16 @@ namespace Language_space {
                    
         }
 
-        public static string GetText(string strings) {
+        public static string TLT(params string[] strings) {return Language.Translate(strings);}
+        public static string Translate(params string[] strings) {
             string text = "";
 
-            // foreach (string s in strings) {
-            //     try {
-            //         text += _languageData[Config.Language][s.ToLower()];
-            //     } catch (KeyNotFoundException) {
-            //         text += s;
-            //     }
-            // }
-
-            try {
-                text += _languageData[Config.Language][strings.ToLower()];
-            } catch (KeyNotFoundException) {
-                text += strings;
-                
+            foreach (string s in strings) {
+                try {
+                    text += _languageData[Config.Language][s.ToLower()];
+                } catch (KeyNotFoundException) {
+                    text += s;
+                }
             }
 
             return text;

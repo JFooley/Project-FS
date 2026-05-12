@@ -20,12 +20,12 @@ public class WGSelectStage : Widget {
         UI.DrawText(Program.playerB_wins.ToString(), Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "right");
 
         UI.DrawText("Q", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
-        if (UI.DrawButton(Language.GetText("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
-            Program.ChangeState(Program.previous_state);
+        if (UI.DrawButton(Language.TLT("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
+            Program.ChangeState(Program.MainMenu);
             selector.pointer.X = 0;
         }
 
-        if (UI.DrawButton(Language.GetText(Data.stages[selector.pointer.X].name), 0, -95, spacing: Config.spacing_medium, click: Input.Key_hold("A"), action: Input.Key_up("A"), click_font: "default medium click", hover_font: "default medium white")) {
+        if (UI.DrawButton(Language.TLT(Data.stages[selector.pointer.X].name), 0, -95, spacing: Config.spacing_medium, click: Input.Key_hold("A"), action: Input.Key_up("A"), click_font: "default medium click", hover_font: "default medium white")) {
             if (Data.stages[selector.pointer.X].name == "Random")
                 selector.pointer.X = AI.rand.Next(1, Data.stages.Count() - 2);
             Program.stage = Data.stages[selector.pointer.X];

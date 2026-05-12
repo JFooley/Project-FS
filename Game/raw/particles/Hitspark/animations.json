@@ -1,12 +1,12 @@
 {
-    "Hit1": [
+    "HitLight": [
         {
             "Sprite_index": "11",
             "DeltaX": 0.0,
             "DeltaY": 0.0,
             "Boxes": [],
             "lenght": 1,
-            "Sound_index": "on_hit --RP",
+            "Sound_index": "on_hit_light --RP",
             "hasHit": true
         },
         {
@@ -91,14 +91,14 @@
             "hasHit": true
         }
     ],
-    "Hit2": [
+    "HitMedium": [
         {
             "Sprite_index": "21",
             "DeltaX": 0.0,
             "DeltaY": 0.0,
             "Boxes": [],
             "lenght": 1,
-            "Sound_index": "on_hit --RP",
+            "Sound_index": "on_hit_medium --RP",
             "hasHit": true
         },
         {
@@ -183,14 +183,14 @@
             "hasHit": true
         }
     ],
-    "Hit3": [
+    "HitHeavy": [
         {
             "Sprite_index": "41",
             "DeltaX": 0.0,
             "DeltaY": 0.0,
             "Boxes": [],
             "lenght": 1,
-            "Sound_index": "on_hit --RP",
+            "Sound_index": "on_hit_heavy --RP",
             "hasHit": true
         },
         {

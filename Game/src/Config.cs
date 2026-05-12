@@ -21,11 +21,10 @@ public static class Config {
     public const int input_window_time = 4;
     public static int hit_stop_time = 15;
     public const int default_hit_stop_time = 15;
-    public const int default_accessible_hit_stop_time = 20;
 
     // Audio
     public static float _main_volume = 100f;
-    public static float _character_volume = 80f;
+    public static float _character_volume = 100f;
     public static float _music_volume = 80f;
     public static float _effect_volume = 100f;
 
@@ -105,6 +104,7 @@ public static class Config {
                 Accessibility.navigation_cue,
                 Accessibility.high_contrast,
                 Accessibility.atack_haptic_feedback,
+                Accessibility.spacialized_audio,
             };
 
             string jsonString = JsonConvert.SerializeObject(configData, Formatting.Indented);
@@ -145,6 +145,7 @@ public static class Config {
                 Accessibility.fall_get_up_cue = configData.fall_get_up_cue;
                 Accessibility.atack_hight_cue = configData.atack_hight_cue;
                 Accessibility.navigation_cue = configData.navigation_cue;
+                Accessibility.spacialized_audio = configData.spacialized_audio;
 
         } else {
             Config.SaveToFile();
@@ -170,6 +171,7 @@ public static class Config {
         public bool atack_hight_cue { get; set; }
         public bool navigation_cue { get; set; }
         public bool high_contrast { get; set; }
-        public bool atack_haptic_feedback { get; set; }
+        public bool atack_haptic_feedback { get; set; } 
+        public bool spacialized_audio { get; set; }
     }
 }

@@ -6,11 +6,6 @@ using System.Diagnostics;
 using Language_space;
 
 public static class Program {
-    // Winner index
-    public const int Drawn = 0;
-    public const int PlayerA = 1;
-    public const int PlayerB = 2;
-
     // Game States
     public const int Intro = 0;
     public const int StartScreen = 1;
@@ -38,8 +33,7 @@ public static class Program {
     // Session infos
     public static int playerA_wins = 0;
     public static int playerB_wins = 0;
-    public static int winner = 0;
-
+    
     // View
     public static View view = new View(new FloatRect(new Vector2f(0, 0), new Vector2f(Config.RenderWidth, Config.RenderHeight)));
 

@@ -13,33 +13,33 @@ public class WGSettings : Widget {
         Camera.UnlockCamera();
         Program.window.Draw(settings_bg);
 
-        UI.DrawText(Language.GetText("Settings"), -80, -107, spacing: Config.spacing_medium);
+        UI.DrawText(Language.TLT("Settings"), -80, -107, spacing: Config.spacing_medium);
         //0
-        UI.DrawText(Language.GetText("Main volume"), -185, -74, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 0) ? "default small hover" : "default small");
+        UI.DrawText(Language.TLT("Main volume"), -185, -74, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 0) ? "default small hover" : "default small");
         UI.DrawText("< " + Config.Main_Volume.ToString() + "% >", 15, -74, spacing: Config.spacing_small, textureName: selector.is_on(0, 0) ? "default small red" : "default small");
         //1
-        UI.DrawText(Language.GetText("Music volume"), -185, -64, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 1) ? "default small hover" : "default small");
+        UI.DrawText(Language.TLT("Music volume"), -185, -64, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 1) ? "default small hover" : "default small");
         UI.DrawText("< " + Config._music_volume.ToString() + "% >", 15, -64, spacing: Config.spacing_small, textureName: selector.is_on(0, 1) ? "default small red" : "default small");
         //2
-        UI.DrawText(Language.GetText("V-sync"), -185, -54, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 2) ? "default small hover" : "default small");
-        UI.DrawText("< " + (Config.Vsync ? Language.GetText("on") : Language.GetText("off")) + " >", 15, -54, spacing: Config.spacing_small, textureName: selector.is_on(0, 2) ? "default small red" : "default small");
+        UI.DrawText(Language.TLT("V-sync"), -185, -54, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 2) ? "default small hover" : "default small");
+        UI.DrawText("< " + Language.TLT(Config.Vsync ? "on": "off") + " >", 15, -54, spacing: Config.spacing_small, textureName: selector.is_on(0, 2) ? "default small red" : "default small");
         //3
-        UI.DrawText(Language.GetText("Window mode"), -185, -44, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 3) ? "default small hover" : "default small");
-        UI.DrawText("< " + (Config.Fullscreen ? Language.GetText("Fullscreen") : Language.GetText("Windowed")) + " >", 15, -44, spacing: Config.spacing_small, textureName: selector.is_on(0, 3) ? "default small red" : "default small");
+        UI.DrawText(Language.TLT("Window mode"), -185, -44, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 3) ? "default small hover" : "default small");
+        UI.DrawText("< " + Language.TLT(Config.Fullscreen ? "Fullscreen" : "Windowed") + " >", 15, -44, spacing: Config.spacing_small, textureName: selector.is_on(0, 3) ? "default small red" : "default small");
         //4
-        UI.DrawText(Language.GetText("Round Length"), -185, -34, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 4) ? "default small hover" : "default small");
-        UI.DrawText("< " + (Config.round_length == Config.default_round_length ? Language.GetText("Default") + " (" + Config.default_round_length + "s)" : Config.round_length + "s") + " >", 15, -34, spacing: Config.spacing_small, textureName: selector.is_on(0, 4) ? "default small red" : "default small");
+        UI.DrawText(Language.TLT("Round Length"), -185, -34, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 4) ? "default small hover" : "default small");
+        UI.DrawText("< " + (Config.round_length == Config.default_round_length ? Language.TLT("Default", " (" + Config.default_round_length, "s)") : Config.round_length + "s") + " >", 15, -34, spacing: Config.spacing_small, textureName: selector.is_on(0, 4) ? "default small red" : "default small");
         //5
-        UI.DrawText(Language.GetText("Match"), -185, -24, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 5) ? "default small hover" : "default small");
-        UI.DrawText("< " + (Config.max_rounds == Config.default_max_rounds ? Language.GetText("Default") + " (FT" + Config.default_max_rounds + ")" : Language.GetText("First to") + " " + Config.max_rounds.ToString()) + " >", 15, -24, spacing: Config.spacing_small, textureName: selector.is_on(0, 5) ? "default small red" : "default small");
+        UI.DrawText(Language.TLT("Match"), -185, -24, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 5) ? "default small hover" : "default small");
+        UI.DrawText("< " + (Config.max_rounds == Config.default_max_rounds ? Language.TLT("Default", " (FT" + Config.default_max_rounds + ")") : Language.TLT("First to", " " + Config.max_rounds.ToString()) + " >"), 15, -24, spacing: Config.spacing_small, textureName: selector.is_on(0, 5) ? "default small red" : "default small");
         //6
-        UI.DrawText(Language.GetText("Hitstop"), -185, -14, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 6) ? "default small hover" : "default small");
-        UI.DrawText("< " + (Config.hit_stop_time == Config.default_hit_stop_time ? Language.GetText("Default") : Config.hit_stop_time + " " + Language.GetText("frames")) + " >", 15, -14, spacing: Config.spacing_small, textureName: selector.is_on(0, 6) ? "default small red" : "default small");
+        UI.DrawText(Language.TLT("Hitstop"), -185, -14, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 6) ? "default small hover" : "default small");
+        UI.DrawText("< " + (Config.hit_stop_time == Config.default_hit_stop_time ? Language.TLT("Default") : Config.hit_stop_time + " " + Language.TLT("frames")) + " >", 15, -14, spacing: Config.spacing_small, textureName: selector.is_on(0, 6) ? "default small red" : "default small");
         //7
-        UI.DrawText(Language.GetText("Language"), -185, -4, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 7) ? "default small hover" : "default small");
+        UI.DrawText(Language.TLT("Language"), -185, -4, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 7) ? "default small hover" : "default small");
         UI.DrawText("< " + Language.Supported[Config.Language] + " >", 15, -4, spacing: Config.spacing_small, textureName: selector.is_on(0, 7) ? "default small red" : "default small");
         //8
-        UI.DrawText(Language.GetText("Save and Exit"), -185, 16, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 8) ? "default small hover" : "default small");
+        UI.DrawText(Language.TLT("Save and Exit"), -185, 16, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 8) ? "default small hover" : "default small");
 
         if (Input.Key_down("B")) selector.pointer.Y = 8;
 
@@ -77,9 +77,9 @@ public class WGSettings : Widget {
                 }
                 break;
             case 4:
-                if (Input.Key_down("Left") && Config.round_length > 1) 
+                if ((Input.Key_down("Left") || (Input.Key_hold_for("Left", Config.hold_time) && UI.ForEach(Config.hold_clock - 5))) && Config.round_length > 1) 
                     Config.round_length -= 1;
-                else if (Input.Key_down("Right") && Config.round_length < 99) 
+                else if ((Input.Key_down("Right") || (Input.Key_hold_for("Right", Config.hold_time) && UI.ForEach(Config.hold_clock - 5))) && Config.round_length < 99) 
                     Config.round_length += 1;
                 break;
             case 5:

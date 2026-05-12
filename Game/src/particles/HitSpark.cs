@@ -22,9 +22,9 @@ public class Hitspark : Character {
         var a = this.animations;
         
         this.states = new Dictionary<string, State> {
-            {"Hit1", new State(F(a["Hit1"]), "Remove")},
-            {"Hit2", new State(F(a["Hit2"]), "Remove")},
-            {"Hit3", new State(F(a["Hit3"]), "Remove")},
+            {"HitLight", new State(F(a["HitLight"]), "Remove")},
+            {"HitMedium", new State(F(a["HitMedium"]), "Remove")},
+            {"HitHeavy", new State(F(a["HitHeavy"]), "Remove")},
             {"Parry", new State(F(a["Parry"]), "Remove")},
             {"Block", new State(F(a["Block"]), "Remove")},
         };

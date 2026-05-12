@@ -94,8 +94,8 @@ public abstract class Character : Object {
     public Vector2i life_points = new Vector2i(1000, 1000);
     public Vector2i dizzy_points = new Vector2i(500, 500);
     public Vector2i aura_points = new Vector2i(0, 100);
-    public Vector2f visual_position => new Vector2f(this.body.Position.X - 125, this.body.Position.Y - 250);
-    public Vector2f visual_center => new Vector2f(this.body.Position.X, this.body.Position.Y - 125);
+    public Vector2f visual_position => new Vector2f(this.body.position.X - 125, this.body.position.Y - 250);
+    public Vector2f visual_center => new Vector2f(this.body.position.X, this.body.position.Y - 125);
     public int jump_hight = 79;
     public int push_box_width = 25;
 
@@ -113,7 +113,7 @@ public abstract class Character : Object {
     public bool on_parry => this.state.on_parry;
     public bool on_block => this.state.on_block;
     public bool on_hit => this.state.on_hit;
-    public bool on_air => this.body.Position.Y < this.floor_line;
+    public bool on_air => this.body.position.Y < this.floor_line;
     public bool crounching => this.state.low;
 
     public bool can_parry => (not_acting_all && parring) || (not_acting_all && Input.Key_press("Left", input_window: this.state.air? Config.parry_window/2 : Config.parry_window, player: this.player_index, facing: this.facing));
@@ -167,8 +167,8 @@ public abstract class Character : Object {
         this.name = name;
         this.type = type;
         this.last_state = initialState;
-        base.body.Position.X = startX; 
-        base.body.Position.Y = startY;
+        base.body.position.X = startX; 
+        base.body.position.Y = startY;
         this.floor_line = startY;
         this.current_palette_color = this.palette != null ? this.palette.CopyToImage().GetPixel(new Vector2u(0, this.palette_index)) : Color.White;
         this.current_state = initialState;
@@ -199,7 +199,7 @@ public abstract class Character : Object {
         
         // Set current sprite
         var temp_sprite = this.GetCurrentSprite();
-        temp_sprite.Position = new Vector2f(this.body.Position.X - (temp_sprite.GetLocalBounds().Width / 2 * this.facing), this.body.Position.Y - temp_sprite.GetLocalBounds().Height);
+        temp_sprite.Position = new Vector2f(this.body.position.X - (temp_sprite.GetLocalBounds().Width / 2 * this.facing), this.body.position.Y - temp_sprite.GetLocalBounds().Height);
         temp_sprite.Scale = new Vector2f(this.facing, 1f);
 
         // Draw tracing
@@ -276,13 +276,13 @@ public abstract class Character : Object {
             // Draw debug info
             if (Config.debug) {
                 RectangleShape anchorY = new RectangleShape(new Vector2f(0, 10)) {
-                    Position = new Vector2f(this.body.Position.X, this.body.Position.Y - 60),
+                    Position = new Vector2f(this.body.position.X, this.body.position.Y - 60),
                     FillColor = SFML.Graphics.Color.Transparent,
                     OutlineColor = this.current_animation.on_last_frame ? Color.Red : Color.White, 
                     OutlineThickness = 1.0f
                 };
                 RectangleShape anchorX = new RectangleShape(new Vector2f(10, 0)) {
-                    Position = new Vector2f(this.body.Position.X - 5, this.body.Position.Y - 55),
+                    Position = new Vector2f(this.body.position.X - 5, this.body.position.Y - 55),
                     FillColor = SFML.Graphics.Color.Transparent,
                     OutlineColor = this.current_animation.on_last_frame ? Color.Red : Color.White, 
                     OutlineThickness = 1.0f 
@@ -291,10 +291,11 @@ public abstract class Character : Object {
                 Program.window.Draw(anchorX);
                 Program.window.Draw(anchorY);
 
-                UI.DrawText(this.current_logic_frame_index + "/" + this.current_animation.lenght, this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 145, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.DrawText(this.current_anim_frame_index.ToString(), this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 135, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.DrawText(this.current_state, this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 125, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.DrawText(this.state.not_busy ? "waiting" : "busy", this.body.Position.X - Camera.X, this.body.Position.Y - Camera.Y - 115, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                UI.DrawText(this.facing.ToString(), this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 155, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                UI.DrawText(this.current_logic_frame_index + "/" + this.current_animation.lenght, this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 145, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                UI.DrawText(this.current_anim_frame_index.ToString(), this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 135, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                UI.DrawText(this.current_state, this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 125, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                UI.DrawText(this.state.not_busy ? "waiting" : "busy", this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 115, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
             }
         }
     }
@@ -311,8 +312,8 @@ public abstract class Character : Object {
             this.ChangeState(this.state.post_state);
         }
 
-        this.body.Position.X += current_animation.GetCurrentFrame().delta_X * this.facing;
-        this.body.Position.Y += current_animation.GetCurrentFrame().delta_Y * this.facing;
+        this.body.position.X += current_animation.GetCurrentFrame().delta_X * this.facing;
+        this.body.position.Y += current_animation.GetCurrentFrame().delta_Y * this.facing;
     }
     public void Bot() {
         if (!this.BotEnabled || !this.behave) return;
@@ -328,7 +329,7 @@ public abstract class Character : Object {
             var enemy = Program.stage?.character_A.player_index == this.player_index ? Program.stage.character_B : Program.stage?.character_A;
 
             var AIstate = new FightState {
-                enemyDistance = Math.Abs(this.body.Position.X - enemy.body.Position.X) / Config.RenderWidth,
+                enemyDistance = Math.Abs(this.body.position.X - enemy.body.position.X) / Config.RenderWidth,
                 lastState = this.last_state,
                 enemyIsIdle = enemy.state.not_busy,
                 enemyIsAttacking = enemy.state.can_harm && !enemy.state.not_busy,
@@ -338,8 +339,8 @@ public abstract class Character : Object {
                 enemyIsOnHit = enemy.state.on_hit || enemy.state.on_parry,
                 enemyChangedSide = enemy.facing == this.facing,
                 enemyIsDead = enemy.life_points.X == 0,
-                enemyOnCorner = enemy.body.Position.X < (0.2f * Config.RenderWidth) || enemy.body.Position.X >= (Program.stage?.length - (0.2f * Config.RenderWidth)),
-                onCorner = this.body.Position.X < (0.2f * Config.RenderWidth) || this.body.Position.X >= (Program.stage?.length - (0.2f * Config.RenderWidth)) 
+                enemyOnCorner = enemy.body.position.X < (0.2f * Config.RenderWidth) || enemy.body.position.X >= (Program.stage?.length - (0.2f * Config.RenderWidth)),
+                onCorner = this.body.position.X < (0.2f * Config.RenderWidth) || this.body.position.X >= (Program.stage?.length - (0.2f * Config.RenderWidth)) 
             };
 
             // Atualiza o array de estados de luta
@@ -379,25 +380,22 @@ public abstract class Character : Object {
         return (this.not_acting_low || (this.state.on_block && this.state.low)) && Input.Key_hold("Left", player: this.player_index, facing: this.facing) && Input.Key_hold("Down", player: this.player_index);
     }
     public void Stun(Character enemy, int advantage, bool hit = true, bool airbone = false, bool sweep = false, bool force_crounch = false, bool force_stand = false, bool raw_value = false) {
-        if (hit || this.life_points.X == 0) { // Hit stun states
+        this.facing = this.GetFacingTo(enemy);
+        if (hit || this.life_points.X <= 0) { // Hit stun states
             if (sweep) {
                 this.ChangeState("Sweeped", reset: true);
                 return;
             } else if (airbone || (this.life_points.X <= 0 && !Program.stage.MustWait()) || (this.state.air && this.state.on_hit)) {
-                this.facing = -enemy.facing;
                 this.ChangeState("Airboned", reset: true);
                 if (this.life_points.X <= 0) this.SetVelocity(X: -Config.heavy_pushback, Y: 50);
                 return;
             } else if ((this.crounching && !force_stand) || force_crounch) {
-                this.facing = -enemy.facing;
                 this.ChangeState("OnHitLow", reset: true);
             } else {
-                this.facing = -enemy.facing;
                 this.ChangeState("OnHit", reset: true);
             }
 
         } else { // Block stun states
-            this.facing = -enemy.facing;
             if (this.crounching) this.ChangeState("OnBlockLow", reset: true);
             else this.ChangeState("OnBlock", reset: true);
         }
@@ -442,7 +440,7 @@ public abstract class Character : Object {
                             if (this.player_index == 1) stage.character_A.combo_counter += hit_type == Character.HIT ? 1 : 0; 
                             else stage.character_B.combo_counter += hit_type == Character.HIT ? 1 : 0;
 
-                            stage.PSHitspark(hit_type, boxA.getRealB(this).X - (boxA.width * 1/3), (boxA.getRealA(this).Y + boxA.getRealB(this).Y) / 2 + 125, this.facing);
+                            stage.PSHitspark(hit_type, boxA.getRealB(this).X - (boxA.width * 1/3), (boxA.getRealA(this).Y + boxA.getRealB(this).Y) / 2 + 125, this.facing, weight: this.state.hitstop);
                         }
                     }
                 }
@@ -452,11 +450,11 @@ public abstract class Character : Object {
 
     // Static Methods 
     public static void Push(Character target, Character self, float X_amount, float Y_amount = 0, bool airbone = false, bool force_push = false) {
-        if ((target.body.Position.X <= Camera.X - Config.corner_limit || target.body.Position.X >= Camera.X + Config.corner_limit) && !force_push) {
-            self.SetVelocity(X: self.facing * target.facing * X_amount, keep_Y: true);
-            target.SetVelocity(X: self.facing * target.facing * X_amount, Y: (target.on_air || airbone) ? Y_amount : 0);
+        if ((target.body.position.X <= Camera.X - Config.corner_limit || target.body.position.X >= Camera.X + Config.corner_limit) && !force_push) {
+            self.SetVelocity(X: -X_amount, keep_Y: true);
+            target.SetVelocity(X: -X_amount, Y: (target.on_air || airbone) ? Y_amount : 0);
         } else {
-            target.SetVelocity(X: self.facing * target.facing * X_amount, Y: (target.on_air || airbone) ? Y_amount : 0);
+            target.SetVelocity(X: -X_amount, Y: (target.on_air || airbone) ? Y_amount : 0);
         }
     }
     public static void Damage(Character target, Character self, int damage, int dizzy_damage) {
@@ -470,7 +468,7 @@ public abstract class Character : Object {
     public static bool CheckAuraPoints(Character target, int amount) {
         return target.aura_points.X >= amount;
     }
-    public static void UseSuperPoints(Character target, int amount) {
+    public static void UseAuraPoints(Character target, int amount) {
         target.aura_points.X = (int) Math.Max(0, target.aura_points.X - amount);
     }
     
@@ -515,8 +513,8 @@ public abstract class Character : Object {
         string[] sound = sound_string.Split(' ');
         if (sounds.TryGetValue(sound[0], out SoundBuffer buffer)) {
             var temp_sound = new Sound(buffer) {
-                Volume = Accessibility.distance_cue ? Config.Character_Volume * 0.5f : Config.Character_Volume,
-                Pan = follow_player && Accessibility.spacialized_audio? (this.body.Position.X - Camera.X) / (Config.RenderWidth*0.5f) : panning,
+                Volume = Accessibility.distance_cue ? Config.Character_Volume * 0.7f : Config.Character_Volume,
+                Pan = follow_player && Accessibility.spacialized_audio? (this.body.position.X - Camera.X) / (Config.RenderWidth*0.5f) : panning,
                 Pitch = sound_string.Contains("--RP") ? 1 + (float) AI.rand.Next(-1, 2) / 10 : 1,
             };
             temp_sound.Play();
@@ -530,8 +528,8 @@ public abstract class Character : Object {
         this.life_points.X = this.life_points.Y;
         this.dizzy_points.X = total_reset ? dizzy_points.Y : this.dizzy_points.X;
         this.aura_points.X = total_reset ? 0 : this.aura_points.X;
-        this.body.Position.X = start_point;
-        this.body.Position.Y = this.floor_line;
+        this.body.position.X = start_point;
+        this.body.position.Y = this.floor_line;
         this.body.SetVelocity(this, 0, 0, raw_set: true);
         this.facing = facing;
     }
@@ -548,7 +546,8 @@ public abstract class Character : Object {
         Program.highContrastShader.SetUniform("fillColor", new Vector3f(fillColor.R, fillColor.G, fillColor.B));
         return new RenderStates(Program.highContrastShader);
     }
-    
+    public int GetFacingTo(Character target) => target.body.position.X > this.body.position.X ? 1 : -1;
+
     // Loads
     public void LoadTextures() {
         Data.LoadTexturesDat(Path.Combine(this.folder_path, "textures.dat"), this.textures);

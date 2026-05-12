@@ -165,14 +165,14 @@ public class Ken : Character {
 
         // Super
         if (Input.Key_sequence("Down Down RB", 10, player: this.player_index, facing: this.facing) && !this.on_air && (this.not_acting || this.not_acting_low || (this.has_hit && (this.current_state == "CloseMP" || this.current_state.Contains("Shory") || this.current_state == "LowLightK"))) && Character.CheckAuraPoints(this, 100)) {
-            Character.UseSuperPoints(this, 100);
+            Character.UseAuraPoints(this, 100);
             this.ChangeState("SA1");
             this.stage.StopFor(16);
             this.hitstop_counter = 0;
             this.SA_flag = false;
 
         } else if (this.current_state == "SA1" && this.current_anim_frame_index == 3 && this.has_frame_change) {
-            this.stage.PSSuper("SALighting", this.body.Position.X, this.body.Position.Y, X_offset: 50, Y_offset: -120, facing: this.facing);
+            this.stage.PSSuper("SALighting", this.body.position.X, this.body.position.Y, X_offset: 50, Y_offset: -120, facing: this.facing);
             this.stage.StopFor(50);
 
         } else if (this.current_state == "SA1" && this.current_animation.on_last_frame && this.SA_flag) {
@@ -200,32 +200,32 @@ public class Ken : Character {
                 Y: 80);
         } 
         if (Input.Key_sequence("Right Down Right RB", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || this.has_hit && (this.current_state == "LowMediumP" || this.current_state == "LowLightK")) && Character.CheckAuraPoints(this, 50)) {
-            Character.UseSuperPoints(this, 50);
+            Character.UseAuraPoints(this, 50);
             this.ChangeState("ShoryEX");
         } else if (this.current_state == "ShoryEX" && this.current_anim_frame_index == 3 && this.has_frame_change) {
             this.AddVelocity(
                 X: 6f, 
                 Y: 100);
         } 
-        if (this.current_state.Contains("Shory") && this.state.animation.on_last_frame) this.body.Velocity.X = 0;
+        if (this.current_state.Contains("Shory") && this.state.animation.on_last_frame) this.body.velocity.X = 0;
 
         // Haduken
         if (this.current_fireball != null && this.current_fireball.remove) this.current_fireball = null;
         if (this.current_fireball == null && Input.Key_sequence("Down Right C", 10, player: this.player_index, facing: this.facing) && ((this.not_acting || this.not_acting_low) || (this.has_hit && (this.current_state == "MediumP" || this.current_state == "LightP" || this.current_state == "LowLightK")))) {
             this.ChangeState("LightHaduken");
         } else if (this.current_state == "LightHaduken" && this.current_anim_frame_index == 3) {
-            this.spawnFireball("Ken1", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, X_offset: 25);
+            this.spawnFireball("Ken1", this.body.position.X, this.body.position.Y - 5, this.facing, this.player_index, X_offset: 25);
         } 
         if (this.current_fireball == null && Input.Key_sequence("Down Right D", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low)) {
             this.ChangeState("HeavyHaduken");
         } else if (this.current_state == "HeavyHaduken" && this.current_anim_frame_index == 4) {
-            this.spawnFireball("Ken2", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, X_offset: 25);
+            this.spawnFireball("Ken2", this.body.position.X, this.body.position.Y - 5, this.facing, this.player_index, X_offset: 25);
         }
         if (this.current_fireball == null && Input.Key_sequence("Down Right RB", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low) && Character.CheckAuraPoints(this, 50)) {
-            Character.UseSuperPoints(this, 50);
+            Character.UseAuraPoints(this, 50);
             this.ChangeState("HadukenEX");
         } else if (this.current_state == "HadukenEX" && this.current_anim_frame_index == 4) {
-            this.spawnFireball("Ken3", this.body.Position.X, this.body.Position.Y - 5, this.facing, this.player_index, life_points: 2, X_offset: 25);
+            this.spawnFireball("Ken3", this.body.position.X, this.body.position.Y - 5, this.facing, this.player_index, life_points: 2, X_offset: 25);
             this.PlaySound("EX");
         }
 
@@ -243,7 +243,7 @@ public class Ken : Character {
             this.AddVelocity(Y: 0.55f, raw_set: true);
 
         } else if (Input.Key_sequence("Down Left RB", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || (this.has_hit && (this.current_state == "LowLightK" || this.current_state == "CloseMP"))) && Character.CheckAuraPoints(this, 50)) {
-            Character.UseSuperPoints(this, 50);
+            Character.UseAuraPoints(this, 50);
             this.ChangeState("TatsoEX");
             this.SetVelocity(Y: 5);
         } else if (this.current_state == "TatsoEX") {
@@ -255,7 +255,7 @@ public class Ken : Character {
             this.ChangeState("AirTatso");
             this.PlaySound("tatso");
         } else if (Input.Key_sequence("Down Left RB", 10, player: this.player_index, facing: this.facing) && this.not_acting_air && Character.CheckAuraPoints(this, 50)) {
-            Character.UseSuperPoints(this, 50);
+            Character.UseAuraPoints(this, 50);
             this.ChangeState("AirTatsoEX");
             this.PlaySound("EX");
             this.PlaySound("tatso");            
@@ -436,7 +436,7 @@ public class Ken : Character {
                 } else {
                     hit = Character.HIT;
                     Character.Damage(target: target, self: this, 110, 200);
-                    target.Stun(target, 0, sweep: true);
+                    target.Stun(this, 0, sweep: true);
                 }
                 Character.Push(target: target, self: this, Config.medium_pushback);
                 Character.AddAuraPoints(target, this, hit, self_amount: 16);
@@ -666,13 +666,13 @@ public class Ken : Character {
                 break;
                 
             case "Shungoku":
-                this.stage.PSSuper("Shungoku", target.body.Position.X, this.body.Position.Y, Y_offset: -125, facing: this.facing);
+                this.stage.PSSuper("Shungoku", target.body.position.X, this.body.position.Y, Y_offset: -125, facing: this.facing);
                 this.stage.PSSuper("Shungoku_text", Camera.X, Camera.Y);
                 this.stage.StopFor(40 * 4); // 40 frames a 15 fps
 
                 this.ChangeState("Shungoku_End");
                 this.SetVelocity();
-                this.body.Position.X = target.body.Position.X - 100 * this.facing;
+                this.body.position.X = target.body.position.X - 100 * this.facing;
 
                 target.SetVelocity();
                 target.ChangeState("OnGround");
@@ -695,13 +695,11 @@ public class Ken : Character {
                 this.BOT.EnqueueMove("Up Right", 5);
             } else if (choise <= 2) { 
                 this.BOT.EnqueueMove("Left", 10);
+                this.BOT.EnqueueMove("Right", 15);
             } else if (choise <= 5) {
-                this.BOT.EnqueueMove("Left", 20);
                 this.BOT.EnqueueMove("Right", 10);
-            } else if (choise == 10) {
-                this.BOT.EnqueueMove("Right *", 2);
-                this.BOT.EnqueueMove("*", 2);
-                this.BOT.EnqueueMove("Right *", 2);
+            } else if (choise <= 8) {
+                this.BOT.EnqueueMove("Down", 20);
             } else
                 this.BOT.EnqueueMove("", 5);
 
@@ -729,6 +727,10 @@ public class Ken : Character {
                 this.BOT.EnqueueMove("Left", 10);
                 this.BOT.EnqueueMove("Right", 30);
 
+            } else if (choise == 11) {
+                this.BOT.EnqueueMove("Right *", 2);
+                this.BOT.EnqueueMove("*", 2);
+                this.BOT.EnqueueMove("Right *", 2);
             } else 
                 this.BOT.EnqueueMove("", 10);
 

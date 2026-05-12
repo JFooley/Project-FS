@@ -36,8 +36,9 @@ public class Selector : Widget {
             this.pointer.X = this.pointer.X >= options[this.pointer.Y] - 1 ? 0 : pointer.X + 1;
         }
 
-        if (has_change && Accessibility.navigation_cue) {
-            this.change_sound.Play();
+        if (has_change) {
+            if (Accessibility.navigation_cue) this.change_sound.Play();
+            // if (Accessibility.TTS) ;
         }
     }
 

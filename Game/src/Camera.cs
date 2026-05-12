@@ -9,7 +9,7 @@ public class Camera {
 
     private static int X_stage_limits = 0;
     private static int Y_stage_limits = 0;
-    public static Vector2f target => (Camera.CharA.body.Position + Camera.CharB.body.Position) / 2;
+    public static Vector2f target => (Camera.CharA.body.position + Camera.CharB.body.position) / 2;
     public static int camera_follow_threshold = 50;
 
     // Camera Position

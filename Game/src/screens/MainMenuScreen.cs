@@ -23,7 +23,7 @@ public class WGMainMenu : Widget {
         
         // Buttons
         UI.DrawText("Q", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
-        if (UI.DrawButton(Language.GetText("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
+        if (UI.DrawButton(Language.TLT("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
             Program.ChangeState(Program.StartScreen);
             selector.pointer.X = 0;
         }
@@ -32,7 +32,7 @@ public class WGMainMenu : Widget {
         selector.Update();
 
         // Do option
-        if (UI.DrawButton(Language.GetText(main_menu.ElementAt(selector.pointer.X).Key), 0, -95, spacing: Config.spacing_medium, click: Input.Key_hold("A"), action: Input.Key_up("A"), click_font: "default medium click", hover_font: "default medium white")) {
+        if (UI.DrawButton(Language.TLT(main_menu.ElementAt(selector.pointer.X).Key), 0, -95, spacing: Config.spacing_medium, click: Input.Key_hold("A"), action: Input.Key_up("A"), click_font: "default medium click", hover_font: "default medium white")) {
             Stage.AI_playerA = false;
             Stage.AI_playerB = false;
 

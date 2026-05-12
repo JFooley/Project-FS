@@ -110,12 +110,12 @@ using SFML.System;
             // Verifique quem está à esquerda
             if (boxA.getRealA(charA).X < boxB.getRealA(charB).X) {
                 // A está à esquerda de B; mova-os para afastá-los até o limite da sobreposição
-                charA.body.Position.X -= overlapX / 2;
-                charB.body.Position.X += overlapX / 2;
+                charA.body.position.X -= overlapX / 2;
+                charB.body.position.X += overlapX / 2;
             } else {
                 // B está à esquerda de A; mova-os para afastá-los até o limite da sobreposição
-                charA.body.Position.X += overlapX / 2;
-                charB.body.Position.X -= overlapX / 2;
+                charA.body.position.X += overlapX / 2;
+                charB.body.position.X -= overlapX / 2;
             }
         }
 

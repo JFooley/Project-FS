@@ -35,7 +35,7 @@ public class Super : Character {
         
         // Render sprite
         Sprite temp_sprite = this.GetCurrentSprite();
-        temp_sprite.Position = new Vector2f(this.body.Position.X - (temp_sprite.GetLocalBounds().Width / 2 * this.facing), this.body.Position.Y - temp_sprite.GetLocalBounds().Height / 2);
+        temp_sprite.Position = new Vector2f(this.body.position.X - (temp_sprite.GetLocalBounds().Width / 2 * this.facing), this.body.position.Y - temp_sprite.GetLocalBounds().Height / 2);
         temp_sprite.Scale = new Vector2f(this.facing, 1f);
         Program.window.Draw(temp_sprite);
 

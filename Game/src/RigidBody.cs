@@ -1,82 +1,82 @@
 using SFML.System;
 
 public class RigidBody {
-    public Vector2f LastPosition;
-    public Vector2f Position;
-    public Vector2f Velocity;
-    public Vector2f Acceleration;
-    private float gravidade = Config.gravity;
-    private float atrito => gravidade * 0.5F;
+    public Vector2f last_position;
+    public Vector2f position;
+    public Vector2f velocity;
+    public Vector2f acceleration;
+    private float gravity = Config.gravity;
+    private float friction => gravity * 0.5F;
 
     public RigidBody(float X = 0, float Y = 0) {
-        this.Position = new Vector2f(X, Y);
+        this.position = new Vector2f(X, Y);
     }
 
     public void Update(Character player) {
-        this.LastPosition = Position;
+        this.last_position = position;
 
-        this.Velocity.X += this.Acceleration.X;
-        this.Velocity.Y += this.Acceleration.Y;
+        this.velocity.X += this.acceleration.X;
+        this.velocity.Y += this.acceleration.Y;
 
-        this.Position.X += this.Velocity.X;
-        this.Position.Y += this.Velocity.Y;
+        this.position.X += this.velocity.X;
+        this.position.Y += this.velocity.Y;
 
         this.CheckGravity(player);
         this.CheckFriction(player);
 
-        this.Acceleration.X = 0;
-        this.Acceleration.Y = 0;
+        this.acceleration.X = 0;
+        this.acceleration.Y = 0;
     }
 
     private void CheckGravity(Character player) {
-        if (this.Position.Y < player.floor_line && player.state.has_gravity) {
-            this.Velocity.Y += this.gravidade;
+        if (this.position.Y < player.floor_line && player.state.has_gravity) {
+            this.velocity.Y += this.gravity;
         } else {
-            this.Velocity.Y = 0;
-            this.Position.Y = player.floor_line;
+            this.velocity.Y = 0;
+            this.position.Y = player.floor_line;
         }
     }
 
     private void CheckFriction(Character player) {
-        if (this.Velocity.X != 0 && this.Position.Y == player.floor_line) {
-            this.Velocity.X = Math.Abs(this.Velocity.X) > this.atrito ? this.Velocity.X + (this.atrito * -Math.Sign(this.Velocity.X)) : 0;
+        if (this.velocity.X != 0 && this.position.Y == player.floor_line) {
+            this.velocity.X = Math.Abs(this.velocity.X) > this.friction ? this.velocity.X + (this.friction * -Math.Sign(this.velocity.X)) : 0;
         } 
     }
 
     public void SetVelocity(Character player, float X = 0, float Y = 0, bool raw_set = false, bool keep_X = false, bool keep_Y = false) {
         if (raw_set) {
-            this.Velocity.X = keep_X ? this.Velocity.X : X * player.facing;
-            this.Velocity.Y = keep_Y ? this.Velocity.Y : -Y;
+            this.velocity.X = keep_X ? this.velocity.X : X * player.facing;
+            this.velocity.Y = keep_Y ? this.velocity.Y : -Y;
         } else {
-            this.Velocity.X = keep_X ? this.Velocity.X : X * player.facing;
-            this.Velocity.Y = keep_Y ? this.Velocity.Y : -this.CalcularForcaY(Y);
+            this.velocity.X = keep_X ? this.velocity.X : X * player.facing;
+            this.velocity.Y = keep_Y ? this.velocity.Y : -this.CalcularForcaY(Y);
         }
     }
 
     public void AddVelocity(Character player, float X = 0, float Y = 0, bool raw_set = false) {
         if (raw_set) {
-            this.Velocity.X += X * player.facing;
-            this.Velocity.Y += -Y;
+            this.velocity.X += X * player.facing;
+            this.velocity.Y += -Y;
         } else {
-            this.Velocity.X += X * player.facing;
-            this.Velocity.Y += -this.CalcularForcaY(Y);
+            this.velocity.X += X * player.facing;
+            this.velocity.Y += -this.CalcularForcaY(Y);
         }
     }
 
     public void SetForce(Character player, float X = 0, float Y = 0, int T = 0, bool keep_X = false, bool keep_Y = false) {
-        this.Acceleration.X = keep_X ? this.Acceleration.X : X * player.facing;
-        this.Acceleration.Y = keep_Y ? this.Acceleration.Y : -Y;
+        this.acceleration.X = keep_X ? this.acceleration.X : X * player.facing;
+        this.acceleration.Y = keep_Y ? this.acceleration.Y : -Y;
     }
 
     public void AddForce(Character player, float X = 0, float Y = 0, int T = 0) {
-        this.Acceleration.X += X * player.facing;
-        this.Acceleration.Y += -Y;
+        this.acceleration.X += X * player.facing;
+        this.acceleration.Y += -Y;
     }
 
     private float CalcularForcaY(float deltaY) {
         if (deltaY <= 0) return 0;
 
-        float forcaY = (float)Math.Sqrt(2 * this.gravidade * deltaY);
+        float forcaY = (float)Math.Sqrt(2 * this.gravity * deltaY);
 
         return forcaY;
     }
