@@ -3,7 +3,6 @@ using SFML.System;
 using SFML.Audio;
 using UI_space;
 using System.Diagnostics;
-using Language_space;
 
 public class Stage {
     protected static Frame[][] F(params Frame[][] frames) => frames;
@@ -202,10 +201,10 @@ public class Stage {
         this.ResetRoundTime();
 
         // Show life points
-        UI.DrawText(this.character_A.life_points.X.ToString(), -18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
-        UI.DrawText(this.character_B.life_points.X.ToString(), 18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
-        UI.DrawText((this.character_A.life_points.Y - this.character_A.life_points.X).ToString(), -Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "left", textureName: "default small red");
-        UI.DrawText((this.character_B.life_points.Y - this.character_B.life_points.X).ToString(), Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small red");
+        UI.DrawText(S(this.character_A.life_points.X.ToString()), -18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
+        UI.DrawText(S(this.character_B.life_points.X.ToString()), 18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
+        UI.DrawText(S((this.character_A.life_points.Y - this.character_A.life_points.X).ToString()), -Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "left", textureName: "default small red");
+        UI.DrawText(S((this.character_B.life_points.Y - this.character_B.life_points.X).ToString()), Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small red");
 
         // Reset frames
         if (this.character_A.hitstop_counter == 0 && this.character_B.hitstop_counter == 0) {
@@ -437,6 +436,7 @@ public class Stage {
     public bool MustWait() {
         return this.character_A.state.drama_wait || this.character_B.state.drama_wait;
     }
+    public static string[] S(params string[] strings) => strings;
 
     // Round Time
     public void ResetRoundTime() {
@@ -545,7 +545,7 @@ public class Stage {
         else this.SetMusicVolume(volume_B);
     }
     
-    // Loads☺
+    // Loads
     public void LoadCharacters(Character charA, Character charB) {        
         this.SetChars(charA, charB);
     }

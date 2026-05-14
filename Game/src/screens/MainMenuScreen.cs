@@ -1,6 +1,5 @@
 using UI_space;
 using SFML.Graphics;
-using Language_space;
 
 public class WGMainMenu : Widget {
     private static List<KeyValuePair<string, Texture>> main_menu = new List<KeyValuePair<string, Texture>>() {
@@ -19,11 +18,11 @@ public class WGMainMenu : Widget {
         Program.window.Draw(new Sprite(main_menu.ElementAt(selector.pointer.X).Value));
         Program.window.Draw(frame);
         for (int i = 0; i < main_menu.Count; i++) 
-            UI.DrawText(i == selector.pointer.X ? ")" : "(", (i * 10) - ((main_menu.Count - 1) * 5), -80, textureName: "icons");
+            UI.DrawText(S(i == selector.pointer.X ? ")" : "("), (i * 10) - ((main_menu.Count - 1) * 5), -80, textureName: "icons");
         
         // Buttons
-        UI.DrawText("Q", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
-        if (UI.DrawButton(Language.TLT("Return"), 182, 67, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
+        UI.DrawText(S("Q"), 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
+        if (UI.DrawButton(S("Return"), 182, 67, tts: false, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
             Program.ChangeState(Program.StartScreen);
             selector.pointer.X = 0;
         }
@@ -32,7 +31,7 @@ public class WGMainMenu : Widget {
         selector.Update();
 
         // Do option
-        if (UI.DrawButton(Language.TLT(main_menu.ElementAt(selector.pointer.X).Key), 0, -95, spacing: Config.spacing_medium, click: Input.Key_hold("A"), action: Input.Key_up("A"), click_font: "default medium click", hover_font: "default medium white")) {
+        if (UI.DrawButton(S(main_menu.ElementAt(selector.pointer.X).Key), 0, -95, spacing: Config.spacing_medium, click: Input.Key_hold("A"), action: Input.Key_up("A"), click_font: "default medium click", hover_font: "default medium white")) {
             Stage.AI_playerA = false;
             Stage.AI_playerB = false;
 

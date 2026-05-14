@@ -1,4 +1,3 @@
-using Language_space;
 using UI_space;
 using SFML.Graphics;
 
@@ -15,8 +14,8 @@ public class WGControls : Widget {
         Program.window.Draw(bg);
         Program.window.Draw(frame);
 
-        UI.DrawText("Q", 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
-        if (UI.DrawButton(Language.TLT("Return"), 182, 67, alignment: "right", action: Input.Key_up("B"), click: Input.Key_hold("B"), hover_font: "default small")) {
+        UI.DrawText(S("Q"), 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
+        if (UI.DrawButton(S("Return"), 182, 67, tts: false, alignment: "right", action: Input.Key_up("B"), click: Input.Key_hold("B"), hover_font: "default small")) {
             if (Program.previous_state == Program.Battle) Camera.LockCamera();
             Program.ChangeState(Program.previous_state);
         }

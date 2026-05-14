@@ -5,6 +5,8 @@ using SFML.Audio;
 public abstract class Widget {
     public Widget() {}
     public virtual void Render() {}
+
+    public static string[] S(params string[] strings) => strings;
 }
 
 public class Selector : Widget {

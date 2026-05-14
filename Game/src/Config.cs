@@ -25,7 +25,7 @@ public static class Config {
     // Audio
     public static float _main_volume = 100f;
     public static float _character_volume = 100f;
-    public static float _music_volume = 80f;
+    public static float _music_volume = 50f;
     public static float _effect_volume = 100f;
 
     public static float Main_Volume

@@ -1,6 +1,5 @@
 using UI_space;
 using SFML.Graphics;
-using Language_space;
 using SFML.Window;
 using SFML.System;
 
@@ -13,33 +12,25 @@ public class WGSettings : Widget {
         Camera.UnlockCamera();
         Program.window.Draw(settings_bg);
 
-        UI.DrawText(Language.TLT("Settings"), -80, -107, spacing: Config.spacing_medium);
+        UI.DrawText(S("Settings"), -80, -107, TTS: true, TTS_id: "Settings", priority: true, spacing: Config.spacing_medium);
         //0
-        UI.DrawText(Language.TLT("Main volume"), -185, -74, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 0) ? "default small hover" : "default small");
-        UI.DrawText("< " + Config.Main_Volume.ToString() + "% >", 15, -74, spacing: Config.spacing_small, textureName: selector.is_on(0, 0) ? "default small red" : "default small");
+        UI.DrawButton(S("Main volume", ": < ", Config.Main_Volume.ToString(), "% >"), -185, -74, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 0), hover_font: "default small hover", font: "default small");
         //1
-        UI.DrawText(Language.TLT("Music volume"), -185, -64, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 1) ? "default small hover" : "default small");
-        UI.DrawText("< " + Config._music_volume.ToString() + "% >", 15, -64, spacing: Config.spacing_small, textureName: selector.is_on(0, 1) ? "default small red" : "default small");
+        UI.DrawButton(S("Music volume", ": < ", Config._music_volume.ToString(), "% >"), -185, -64, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 1), hover_font: "default small hover", font: "default small");
         //2
-        UI.DrawText(Language.TLT("V-sync"), -185, -54, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 2) ? "default small hover" : "default small");
-        UI.DrawText("< " + Language.TLT(Config.Vsync ? "on": "off") + " >", 15, -54, spacing: Config.spacing_small, textureName: selector.is_on(0, 2) ? "default small red" : "default small");
+        UI.DrawButton(S("V-sync", ": < ", Config.Vsync ? "on": "off", " >"), -185, -54, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 2), hover_font: "default small hover", font: "default small");
         //3
-        UI.DrawText(Language.TLT("Window mode"), -185, -44, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 3) ? "default small hover" : "default small");
-        UI.DrawText("< " + Language.TLT(Config.Fullscreen ? "Fullscreen" : "Windowed") + " >", 15, -44, spacing: Config.spacing_small, textureName: selector.is_on(0, 3) ? "default small red" : "default small");
+        UI.DrawButton(S("Window mode", ": < ", Config.Fullscreen ? "Fullscreen" : "Windowed", " >"), -185, -44, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 3), hover_font: "default small hover", font: "default small");
         //4
-        UI.DrawText(Language.TLT("Round Length"), -185, -34, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 4) ? "default small hover" : "default small");
-        UI.DrawText("< " + (Config.round_length == Config.default_round_length ? Language.TLT("Default", " (" + Config.default_round_length, "s)") : Config.round_length + "s") + " >", 15, -34, spacing: Config.spacing_small, textureName: selector.is_on(0, 4) ? "default small red" : "default small");
+        UI.DrawButton(S("Round Length", ": < ", Config.round_length == Config.default_round_length ? "Default" : "", " " + Config.round_length + "s", " >"), -185, -34, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 4), hover_font: "default small hover", font: "default small");
         //5
-        UI.DrawText(Language.TLT("Match"), -185, -24, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 5) ? "default small hover" : "default small");
-        UI.DrawText("< " + (Config.max_rounds == Config.default_max_rounds ? Language.TLT("Default", " (FT" + Config.default_max_rounds + ")") : Language.TLT("First to", " " + Config.max_rounds.ToString()) + " >"), 15, -24, spacing: Config.spacing_small, textureName: selector.is_on(0, 5) ? "default small red" : "default small");
+        UI.DrawButton(S("Match rounds", ": < ", Config.max_rounds == Config.default_max_rounds ? "Default" : Config.max_rounds.ToString(), " >"), -185, -24, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 5), hover_font: "default small hover", font: "default small");
         //6
-        UI.DrawText(Language.TLT("Hitstop"), -185, -14, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 6) ? "default small hover" : "default small");
-        UI.DrawText("< " + (Config.hit_stop_time == Config.default_hit_stop_time ? Language.TLT("Default") : Config.hit_stop_time + " " + Language.TLT("frames")) + " >", 15, -14, spacing: Config.spacing_small, textureName: selector.is_on(0, 6) ? "default small red" : "default small");
+        UI.DrawButton(S("Hitstop frames", ": < ", Config.hit_stop_time == Config.default_hit_stop_time ? "Default" : Config.hit_stop_time.ToString(), " >"), -185, -14, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 6), hover_font: "default small hover", font: "default small");
         //7
-        UI.DrawText(Language.TLT("Language"), -185, -4, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 7) ? "default small hover" : "default small");
-        UI.DrawText("< " + Language.Supported[Config.Language] + " >", 15, -4, spacing: Config.spacing_small, textureName: selector.is_on(0, 7) ? "default small red" : "default small");
+        UI.DrawButton(S("Language", " < ", Language.Supported[Config.Language], " >"), -185, -4, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 7), hover_font: "default small hover", font: "default small");
         //8
-        UI.DrawText(Language.TLT("Save and Exit"), -185, 16, alignment: "left", spacing: Config.spacing_small, textureName: selector.is_on(0, 8) ? "default small hover" : "default small");
+        UI.DrawButton(S("Save and Exit"), -185, 16, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 8), hover_font: "default small hover", font: "default small");
 
         if (Input.Key_down("B")) selector.pointer.Y = 8;
 

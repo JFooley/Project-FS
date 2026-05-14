@@ -694,15 +694,12 @@ public class Ken : Character {
             if (choise == 0 && f_state.onCorner) { 
                 this.BOT.EnqueueMove("Up Right", 5);
             } else if (choise <= 2) { 
-                this.BOT.EnqueueMove("Left", 10);
-                this.BOT.EnqueueMove("Right", 15);
+                this.BOT.EnqueueMove("Left", 5);
             } else if (choise <= 5) {
-                this.BOT.EnqueueMove("Right", 10);
+                this.BOT.EnqueueMove("Right", 20);
             } else if (choise <= 8) {
-                this.BOT.EnqueueMove("Down", 20);
-            } else
-                this.BOT.EnqueueMove("", 5);
-
+                this.BOT.EnqueueMove("Down", 30);
+            } 
         } else if (f_state.enemyDistance < 0.7f) {
             var choise = AI.rand.Next(0, 20);
             if (choise == 0 || choise == 20) {
@@ -731,19 +728,16 @@ public class Ken : Character {
                 this.BOT.EnqueueMove("Right *", 2);
                 this.BOT.EnqueueMove("*", 2);
                 this.BOT.EnqueueMove("Right *", 2);
-            } else 
-                this.BOT.EnqueueMove("", 10);
-
+            }
         } else {
             var choise = AI.rand.Next(0, 10);
             if (choise == 1) { 
-                this.BOT.EnqueueMove("Down", 20);
+                this.BOT.EnqueueMove("Down", 30);
             } else if (choise < 6) {
                 this.BOT.EnqueueMove("Right", 20);
-            } else 
-                this.BOT.EnqueueMove("", 60);
+            }
         } 
-
+        this.BOT.EnqueueMove("", AI.rand.Next(0, 10 * this.BOT.dificulty));
     }
     public override void SelectAction(FightState f_state) {
         if (f_state.enemyIsDead) return;
@@ -969,7 +963,7 @@ public class Ken : Character {
                 this.BOT.EnqueueAction("", AI.rand.Next(10, 30)); // Nothing
         }
     
-        this.BOT.EnqueueAction("", AI.rand.Next(5, 20));
+        this.BOT.EnqueueAction("", AI.rand.Next(0, 20 + 10 * this.BOT.dificulty));
     }
 
     // Other

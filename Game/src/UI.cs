@@ -1,5 +1,4 @@
 
-using Language_space;
 using SFML.Audio;
 using SFML.Graphics;
 using SFML.System;
@@ -27,14 +26,14 @@ namespace UI_space {
         public static SFML.Graphics.Color bar_stun = new SFML.Graphics.Color(242, 65, 12);
 
         // visuals
-        private static Sprite hud;
+        private static Sprite? hud;
         private static string superBarMsg = "max aura";
         private static int last_frame_round_time = 0;
 
         // Sounds
-        private static Sound[] button_sounds;
-        private static Sound time_tick_sound;
-        private static Sound[] aura_sounds;
+        private static Sound[]? button_sounds;
+        private static Sound? time_tick_sound;
+        private static Sound[]? aura_sounds;
 
         // Control
         private static int last_aura_A = 0;
@@ -81,10 +80,14 @@ namespace UI_space {
         // Draws
         public static void ShowFramerate(string textureName) {
             UI.elapsed = UI.frame_counter % 60 == 0 ? (int) (1 / Program.last_frame_time) : UI.elapsed;
-            UI.DrawText(UI.elapsed.ToString() + " - " + Program.last_frame_time.ToString("F5"), 0, 82, spacing: Config.spacing_small, textureName: textureName);
+            UI.DrawText(new[] {UI.elapsed.ToString() + " - " + Program.last_frame_time.ToString("F5")}, 0, 82, spacing: Config.spacing_small, textureName: textureName);
         }
-        public static void DrawText(string text, float X, float Y, float spacing = 0, string alignment = "center", bool absolutePosition = false, string textureName = "default medium") {
+        public static void DrawText(string[] raw_text, float X, float Y, float spacing = 0, string alignment = "center", bool absolutePosition = false, string textureName = "default medium", string TTS_id = "", bool TTS = false, bool priority = false) {           
             if (!BitmapFont.textures.TryGetValue(textureName, out var texture)) return;
+            if (raw_text.Length == 0) return;
+
+            string text = Language.Translate(raw_text);
+            if (TTS) Accessibility.Speak(TTS_id + text, priority, raw_text);
 
             float totalWidth = text.Length > 0 ? text.Length * (BitmapFont.CellSize + spacing) - spacing : 0;
             float offset_X = X;
@@ -204,17 +207,17 @@ namespace UI_space {
             
             Program.window.Draw(barSprite, renderStates);
         }
-        public static bool DrawButton(string text, float pos_X, float pos_Y, bool action = false, bool hover = true, bool click = false, float spacing = Config.spacing_small, string alignment = "center", bool absolutePosition = false, int button_sound = 1, string font = "default small white", string hover_font = "default small hover", string click_font = "default small click") {
+        public static bool DrawButton(string[] text, float pos_X, float pos_Y, bool action = false, bool hover = true, bool click = false, float spacing = Config.spacing_small, string alignment = "center", bool absolutePosition = false, int button_sound = 1, string font = "default small white", string hover_font = "default small hover", string click_font = "default small click", bool tts = true, string id = "", bool priority = false) {
             if (click && hover) {
-                UI.DrawText(text, pos_X, pos_Y, spacing: spacing, alignment: alignment, absolutePosition: absolutePosition, textureName: click_font);
+                UI.DrawText(text, pos_X, pos_Y, TTS: tts, TTS_id: id, priority: priority, spacing: spacing, alignment: alignment, absolutePosition: absolutePosition, textureName: click_font);
             } else if (hover) {
-                UI.DrawText(text, pos_X, pos_Y, spacing: spacing, alignment: alignment, absolutePosition: absolutePosition, textureName: hover_font);
+                UI.DrawText(text, pos_X, pos_Y, TTS: tts, TTS_id: id, priority: priority, spacing: spacing, alignment: alignment, absolutePosition: absolutePosition, textureName: hover_font);
             } else {
                 UI.DrawText(text, pos_X, pos_Y, spacing: spacing, alignment: alignment, absolutePosition: absolutePosition, textureName: font);
             }
 
             if (action && hover) {
-                if (Accessibility.navigation_cue) button_sounds[button_sound].Play();
+                if (Accessibility.navigation_cue) button_sounds?[button_sound].Play();
                 return true;
             } else {
                 return false;
@@ -224,7 +227,7 @@ namespace UI_space {
         // Battle UI
         public static void DrawBattleUI(Stage stage) {
             // Draw hud
-            hud.Position = new Vector2f(Camera.X - 192, Camera.Y - 108);
+            if (hud != null) hud.Position = new Vector2f(Camera.X - 192, Camera.Y - 108);
             Program.window.Draw(hud);
 
             // Lifebar A
@@ -250,11 +253,11 @@ namespace UI_space {
             var aura_color_A = stage.character_A.aura_points.X >= stage.character_A.aura_points.Y/2 && !(full_A && UI.blink10Hz) ? UI.bar_super_full : UI.bar_super;
             UI.DrawBar(aura_bar_X, aura_bar_Y, superA, 117, "ui:aurabar", alignment: "left", mirrored: false, color: aura_color_A, grow_inverted: false);
             
-            if (stage.character_A.aura_points.X == stage.character_A.aura_points.Y && UI.blink2Hz) UI.DrawText(UI.superBarMsg, -193, 73, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
+            if (stage.character_A.aura_points.X == stage.character_A.aura_points.Y && UI.blink2Hz) UI.DrawText(new[] {UI.superBarMsg}, -193, 73, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
             
             if (last_aura_A != stage.character_A.aura_points.X && stage.character_A.aura_points.X >= stage.character_A.aura_points.Y/2) {
-                if (stage.character_A.aura_points.X == stage.character_A.aura_points.Y) UI.aura_sounds[0].Play();
-                else if (last_aura_A < stage.character_A.aura_points.Y/2) UI.aura_sounds[1].Play();
+                if (stage.character_A.aura_points.X == stage.character_A.aura_points.Y) UI.aura_sounds?[0].Play();
+                else if (last_aura_A < stage.character_A.aura_points.Y/2) UI.aura_sounds?[1].Play();
             }
             last_aura_A = stage.character_A.aura_points.X;
 
@@ -265,52 +268,42 @@ namespace UI_space {
             var aura_color_B = stage.character_B.aura_points.X >= stage.character_B.aura_points.Y/2 && !(full_B && UI.blink10Hz) ? UI.bar_super_full : UI.bar_super;
             UI.DrawBar(-aura_bar_X, aura_bar_Y, superB, 117, "ui:aurabar", alignment: "right", mirrored: true, color: aura_color_B, grow_inverted: false);
             
-            if (stage.character_B.aura_points.X == stage.character_B.aura_points.Y && UI.blink2Hz) UI.DrawText(UI.superBarMsg, 193, 73, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
+            if (stage.character_B.aura_points.X == stage.character_B.aura_points.Y && UI.blink2Hz) UI.DrawText(new[] {UI.superBarMsg}, 193, 73, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
             
             if (last_aura_B != stage.character_B.aura_points.X && stage.character_B.aura_points.X >= stage.character_B.aura_points.Y/2) {
-                if (stage.character_B.aura_points.X == stage.character_B.aura_points.Y) UI.aura_sounds[0].Play();
-                else if (last_aura_B < stage.character_B.aura_points.Y/2) UI.aura_sounds[1].Play();
+                if (stage.character_B.aura_points.X == stage.character_B.aura_points.Y) UI.aura_sounds?[0].Play();
+                else if (last_aura_B < stage.character_B.aura_points.Y/2) UI.aura_sounds?[1].Play();
             }
             last_aura_B = stage.character_B.aura_points.X;
-
-            // // Stun bar A
-            // var stunA_scale = ( stage.character_A.dizzy_points.Y - stage.character_A.dizzy_points.X) * 150 / stage.character_A.dizzy_points.Y;
-            // var stunA = Math.Max(Math.Min(stunA_scale, 150), 0);
-            // UI.DrawBar(stun_bar_X, stun_bar_Y, stunA, 150, "ui:stunbar", alignment: "left", mirrored: false, color: bar_stun, grow_inverted: true);
-
-            // // Stun bar B
-            // var stunB_scale = ( stage.character_B.dizzy_points.Y - stage.character_B.dizzy_points.X) * 150 / stage.character_B.dizzy_points.Y;
-            // var stunB = Math.Max(Math.Min(stunB_scale, 150), 0);
-            // UI.DrawBar(-stun_bar_X, stun_bar_Y, stunB, 150, "ui:stunbar", alignment: "right", mirrored: true, color: bar_stun, grow_inverted: true);
             
             // Names
-            UI.DrawText(stage.character_A.name, -181, -93, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
-            UI.DrawText(stage.character_B.name, 181, -93, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
+            UI.DrawText(new[] {stage.character_A.name}, -181, -93, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
+            UI.DrawText(new[] {stage.character_B.name}, 181, -93, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
 
             UI.DrawBar(-177, -81, 1, 1, "ui:croma", color: stage.character_A.current_palette_color, alignment: "left", mirrored: false);
             UI.DrawBar(177, -81, 1, 1, "ui:croma", color: stage.character_B.current_palette_color, alignment: "right", mirrored: true);
 
-            UI.DrawText(Language.TLT((stage.character_A.AIEnabled && stage.character_A.BotEnabled) ? "computer" : "player 1"), -Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
-            UI.DrawText(Language.TLT((stage.character_B.AIEnabled && stage.character_B.BotEnabled) ? "computer" : "player 2"), Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
+            UI.DrawText(new[] {(stage.character_A.AIEnabled && stage.character_A.BotEnabled) ? "computer" : "player 1"}, -Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
+            UI.DrawText(new[] {(stage.character_B.AIEnabled && stage.character_B.BotEnabled) ? "computer" : "player 2"}, Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
 
             // Combo text
             if (stage.character_A.combo_counter > 1) {
-                UI.DrawText(Language.TLT("combo"), -190, -80, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
-                UI.DrawText(stage.character_A.combo_counter.ToString(), -135, -70, spacing: Config.spacing_medium, alignment: "right", textureName: "default medium white");
+                UI.DrawText(new[] {"combo"}, -190, -80, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
+                UI.DrawText(new[] {stage.character_A.combo_counter.ToString()}, -135, -70, spacing: Config.spacing_medium, alignment: "right", textureName: "default medium white");
             }
             if (stage.character_B.combo_counter > 1) {
-                UI.DrawText(Language.TLT("combo"), 190, -80, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
-                UI.DrawText(stage.character_B.combo_counter.ToString(), 135, -70, spacing: Config.spacing_medium, alignment: "left", textureName: "default medium white");
+                UI.DrawText(new[] {"combo"}, 190, -80, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
+                UI.DrawText(new[] {stage.character_B.combo_counter.ToString()}, 135, -70, spacing: Config.spacing_medium, alignment: "left", textureName: "default medium white");
             }
 
             // Time
-            UI.DrawText("" + Math.Max(stage.round_time, 0), 0, -106, alignment: "center", spacing: -8, textureName: "1");
-            if ((stage.round_time == 30 || stage.round_time <= 10) && UI.last_frame_round_time != stage.round_time) UI.time_tick_sound.Play();
+            UI.DrawText(new[] {Math.Max(stage.round_time, 0).ToString()}, 0, -106, alignment: "center", spacing: -8, textureName: "1");
+            if ((stage.round_time == 30 || stage.round_time <= 10) && UI.last_frame_round_time != stage.round_time) UI.time_tick_sound?.Play();
             UI.last_frame_round_time = stage.round_time;
 
             // Round indicators
-            UI.DrawText(string.Concat(Enumerable.Repeat("-", Math.Max(Config.max_rounds - stage.rounds_A, 0))) + string.Concat(Enumerable.Repeat("*", stage.rounds_A)), -20, -91, spacing: -19, alignment: "right", textureName: "icons");
-            UI.DrawText(string.Concat(Enumerable.Repeat("*", stage.rounds_B)) + string.Concat(Enumerable.Repeat("-", Math.Max(Config.max_rounds - stage.rounds_B, 0))),  20, -91, spacing: -19, alignment: "left", textureName: "icons");
+            UI.DrawText(new[] {string.Concat(Enumerable.Repeat("-", Math.Max(Config.max_rounds - stage.rounds_A, 0))) + string.Concat(Enumerable.Repeat("*", stage.rounds_A))}, -20, -91, spacing: -19, alignment: "right", textureName: "icons");
+            UI.DrawText(new[] {string.Concat(Enumerable.Repeat("*", stage.rounds_B)) + string.Concat(Enumerable.Repeat("-", Math.Max(Config.max_rounds - stage.rounds_B, 0)))},  20, -91, spacing: -19, alignment: "left", textureName: "icons");
         }
     }
 

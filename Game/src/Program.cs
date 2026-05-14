@@ -3,7 +3,6 @@ using SFML.Window;
 using SFML.System;
 using UI_space;
 using System.Diagnostics;
-using Language_space;
 
 public static class Program {
     // Game States
@@ -123,6 +122,7 @@ public static class Program {
             Input.Update();
             UI.Update();
             Camera.Update();
+            Accessibility.UpdateTTS();
 
             switch (state) {
                 case Intro:

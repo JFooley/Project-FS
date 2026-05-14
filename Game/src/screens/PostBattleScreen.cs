@@ -1,4 +1,3 @@
-using Language_space;
 using UI_space;
 using SFML.Graphics;
 using SFML.System;
@@ -6,7 +5,7 @@ using SFML.System;
 public class WGPostBattle : Widget {
     Sprite stage_thumb = new Sprite(Program.stage?.thumb);
     Sprite fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = new Color(255, 255, 255, 230)};
-    string winner_text = "";
+    string[] winner_text;
     private Selector selector = new Selector(new List<int> {1, 1, 1, 1});
 
     public override void Render() {
@@ -17,32 +16,33 @@ public class WGPostBattle : Widget {
 
         if (Program.stage?.music != null) Program.stage.music.Volume = Math.Max(0, Program.stage.music.Volume - 0.5f);
 
-        if (WGBattle.match_winner == WGBattle.Drawn) winner_text = Language.TLT("Drawn");
-        else winner_text = Language.TLT("Player", " " + WGBattle.match_winner + " ", "Wins");
+        if (WGBattle.match_winner == WGBattle.Drawn) winner_text = S("Drawn");
+        else winner_text = S("Player" + " " + WGBattle.match_winner, " ", "Wins");
 
-        UI.DrawText(Program.playerA_wins.ToString(), -Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "left");
-        UI.DrawText(Program.playerB_wins.ToString(), Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "right");
-        UI.DrawText(winner_text, 0, -100, spacing: Config.spacing_medium, textureName: "default medium");
+        Accessibility.Speak("ME", true, "match end");
+        UI.DrawText(S(Program.playerA_wins.ToString()), -Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "left");
+        UI.DrawText(S(Program.playerB_wins.ToString()), Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "right");
+        UI.DrawText(winner_text, 0, -100, TTS: true, TTS_id: "PBWinner", priority: true, spacing: Config.spacing_medium, textureName: "default medium");
 
         // Do option
-        if (UI.DrawButton(Language.TLT("rematch"), 0, 0, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: selector.is_on(0,0), font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) {
+        if (UI.DrawButton(S("rematch"), 0, 0, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: selector.is_on(0,0), font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) {
             Camera.SetChars(Program.stage?.character_A, Program.stage?.character_B);
             Camera.SetLimits(Program.stage.length, Program.stage.height);
             Program.stage?.LockPlayers();
             Program.ChangeState(Program.Battle);
             selector.pointer = new Vector2i(0, 0);
 
-        } if (UI.DrawButton(Language.TLT("change stage"), 0, 15, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: selector.is_on(0,1), font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
+        } if (UI.DrawButton(S("change stage"), 0, 15, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: selector.is_on(0,1), font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
             Program.stage?.StopMusic();
             Program.ChangeState(Program.SelectStage);
             selector.pointer = new Vector2i(0, 0);
 
-        } if (UI.DrawButton(Language.TLT("change character"), 0, 30, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: selector.is_on(0,2), font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
+        } if (UI.DrawButton(S("change character"), 0, 30, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: selector.is_on(0,2), font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) { 
             Program.stage?.StopMusic();
             Program.ChangeState(Program.SelectChar);
             selector.pointer = new Vector2i(0, 0);
 
-        } if (UI.DrawButton(Language.TLT("back to menu"), 0, 45, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: selector.is_on(0,3), font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) {
+        } if (UI.DrawButton(S("back to menu"), 0, 45, spacing: Config.spacing_medium, action: Input.Key_up("A"), click: Input.Key_hold("A"), hover: selector.is_on(0,3), font: "default medium", hover_font: "default medium hover", click_font: "default medium click")) {
             Program.stage?.StopMusic();
             Program.stage?.UnloadStage();
             Input.ResetAI();

@@ -1,7 +1,6 @@
 using SFML.Graphics;
 using SFML.System;
 using UI_space;
-using Language_space;
 using System.Runtime.InteropServices;
 
 class WGBattle : Widget {
@@ -58,11 +57,12 @@ class WGBattle : Widget {
                 else if (Program.stage.CheckTimer(2)) {
                     fight_logo.Position = new Vector2f(Camera.X - 89, Camera.Y - 54);
                     Program.window.Draw(fight_logo);
+                    Accessibility.Speak("RoundFight", true, S("fight!"));
                 }
                 else if (Program.stage.CheckTimer(1)) 
-                    UI.DrawText(Language.TLT("Ready", "?"), 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
+                    UI.DrawText(S("ready?"), 0, -30, TTS: true, TTS_id: "RoundReady", priority: true, spacing: Config.spacing_medium, textureName: "default medium white");
                 else 
-                    UI.DrawText(Language.TLT("Round", " " + Program.stage.round), 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
+                    UI.DrawText(S("round", " ", Program.stage.round.ToString()), 0, -30, TTS: true, TTS_id: "RoundStart", priority: true, spacing: Config.spacing_medium, textureName: "default medium white");
 
                 break;
 
@@ -87,18 +87,20 @@ class WGBattle : Widget {
 
                 } else if (Program.stage.CheckTimer(3)) {
                     if (WGBattle.round_winner == Drawn) {
-                        UI.DrawText(Language.TLT("Draw"), 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
+                        UI.DrawText(S("draw"), 0, -30, TTS: true, TTS_id: "RoundResult", priority: true, spacing: Config.spacing_medium, textureName: "default medium white");
                     } else {
-                        UI.DrawText(Language.TLT(WGBattle.round_winner == 1 ? "player 1" : "player 2", " ", "wins"), 0, -30, spacing: Config.spacing_medium, textureName: "default medium white");
+                        UI.DrawText(S(WGBattle.round_winner == 1 ? "player 1" : "player 2", " ", "wins"), 0, -30, TTS: true, TTS_id: "RoundResult", priority: true, spacing: Config.spacing_medium, textureName: "default medium white");
                     }
 
                 } else if (!Program.stage.CheckTimer(3)) {
                     if (Program.stage.character_A.life_points.X <= 0 || Program.stage.character_B.life_points.X <= 0) {
                         KO_logo.Position = new Vector2f(Camera.X - 75, Camera.Y - 54);
                         Program.window.Draw(KO_logo);
+                        Accessibility.Speak("RoundEndLogo", true, S("K.O."));
                     } else {
                         timesup_logo.Position = new Vector2f(Camera.X - 131, Camera.Y - 55);
                         Program.window.Draw(timesup_logo);
+                        Accessibility.Speak("RoundEndLogo", true, S("time's up"));
                     }
                 } 
                 break;

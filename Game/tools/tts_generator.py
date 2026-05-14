@@ -1,7 +1,8 @@
 import json
 import re
 from pathlib import Path
-
+import librosa
+import numpy as np
 from kokoro import KPipeline
 import soundfile as sf
 
@@ -66,9 +67,17 @@ def generate_audio(pipeline, voice: str, text: str, output_path: Path):
     for _, _, audio in generator:
         audio_chunks.extend(audio)
 
+    audio_array = np.array(audio_chunks, dtype=np.float32)
+
+    # Remove silêncio do início e fim
+    trimmed_audio, _ = librosa.effects.trim(
+        audio_array,
+        top_db=35
+    )
+
     sf.write(
         str(output_path),
-        audio_chunks,
+        trimmed_audio,
         SAMPLE_RATE
     )
 

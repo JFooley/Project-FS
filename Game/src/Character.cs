@@ -40,6 +40,7 @@ using UI_space;
 
 public class AI {
     public static Random rand = new Random();
+    public int dificulty = 0; // lower = harder
     public Queue<string> moveQueue = new Queue<string>();
     public Queue<string> actionQueue = new Queue<string>();
     public FightState[] states = new FightState[5];
@@ -291,11 +292,11 @@ public abstract class Character : Object {
                 Program.window.Draw(anchorX);
                 Program.window.Draw(anchorY);
 
-                UI.DrawText(this.facing.ToString(), this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 155, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.DrawText(this.current_logic_frame_index + "/" + this.current_animation.lenght, this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 145, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.DrawText(this.current_anim_frame_index.ToString(), this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 135, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.DrawText(this.current_state, this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 125, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.DrawText(this.state.not_busy ? "waiting" : "busy", this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 115, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                UI.DrawText(S(this.facing.ToString()), this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 155, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                UI.DrawText(S(this.current_logic_frame_index + "/" + this.current_animation.lenght), this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 145, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                UI.DrawText(S(this.current_anim_frame_index.ToString()), this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 135, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                UI.DrawText(S(this.current_state), this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 125, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
+                UI.DrawText(S(this.state.not_busy ? "waiting" : "busy"), this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 115, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
             }
         }
     }
@@ -547,6 +548,7 @@ public abstract class Character : Object {
         return new RenderStates(Program.highContrastShader);
     }
     public int GetFacingTo(Character target) => target.body.position.X > this.body.position.X ? 1 : -1;
+    public static string[] S(params string[] strings) => strings;
 
     // Loads
     public void LoadTextures() {
