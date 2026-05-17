@@ -13,11 +13,17 @@
   "rindo-kan dojo" : "Rindo-Kan Dojo", 
   "the savana" : "The Savana",
 
+  "0" : "0",
   "1" : "1",
   "2" : "2",
   "3" : "3",
   "4" : "4",
   "5" : "5",
+  "6" : "6",
+  "7" : "7",
+  "8" : "8",
+  "9" : "9",
+  "10" : "10",
 
   "wc to project fs" : "Wellcome to Project FS",
   "select stage" : "Choose a stage",
@@ -104,5 +110,6 @@
   "navigation sounds" : "Navigation sounds",
   "spacialized audio" : "Spacialized audio",
   "time's up" : "Time's Up",
-  "k.o." : "Knockout"
+  "k.o." : "Knockout",
+  "dificulty" : "Dificulty"
 }

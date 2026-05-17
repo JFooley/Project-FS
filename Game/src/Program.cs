@@ -147,7 +147,7 @@ public static class Program {
 
                 case LoadScreen:
                     stage.LoadStage();
-                    stage.LoadCharacters(select_char_screen.charA_selected, select_char_screen.charB_selected);
+                    stage.LoadCharacters(WGSelectCharacter.charA_selected, WGSelectCharacter.charB_selected);
                     Camera.SetChars(stage.character_A, stage.character_B);
                     Camera.SetLimits(stage.length, stage.height);
 

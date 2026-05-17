@@ -3,19 +3,21 @@ using SFML.Graphics;
 using SFML.System;
 
 public class WGSelectCharacter : Widget {
-    private WGSelector selectorA = new WGSelector("selectorA");
-    private WGSelector selectorB = new WGSelector("selectorB");
+    public static int dificulty = 5;
 
-    public Character? charA_selected => selectorA.selected;
-    public Character? charB_selected => selectorB.selected;
+    private static WGSelector selectorA = new WGSelector("selectorA");
+    private static WGSelector selectorB = new WGSelector("selectorB");
 
-    private bool A_flag = false;
-    private bool B_flag = false; 
+    public static Character? charA_selected => selectorA.selected;
+    public static Character? charB_selected => selectorB.selected;
 
-    private int offset = 0;
+    private static bool A_flag = false;
+    private static bool B_flag = false; 
 
-    private Sprite char_bg = new Sprite(Data.textures["screens:bgchar"]);
-    private Sprite fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = Color.Transparent};
+    private static int offset = 0;
+
+    private static Sprite char_bg = new Sprite(Data.textures["screens:bgchar"]);
+    private static Sprite fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = Color.Transparent};
 
     public override void Render() {
         Program.window.Draw(char_bg);
@@ -35,18 +37,21 @@ public class WGSelectCharacter : Widget {
                 break;
         }
 
-        this.DrawSessionInfo();
+        DrawSessionInfo();
 
         // Ends when chars are selected and ready
         if (selectorA.state == WGSelector.READY && selectorB.state == WGSelector.READY) {
             Program.window.Draw(fade90);
-            this.offset += 5;
-            this.fade90.Color = new Color(255, 255, 255, (byte) Math.Min(255, this.fade90.Color.A + 15));
-            if (this.offset >= Config.RenderWidth / 2 && this.fade90.Color.A == 255) {
-                this.A_flag = false;
-                this.B_flag = false;
-                this.offset = 0;
-                this.fade90.Color = Color.Transparent;
+            offset += 5;
+            fade90.Color = new Color(255, 255, 255, (byte) Math.Min(255, fade90.Color.A + 15));
+            if (offset >= Config.RenderWidth / 2 && fade90.Color.A == 255) {
+                WGSelectCharacter.charA_selected.BOT.dificulty = WGSelectCharacter.dificulty;
+                WGSelectCharacter.charB_selected.BOT.dificulty = WGSelectCharacter.dificulty;
+                A_flag = false;
+                B_flag = false;
+                offset = 0;
+                dificulty = 5;
+                fade90.Color = Color.Transparent;
                 Program.ChangeState(Program.LoadScreen);
             }
         }
@@ -63,9 +68,8 @@ public class WGSelectCharacter : Widget {
             selectorB.selected = null;
             selectorA.state = WGSelector.SELECTING_CHAR;
             selectorB.state = WGSelector.SELECTING_CHAR;
-            this.offset = 0;
+            offset = 0;
         }
-
     }
     private void VersusBOT() {
         if (Stage.AI_playerA && Stage.AI_playerB && Input.anyKeyA) Stage.AI_playerA = false;
@@ -95,15 +99,16 @@ public class WGSelectCharacter : Widget {
             selectorB.state = WGSelector.SELECTING_CHAR;
             Stage.AI_playerA = true;
             Stage.AI_playerB = true;
-            this.offset = 0;
+            offset = 0;
+            dificulty = 5;
         }
     }
     private void Training() {
-        selectorA.Render(-77 - offset, -30, this.B_flag ? 0 : 1, x_scale: 1);
-        selectorB.Render(77 + offset, -30, this.A_flag ? 0 : 2, x_scale: -1);
+        selectorA.Render(-77 - offset, -30, B_flag ? 0 : 1, x_scale: 1);
+        selectorB.Render(77 + offset, -30, A_flag ? 0 : 2, x_scale: -1);
 
-        if (selectorA.state == WGSelector.READY) this.A_flag = true;
-        if (selectorB.state == WGSelector.READY) this.B_flag = true;
+        if (selectorA.state == WGSelector.READY) A_flag = true;
+        if (selectorB.state == WGSelector.READY) B_flag = true;
 
         UI.DrawText(S("Q"), 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
         if (UI.DrawButton(S("Return"), 182, 67, tts: false, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
@@ -112,9 +117,9 @@ public class WGSelectCharacter : Widget {
             selectorB.selected = null;
             selectorA.state = WGSelector.SELECTING_CHAR;
             selectorB.state = WGSelector.SELECTING_CHAR;
-            this.A_flag = false;
-            this.B_flag = false;
-            this.offset = 0;
+            A_flag = false;
+            B_flag = false;
+            offset = 0;
         }
     }
 
@@ -133,7 +138,8 @@ public class WGSelectCharacter : Widget {
 public class WGSelector : Widget {
     public const int SELECTING_CHAR = 0;
     public const int SELECTING_PALETTE = 1;
-    public const int READY = 2;
+    public const int SELECTING_DIFICULTY = 2;
+    public const int READY = 3;
 
     private string selector_id;
     public int pointer = 0;
@@ -153,7 +159,7 @@ public class WGSelector : Widget {
         Vector2f position = new Vector2f(Camera.X + x - (sprite.GetLocalBounds().Width / 2) * x_scale, Camera.Y + y - sprite.GetLocalBounds().Height / 2);
 
         // Shadow
-        if (state == SELECTING_PALETTE || state == READY) {
+        if (state == SELECTING_PALETTE || state == SELECTING_DIFICULTY || state == READY) {
             sprite.Position = position + new Vector2f(shadow_x_offset, 0);
             Program.window.Draw(sprite, new RenderStates(Program.colorFillShader));
         }
@@ -172,25 +178,30 @@ public class WGSelector : Widget {
             for (int i = 0; i < Data.characters.Count; i++) UI.DrawText(S(i == pointer ? ")" : "("), (i * 10) - ((Data.characters.Count - 1) * 5) + x, y + info_y_offset, textureName: "icons");
         } else if (state == SELECTING_PALETTE) {
             for (int i = 0; i < selected.palette_quantity; i++) UI.DrawText(S(i == selected.palette_index ? ")" : "("), (i * 10) - ((selected.palette_quantity - 1) * 5) + x, y + info_y_offset, textureName: "icons");
-        }
+        } else if (state == SELECTING_DIFICULTY) {
+            UI.DrawText(S("dificulty", ": ", (10 - WGSelectCharacter.dificulty).ToString()), x, y + info_y_offset, TTS: true, spacing: Config.spacing_small, textureName: "default small");
+        } 
 
         // Buttons
         if (state != READY && UI.DrawButton(S("<   "), x, y, hover: true, click: Input.Key_hold("Left", player), action: Input.Key_up("Left", player) || (Input.Key_hold_for("Left", Config.hold_time, player) && UI.ForEach(Config.hold_clock)), button_sound: 1, hover_font: "default small", font: "", spacing: 0)) {
             if (state == SELECTING_CHAR) pointer = pointer > 0 ? pointer - 1 : Data.characters.Count - 1;
             else if (state == SELECTING_PALETTE) selected.SetPalette(-1);
+            else if (state == SELECTING_DIFICULTY) WGSelectCharacter.dificulty += WGSelectCharacter.dificulty < 10 ? 1 : 0;
         } 
         
         if (state != READY && UI.DrawButton(S("   >"), x, y, hover: true, click: Input.Key_hold("Right", player), action: Input.Key_up("Right", player) || (Input.Key_hold_for("Right", Config.hold_time, player) && UI.ForEach(Config.hold_clock)), button_sound: 1, hover_font: "default small", font: "", spacing: 0)) {
             if (state == SELECTING_CHAR) pointer = pointer < Data.characters.Count - 1 ? pointer + 1 : 0;
             else if (state == SELECTING_PALETTE) selected.SetPalette(1);
+            else if (state == SELECTING_DIFICULTY) WGSelectCharacter.dificulty -= WGSelectCharacter.dificulty > 0 ? 1 : 0;
         }
 
         if (UI.DrawButton(S(Data.characters[pointer].name), x, y + info_y_offset - 10, id: selector_id, priority: true, spacing: Config.spacing_small, action: Input.Key_up("A", player), click: Input.Key_hold("A", player: player) && this.state != READY, hover_font: "default small", button_sound: 0)) {
             if (state == SELECTING_CHAR) {
                 selected = Data.characters[pointer].Copy();
                 state = SELECTING_PALETTE;
-
             } else if (state == SELECTING_PALETTE) {
+                state = WGBattle.battle_mode == WGBattle.VersusBot ? SELECTING_DIFICULTY : READY;
+            } else if (state == SELECTING_DIFICULTY) {
                 state = READY;
             }
         }

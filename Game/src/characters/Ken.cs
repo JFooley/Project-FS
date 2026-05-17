@@ -737,7 +737,7 @@ public class Ken : Character {
                 this.BOT.EnqueueMove("Right", 20);
             }
         } 
-        this.BOT.EnqueueMove("", AI.rand.Next(0, 10 * this.BOT.dificulty));
+        this.BOT.EnqueueMove("", AI.rand.Next(0, 20 * this.BOT.dificulty));
     }
     public override void SelectAction(FightState f_state) {
         if (f_state.enemyIsDead) return;
@@ -751,7 +751,7 @@ public class Ken : Character {
         }
         
         if (f_state.enemyIsAirborne && f_state.enemyDistance <= 0.3f) { // Anti air
-            var choise = AI.rand.Next(0, 6);
+            var choise = AI.rand.Next(0, 5);
             if (choise == 0) { // Shoryuken
                 this.BOT.EnqueueAction("Right *", 2);
                 this.BOT.EnqueueAction("Down *", 2);
@@ -963,7 +963,7 @@ public class Ken : Character {
                 this.BOT.EnqueueAction("", AI.rand.Next(10, 30)); // Nothing
         }
     
-        this.BOT.EnqueueAction("", AI.rand.Next(0, 20 + 10 * this.BOT.dificulty));
+        this.BOT.EnqueueAction("", AI.rand.Next(0, 20 * this.BOT.dificulty));
     }
 
     // Other

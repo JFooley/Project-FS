@@ -24,7 +24,7 @@ public class WGAccessibilityMenu : Widget {
         }
 
         // 1
-        UI.DrawButton(S("tts speed", ": < " + Accessibility.TTS_speed + "x >"), anchor.X, anchor.Y+n, hover: selector.is_on(0, 1), click: Input.Key_hold("Left") || Input.Key_hold("Right"), action: false, spacing: Config.spacing_small, click_font: Accessibility.TTS ? "default small click" : "default small grad", hover_font: Accessibility.TTS ? "default small hover" : "default small grad", font: "default small", alignment: "Left");
+        UI.DrawButton(S("tts speed", ": < " + Accessibility.TTS_speed + "x >"), anchor.X, anchor.Y+n, hover: selector.is_on(0, 1), click: Input.Key_hold("Left") || Input.Key_hold("Right"), spacing: Config.spacing_small, click_font: Accessibility.TTS ? "default small click" : "default small grad", hover_font: Accessibility.TTS ? "default small hover" : "default small grad", font: "default small", alignment: "Left");
         if (selector.is_on(0, 1) && Accessibility.TTS) {
             if (Input.Key_up("Left") || (Input.Key_hold_for("Left", Config.hold_time) && UI.ForEach(Config.hold_clock))) 
                 Accessibility.TTS_speed -= 0.1f;
