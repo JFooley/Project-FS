@@ -29,9 +29,9 @@ public class Fireball : Character {
         var a = this.animations;
     
         this.states = new Dictionary<string, State> {
-            {"Ken1", new State(F(a["KenFireballFrames"]), "Ken1", 7, can_harm: true)},
-            {"Ken2", new State(F(a["KenFireballFrames"]), "Ken2", 7, can_harm: true)},
-            {"Ken3", new State(F(a["KenFireballFrames"]), "Ken3", 7, glow: true, can_harm: true)},
+            {"Ken1", new State(F(a["KenFireballFrames"]), "Ken1", 7, will_hit: true)},
+            {"Ken2", new State(F(a["KenFireballFrames"]), "Ken2", 7, will_hit: true)},
+            {"Ken3", new State(F(a["KenFireballFrames"]), "Ken3", 7, glow: true, will_hit: true)},
             {"KenExit", new State(F(a["KenFireballFinal"]), "Remove", 7)},
         };
     }

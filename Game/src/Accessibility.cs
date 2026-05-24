@@ -1,4 +1,5 @@
 using SFML.Audio;
+using SFML.Graphics;
 using UI_space;
 
 public class Accessibility{
@@ -11,6 +12,8 @@ public class Accessibility{
     public static bool fall_get_up_cue = false;
     public static bool atack_hight_cue = false;
     public static bool navigation_cue = true;
+
+    public static bool cover_screen = false; 
     
     // Accessibility options data
     public static float TTS_speed = 1f;
@@ -49,12 +52,12 @@ public class Accessibility{
         Accessibility.air_hit_sound = new Sound(Data.sounds["accessibility:toneC"]) {Volume = Config.Effect_Volume};
     }
 
-    public static void Speak(string id, bool priority, params string[] strings) {
+    public static void Speak(string id, int type, bool priority, params string[] strings) {
         if (!TTS) return;
 
         current_tts_ids.Add(id);
         if (!last_tts_ids.Contains(id)) {
-            tts_requisitions.Enqueue(new TTSRequisition(priority, strings));
+            tts_requisitions.Enqueue(new TTSRequisition(type, priority, strings));
         } 
     }
     public static void UpdateTTS() {
@@ -81,7 +84,12 @@ public class Accessibility{
             }
 
             // Toca o próximo áudio
-            tts_sound = Language.Vocalize(current_tts_requisition.strings[current_audio_index]);
+            if (current_tts_requisition.type == TTSRequisition.TEXT) {
+                tts_sound = Language.Vocalize(current_tts_requisition.strings[current_audio_index]);
+            } else {
+                tts_sound = new Sound(Data.sounds[current_tts_requisition.strings[current_audio_index]]);
+            }
+
             current_audio_index++;
             tts_sound?.Play();
         }
@@ -123,12 +131,12 @@ public class Accessibility{
     public static void AtackHeightAudioCue(Character char_A, Character char_B) {
         if (!Accessibility.atack_hight_cue) return;
 
-        if (char_A.state.can_harm) {
+        if (char_A.state.will_hit) {
             if (char_A.state.low) Accessibility.crouch_hit_sound?.Play();
             else if (char_A.state.air) Accessibility.air_hit_sound?.Play();
             else Accessibility.stand_hit_sound?.Play();
         }
-        if (char_B.state.can_harm) {
+        if (char_B.state.will_hit) {
             if (char_B.state.low) Accessibility.crouch_hit_sound?.Play();
             else if (char_B.state.air) Accessibility.air_hit_sound?.Play();
             else Accessibility.stand_hit_sound?.Play();
@@ -138,9 +146,15 @@ public class Accessibility{
 }
 
 public class TTSRequisition {
+    public const int TEXT = 0;
+    public const int AUDIO = 1;
+
     public bool pririty;
     public string[] strings;
-    public TTSRequisition(bool priority, params string[] strings) {
+    public int type;
+
+    public TTSRequisition(int type, bool priority, params string[] strings) {
+        this.type = type;
         this.pririty = priority;
         this.strings = strings;
     }

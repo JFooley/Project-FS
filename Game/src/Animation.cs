@@ -15,6 +15,7 @@ using SFML.System;
 
         // infos
         public int lenght;
+        public int original_lenght;
         public bool loop;
 
         public Animation(Frame[] frames, bool loop = true) {
@@ -22,13 +23,13 @@ using SFML.System;
             this.anim_frame_index = 0;
             this.lenght = 0;
             foreach (var frame in frames) { this.lenght += frame.lenght; };
+            this.original_lenght = this.lenght;
             this.loop = loop;
             this.logic_frame_index = 0;
         }
 
         public FrameData GetCurrentFrame() {
-            if (anim_frame_index > frames.Count() - 1) return this.frames.Last().GetType() == typeof(FrameData) ? (FrameData) this.frames.Last() : new FrameData();
-            else return this.frames[anim_frame_index].GetType() == typeof(FrameData) ? (FrameData) this.frames[anim_frame_index] : new FrameData();
+            return this.frames.Last().GetType() == typeof(FrameData) ? (FrameData) this.frames[Math.Min(anim_frame_index, frames.Count() - 1)] : new FrameData();
         }
         public Frame GetCurrentFrameSimple() {
             if (anim_frame_index > frames.Count() - 1) return this.frames.Last();
@@ -57,7 +58,7 @@ using SFML.System;
                 }
             }
 
-            this.on_last_frame = (anim_frame_index == frames.Count() - 1) && (frame_counter >= this.frames[anim_frame_index].lenght - 1); // On last frame check
+            this.on_last_frame = this.logic_frame_index == this.lenght - 1; // On last frame check
 
             return advanced;
         }
@@ -75,7 +76,6 @@ using SFML.System;
         public const int HITBOX = 0;
         public const int HURTBOX = 1;
         public const int PUSHBOX = 2;
-        public const int GRABBOX = 3;
 
         public Vector2f pA;
         public Vector2f pB;
@@ -135,22 +135,26 @@ using SFML.System;
     }
 
     public class FrameData : Frame{
-        public bool keep_hit;
+        public bool has_hit;
         public float delta_X;
         public float delta_Y;
+        public int facing;
         public List<GenericBox> Boxes;
 
-        public FrameData(string sprite_index, float deltaX, float deltaY, List<GenericBox> boxes, int len = 1, string sound = "", bool hasHit = true) {
+        public FrameData(string sprite_index, float deltaX, float deltaY, List<GenericBox> boxes, int len = 1, int facing = 1, string sound = "", bool hasHit = true) {
             this.sprite_index = sprite_index;
             this.delta_X = deltaX;
             this.delta_Y = deltaY;
             this.Boxes = boxes;
             this.sound_index = sound;
+            this.facing = facing;
             this.lenght = len;
-            this.keep_hit = hasHit;
+            this.has_hit = hasHit;
         }
 
-        public FrameData() {this.Boxes = new List<GenericBox>(){};}
+        public FrameData() {
+            this.Boxes = new List<GenericBox>(){};
+        }
     }
 
     public class Frame {
@@ -158,7 +162,10 @@ using SFML.System;
         public string sprite_index;
         public string sound_index;
 
-        protected Frame() {this.sprite_index = ""; this.sound_index = "";}
+        protected Frame() {
+            this.sprite_index = ""; 
+            this.sound_index = "";
+        }
 
         public Frame(int sprite_index, int len = 1, string sound = "") {
             this.sprite_index = sprite_index.ToString();

@@ -73,6 +73,7 @@ public static class Data {
                 float dy = br.ReadSingle();
 
                 int len = br.ReadInt32();
+                int facing = br.ReadInt32();
                 string sound = br.ReadString();
                 bool hasHit = br.ReadBoolean();
 
@@ -89,7 +90,7 @@ public static class Data {
                     boxes.Add(new GenericBox(type, ax, ay, bx, by));
                 }
 
-                if (have_data) frames[j] = new FrameData(sprite, dx, dy, boxes, len, sound, hasHit);
+                if (have_data) frames[j] = new FrameData(sprite, dx, dy, boxes, len, facing, sound, hasHit);
                 else frames[j] = new Frame(sprite, len, sound);
             }
 

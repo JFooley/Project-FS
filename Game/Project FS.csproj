@@ -27,9 +27,9 @@
     <None Remove="**\*.wav" />
     <None Remove="**\*.mp3" />
     <None Remove="**\*.xcf" />
-    <None Remove="**\*.py" />
+
     <None Remove="tools" />
-    <None Remove="assets_raw" />
+    <None Remove="raw" />
   </ItemGroup>
 
   

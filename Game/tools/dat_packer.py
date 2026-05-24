@@ -106,6 +106,9 @@ def _write_animation_dat(file_path, data):
                 # length
                 f.write(struct.pack("<I", frame.get("lenght", 1)))
 
+                # facing
+                f.write(struct.pack("<i", frame.get("facing", 1)))
+
                 # sound
                 write_csharp_string(f, frame.get("Sound_index", ""))
 

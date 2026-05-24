@@ -40,10 +40,9 @@ using UI_space;
 
 public class AI {
     public static Random rand = new Random();
-    public int dificulty = 0; // lower = harder
+    public int difficulty = 0; // lower = harder
     public Queue<string> moveQueue = new Queue<string>();
     public Queue<string> actionQueue = new Queue<string>();
-    public FightState[] states = new FightState[5];
 
     public void EnqueueMove(string key, int frames = 1) {
         for (int i = 0; i < frames; i++) moveQueue.Enqueue(key);
@@ -58,6 +57,7 @@ public struct FightState {
     public bool enemyIsOnHit;
     public bool enemyIsBlocking;
     public bool enemyIsAttacking;
+    public bool enemyIsGrabbing;
     public bool enemyIsAirborne;
     public bool enemyIsCrouching;
     public bool enemyChangedSide;
@@ -75,6 +75,8 @@ public abstract class Character : Object {
     public const int BLOCK = 0;
     public const int HIT = 1;
     public const int PARRY = 2;
+    public const int GRAB = 3;
+    public const int TECH = 4;
 
     // Infos
     public string name;
@@ -97,13 +99,21 @@ public abstract class Character : Object {
     public Vector2i aura_points = new Vector2i(0, 100);
     public Vector2f visual_position => new Vector2f(this.body.position.X - 125, this.body.position.Y - 250);
     public Vector2f visual_center => new Vector2f(this.body.position.X, this.body.position.Y - 125);
-    public int jump_hight = 79;
+    public int jump_hight = 100;
     public int push_box_width = 25;
 
-    // Object infos
+    // State info
     public string current_state;
+
     public string last_state;
-    private Sprite[] last_sprites = new Sprite[3]; // For tracing
+    public Vector2f last_position;
+    private Sprite[] last_sprites = new Sprite[3]; 
+
+    public string? next_state;
+    public bool next_state_reset;
+    public int? next_state_lenght;
+    
+    public int next_frame_hitstop = 0;
 
     // Combat logic infos
     public bool not_acting => this.state.not_busy && !this.state.low && !this.state.air && !this.on_air;
@@ -119,6 +129,7 @@ public abstract class Character : Object {
 
     public bool can_parry => (not_acting_all && parring) || (not_acting_all && Input.Key_press("Left", input_window: this.state.air? Config.parry_window/2 : Config.parry_window, player: this.player_index, facing: this.facing));
     public bool can_dash => not_acting && !this.state.on_parry;
+    public bool can_jump => not_acting && this.current_state != "Landing";
     public bool has_hit = false;
 
     public bool blocking_high = false;
@@ -139,7 +150,7 @@ public abstract class Character : Object {
     public Color own_light = Color.Transparent;
 
     public int shadow_size = 2;
-    public bool has_frame_change => this.last_anim_frame_index != this.current_anim_frame_index;
+    public bool has_frame_change = false;
 
     public virtual Texture palette {get; protected set;}
     public uint palette_size => this.palette.Size.X;
@@ -153,7 +164,6 @@ public abstract class Character : Object {
     public List<GenericBox> current_boxes => current_animation.GetCurrentFrame().Boxes;
     public int current_anim_frame_index => current_animation.anim_frame_index;
     public int current_logic_frame_index => current_animation.logic_frame_index;
-    public int last_anim_frame_index = -1;
     public Animation current_animation => states[current_state].animation;
     public State state => states[current_state];
 
@@ -161,7 +171,6 @@ public abstract class Character : Object {
     public int combo_counter = 0;
     public int hitstop_counter = 0;
     public float damage_scaling => Math.Max(0.1f, 1 - combo_counter * 0.1f);
-    public bool SA_flag = false;
 
     public Character(string name, string initialState, float startX, float startY, string folderPath, int type = 0) : base() {
         this.folder_path = folderPath;
@@ -184,20 +193,19 @@ public abstract class Character : Object {
     }
 
     // Every Frame methods
-    public override void Update() { // Render > Behave > Colide > Animate
+    public override void Update() { // Animate > Render > Bot > Behave > Colide > Advance Frame > Update state
         if (this.hitstop_counter <= 0) {
-            if (this.animate) this.Animate();
-            if (this.behave) {
-                this.Behave();
-                this.CheckColisions();
-            }
-        } else {
-            this.hitstop_counter -= 1;
+            this.Bot();
+            this.Behave();
+            this.CheckColisions();
         }
     }
     public override void Render(bool drawHitboxes = false) {
         base.Render(drawHitboxes);
-        
+
+        // Play sounds
+        this.PlayFrameSound();
+
         // Set current sprite
         var temp_sprite = this.GetCurrentSprite();
         temp_sprite.Position = new Vector2f(this.body.position.X - (temp_sprite.GetLocalBounds().Width / 2 * this.facing), this.body.position.Y - temp_sprite.GetLocalBounds().Height);
@@ -220,7 +228,10 @@ public abstract class Character : Object {
         } else last_sprites = new Sprite[3];
 
         // Draw current sprite
-        if (Accessibility.high_contrast) {
+        if (this.state.glow && UI.blink30Hz) {
+            Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
+            Program.window.Draw(temp_sprite, new RenderStates(shader: Program.hueChange));
+        } else if (Accessibility.high_contrast) {
             Program.window.Draw(temp_sprite, this.SetHighContrastShader(this.current_palette_color));
         } else if (this.palette != null) {
             Program.window.Draw(temp_sprite, this.SetSwaperShader(this.own_light == Color.Transparent ? this.light_tint : this.own_light));
@@ -228,15 +239,7 @@ public abstract class Character : Object {
             Program.window.Draw(temp_sprite);
         }
 
-        // Aplly aura effect
-        if (this.state.glow && UI.blink30Hz) {
-            Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
-            Program.window.Draw(temp_sprite, new RenderStates(shader: Program.hueChange));
-        } 
 
-        // Play sounds
-        this.PlayFrameSound();
-        
         // Draw Hitboxes
         if (drawHitboxes) {  
             foreach (GenericBox box in this.current_boxes) {
@@ -273,48 +276,62 @@ public abstract class Character : Object {
                 // Desenha o retângulo da hitbox na janela
                 Program.window.Draw(hitboxRect);
             }
-
-            // Draw debug info
-            if (Config.debug) {
-                RectangleShape anchorY = new RectangleShape(new Vector2f(0, 10)) {
-                    Position = new Vector2f(this.body.position.X, this.body.position.Y - 60),
-                    FillColor = SFML.Graphics.Color.Transparent,
-                    OutlineColor = this.current_animation.on_last_frame ? Color.Red : Color.White, 
-                    OutlineThickness = 1.0f
-                };
-                RectangleShape anchorX = new RectangleShape(new Vector2f(10, 0)) {
-                    Position = new Vector2f(this.body.position.X - 5, this.body.position.Y - 55),
-                    FillColor = SFML.Graphics.Color.Transparent,
-                    OutlineColor = this.current_animation.on_last_frame ? Color.Red : Color.White, 
-                    OutlineThickness = 1.0f 
-                };
-                
-                Program.window.Draw(anchorX);
-                Program.window.Draw(anchorY);
-
-                UI.DrawText(S(this.facing.ToString()), this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 155, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.DrawText(S(this.current_logic_frame_index + "/" + this.current_animation.lenght), this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 145, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.DrawText(S(this.current_anim_frame_index.ToString()), this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 135, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.DrawText(S(this.current_state), this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 125, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-                UI.DrawText(S(this.state.not_busy ? "waiting" : "busy"), this.body.position.X - Camera.X, this.body.position.Y - Camera.Y - 115, spacing: Config.spacing_small, alignment: "center", textureName: "default small");
-            }
         }
     }
-    public override void Animate() {   
-        // Update body.Position
+    public override void Animate() {
+        if (this.hitstop_counter > 0 || !this.animate) return;
+
+        this.last_position = this.body.position;
+
+        // Physics
         this.body.Update(this);
 
-        // Advance to the next frame and reset hit if necessary
-        this.last_anim_frame_index = this.current_anim_frame_index;
-        if (current_animation.AdvanceFrame() && current_animation.GetCurrentFrame().keep_hit == false) this.has_hit = false;
+        // Baked animation
+        this.body.position.X += current_animation.GetCurrentFrame().delta_X * this.facing;
+        this.body.position.Y += current_animation.GetCurrentFrame().delta_Y;
+    }
+    public void UpdateState() {
+        if (!animate) return;
 
-        // Change state, if necessary
+        // If it's in hitstop or have hitstop to set
+        if (this.hitstop_counter > 0) {
+            this.hitstop_counter--;
+        } else if (this.next_frame_hitstop > 0) {
+            this.hitstop_counter = this.next_frame_hitstop;
+            this.next_frame_hitstop = 0;
+        }
+
+        // If there's a change of state
+        if (this.next_state != null) {
+            if (this.life_points.X <= 0 && !Stage.training_mode && this.current_state == "OnGround" && !this.next_state_reset) return;
+
+            this.last_state = this.current_state;
+            if (states.ContainsKey(this.next_state)) {
+                this.has_hit = false;
+                this.current_state = this.next_state;
+                if (this.current_state != this.last_state || this.next_state_reset) this.current_animation.Reset();
+                if (this.next_state_lenght != null) this.current_animation.lenght = this.next_state_lenght.Value;
+                if (this.state.variation_amount > 1) this.state.variation_index = AI.rand.Next(0, this.state.variation_amount);
+            }
+
+            this.next_state = null;
+            this.next_state_reset = false;
+            this.next_state_lenght = null;
+        }
+    }
+    public void AdvanceFrame() {
+        if (this.hitstop_counter > 0 || this.next_state != null || !this.animate) return;
+
+        // Advance to the next frame and reset hit if necessary
+        this.has_frame_change = current_animation.AdvanceFrame();
+        if (this.has_frame_change) {
+            this.facing *= current_animation.GetCurrentFrame().facing;
+            if (current_animation.GetCurrentFrame().has_hit == false) this.has_hit = false;
+        }
+
         if ((state.change_on_end && this.current_animation.ended) || (state.change_on_ground && !this.on_air)) {
             this.ChangeState(this.state.post_state);
         }
-
-        this.body.position.X += current_animation.GetCurrentFrame().delta_X * this.facing;
-        this.body.position.Y += current_animation.GetCurrentFrame().delta_Y * this.facing;
     }
     public void Bot() {
         if (!this.BotEnabled || !this.behave) return;
@@ -333,7 +350,8 @@ public abstract class Character : Object {
                 enemyDistance = Math.Abs(this.body.position.X - enemy.body.position.X) / Config.RenderWidth,
                 lastState = this.last_state,
                 enemyIsIdle = enemy.state.not_busy,
-                enemyIsAttacking = enemy.state.can_harm && !enemy.state.not_busy,
+                enemyIsAttacking = enemy.state.will_hit && enemy.state.busy,
+                enemyIsGrabbing = enemy.state.is_grab,
                 enemyIsAirborne = enemy.state.air,
                 enemyIsCrouching = enemy.state.low,
                 enemyIsBlocking = enemy.state.on_block,
@@ -343,13 +361,6 @@ public abstract class Character : Object {
                 enemyOnCorner = enemy.body.position.X < (0.2f * Config.RenderWidth) || enemy.body.position.X >= (Program.stage?.length - (0.2f * Config.RenderWidth)),
                 onCorner = this.body.position.X < (0.2f * Config.RenderWidth) || this.body.position.X >= (Program.stage?.length - (0.2f * Config.RenderWidth)) 
             };
-
-            // Atualiza o array de estados de luta
-            this.BOT.states[4] = this.BOT.states[3];
-            this.BOT.states[3] = this.BOT.states[2];
-            this.BOT.states[2] = this.BOT.states[1];
-            this.BOT.states[1] = this.BOT.states[0];
-            this.BOT.states[0] = AIstate;
 
             // Seleciona as ações, caso já tenha realizado todas
             if (this.BOT.moveQueue.Count == 0)
@@ -367,6 +378,7 @@ public abstract class Character : Object {
     }
     public virtual int DefineColisionType(Character target) {
         if (target.can_parry && this.state.can_be_parried) return Character.PARRY;
+        else if (target.state.is_grab && this.state.is_grab) return Character.TECH;
         else return this.ImposeBehavior(target);
     }
     public bool isBlocking() {
@@ -382,58 +394,65 @@ public abstract class Character : Object {
     }
     public void Stun(Character enemy, int advantage, bool hit = true, bool airbone = false, bool sweep = false, bool force_crounch = false, bool force_stand = false, bool raw_value = false) {
         this.facing = this.GetFacingTo(enemy);
+        int lenght = raw_value ? advantage : enemy.current_animation.lenght - enemy.current_logic_frame_index + advantage;
+
         if (hit || this.life_points.X <= 0) { // Hit stun states
             if (sweep) {
                 this.ChangeState("Sweeped", reset: true);
                 return;
+
             } else if (airbone || (this.life_points.X <= 0 && !Program.stage.MustWait()) || (this.state.air && this.state.on_hit)) {
                 this.ChangeState("Airboned", reset: true);
                 if (this.life_points.X <= 0) this.SetVelocity(X: -Config.heavy_pushback, Y: 50);
                 return;
+
             } else if ((this.crounching && !force_stand) || force_crounch) {
-                this.ChangeState("OnHitLow", reset: true);
+                this.ChangeState("OnHitLow", reset: true, lenght: lenght);
+                
             } else {
-                this.ChangeState("OnHit", reset: true);
+                this.ChangeState("OnHit", reset: true, lenght: lenght);
             }
 
         } else { // Block stun states
-            if (this.crounching) this.ChangeState("OnBlockLow", reset: true);
-            else this.ChangeState("OnBlock", reset: true);
+            if (this.crounching) this.ChangeState("OnBlockLow", reset: true, lenght: lenght);
+            else this.ChangeState("OnBlock", reset: true, lenght: lenght);
         }
-    
-        // Set stun frames
-        if (raw_value) this.current_animation.lenght = Math.Max(advantage, 1);
-        else this.current_animation.lenght = Math.Max(enemy.current_animation.lenght - enemy.current_logic_frame_index + advantage, 1);
     }
     public void BlockStun(Character enemy, int advantage, bool raw_value = false) {
         this.Stun(enemy, advantage, hit: false, raw_value: raw_value);
     }
-    public void CheckColisions() {               
-        // Para cada character no stage
+    public void CheckColisions() {   
         foreach (var enemy in Program.stage.OnSceneCharacters) {
             if (enemy == this) continue;
             
             foreach (GenericBox boxA in this.current_boxes) {
-                if (boxA.type != GenericBox.HITBOX && boxA.type != GenericBox.PUSHBOX && boxA.type != GenericBox.GRABBOX) continue;
+                if (boxA.type != GenericBox.HITBOX && boxA.type != GenericBox.PUSHBOX) continue;
                 
                 foreach (GenericBox boxB in enemy.current_boxes) {
-                    if (boxB.type == GenericBox.HURTBOX && boxB.type == GenericBox.PUSHBOX) continue;
+                    if ((boxA.type == GenericBox.HITBOX && boxB.type != GenericBox.HURTBOX) || (boxA.type == GenericBox.PUSHBOX && boxB.type != GenericBox.PUSHBOX)) continue;
                     
                     if (GenericBox.Intersects(boxA, boxB, this, enemy)) {
+                        // A push B
                         if (boxA.type == GenericBox.PUSHBOX && boxB.type == GenericBox.PUSHBOX) {
-                            // A body push B
                             GenericBox.Colide(boxA, boxB, this, enemy);
 
-                        } else if (this.player_index != enemy.player_index && this.has_hit == false && enemy.state.can_be_hit && this.type >= enemy.type && (boxA.type == GenericBox.HITBOX || boxA.type == GenericBox.GRABBOX) && boxB.type == GenericBox.HURTBOX) { 
-                            // A hit B
+                        // A hit B
+                        } else if (this.player_index != enemy.player_index && this.has_hit == false && enemy.state.can_be_hit && this.type >= enemy.type && boxA.type == GenericBox.HITBOX && boxB.type == GenericBox.HURTBOX) { 
                             this.has_hit = true;
                             
                             int hit_type = DefineColisionType(enemy);
 
-                            if (hit_type == Character.NOTHING) continue;
-                            if (hit_type == Character.PARRY) {
-                                enemy.ChangeState("Parry", reset: true);
+                            if (hit_type == Character.NOTHING) {
+                                continue;
+                                
+                            } else if (hit_type == Character.PARRY) {
+                                enemy.ChangeState(enemy.on_air ? "AirParry" : "Parry", reset: true);
                                 enemy.aura_points.X = Math.Min(enemy.aura_points.Y, enemy.aura_points.X + 10);
+                                
+                            } else if (hit_type == Character.TECH) {
+                                enemy.facing = enemy.GetFacingTo(this);
+                                this.AddAcceleration(-3);
+                                enemy.AddAcceleration(-3);
                             }
                             
                             stage.Hitstop(this.state.hitstop, hit_type: hit_type, on_hit_char: enemy, hitting_char: this);
@@ -441,7 +460,8 @@ public abstract class Character : Object {
                             if (this.player_index == 1) stage.character_A.combo_counter += hit_type == Character.HIT ? 1 : 0; 
                             else stage.character_B.combo_counter += hit_type == Character.HIT ? 1 : 0;
 
-                            stage.PSHitspark(hit_type, boxA.getRealB(this).X - (boxA.width * 1/3), (boxA.getRealA(this).Y + boxA.getRealB(this).Y) / 2 + 125, this.facing, weight: this.state.hitstop);
+                            stage.PSHitspark(hit_type, boxA.getRealB(this).X - (boxA.width * 1/3), (boxA.getRealA(this).Y + boxA.getRealB(this).Y) / 2 + 125, this.GetFacingTo(enemy), weight: this.state.hitstop);
+                            return;
                         }
                     }
                 }
@@ -450,15 +470,16 @@ public abstract class Character : Object {
     }
 
     // Static Methods 
-    public static void Push(Character target, Character self, float X_amount, float Y_amount = 0, bool airbone = false, bool force_push = false) {
+    public static void Push(Character target, Character self, float X_amount, float Y_amount = 0, bool airbone = false, bool fixed_height = false, bool force_push = false) {
         if ((target.body.position.X <= Camera.X - Config.corner_limit || target.body.position.X >= Camera.X + Config.corner_limit) && !force_push) {
             self.SetVelocity(X: -X_amount, keep_Y: true);
-            target.SetVelocity(X: -X_amount, Y: (target.on_air || airbone) ? Y_amount : 0);
+            target.SetVelocity(X: -X_amount, Y: (target.on_air || airbone) ? Y_amount : 0, fixed_height: fixed_height);
         } else {
-            target.SetVelocity(X: -X_amount, Y: (target.on_air || airbone) ? Y_amount : 0);
+            target.SetVelocity(X: -X_amount, Y: (target.on_air || airbone) ? Y_amount : 0, fixed_height: fixed_height);
         }
     }
     public static void Damage(Character target, Character self, int damage, int dizzy_damage) {
+        // NOTE: Before stun and blockstun
         target.life_points.X = (int) Math.Max(target.life_points.X - damage * self.damage_scaling, 0);
         target.dizzy_points.X = (int) Math.Max(target.dizzy_points.X - dizzy_damage * self.damage_scaling, 0);
     }
@@ -474,32 +495,24 @@ public abstract class Character : Object {
     }
     
     // Physics
-    public void SetVelocity(float X = 0, float Y = 0, bool raw_set = false, bool keep_X = false, bool keep_Y = false) {
-        this.body.SetVelocity(this, X, Y, raw_set: raw_set, keep_X: keep_X, keep_Y: keep_Y);
+    public void SetVelocity(float X = 0, float Y = 0, bool raw_set = false, bool fixed_height = false, bool keep_X = false, bool keep_Y = false) {
+        this.body.SetVelocity(X, Y, raw_set: raw_set, fixed_height: fixed_height, keep_X: keep_X, keep_Y: keep_Y);
     }
-    public void AddVelocity(float X = 0, float Y = 0, bool raw_set = false) {
-        this.body.AddVelocity(this, X, Y, raw_set: raw_set);
+    public void AddVelocity(float X = 0, float Y = 0, bool raw_set = false, bool fixed_height = false) {
+        this.body.AddVelocity(X, Y, raw_set: raw_set, fixed_height: fixed_height);
     }
-    public void SetForce(float X = 0, float Y = 0, int T = 0, bool keep_X = false, bool keep_Y = false) {
-        this.body.SetForce(this, X, Y, T, keep_X: keep_X, keep_Y: keep_Y);
+    public void SetAcceleration(float X = 0, float Y = 0, bool keep_X = false, bool keep_Y = false, bool raw_set = false) {
+        this.body.SetAcceleration(X, Y, keep_X: keep_X, keep_Y: keep_Y, raw_set: raw_set);
     }
-    public void AddForce(float X = 0, float Y = 0, int T = 0) {
-        this.body.AddForce(this, X, Y, T);
+    public void AddAcceleration(float X = 0, float Y = 0) {
+        this.body.AddAcceleration(X, Y);
     }
     
     // Auxiliar methods
-    public void ChangeState(string new_state, bool reset = false) {
-        if (this.life_points.X <= 0 && !Stage.training_mode && this.current_state == "OnGround" && !reset) return;
-
-        if (new_state == "Parry" && this.on_air) new_state = "AirParry";
-
-        this.last_state = this.current_state;
-        if (states.ContainsKey(new_state)) {
-            if (current_state != new_state || reset) this.current_animation.Reset();
-            this.current_state = new_state;
-            this.has_hit = false;
-            if (this.state.variation_amount > 1) this.state.variation_index = AI.rand.Next(0, this.state.variation_amount);
-        }
+    public void ChangeState(string new_state, bool reset = false, int? lenght = null) {
+        this.next_state = new_state;
+        this.next_state_reset = reset;
+        this.next_state_lenght = lenght;
     }
     public Sprite GetCurrentSprite() {
         if (textures.TryGetValue(this.current_sprite, out Texture texture)) {
@@ -531,7 +544,7 @@ public abstract class Character : Object {
         this.aura_points.X = total_reset ? 0 : this.aura_points.X;
         this.body.position.X = start_point;
         this.body.position.Y = this.floor_line;
-        this.body.SetVelocity(this, 0, 0, raw_set: true);
+        this.body.SetVelocity(0, 0, raw_set: true);
         this.facing = facing;
     }
     public RenderStates SetSwaperShader(Color light, int palette_index = -1) {

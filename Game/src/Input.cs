@@ -3,7 +3,7 @@ using System.Windows.Forms;
 using SFML.System;
 using UI_space;
 
-public class Input {    
+public class Input {
     public const int NONE_INPUT = 0;
     public const int KEYBOARD_A_INPUT = 1;
     public const int KEYBOARD_B_INPUT = 2;
@@ -73,10 +73,10 @@ public class Input {
         { Keys.X, 1 },      // B
         { Keys.A, 2 },      // X
         { Keys.S, 3 },      // Y
-        { Keys.F, 4 },      // L
+        { Keys.C, 4 },      // L
         { Keys.V, 5 },      // LT
         { Keys.D, 6 },      // R
-        { Keys.C, 7 },      // RT
+        { Keys.F, 7 },      // RT
         { Keys.Up, 8 },     // Up
         { Keys.Down, 9 },   // Down
         { Keys.Left, 10 },  // Left
@@ -89,10 +89,10 @@ public class Input {
         { Keys.W, 1 },      // B
         { Keys.D1, 2 },     // X
         { Keys.D2, 3 },     // Y
-        { Keys.D4, 4 },     // L
+        { Keys.E, 4 },     // L
         { Keys.R, 5 },      // LT
         { Keys.D3, 6 },     // R
-        { Keys.E, 7 },      // RT
+        { Keys.D4, 7 },      // RT
         { Keys.NumPad8, 8 },   // Up
         { Keys.NumPad2, 9 },   // Down
         { Keys.NumPad4, 10 },  // Left
@@ -270,11 +270,19 @@ public class Input {
         return true;
     }
     public static bool Key_press(string key, int player = DEFAULT, int facing = 1, int input_window = -1) {
+        var keys = key.Split(' ');
+        bool pressed;
         List<int> bufferList = buffers[player].ToList();
+
         for (int i = bufferList.Count() - 1; i > (bufferList.Count() - (input_window == -1 ? Config.input_window_time : input_window)); i--) {
-            if ((bufferList[i] & (1 << keysTranslationMap[facing][key])) != 0 && (bufferList[i-1] & (1 << keysTranslationMap[facing][key])) == 0) {
-                return true;
-            };
+            pressed = true;
+            foreach (var k in keys) {
+                if (!((bufferList[i] & (1 << keysTranslationMap[facing][k])) != 0 && (bufferList[i-1] & (1 << keysTranslationMap[facing][k])) == 0)) {
+                    pressed = false;
+                    break;
+                }
+            }
+            if (pressed) return true;
         }
         return false;
     }

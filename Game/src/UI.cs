@@ -82,12 +82,50 @@ namespace UI_space {
             UI.elapsed = UI.frame_counter % 60 == 0 ? (int) (1 / Program.last_frame_time) : UI.elapsed;
             UI.DrawText(new[] {UI.elapsed.ToString() + " - " + Program.last_frame_time.ToString("F5")}, 0, 82, spacing: Config.spacing_small, textureName: textureName);
         }
+        public static void ShowDebugInfo(Character c) {
+            float px = c.player_index == 1 ? -Config.RenderWidth/2 : Config.RenderWidth/2;
+            float py = -Config.RenderHeight/4;
+            string ali = c.player_index == 1 ? "left" : "right";
+            int n = 10;
+
+            DrawText(new[] { "Has hit: " + c.has_hit }, px, py, spacing: Config.spacing_small, alignment: ali, textureName: "default small white");
+            DrawText(new[] { "Facing: " + c.facing }, px, py + n, spacing: Config.spacing_small, alignment: ali, textureName: "default small white");
+            DrawText(new[] { c.current_logic_frame_index + "/" + (c.current_animation.lenght - 1)}, px, py + 2*n, spacing: Config.spacing_small, alignment: ali, textureName: c.current_animation.on_last_frame ? "default small red" : "default small white");
+            DrawText(new[] { c.current_anim_frame_index.ToString() }, px, py + 3*n, spacing: Config.spacing_small, alignment: ali, textureName: "default small white");
+            DrawText(new[] { c.current_state }, px, py + 4*n, spacing: Config.spacing_small, alignment: ali, textureName: "default small white");
+            DrawText(new[] { c.state.not_busy ? "waiting" : "busy" }, px, py + 5*n, spacing: Config.spacing_small, alignment: ali, textureName: "default small white");
+            DrawText(new[] { "Vel: " + c.body.velocity.X.ToString("F1") + "/" + c.body.velocity.Y.ToString("F1") }, px, py + 6*n, spacing: Config.spacing_small, alignment: ali, textureName: "default small white");
+            DrawText(new[] { "Acc: " + c.body.acceleration.X.ToString("F1") + "/" + c.body.acceleration.Y.ToString("F1") }, px, py + 7*n, spacing: Config.spacing_small, alignment: ali, textureName: "default small white");
+
+            RectangleShape anchor = new RectangleShape(new Vector2f(2, 2)) {
+                Position = new Vector2f(c.body.position.X, c.body.position.Y - 60),
+                FillColor = Color.Black,
+            };
+            Vector2f v = new Vector2f(c.body.velocity.X, -c.body.velocity.Y) * 5f;
+            var vel = new RectangleShape(new Vector2f((float)Math.Sqrt(v.X * v.X + v.Y * v.Y), 1f)) {
+                Position = new Vector2f(c.body.position.X, c.body.position.Y - 125),
+                FillColor = Color.Yellow,
+                Rotation = (float)(Math.Atan2(v.Y, v.X) * 180f / Math.PI),
+                Origin = new Vector2f(0, 0)
+            };
+            Vector2f a = new Vector2f(c.body.acceleration.X, -c.body.acceleration.Y) * 5f;
+            var acc = new RectangleShape(new Vector2f((float)Math.Sqrt(a.X * a.X + a.Y * a.Y), 1f)) {
+                Position = new Vector2f(c.body.position.X, c.body.position.Y - 125),
+                FillColor = Color.Blue,
+                Rotation = (float)(Math.Atan2(a.Y, a.X) * 180f / Math.PI),
+                Origin = new Vector2f(0, 0)
+            };
+
+            Program.window.Draw(anchor);
+            Program.window.Draw(vel);
+            Program.window.Draw(acc);
+        }
         public static void DrawText(string[] raw_text, float X, float Y, float spacing = 0, string alignment = "center", bool absolutePosition = false, string textureName = "default medium", string TTS_id = "", bool TTS = false, bool priority = false) {           
             if (!BitmapFont.textures.TryGetValue(textureName, out var texture)) return;
             if (raw_text.Length == 0) return;
 
             string text = Language.Translate(raw_text);
-            if (TTS) Accessibility.Speak(TTS_id + text, priority, raw_text);
+            if (TTS) Accessibility.Speak(TTS_id + text, TTSRequisition.TEXT, priority, raw_text);
 
             float totalWidth = text.Length > 0 ? text.Length * (BitmapFont.CellSize + spacing) - spacing : 0;
             float offset_X = X;

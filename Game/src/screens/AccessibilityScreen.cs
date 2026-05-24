@@ -4,12 +4,13 @@ using SFML.System;
 using SFML.Audio;
 
 public class WGAccessibilityMenu : Widget {
-    private Sprite bg = new Sprite(Data.textures["screens:accessibility_bg"]);
+    private static Sprite bg = new Sprite(Data.textures["screens:accessibility_bg"]);
+    public static Sprite fade = new Sprite(Data.textures["screens:90fade"]);
 
     private Vector2i anchor = new Vector2i(-185, -74);
     private int n = 10;
 
-    private static Selector selector = new Selector(new List<int> {1, 1, 1, 1, 1, 1, 1, 1, 1, 1});
+    private static Selector selector = new Selector(new List<int> {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1});
 
     public override void Render() {
         Camera.UnlockCamera();
@@ -68,7 +69,12 @@ public class WGAccessibilityMenu : Widget {
         }
 
         // 9
-        if (UI.DrawButton(S("save and exit"), anchor.X, anchor.Y+11*n, hover: selector.is_on(0, 9), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left")) {
+        if (UI.DrawButton(S("(TEST)", " ", "Cover screen", ": ", Accessibility.cover_screen ? "enabled" : "disabled"), anchor.X, anchor.Y+9*n, hover: selector.is_on(0, 9), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left")) {
+            Accessibility.cover_screen = !Accessibility.cover_screen;
+        }
+
+        // 10
+        if (UI.DrawButton(S("save and exit"), anchor.X, anchor.Y+12*n, hover: selector.is_on(0, 10), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small hover", font: "default small", alignment: "Left")) {
             Config.SaveToFile();
             Camera.LockCamera();
             Program.ChangeState(Program.previous_state);

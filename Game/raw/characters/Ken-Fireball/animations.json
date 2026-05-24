@@ -29,6 +29,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -61,6 +62,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -93,6 +95,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -125,6 +128,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -157,6 +161,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -189,6 +194,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -221,6 +227,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -253,6 +260,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -285,6 +293,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -317,6 +326,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -349,6 +359,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -381,6 +392,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -413,6 +425,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -445,6 +458,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -477,6 +491,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -509,6 +524,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -541,6 +557,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -573,6 +590,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -605,6 +623,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -637,6 +656,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         },
@@ -669,6 +689,7 @@
                 }
             ],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": false
         }
@@ -680,6 +701,7 @@
             "DeltaY": 0.0,
             "Boxes": [],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": true
         },
@@ -689,6 +711,7 @@
             "DeltaY": 0.0,
             "Boxes": [],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": true
         },
@@ -698,6 +721,7 @@
             "DeltaY": 0.0,
             "Boxes": [],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": true
         },
@@ -707,6 +731,7 @@
             "DeltaY": 0.0,
             "Boxes": [],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": true
         },
@@ -716,6 +741,7 @@
             "DeltaY": 0.0,
             "Boxes": [],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": true
         },
@@ -725,6 +751,7 @@
             "DeltaY": 0.0,
             "Boxes": [],
             "lenght": 2,
+            "facing": 1,
             "Sound_index": "",
             "hasHit": true
         }

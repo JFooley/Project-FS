@@ -27,13 +27,7 @@ public class Stage {
 
     // Battle Info
     public List<Character> OnSceneCharacters = new List<Character> {};
-    public List<Character> OnSceneCharactersSorted => this.OnSceneCharacters
-            .OrderByDescending(x => x.state.priority)
-            .ThenBy(x => AI.rand.Next())
-            .ToList();
-    public List<Character> OnSceneCharactersRender => this.OnSceneCharacters
-            .OrderBy(x => x.state.priority)
-            .ToList();
+    public List<Character> OnSceneCharactersSorted => this.OnSceneCharacters.OrderBy(x => x.state.priority).ToList();
     public List<Character> OnSceneParticles = new List<Character> {};
     public List<Character> newCharacters = new List<Character> {};
     public List<Character> newParticles = new List<Character> {};
@@ -110,61 +104,64 @@ public class Stage {
         // Pause
         if (Input.Key_down("Start") && WGBattle.battle_state == WGBattle.Battling) this.Pause();
 
-        // Render stage sprite
-        if (this.textures.ContainsKey(this.CurrentSprite.sprite_index)) {
-            Sprite temp_sprite = new Sprite(this.textures[this.CurrentSprite.sprite_index]);
-            temp_sprite.Position = new Vector2f(0, 0);
-            temp_sprite.Color = Accessibility.high_contrast ? new Color(15, 15, 15, 255) : Color.White;
-            Program.window.Draw(temp_sprite);
+        this.Animate();
+        
+        // Animate > Render
+        foreach (Character char_object in this.OnSceneCharactersSorted) {
+            char_object.Animate();
+            this.DrawShadow(char_object);
+            char_object.Render(Stage.show_boxs);
+        }
+        foreach (Character part_object in this.OnSceneParticles) {
+            part_object.Animate();
+            part_object.Render(Stage.show_boxs);
         }
 
-        // Advance to the next frame
-        CurrentAnimation.AdvanceFrame();
-        if (this.CurrentAnimation.ended && state.change_on_end) {
-            if (states.ContainsKey(this.state.post_state)) {
-                this.LastState = this.CurrentState;
-                this.CurrentState = this.state.post_state;
-                if (CurrentState != LastState) this.states[LastState].animation.Reset();
-            }
-        }
+        // Bot > Behave > Colide (chars)
+        foreach (Character char_object in this.OnSceneCharactersSorted) char_object.Update();
+        this.OnSceneCharacters.RemoveAll(obj => obj.remove);
+        this.OnSceneCharacters.AddRange(this.newCharacters);
+        this.newCharacters.Clear();
 
-        // Keep music playing
-        this.PlayMusic();
+        // Bot > Behave > Colide (particles)
+        foreach (Character part_object in this.OnSceneParticles) part_object.Update();
+        this.OnSceneParticles.RemoveAll(obj => obj.remove);
+        this.OnSceneParticles.AddRange(this.newParticles);
+        this.newParticles.Clear();
+        
+        // Stage Behave
+        this.Behave();
+        this.DoSpecialBehaviour();
+        UI.DrawBattleUI(this);
+
+        // Advance > update
+        foreach (Character char_object in this.OnSceneCharactersSorted) {
+            char_object.AdvanceFrame();
+            char_object.UpdateState();
+        }
+        foreach (Character part_object in this.OnSceneParticles) {
+            part_object.AdvanceFrame();
+            part_object.UpdateState();
+        }
 
         // Accessibility
         if (WGBattle.battle_state == WGBattle.Battling && !Stage.pause) {
             Accessibility.DistanceAudioCue(this.character_A, this.character_B);
             Accessibility.FallWakeUpAudioCue(this.character_A, this.character_B);
         }
-        // Render chars
-        foreach (Character char_object in this.OnSceneCharactersRender) {
-            char_object.Bot();
-            this.DrawShadow(char_object);
-            char_object.Render(Stage.show_boxs);
-        }
-        foreach (Character part_object in this.OnSceneParticles) {
-            part_object.Render(Stage.show_boxs);
-        }
-        UI.DrawBattleUI(this);
 
-        // Update chars
-        foreach (Character char_object in this.OnSceneCharactersSorted) char_object.Update();
-        this.OnSceneCharacters.RemoveAll(obj => obj.remove);
-        this.OnSceneCharacters.AddRange(this.newCharacters);
-        this.newCharacters.Clear();
-        this.DoBehavior();
-
-        // Update particles
-        foreach (Character part_object in this.OnSceneParticles) part_object.Update();
-        this.OnSceneParticles.RemoveAll(obj => obj.remove);
-        this.OnSceneParticles.AddRange(this.newParticles);
-        this.newParticles.Clear();
+        // TEST
+        if (Accessibility.cover_screen) {
+            WGAccessibilityMenu.fade.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
+            Program.window.Draw(WGAccessibilityMenu.fade);
+        }
 
         // Render Pause menu and Traning assets
+        if (Config.debug) {UI.ShowDebugInfo(this.character_A); UI.ShowDebugInfo(this.character_B);}
         if (Stage.training_mode) this.TrainingMode();
         if (Stage.pause) this.PauseScreen();
     }
-    private void DoBehavior() {
+    private void Behave() {
         // Move characters away from border
         character_A.body.position.X = Math.Max(character_A.push_box_width, Math.Min(character_A.body.position.X, this.length - character_A.push_box_width));
         character_B.body.position.X = Math.Max(character_B.push_box_width, Math.Min(character_B.body.position.X, this.length - character_B.push_box_width));
@@ -193,8 +190,28 @@ public class Stage {
             if (this.character_A.not_acting || this.character_A.not_acting_low) this.character_A.ChangeState("Win");
             if (this.character_B.not_acting || this.character_B.not_acting_low) this.character_B.ChangeState("Win");
         }
+    }
+    private void Animate() {
+        // Render stage sprite
+        if (this.textures.ContainsKey(this.CurrentSprite.sprite_index)) {
+            Sprite temp_sprite = new Sprite(this.textures[this.CurrentSprite.sprite_index]);
+            temp_sprite.Position = new Vector2f(0, 0);
+            temp_sprite.Color = Accessibility.high_contrast ? new Color(15, 15, 15, 255) : Color.White;
+            Program.window.Draw(temp_sprite);
+        }
 
-        this.DoSpecialBehaviour();
+        // Advance to the next frame
+        CurrentAnimation.AdvanceFrame();
+        if (this.CurrentAnimation.ended && state.change_on_end) {
+            if (states.ContainsKey(this.state.post_state)) {
+                this.LastState = this.CurrentState;
+                this.CurrentState = this.state.post_state;
+                if (CurrentState != LastState) this.states[LastState].animation.Reset();
+            }
+        }
+
+        // Keep music playing
+        this.PlayMusic();
     }
     public virtual void DoSpecialBehaviour() {}
     public void TrainingMode() {
@@ -279,8 +296,12 @@ public class Stage {
             state = "Parry";
         } else if (hit == Character.HIT) {
             state = "Hit" + weight;
-        } else if (hit == Character.BLOCK){
+        } else if (hit == Character.BLOCK) {
             state = "Block";
+        } else if (hit == Character.GRAB) {
+            state = "Grab";
+        } else if (hit == Character.TECH) {
+            state = "Tech";
         } else return;
 
         var hs = new Hitspark(state, X + X_offset * facing, Y + Y_offset, facing);
@@ -430,8 +451,8 @@ public class Stage {
         Accessibility.AtackHeightAudioCue(this.character_A, this.character_B);
     }
     public void StopFor(int lenght, int target_lenght = 0, Character target = null) {
-        foreach (var entity in this.OnSceneCharacters) entity.hitstop_counter = lenght;
-        if (target != null) target.hitstop_counter = target_lenght;
+        foreach (var entity in this.OnSceneCharacters) entity.next_frame_hitstop = lenght;
+        if (target != null) target.next_frame_hitstop = target_lenght;
     }
     public bool MustWait() {
         return this.character_A.state.drama_wait || this.character_B.state.drama_wait;

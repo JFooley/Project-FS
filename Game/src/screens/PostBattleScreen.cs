@@ -19,7 +19,7 @@ public class WGPostBattle : Widget {
         if (WGBattle.match_winner == WGBattle.Drawn) winner_text = S("Drawn");
         else winner_text = S("Player" + " " + WGBattle.match_winner, " ", "Wins");
 
-        Accessibility.Speak("ME", true, "match end");
+        Accessibility.Speak("ME", TTSRequisition.TEXT, true, "match end");
         UI.DrawText(S(Program.playerA_wins.ToString()), -Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "left");
         UI.DrawText(S(Program.playerB_wins.ToString()), Config.RenderWidth / 2, -Config.RenderHeight / 2, spacing: Config.spacing_medium, textureName: "default medium", alignment: "right");
         UI.DrawText(winner_text, 0, -100, TTS: true, TTS_id: "PBWinner", priority: true, spacing: Config.spacing_medium, textureName: "default medium");

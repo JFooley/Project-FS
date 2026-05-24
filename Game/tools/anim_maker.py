@@ -25,6 +25,7 @@ class Hitbox:
 class FrameData:
     image_path: str
     duration: int = 1
+    facing: int = 1
     delta_x: int = 0
     delta_y: int = 0
     hitboxes: list = field(default_factory=list)
@@ -46,6 +47,7 @@ class AnimationData:
             new_frame = FrameData(
                 image_path=f.image_path,
                 duration=f.duration,
+                facing=f.facing,
                 delta_x=f.delta_x,
                 delta_y=f.delta_y,
                 hitboxes=[
@@ -105,6 +107,7 @@ class AnimationSerializer:
                 "DeltaY": frame.delta_y / frame.duration,
                 "Boxes": boxes,
                 "lenght": frame.duration,
+                "facing": frame.facing,
                 "Sound_index": "",
                 "hasHit": True
             })
@@ -156,6 +159,7 @@ class AnimationEditor:
         tk.Button(self.top, text="Save", command=self.save).pack(side=tk.LEFT)
         tk.Button(self.top, text="Play", command=self.toggle_play).pack(side=tk.LEFT)
         tk.Button(self.top, text="Duplicate", command=self.duplicate_current).pack(side=tk.LEFT)
+        tk.Button(self.top, text="Copy Last Frame Hitboxes", command=self.copy_last_frame_hitboxes).pack(side=tk.LEFT)
         tk.Button(self.top, text="Delete", command=self.delete_current).pack(side=tk.LEFT)
 
         tk.Label(self.top, text="Duration").pack(side=tk.LEFT, padx=8)
@@ -164,6 +168,14 @@ class AnimationEditor:
 
         self.duration_entry = tk.Entry(self.top, width=5, textvariable=self.duration_var)
         self.duration_entry.pack(side=tk.LEFT)
+
+        tk.Label(self.top, text="Facing").pack(side=tk.LEFT, padx=8)
+
+        self.facing_var = tk.StringVar(value="1")
+
+        self.facing_entry = tk.Entry(self.top, width=5, textvariable=self.facing_var)
+        self.facing_entry.pack(side=tk.LEFT)
+
 
         tk.Label(self.top, text="Delta X").pack(side=tk.LEFT, padx=8)
 
@@ -200,8 +212,9 @@ class AnimationEditor:
             command=self.next_box_type
         )
         self.box_button.pack(side=tk.LEFT, padx=8)
-
+        
         self.duration_var.trace_add("write", lambda *args: self.on_field_change())
+        self.facing_var.trace_add("write", lambda *args: self.on_field_change())
         self.dx_var.trace_add("write", lambda *args: self.on_field_change())
         self.dy_var.trace_add("write", lambda *args: self.on_field_change())
 
@@ -322,6 +335,7 @@ class AnimationEditor:
         frame = self.animation.frames[self.current_frame]
 
         self.duration_var.set(str(frame.duration))
+        self.facing_var.set(str(frame.facing))
         self.dx_var.set(str(frame.delta_x))
         self.dy_var.set(str(frame.delta_y))
 
@@ -338,6 +352,11 @@ class AnimationEditor:
             frame.duration = max(1, int(self.duration_var.get()))
         except:
             frame.duration = 1
+
+        try:
+            frame.facing = min(max(int(self.facing), -1), 1)
+        except:
+            frame.facing = 1
 
         try:
             frame.delta_x = int(self.dx_var.get())
@@ -372,6 +391,11 @@ class AnimationEditor:
 
         try:
             frame.duration = max(1, int(self.duration_var.get()))
+        except:
+            pass
+
+        try:
+            frame.facing = min(max(int(self.facing), -1), 1)
         except:
             pass
 
@@ -454,7 +478,6 @@ class AnimationEditor:
         )
 
     def delete_last_hitbox(self):
-
         if not self.animation.frames:
             return
 
@@ -462,6 +485,16 @@ class AnimationEditor:
 
         if frame.hitboxes:
             frame.hitboxes.pop()
+
+    def copy_last_frame_hitboxes(self):
+        if not self.animation.frames:
+            return
+        
+        frame: FrameData = self.animation.frames[self.current_frame]
+        last_frame: FrameData = self.animation.frames[self.current_frame - 1] if self.current_frame > 0 else None
+
+        if last_frame.hitboxes:
+            frame.hitboxes = last_frame.hitboxes.copy() if last_frame else []
 
     def on_click(self, event):
 

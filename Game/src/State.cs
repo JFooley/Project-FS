@@ -18,7 +18,8 @@ public class State {
     public bool on_parry;
     public bool can_be_parried;
     public bool can_be_hit;
-    public bool can_harm;
+    public bool will_hit;
+    public bool is_grab;
     public bool has_gravity;
 
     // Anim logic
@@ -28,7 +29,7 @@ public class State {
     public bool change_on_ground;
     public bool drama_wait;
 
-    public State(Frame[][] frames, string post_state, int priority = -1, bool loop = true, bool change_on_end = true, bool change_on_ground = false, bool can_be_parried = true, bool trace = false, bool glow = false, string hitstop = "Light", bool not_busy = false, bool air = false, bool low = false, bool on_hit = false, bool on_block = false, bool is_parry = false, bool can_be_hit = true, bool can_harm = false, bool drama_wait = false, bool has_gravity = true) {
+    public State(Frame[][] frames, string post_state, int priority = -1, bool loop = true, bool change_on_end = true, bool change_on_ground = false, bool can_be_parried = true, bool trace = false, bool glow = false, string hitstop = "Light", bool not_busy = false, bool air = false, bool low = false, bool on_hit = false, bool on_block = false, bool is_parry = false, bool can_be_hit = true, bool will_hit = false, bool is_grab = false, bool drama_wait = false, bool has_gravity = true) {
         this._animations = frames.Select(f => new Animation(f, loop)).ToArray();
         this.post_state = post_state;
         this.priority = priority;
@@ -37,7 +38,7 @@ public class State {
         this.trace = trace;
         this.glow = glow;
         this.hitstop = hitstop;
-        this.can_be_parried = can_be_parried;
+        this.can_be_parried = can_be_parried && !is_grab;
         this.can_be_hit = can_be_hit;
         this.not_busy = not_busy;
         this.air = air;
@@ -47,6 +48,7 @@ public class State {
         this.on_parry = is_parry;
         this.drama_wait = drama_wait;
         this.has_gravity = has_gravity;
-        this.can_harm = (!not_busy && !on_hit && !on_block && !is_parry) || can_harm;
+        this.will_hit = (!not_busy && !on_hit && !on_block && !is_parry) || will_hit || is_grab;
+        this.is_grab = is_grab;
     }
 }

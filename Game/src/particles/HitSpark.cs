@@ -1,5 +1,6 @@
 using SFML.Graphics;
 using SFML.Audio;
+using SFML.System;
 
 public class Hitspark : Character {
     private static Dictionary<string, Texture> textures_local = new Dictionary<string, Texture>();
@@ -27,6 +28,9 @@ public class Hitspark : Character {
             {"HitHeavy", new State(F(a["HitHeavy"]), "Remove")},
             {"Parry", new State(F(a["Parry"]), "Remove")},
             {"Block", new State(F(a["Block"]), "Remove")},
+            {"Grab", new State(F(a["Grab"]), "Remove")},
+            {"Tech", new State(F(a["Tech"]), "Remove")},
+
         };
     }
 

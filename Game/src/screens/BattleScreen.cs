@@ -57,7 +57,7 @@ class WGBattle : Widget {
                 else if (Program.stage.CheckTimer(2)) {
                     fight_logo.Position = new Vector2f(Camera.X - 89, Camera.Y - 54);
                     Program.window.Draw(fight_logo);
-                    Accessibility.Speak("RoundFight", true, S("fight!"));
+                    Accessibility.Speak("RoundFight", TTSRequisition.TEXT, true, S("fight!"));
                 }
                 else if (Program.stage.CheckTimer(1)) 
                     UI.DrawText(S("ready?"), 0, -30, TTS: true, TTS_id: "RoundReady", priority: true, spacing: Config.spacing_medium, textureName: "default medium white");
@@ -96,11 +96,11 @@ class WGBattle : Widget {
                     if (Program.stage.character_A.life_points.X <= 0 || Program.stage.character_B.life_points.X <= 0) {
                         KO_logo.Position = new Vector2f(Camera.X - 75, Camera.Y - 54);
                         Program.window.Draw(KO_logo);
-                        Accessibility.Speak("RoundEndLogo", true, S("K.O."));
+                        Accessibility.Speak("RoundEndLogo", TTSRequisition.TEXT, true, S("K.O."));
                     } else {
                         timesup_logo.Position = new Vector2f(Camera.X - 131, Camera.Y - 55);
                         Program.window.Draw(timesup_logo);
-                        Accessibility.Speak("RoundEndLogo", true, S("time's up"));
+                        Accessibility.Speak("RoundEndLogo", TTSRequisition.TEXT, true, S("time's up"));
                     }
                 } 
                 break;

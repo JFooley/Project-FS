@@ -12,10 +12,13 @@ public class Super : Character {
     private static Dictionary<string, Frame[]> _shared_animations = new Dictionary<string, Frame[]>();
     public override Dictionary<string, Frame[]> animations { get => _shared_animations; protected set => _shared_animations = value ?? new Dictionary<string, Frame[]>();}
 
+    private Vector2f initial_pos;
+
     public Super(string initialState, float startX, float startY, int facing)
         : base("Super", initialState, startX, startY, Data.GetPath("Assets/particles/Super")) {
             this.facing = facing;
             this.own_light = Color.White;
+            this.initial_pos = new Vector2f(startX, startY);
         }
     public Super() : base("Super", "", 0, 0, Data.GetPath("Assets/particles/Super")) {}
 
@@ -23,13 +26,35 @@ public class Super : Character {
         var a = this.animations;
 
         this.states = new Dictionary<string, State> {
-            {"SALighting", new State(F(a["SAGathering"]), "SALighting_tail", 60)},
-            {"SALighting_tail", new State(F(a["SALighting"]), "Remove", 60)},
-            {"SABlink", new State(F(a["SAGathering"]), "SABlink_tail", 60)},
-            {"SABlink_tail", new State(F(a["SABlink"]), "Remove", 20)}
+            {"SALighting", new State(F(a["SAGathering"]), "SALighting_tail_1")},
+            {"SALighting_tail_1", new State(F(a["SALighting_horizontal"]), "SALighting_tail_2")},
+            {"SALighting_tail_2", new State(F(a["SALighting_vertical"]), "Remove")},
+            {"SABlink", new State(F(a["SAGathering"]), "SABlink_tail")},
+            {"SABlink_tail", new State(F(a["SABlink"]), "Remove")}
         };
     }
-    
+
+    public override void Update() {
+        base.Update();
+
+        switch (this.current_state) {
+            case "SALighting_tail_1":
+                this.body.position.Y = this.initial_pos.Y;
+                this.body.position.X = Camera.X;
+                break;
+
+            case "SALighting_tail_2":
+                this.body.position.Y = Camera.Y;
+                this.body.position.X = this.initial_pos.X;
+                break;
+
+            default:
+                this.body.position = this.initial_pos;
+                break;
+        }       
+
+    }
+
     public override void Render(bool drawHitboxes = false) {
         if (!this.render) return;
         

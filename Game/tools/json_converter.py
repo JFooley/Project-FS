@@ -90,6 +90,7 @@ def parse_frame(frame_text):
         "DeltaY": delta_y,
         "Boxes": boxes,
         "lenght": length,
+        "facing": 1,
         "Sound_index": sound,
         "hasHit": has_hit
     }
