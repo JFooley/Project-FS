@@ -16,7 +16,7 @@ public class Fireball : Character {
         : base("Ken-Fireball", initialState, startX, startY, Data.GetPath("Assets/characters/Ken-Fireball"), 1) {
             this.player_index = team;
             this.facing = facing;
-            this.life_points = new Vector2i(life_points, 0);
+            this.life_points = new Vector2i(life_points, life_points);
             this.shadow_size = 1;
             this.own_light = new Color(255, 255, 255, 255);
     }
