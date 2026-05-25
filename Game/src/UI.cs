@@ -321,9 +321,9 @@ namespace UI_space {
             UI.DrawBar(-177, -81, 1, 1, "ui:croma", color: stage.character_A.current_palette_color, alignment: "left", mirrored: false);
             UI.DrawBar(177, -81, 1, 1, "ui:croma", color: stage.character_B.current_palette_color, alignment: "right", mirrored: true);
 
-            UI.DrawText(new[] {(stage.character_A.AIEnabled && stage.character_A.BotEnabled) ? "computer" : "player 1"}, -Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
-            UI.DrawText(new[] {(stage.character_B.AIEnabled && stage.character_B.BotEnabled) ? "computer" : "player 2"}, Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
-
+            UI.DrawText(new[] {(stage.character_A.AIEnabled && stage.character_A.BotEnabled) ? "computer lv. " + (5 - stage.character_A.BOT.difficulty) : "player 1"}, -Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
+            UI.DrawText(new[] {(stage.character_B.AIEnabled && stage.character_B.BotEnabled) ? "computer lv. " + (5 - stage.character_B.BOT.difficulty) : "player 2"}, Config.RenderWidth/2, -Config.RenderHeight/2 - 10, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
+ 
             // Combo text
             if (stage.character_A.combo_counter > 1) {
                 UI.DrawText(new[] {"combo"}, -190, -80, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");

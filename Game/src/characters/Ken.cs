@@ -777,7 +777,7 @@ public class Ken : Character {
                 this.BOT.EnqueueMove("Right", 20);
             }
         } 
-        this.BOT.EnqueueMove("", AI.rand.Next(0, 20 * this.BOT.difficulty));
+        this.BOT.EnqueueMove("", AI.rand.Next(5 * this.BOT.difficulty, 20 * this.BOT.difficulty));
     }
     public override void SelectAction(FightState f_state) {
         if (f_state.enemyIsDead) return;
@@ -1006,7 +1006,7 @@ public class Ken : Character {
                 this.BOT.EnqueueAction("", AI.rand.Next(10, 30)); // Nothing
         }
     
-        this.BOT.EnqueueAction("", AI.rand.Next(0, 20 * this.BOT.difficulty));
+        this.BOT.EnqueueAction("", AI.rand.Next(5 * this.BOT.difficulty, 25 * this.BOT.difficulty));
     }
 
     // Other

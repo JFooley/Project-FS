@@ -18,7 +18,7 @@ public class Accessibility{
     // Accessibility options data
     public static float TTS_speed = 1f;
     public const float atack_feedback_intensity = 1f;
-    public const float defend_feedback_intensity = 0.2f;
+    public const float defend_feedback_intensity = 0.5f;
 
     // Audio cue data
     private static Sound? radar_beep_BA;

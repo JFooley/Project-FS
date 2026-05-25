@@ -525,7 +525,8 @@ public abstract class Character : Object {
     }
     public void PlaySound(string sound_string, float panning = 0, bool follow_player = true) {
         string[] sound = sound_string.Split(' ');
-        if (sounds.TryGetValue(sound[0], out SoundBuffer buffer)) {
+        SoundBuffer buffer;
+        if (sound[0].Contains(":") ? Data.sounds.TryGetValue(sound[0], out buffer) : sounds.TryGetValue(sound[0], out buffer)) {
             var temp_sound = new Sound(buffer) {
                 Volume = Accessibility.distance_cue ? Config.Character_Volume * 0.7f : Config.Character_Volume,
                 Pan = follow_player && Accessibility.spacialized_audio? (this.body.position.X - Camera.X) / (Config.RenderWidth*0.5f) : panning,

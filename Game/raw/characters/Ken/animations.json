@@ -11161,7 +11161,7 @@
             ],
             "lenght": 3,
             "facing": 1,
-            "Sound_index": "",
+            "Sound_index": "step",
             "hasHit": true
         },
         {
@@ -11425,7 +11425,7 @@
             ],
             "lenght": 3,
             "facing": 1,
-            "Sound_index": "step --RP",
+            "Sound_index": "step",
             "hasHit": true
         },
         {
@@ -11601,7 +11601,7 @@
             ],
             "lenght": 3,
             "facing": 1,
-            "Sound_index": "step --RP",
+            "Sound_index": "",
             "hasHit": true
         }
     ],
@@ -11647,7 +11647,7 @@
             ],
             "lenght": 3,
             "facing": 1,
-            "Sound_index": "",
+            "Sound_index": "step",
             "hasHit": true
         },
         {
@@ -11911,7 +11911,7 @@
             ],
             "lenght": 3,
             "facing": 1,
-            "Sound_index": "step --RP",
+            "Sound_index": "step",
             "hasHit": true
         },
         {
@@ -12087,7 +12087,7 @@
             ],
             "lenght": 3,
             "facing": 1,
-            "Sound_index": "step --RP",
+            "Sound_index": "",
             "hasHit": true
         }
     ],
