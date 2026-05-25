@@ -2131,7 +2131,7 @@
     ],
     "parryFrames": [
         {
-            "Sprite_index": "15034",
+            "Sprite_index": "15032",
             "DeltaX": 0.0,
             "DeltaY": 0.0,
             "Boxes": [
@@ -2158,7 +2158,7 @@
                     }
                 }
             ],
-            "lenght": 1,
+            "lenght": 6,
             "facing": 1,
             "Sound_index": "golpe_grito_4",
             "hasHit": true
@@ -2191,7 +2191,7 @@
                     }
                 }
             ],
-            "lenght": 8,
+            "lenght": 1,
             "facing": 1,
             "Sound_index": "",
             "hasHit": true
@@ -2259,7 +2259,7 @@
                     }
                 }
             ],
-            "lenght": 3,
+            "lenght": 6,
             "facing": 1,
             "Sound_index": "",
             "hasHit": true
@@ -2292,7 +2292,7 @@
                     }
                 }
             ],
-            "lenght": 3,
+            "lenght": 1,
             "facing": 1,
             "Sound_index": "",
             "hasHit": true
@@ -2325,7 +2325,7 @@
                     }
                 }
             ],
-            "lenght": 3,
+            "lenght": 1,
             "facing": 1,
             "Sound_index": "",
             "hasHit": true
@@ -10752,12 +10752,12 @@
                 {
                     "type": 0,
                     "pA": {
-                        "x": 208,
-                        "y": 153
-                    },
-                    "pB": {
                         "x": 166,
                         "y": 123
+                    },
+                    "pB": {
+                        "x": 208,
+                        "y": 153
                     }
                 }
             ],
@@ -22793,6 +22793,17 @@
                     }
                 },
                 {
+                    "type": 1,
+                    "pA": {
+                        "x": 160,
+                        "y": 105
+                    },
+                    "pB": {
+                        "x": 185,
+                        "y": 125
+                    }
+                },
+                {
                     "type": 2,
                     "pA": {
                         "x": 100.0,
@@ -24330,7 +24341,7 @@
                     }
                 }
             ],
-            "lenght": 4,
+            "lenght": 3,
             "facing": 1,
             "Sound_index": "",
             "hasHit": true
@@ -24374,7 +24385,7 @@
                     }
                 }
             ],
-            "lenght": 4,
+            "lenght": 3,
             "facing": 1,
             "Sound_index": "",
             "hasHit": true
@@ -24418,7 +24429,7 @@
                     }
                 }
             ],
-            "lenght": 4,
+            "lenght": 3,
             "facing": 1,
             "Sound_index": "",
             "hasHit": true
@@ -24462,7 +24473,7 @@
                     }
                 }
             ],
-            "lenght": 4,
+            "lenght": 3,
             "facing": 1,
             "Sound_index": "",
             "hasHit": true
@@ -24508,12 +24519,12 @@
                 {
                     "type": 0,
                     "pA": {
-                        "x": 208,
-                        "y": 153
-                    },
-                    "pB": {
                         "x": 166,
                         "y": 123
+                    },
+                    "pB": {
+                        "x": 208,
+                        "y": 153
                     }
                 }
             ],
@@ -26697,7 +26708,7 @@
             ],
             "lenght": 1,
             "facing": 1,
-            "Sound_index": "",
+            "Sound_index": "golpe_3 --RP",
             "hasHit": false
         },
         {
@@ -26873,12 +26884,12 @@
                 {
                     "type": 0,
                     "pA": {
-                        "x": 208,
-                        "y": 153
-                    },
-                    "pB": {
                         "x": 166,
                         "y": 123
+                    },
+                    "pB": {
+                        "x": 208,
+                        "y": 153
                     }
                 }
             ],
@@ -27498,7 +27509,7 @@
                     }
                 }
             ],
-            "lenght": 14,
+            "lenght": 16,
             "facing": 1,
             "Sound_index": "",
             "hasHit": true
@@ -27542,7 +27553,7 @@
                     }
                 }
             ],
-            "lenght": 3,
+            "lenght": 4,
             "facing": 1,
             "Sound_index": "",
             "hasHit": true

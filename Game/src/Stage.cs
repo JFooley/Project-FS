@@ -291,6 +291,8 @@ public class Stage {
         this.newParticles.Add(par);
     }
     public void PSHitspark(int hit, float X, float Y, int facing, string weight = "Light", int X_offset = 0, int Y_offset = 0) {
+        if (weight == "") weight = "Light";
+
         string state;
         if (hit == Character.PARRY) {
             state = "Parry";
@@ -400,25 +402,25 @@ public class Stage {
         foreach (Character part_object in this.OnSceneParticles) part_object.animate = ! part_object.animate;
     }
     public void Hitstop(string amount, int hit_type, Character on_hit_char, Character hitting_char) {
-        uint frames;
+        int frames;
 
         if (hit_type == Character.PARRY) {
-            frames = (uint) Config.hit_stop_time * 1/2;
+            frames = Config.hit_stop_time * 1/3;
             switch (amount) {
                 case "Light":
-                        this.StopFor(lenght: (Config.hit_stop_time * 1/3) + on_hit_char.current_animation.lenght + Config.parry_advantage * 2, target: on_hit_char, target_lenght: Config.hit_stop_time * 1/3);
+                        this.StopFor(lenght: frames + Config.parry_lenght + Config.parry_advantage * 2, target: on_hit_char, target_lenght: frames);
                     break;
 
                 case "Medium":
-                        this.StopFor(lenght: (Config.hit_stop_time * 1/3) + on_hit_char.current_animation.lenght + Config.parry_advantage * 3/2, target: on_hit_char, target_lenght: Config.hit_stop_time * 1/3);
+                        this.StopFor(lenght: frames + Config.parry_lenght + Config.parry_advantage * 3/2, target: on_hit_char, target_lenght: frames);
                     break;
 
                 case "Heavy":
-                        this.StopFor(lenght: (Config.hit_stop_time * 1/3) + on_hit_char.current_animation.lenght + Config.parry_advantage, target: on_hit_char, target_lenght: Config.hit_stop_time * 1/3);
+                        this.StopFor(lenght: frames + Config.parry_lenght + Config.parry_advantage * 1, target: on_hit_char, target_lenght: frames);
                     break;
 
                 default:
-                    this.StopFor(lenght: (Config.hit_stop_time * 1/3) + on_hit_char.current_animation.lenght + Config.parry_advantage * 2, target: on_hit_char, target_lenght: Config.hit_stop_time * 1/3);
+                    this.StopFor(lenght: frames + Config.parry_lenght + Config.parry_advantage * 2, target: on_hit_char, target_lenght: frames);
                     break;
             }
 
@@ -426,28 +428,28 @@ public class Stage {
             switch (amount) {
                 case "Light":
                     this.StopFor(Config.hit_stop_time * 1/2);
-                    frames = (uint) Config.hit_stop_time * 1/2;
+                    frames = Config.hit_stop_time * 1/2;
                     break;
 
                 case "Medium":
                     this.StopFor(Config.hit_stop_time * 2/3);
-                    frames = (uint) Config.hit_stop_time * 2/3;
+                    frames = Config.hit_stop_time * 2/3;
                     break;
 
                 case "Heavy":
                     this.StopFor(Config.hit_stop_time);
-                    frames = (uint) Config.hit_stop_time;
+                    frames = Config.hit_stop_time;
                     break;
 
                 default:
-                    this.StopFor(Config.hit_stop_time * 1/2);
-                    frames = (uint) Config.hit_stop_time * 1/2;
+                    this.StopFor(0);
+                    frames = Config.hit_stop_time * 1/2;
                     break;
             }
         }
 
         // Accessibility
-        Accessibility.AtackHapticFeedback(on_hit_char, hitting_char, frames);
+        Accessibility.AtackHapticFeedback(on_hit_char, hitting_char, (uint) frames);
         Accessibility.AtackHeightAudioCue(this.character_A, this.character_B);
     }
     public void StopFor(int lenght, int target_lenght = 0, Character target = null) {

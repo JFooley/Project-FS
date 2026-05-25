@@ -90,8 +90,8 @@ public class Ken : Character {
             { "CrouchingIn", new State(F(a["crouchingInFrames"]), "Crouching", not_busy: true, low: true)},
             { "Crouching", new State(F(a["crouchingFrames"]), "Crouching", not_busy: true, low: true)},
             // Super
-            { "SA1", new State(F(a["SA1"]), "Idle", 4, trace: true, drama_wait: true, will_hit: true)},
-            { "SA1_tail", new State(F(a["SA1_tail"]), "SA1_exit", 4, trace: true, air: true, drama_wait: true, will_hit: true)},
+            { "SA1", new State(F(a["SA1"]), "Idle", 4, trace: true, drama_wait: true, will_hit: true, hitstop: "")},
+            { "SA1_tail", new State(F(a["SA1_tail"]), "SA1_exit", 4, trace: true, air: true, drama_wait: true, will_hit: true, hitstop: "Light")},
             { "SA1_exit", new State(F(a["SA1_exit"]), "JumpFalling", 4)},
             // Specials
             { "LightShory", new State(F(a["lightShoryFrames"]), "ShoryFalling", 3, hitstop: "Heavy", air: true, will_hit: true)},
@@ -170,7 +170,7 @@ public class Ken : Character {
         if (Input.Key_sequence("Down Down RB", 10, player: this.player_index, facing: this.facing) && !this.on_air && (this.not_acting || this.not_acting_low || (this.has_hit && (this.current_state == "CloseMP" || this.current_state.Contains("Shory") || this.current_state == "LowLightK"))) && Character.CheckAuraPoints(this, 100)) {
             Character.UseAuraPoints(this, 100);
             this.ChangeState("SA1");
-            this.stage.StopFor(16, 0, this);
+            this.stage.StopFor(12, 0, this);
             return;
 
         } else if (this.current_state == "SA1" && this.current_anim_frame_index == 3 && this.has_frame_change) {
@@ -682,7 +682,7 @@ public class Ken : Character {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 5, 0);
                     target.BlockStun(this, 30, raw_value: true);
-                    Character.Push(target: target, self: this, Config.heavy_pushback);
+                    Character.Push(target: target, self: this, 0);
                 } else {
                     hit = Character.HIT;
                     Character.Damage(target: target, self: this, 50, 35);
@@ -693,21 +693,14 @@ public class Ken : Character {
                 break;
                 
             case "SA1_tail":
-                if (target.isBlocking()) {
-                    hit = Character.BLOCK;
-                    Character.Damage(target: target, self: this, 5, 0);
-                    target.BlockStun(this, 30, raw_value: true);
+                hit = Character.HIT;
+                Character.Damage(target: target, self: this, 45, 35);
+                target.Stun(this, 5, airbone: true);
 
-                } else {
-                    hit = Character.HIT;
-                    Character.Damage(target: target, self: this, 45, 35);
-                    target.Stun(this, 5, airbone: true);
-
-                    if (this.current_anim_frame_index < 6) {
-                        Character.Push(target: target, self: this, 1, Y_amount: 150, airbone: true);
-                    } else if (this.current_anim_frame_index >= 13) {
-                        Character.Push(target: target, self: this, Config.heavy_pushback, Y_amount: 80, airbone: true);
-                    }
+                if (this.current_anim_frame_index < 6) {
+                    Character.Push(target: target, self: this, 1, Y_amount: 150, airbone: true);
+                } else if (this.current_anim_frame_index >= 13) {
+                    Character.Push(target: target, self: this, Config.heavy_pushback, Y_amount: 80, airbone: true);
                 }
                 Character.AddAuraPoints(target, this, hit, self_amount: 2);
                 break;

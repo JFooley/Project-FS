@@ -224,7 +224,7 @@ public class Input {
     public static bool Key_change(string key, int player = DEFAULT, int facing = 1) {
         return (buttonState[player] & (1 << keysTranslationMap[facing][key])) != (buttonLastState[player] & (1 << keysTranslationMap[facing][key]));
     }
-    public static bool Key_sequence(string rawSequenceString, int maxFrames, int player = DEFAULT, int facing = 1, bool flexEntry = true, bool flexTransition = true) {
+    public static bool Key_sequence(string rawSequenceString, int between_buttons_window, int player = DEFAULT, int facing = 1, bool flexEntry = true, bool flexTransition = true) {
         int[] sequence = rawSequenceString.Split(' ').Select(key => keysTranslationMap[facing][key]).ToArray();
         List<int> bufferList = buffers[player].ToList();
 
@@ -235,8 +235,8 @@ public class Input {
         for (int i = currentIndex; i >= 0; i--) {
             bool found = false;
 
-            // Busca o input atual na janela de maxFrames
-            for (int j = currentFrame; j >= Math.Max(0, currentFrame - maxFrames); j--) {
+            // Busca o input atual na janela de frames
+            for (int j = currentFrame; j >= Math.Max(0, currentFrame - between_buttons_window); j--) {
                 bool isButtonPressed = (bufferList[j] & (1 << sequence[i])) != 0;
                 bool wasButtonReleased = (j == 0) || (bufferList[j - 1] & (1 << sequence[i])) == 0;
 
@@ -258,7 +258,7 @@ public class Input {
             if (!found) return false;
 
             if (!flexTransition && i > 0) {
-                for (int j = currentFrame; j >= Math.Max(0, currentFrame - maxFrames); j--) {
+                for (int j = currentFrame; j >= Math.Max(0, currentFrame - between_buttons_window); j--) {
                     // Se algum botão fora da sequência estiver pressionado, invalida
                     if ((bufferList[j] & ~(1 << sequence[i])) != 0) {
                         return false;

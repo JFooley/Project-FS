@@ -9,7 +9,7 @@ public static class Config {
 
     public static bool Fullscreen = true;
     public static bool Vsync = true;
-    public static bool debug = true;
+    public static bool debug = false;
 
     public static int Language = 0;
 
@@ -56,6 +56,7 @@ public static class Config {
 
     public const int parry_advantage = 2;
     public const int parry_window = 8;
+    public const int parry_lenght = 8;
 
     // Game constants
     public const int input_buffer_size = 240;
@@ -163,6 +164,7 @@ public static class Config {
         public int hit_stop_time { get; set; }
         public int max_rounds { get; set; }
         public int Language { get; set; }
+
         // Acessibilidade
         public bool TTS { get; set; }
         public float TTS_speed { get; set; }

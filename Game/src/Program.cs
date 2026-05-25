@@ -186,6 +186,9 @@ public static class Program {
                     break;
             }
 
+            // Debug toggle
+            if (Input.Key_sequence("Up Up Down Down Left Right Left Right B A Start", 20, flexEntry: false)) Config.debug = !Config.debug;
+
             // Finally
             last_frame_time = frametimer.Elapsed.TotalMilliseconds/1000;
             if (Config.debug) UI.ShowFramerate("default small white");

@@ -446,7 +446,7 @@ public abstract class Character : Object {
                                 continue;
                                 
                             } else if (hit_type == Character.PARRY) {
-                                enemy.ChangeState(enemy.on_air ? "AirParry" : "Parry", reset: true);
+                                enemy.ChangeState(enemy.on_air ? "AirParry" : "Parry", reset: true, lenght: Config.parry_lenght);
                                 enemy.aura_points.X = Math.Min(enemy.aura_points.Y, enemy.aura_points.X + 10);
                                 
                             } else if (hit_type == Character.TECH) {
