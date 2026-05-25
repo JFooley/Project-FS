@@ -40,11 +40,12 @@ public class Super : Character {
         switch (this.current_state) {
             case "SALighting_tail_1":
                 this.body.position.Y = this.initial_pos.Y;
-                this.body.position.X = Camera.X;
+                this.body.position.X = this.current_animation.on_last_frame ? this.initial_pos.X : Camera.X;
+
                 break;
 
             case "SALighting_tail_2":
-                this.body.position.Y = Camera.Y;
+                this.body.position.Y = this.current_animation.on_last_frame ? this.initial_pos.Y : Camera.Y;
                 this.body.position.X = this.initial_pos.X;
                 break;
 

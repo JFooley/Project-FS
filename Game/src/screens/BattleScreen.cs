@@ -1,7 +1,6 @@
 using SFML.Graphics;
 using SFML.System;
 using UI_space;
-using System.Runtime.InteropServices;
 
 class WGBattle : Widget {
     // Battle States
@@ -26,10 +25,18 @@ class WGBattle : Widget {
 
     public static int battle_state = Intro;
     public static int battle_mode = Versus;
-    private Sprite fight_logo = new Sprite(Data.textures["typography:fight"]);
-    private Sprite timesup_logo = new Sprite(Data.textures["typography:timesup"]);
-    private Sprite KO_logo = new Sprite(Data.textures["typography:ko"]); 
-    private Sprite fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = Color.White};
+    
+    private Sprite fight_logo;
+    private Sprite timesup_logo;
+    private Sprite KO_logo;
+    private Sprite fade90;
+
+    public WGBattle() {
+        fight_logo = new Sprite(Data.textures["typography:fight"]);
+        timesup_logo = new Sprite(Data.textures["typography:timesup"]);
+        KO_logo = new Sprite(Data.textures["typography:ko"]); 
+        fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = Color.White};
+    }
 
     public override void Render() {
         Program.stage?.Update();

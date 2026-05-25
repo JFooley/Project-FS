@@ -2,9 +2,14 @@ using UI_space;
 using SFML.Graphics;
 
 public class WGControls : Widget {
-    Sprite frame = new Sprite(Data.textures["screens:frame"]);
-    Sprite bg = new Sprite(Data.textures["screens:controls_0"]);
+    Sprite frame;
+    Sprite bg;
     private static Selector selector = new Selector(new List<int> {2});
+
+    public WGControls() {
+        frame = new Sprite(Data.textures["screens:frame"]);
+        bg = new Sprite(Data.textures["screens:controls_0"]);
+    }
 
     public override void Render() {
         if (Camera.isLocked) Camera.UnlockCamera();

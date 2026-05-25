@@ -40,7 +40,6 @@ public class Selector : Widget {
 
         if (has_change) {
             if (Accessibility.navigation_cue) this.change_sound.Play();
-            // if (Accessibility.TTS) ;
         }
     }
 

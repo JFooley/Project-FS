@@ -4,7 +4,11 @@ using SFML.System;
 
 public class WGIntro : Widget {
     private int pointer = 0;
-    Sprite fslogo = new Sprite(Data.textures["typography:fs"]);
+    Sprite fslogo;
+
+    public WGIntro() {
+        fslogo = new Sprite(Data.textures["typography:fs"]);
+    }
 
     public override void Render() {
         fslogo.Position = new Vector2f(10, 139);

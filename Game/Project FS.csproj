@@ -22,12 +22,6 @@
     <None Update="assets\**\*">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Remove="**\*.png" />
-    <None Remove="**\*.jpg" />
-    <None Remove="**\*.wav" />
-    <None Remove="**\*.mp3" />
-    <None Remove="**\*.xcf" />
-
     <None Remove="tools" />
     <None Remove="raw" />
   </ItemGroup>

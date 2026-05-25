@@ -4,9 +4,14 @@ using SFML.System;
 
 public class WGPostBattle : Widget {
     Sprite stage_thumb = new Sprite(Program.stage?.thumb);
-    Sprite fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = new Color(255, 255, 255, 230)};
+    Sprite fade90;
     string[] winner_text;
     private Selector selector = new Selector(new List<int> {1, 1, 1, 1});
+
+    public WGPostBattle() {
+        winner_text = new[] {""};
+        fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = new Color(255, 255, 255, 230)};
+    }
 
     public override void Render() {
         selector.Update();

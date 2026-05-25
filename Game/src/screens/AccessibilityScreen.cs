@@ -4,13 +4,18 @@ using SFML.System;
 using SFML.Audio;
 
 public class WGAccessibilityMenu : Widget {
-    private static Sprite bg = new Sprite(Data.textures["screens:accessibility_bg"]);
-    public static Sprite fade = new Sprite(Data.textures["screens:90fade"]);
+    private static Sprite bg;
+    public static Sprite fade;
 
     private Vector2i anchor = new Vector2i(-185, -74);
     private int n = 10;
 
     private static Selector selector = new Selector(new List<int> {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1});
+
+    public WGAccessibilityMenu() {
+        bg = new Sprite(Data.textures["screens:accessibility_bg"]);
+        fade = new Sprite(Data.textures["screens:90fade"]);
+    }
 
     public override void Render() {
         Camera.UnlockCamera();

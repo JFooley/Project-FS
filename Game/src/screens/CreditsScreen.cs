@@ -1,5 +1,4 @@
 using UI_space;
-
 class WGCredits : Widget {
     public override void Render() {
         UI.DrawText(S("Q"), 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");

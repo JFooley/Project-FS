@@ -9,10 +9,11 @@ public class WGPause : Widget {
     private int sub_menu = 0;
     private Stage stage;
 
-    private Sprite fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = new Color(255, 255, 255, 230)};
+    private Sprite fade90;
 
     public WGPause(Stage stage) {
         this.stage = stage;
+        fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = new Color(255, 255, 255, 230)};
     }
 
     public override void Render() {

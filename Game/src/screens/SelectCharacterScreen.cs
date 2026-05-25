@@ -6,8 +6,8 @@ public class WGSelectCharacter : Widget {
     private const int default_difficulty = 2;
     public static int difficulty = 2;
 
-    private static WGSelector selectorA = new WGSelector("selectorA");
-    private static WGSelector selectorB = new WGSelector("selectorB");
+    private static WGSelector selectorA;
+    private static WGSelector selectorB;
 
     public static Character? charA_selected => selectorA.selected;
     public static Character? charB_selected => selectorB.selected;
@@ -17,8 +17,15 @@ public class WGSelectCharacter : Widget {
 
     private static int offset = 0;
 
-    private static Sprite char_bg = new Sprite(Data.textures["screens:bgchar"]);
-    private static Sprite fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = Color.Transparent};
+    private static Sprite char_bg;
+    private static Sprite fade90;
+
+    public WGSelectCharacter() {
+        selectorA = new WGSelector("selectorA");
+        selectorB = new WGSelector("selectorB");
+        fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = Color.Transparent};
+        char_bg = new Sprite(Data.textures["screens:bgchar"]);
+    }
 
     public override void Render() {
         Program.window.Draw(char_bg);
@@ -147,10 +154,11 @@ public class WGSelector : Widget {
     public int state = SELECTING_CHAR;
     public Character? selected = null;
 
-    Sprite sprite = new Sprite(Data.textures["other:placeholder"]);
+    Sprite sprite;
 
     public WGSelector(string id) {
         selector_id = id;
+        sprite = new Sprite(Data.textures["other:placeholder"]);
     }
 
     public void Render(float x, float y, int player, int x_scale = 1, int shadow_x_offset = -10, int info_y_offset = 75) {

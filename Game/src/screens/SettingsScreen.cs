@@ -4,8 +4,12 @@ using SFML.Window;
 using SFML.System;
 
 public class WGSettings : Widget {
-    Sprite settings_bg = new Sprite(Data.textures["screens:settings_bg"]);
+    Sprite settings_bg;
     private static Selector selector = new Selector(new List<int> {1, 1, 1, 1, 1, 1, 1, 1, 1});
+
+    public WGSettings() {
+        settings_bg = new Sprite(Data.textures["screens:settings_bg"]);
+    }
 
     public override void Render() {
         selector.Update();

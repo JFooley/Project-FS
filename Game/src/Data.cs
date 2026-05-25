@@ -21,13 +21,14 @@ public static class Data {
             int length = reader.ReadInt32();
             byte[] data = reader.ReadBytes(length);
 
-            using var ms = new MemoryStream(data);
-
-            if (result.ContainsKey(name)) {
-                result[name].Dispose();
+            try {
+                var ms = new MemoryStream(data);
+                result[name] = new Texture(ms);
             }
-
-            result[name] = new Texture(ms);
+            catch (Exception ex) {
+                Console.WriteLine($"FAIL TO LOAD: {name}");
+                Console.WriteLine(ex);
+            }
         }
 
         return result;
@@ -47,8 +48,13 @@ public static class Data {
 
             using var ms = new MemoryStream(data);
 
-            SoundBuffer buffer = new SoundBuffer(ms);
-            result[name] = buffer;
+            try {
+                SoundBuffer buffer = new SoundBuffer(ms);
+                result[name] = buffer;
+            } catch (Exception ex) {
+                Console.WriteLine($"FAIL TO LOAD: {name}");
+                Console.WriteLine(ex);
+            }
         }
 
         return result;

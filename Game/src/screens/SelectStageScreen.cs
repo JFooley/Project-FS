@@ -2,9 +2,14 @@ using UI_space;
 using SFML.Graphics;
 
 public class WGSelectStage : Widget {
-    public static Sprite stage_thumb = new Sprite(Program.stage?.thumb);
-    private static Sprite frame = new Sprite(Data.textures["screens:frame"]);
+    public static Sprite stage_thumb;
+    private static Sprite frame;
     private static Selector selector = new Selector(new List<int>(){ Data.stages.Count });
+
+    public WGSelectStage() {
+        frame = new Sprite(Data.textures["screens:frame"]);
+        stage_thumb = new Sprite(Program.stage?.thumb);
+    }
 
     public override void Render() {
         selector.Update();

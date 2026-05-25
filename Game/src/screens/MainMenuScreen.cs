@@ -2,17 +2,23 @@ using UI_space;
 using SFML.Graphics;
 
 public class WGMainMenu : Widget {
-    private static List<KeyValuePair<string, Texture>> main_menu = new List<KeyValuePair<string, Texture>>() {
-        { new KeyValuePair<string, Texture>("versus player", Data.textures["screens:versus_player"]) },
-        { new KeyValuePair<string, Texture>("versus bot", Data.textures["screens:versus_bot"]) },
-        { new KeyValuePair<string, Texture>("training mode", Data.textures["screens:training_mode"]) },
-        { new KeyValuePair<string, Texture>("controls", Data.textures["screens:controls"]) },
-        { new KeyValuePair<string, Texture>("accessibility", Data.textures["screens:accessibility"]) },
-        { new KeyValuePair<string, Texture>("settings", Data.textures["screens:settings"]) },
-        { new KeyValuePair<string, Texture>("exit game", Data.textures["screens:exit"]) }
-    };
-    private static Selector selector = new Selector(new List<int>() { main_menu.Count });
-    private static Sprite frame = new Sprite(Data.textures["screens:frame"]);
+    private static List<KeyValuePair<string, Texture>> main_menu;
+    private static Selector selector;
+    private static Sprite frame;
+
+    public WGMainMenu() {
+        main_menu = new List<KeyValuePair<string, Texture>>() {
+            { new KeyValuePair<string, Texture>("versus player", Data.textures["screens:versus_player"]) },
+            { new KeyValuePair<string, Texture>("versus bot", Data.textures["screens:versus_bot"]) },
+            { new KeyValuePair<string, Texture>("training mode", Data.textures["screens:training_mode"]) },
+            { new KeyValuePair<string, Texture>("controls", Data.textures["screens:controls"]) },
+            { new KeyValuePair<string, Texture>("accessibility", Data.textures["screens:accessibility"]) },
+            { new KeyValuePair<string, Texture>("settings", Data.textures["screens:settings"]) },
+            { new KeyValuePair<string, Texture>("exit game", Data.textures["screens:exit"]) }
+        };
+        selector = new Selector(new List<int>() { main_menu.Count });
+        frame = new Sprite(Data.textures["screens:frame"]);
+    }
 
     public override void Render() {
         Program.window.Draw(new Sprite(main_menu.ElementAt(selector.pointer.X).Value));

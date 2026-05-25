@@ -2,7 +2,11 @@ using UI_space;
 using SFML.Graphics;
 
 public class WGStart : Widget {
-    Sprite main_bg = new Sprite(Data.textures["screens:title"]);
+    Sprite main_bg;
+
+    public WGStart() {
+        main_bg = new Sprite(Data.textures["screens:title"]);
+    }
 
     public override void Render() {
         Program.window.Draw(main_bg);
