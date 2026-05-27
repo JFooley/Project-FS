@@ -13,11 +13,11 @@ public class Shungokusatso : Character {
     public override Dictionary<string, Frame[]> animations { get => _shared_animations; protected set => _shared_animations = value ?? new Dictionary<string, Frame[]>();}
 
     public Shungokusatso(string initialState, float startX, float startY, int facing)
-        : base("Shungokusatso", initialState, startX, startY, Data.GetPath("Assets/particles/Shungokusatso")) {
+        : base("Shungokusatso", initialState, startX, startY, Data.GetPath("assets/particles/Shungokusatso")) {
             this.facing = facing;
             this.own_light = Color.White;
         }
-    public Shungokusatso() : base("Shungokusatso", "", 0, 0, Data.GetPath("Assets/particles/Shungokusatso")) {}
+    public Shungokusatso() : base("Shungokusatso", "", 0, 0, Data.GetPath("assets/particles/Shungokusatso")) {}
 
     public override void Load() {
         var a = this.animations;

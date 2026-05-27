@@ -196,8 +196,16 @@ def main():
     pack_textures("raw/characters/Ken/sprites", "assets/characters/Ken")
     pack_audio("raw/characters/Ken/sounds", "assets/characters/Ken")
 
-    pack_animations("raw/characters/Ken-Fireball/animations.json", "assets/characters/Ken-Fireball")
-    pack_textures("raw/characters/Ken-Fireball/sprites", "assets/characters/Ken-Fireball")
-    pack_audio("raw/characters/Ken-Fireball/sounds", "assets/characters/Ken-Fireball")
+    pack_animations("raw/characters/Ken-Effects/animations.json", "assets/characters/Ken-Effects")
+    pack_textures("raw/characters/Ken-Effects/sprites", "assets/characters/Ken-Effects")
+    pack_audio("raw/characters/Ken-Effects/sounds", "assets/characters/Ken-Effects")
+
+    pack_animations("raw/characters/Remy/animations.json", "assets/characters/Remy")
+    pack_textures("raw/characters/Remy/sprites", "assets/characters/Remy")
+    pack_audio("raw/characters/Remy/sounds", "assets/characters/Remy")
+
+    pack_animations("raw/characters/Remy-Effects/animations.json", "assets/characters/Remy-Effects")
+    pack_textures("raw/characters/Remy-Effects/sprites", "assets/characters/Remy-Effects")
+    pack_audio("raw/characters/Remy-Effects/sounds", "assets/characters/Remy-Effects")
 
 main()

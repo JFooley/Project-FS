@@ -13,11 +13,11 @@ public class Hitspark : Character {
     public override Dictionary<string, Frame[]> animations { get => _shared_animations; protected set => _shared_animations = value ?? new Dictionary<string, Frame[]>();}
 
     public Hitspark(string initialState, float startX, float startY, int facing)
-        : base("Hitspark", initialState, startX, startY, Data.GetPath("Assets/particles/Hitspark")) {
+        : base("Hitspark", initialState, startX, startY, Data.GetPath("assets/particles/Hitspark")) {
             this.facing = facing;
             this.own_light = Color.White;
         }
-    public Hitspark() : base("Hitspark", "", 0, 0, Data.GetPath("Assets/particles/Hitspark")) {}
+    public Hitspark() : base("Hitspark", "", 0, 0, Data.GetPath("assets/particles/Hitspark")) {}
 
     public override void Load() {
         var a = this.animations;

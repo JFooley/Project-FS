@@ -50,7 +50,7 @@ class WGBattle : Widget {
                 Program.stage?.SetMusicVolume();
                 Program.stage?.StopRoundTime();
                 Program.stage?.ResetTimer();
-                if (Program.stage.character_A.state.not_busy && Program.stage.character_B.state.not_busy && fade90.Color.A == 0) 
+                if (Program.stage.character_A.state.idle && Program.stage.character_B.state.idle && fade90.Color.A == 0) 
                     WGBattle.battle_state = RoundStart;
                 break;
 

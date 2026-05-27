@@ -93,7 +93,7 @@ namespace UI_space {
             DrawText(new[] { c.current_logic_frame_index + "/" + (c.current_animation.lenght - 1)}, px, py + 2*n, spacing: Config.spacing_small, alignment: ali, textureName: c.current_animation.on_last_frame ? "default small red" : "default small white");
             DrawText(new[] { c.current_anim_frame_index.ToString() }, px, py + 3*n, spacing: Config.spacing_small, alignment: ali, textureName: "default small white");
             DrawText(new[] { c.current_state }, px, py + 4*n, spacing: Config.spacing_small, alignment: ali, textureName: "default small white");
-            DrawText(new[] { c.state.not_busy ? "waiting" : "busy" }, px, py + 5*n, spacing: Config.spacing_small, alignment: ali, textureName: "default small white");
+            DrawText(new[] { c.state.idle ? "waiting" : "busy" }, px, py + 5*n, spacing: Config.spacing_small, alignment: ali, textureName: "default small white");
             DrawText(new[] { "Vel: " + c.body.velocity.X.ToString("F1") + "/" + c.body.velocity.Y.ToString("F1") }, px, py + 6*n, spacing: Config.spacing_small, alignment: ali, textureName: "default small white");
             DrawText(new[] { "Acc: " + c.body.acceleration.X.ToString("F1") + "/" + c.body.acceleration.Y.ToString("F1") }, px, py + 7*n, spacing: Config.spacing_small, alignment: ali, textureName: "default small white");
 

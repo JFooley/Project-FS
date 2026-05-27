@@ -15,12 +15,12 @@ public class Super : Character {
     private Vector2f initial_pos;
 
     public Super(string initialState, float startX, float startY, int facing)
-        : base("Super", initialState, startX, startY, Data.GetPath("Assets/particles/Super")) {
+        : base("Super", initialState, startX, startY, Data.GetPath("assets/particles/Super")) {
             this.facing = facing;
             this.own_light = Color.White;
             this.initial_pos = new Vector2f(startX, startY);
         }
-    public Super() : base("Super", "", 0, 0, Data.GetPath("Assets/particles/Super")) {}
+    public Super() : base("Super", "", 0, 0, Data.GetPath("assets/particles/Super")) {}
 
     public override void Load() {
         var a = this.animations;

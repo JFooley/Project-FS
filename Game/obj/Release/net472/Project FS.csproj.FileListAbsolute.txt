@@ -1,6 +1,3 @@
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Ken-Fireball\animations.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Ken-Fireball\audio.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Ken-Fireball\textures.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Ken\animations.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Ken\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Ken\palette.bmp
@@ -71,3 +68,13 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Release\net472\Project FS.sourcelink.
 A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Release\net472\Project FS.csproj.Up2Date
 A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Release\net472\Project FS.exe
 A:\GABRIEL\Repos\CS Fighting Game\Game\obj\Release\net472\Project FS.pdb
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Ken-Effects\animations.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Ken-Effects\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Ken-Effects\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Remy-Effects\animations.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Remy-Effects\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Remy-Effects\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Remy\animations.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Remy\audio.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Remy\palette.bmp
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Remy\textures.dat

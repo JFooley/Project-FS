@@ -86,6 +86,7 @@ public static class Program {
         // Carregamento dos personagens
         Data.characters = new List<Character> {
             new Ken(),
+            new Remy()
         };
 
         // Carregamento dos Data.stages

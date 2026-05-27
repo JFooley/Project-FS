@@ -9,7 +9,7 @@ using UI_space;
 // Win
 
 // Idle
-// WalkingForward
+// WalkingIn
 // WalkingBackward
 
 // Jump
@@ -24,6 +24,10 @@ using UI_space;
 // LightK
 // MediumP
 // MediumK
+
+// Throw
+// ThrowLeft
+// ThrowRight
 
 // OnHit
 // OnHitLow
@@ -116,9 +120,9 @@ public abstract class Character : Object {
     public int next_frame_hitstop = 0;
 
     // Combat logic infos
-    public bool not_acting => this.state.not_busy && !this.state.low && !this.state.air && !this.on_air;
-    public bool not_acting_low => this.state.not_busy && this.state.low && !this.state.air && !this.on_air;
-    public bool not_acting_air => this.state.not_busy && !this.state.low && this.state.air && this.on_air;
+    public bool not_acting => this.state.idle && !this.state.low && !this.state.air && !this.on_air;
+    public bool not_acting_low => this.state.idle && this.state.low && !this.state.air && !this.on_air;
+    public bool not_acting_air => this.state.idle && !this.state.low && this.state.air && this.on_air;
     public bool not_acting_all => not_acting || not_acting_air || not_acting_low;
 
     public bool on_parry => this.state.on_parry;
@@ -129,7 +133,7 @@ public abstract class Character : Object {
 
     public bool can_parry => (not_acting_all && parring) || (not_acting_all && Input.Key_press("Left", input_window: this.state.air? Config.parry_window/2 : Config.parry_window, player: this.player_index, facing: this.facing));
     public bool can_dash => not_acting && !this.state.on_parry;
-    public bool can_jump => not_acting && this.current_state != "Landing";
+    public virtual bool can_jump => not_acting && (this.current_state != "Landing" || this.current_anim_frame_index >= 1);
     public bool has_hit = false;
 
     public bool blocking_high = false;
@@ -150,7 +154,7 @@ public abstract class Character : Object {
     public Color own_light = Color.Transparent;
 
     public int shadow_size = 2;
-    public bool has_frame_change = false;
+    public bool has_frame_changed = false;
 
     public virtual Texture palette {get; protected set;}
     public uint palette_size => this.palette.Size.X;
@@ -219,7 +223,7 @@ public abstract class Character : Object {
                 if (last_sprites[i] != null) Program.window.Draw(last_sprites[i], new RenderStates(Program.hueChange));
             }
             
-            if (this.has_frame_change) {               
+            if (this.has_frame_changed) {               
                 last_sprites[2] = last_sprites[1];
                 last_sprites[1] = last_sprites[0];
                 last_sprites[0] = temp_sprite;
@@ -287,8 +291,9 @@ public abstract class Character : Object {
         this.body.Update(this);
 
         // Baked animation
-        this.body.position.X += current_animation.GetCurrentFrame().delta_X * this.facing;
-        this.body.position.Y += current_animation.GetCurrentFrame().delta_Y;
+        var frame = current_animation.GetCurrentFrame();
+        this.body.position.X += frame.delta_X / frame.lenght * this.facing;
+        this.body.position.Y += frame.delta_Y / frame.lenght;
     }
     public void UpdateState() {
         if (!animate) return;
@@ -323,8 +328,8 @@ public abstract class Character : Object {
         if (this.hitstop_counter > 0 || this.next_state != null || !this.animate) return;
 
         // Advance to the next frame and reset hit if necessary
-        this.has_frame_change = current_animation.AdvanceFrame();
-        if (this.has_frame_change) {
+        this.has_frame_changed = current_animation.AdvanceFrame();
+        if (this.has_frame_changed) {
             this.facing *= current_animation.GetCurrentFrame().facing;
             if (current_animation.GetCurrentFrame().has_hit == false) this.has_hit = false;
         }
@@ -349,7 +354,7 @@ public abstract class Character : Object {
             var AIstate = new FightState {
                 enemyDistance = Math.Abs(this.body.position.X - enemy.body.position.X) / Config.RenderWidth,
                 lastState = this.last_state,
-                enemyIsIdle = enemy.state.not_busy,
+                enemyIsIdle = enemy.state.idle,
                 enemyIsAttacking = enemy.state.will_hit && enemy.state.busy,
                 enemyIsGrabbing = enemy.state.is_grab,
                 enemyIsAirborne = enemy.state.air,

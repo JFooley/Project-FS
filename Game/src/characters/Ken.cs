@@ -18,24 +18,24 @@ public class Ken : Character {
     private static Texture? _shared_palette;
     public override Texture palette {get => _shared_palette ?? new Texture(Data.textures["other:placeholder"]); protected set => _shared_palette = value;}
 
-    private Fireball? current_fireball = null;
+    private KenEffects? current_fireball = null;
     private bool SA_flag = false;
 
     // Constructors
     public Ken(string initialState, int startX, int startY)
-        : base("Ken", initialState, startX, startY, Data.GetPath("Assets/characters/Ken")) {
+        : base("Ken", initialState, startX, startY, Data.GetPath("assets/characters/Ken")) {
         this.life_points = new Vector2i(1000, 1000);
         this.dizzy_points = new Vector2i(500, 500);
         this.aura_points = new Vector2i(0, 100);
     } 
-    public Ken() : base("Ken", "Idle", Data.GetPath("Assets/characters/Ken")) { }
+    public Ken() : base("Ken", "Idle", Data.GetPath("assets/characters/Ken")) { }
     public override Character Copy() {
         var obj = new Ken("Intro", 0, 0);
         obj.Load();
         return obj;
     }
     public override void Load() {
-        var fb = new Fireball();
+        var fb = new KenEffects();
         fb.LoadTextures();
         fb.LoadSounds();
         fb.LoadAnimations();
@@ -47,124 +47,76 @@ public class Ken : Character {
             { "Intro", new State(F(a["introFrames1"], a["introFrames2"], a["introFrames3"]), "Idle", can_be_hit: false)},
             { "Win", new State(F(a["win"]), "Idle", change_on_end: false, loop: false)},
             // Basic
-            { "Idle", new State(F(a["idleFrames"]), "Idle", not_busy: true)},
-            { "OnBlock", new State(F(a["OnBlockFrames"]), "Idle", on_block: true)}, 
-            { "OnBlockLow", new State(F(a["OnBlockLowFrames"]), "Crouching", low: true, on_block: true)},
-            { "OnHit", new State(F(a["OnHitFrames"]), "Idle", on_hit: true)},
-            { "OnHitLow", new State(F(a["OnHitLowFrames"]), "Crouching", low: true, on_hit: true)},
-            { "Airboned", new State(F(a["AirbonedFrames"]), "Falling", change_on_ground: true, change_on_end: false, loop: false, air: true, on_hit: true)},
-            { "Parry", new State(F(a["parryFrames"]), "Idle", 6, glow: true, is_parry: true)},
-            { "AirParry", new State(F(a["airParryFrames"]), "JumpFalling", 6, glow: true, air: true, is_parry: true)},
+            { "Idle", new State(F(a["idle"]), "Idle", idle: true)},
+            { "OnBlock", new State(F(a["OnBlock"]), "Idle", on_block: true)}, 
+            { "OnBlockLow", new State(F(a["OnBlockLow"]), "Crouching", low: true, on_block: true)},
+            { "OnHit", new State(F(a["OnHit"]), "Idle", on_hit: true)},
+            { "OnHitLow", new State(F(a["OnHitLow"]), "Crouching", low: true, on_hit: true)},
+            { "Airboned", new State(F(a["Airboned"]), "Falling", change_on_ground: true, change_on_end: false, loop: false, air: true, on_hit: true)},
+            { "Parry", new State(F(a["parry"]), "Idle", 6, glow: true, is_parry: true)},
+            { "AirParry", new State(F(a["airParry"]), "JumpFalling", 6, glow: true, air: true, is_parry: true)},
             // Normals
-            { "LightP", new State(F(a["LPFrames"]), "Idle", 0, will_hit: true)},
-            { "LowLightP", new State(F(a["lowLPFrames"]), "Crouching", 0, low: true, will_hit: true)},
-            { "AirLightP", new State(F(a["airLPFrames"]), "Landing", 0, change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
-            { "LightK", new State(F(a["LKFrames"]), "Idle", 0, will_hit: true)},
-            { "LowLightK", new State(F(a["lowLKFrames"]), "Crouching", 1, hitstop: "Medium", low: true, will_hit: true)},
-            { "AirLightK", new State(F(a["airLKFrames"]), "Landing", 0, change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
-            { "MediumP", new State(F(a["MPFrames"]), "Idle", 1, hitstop: "Medium", will_hit: true)},
-            { "LowMediumP", new State(F(a["lowMPFrames"]), "Crouching", 1, hitstop: "Medium", low: true, will_hit: true)},
-            { "AirMediumP", new State(F(a["airMPFrames"]), "Landing", 1, hitstop: "Medium", change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
+            { "LightP", new State(F(a["LP"]), "Idle", 0, will_hit: true)},
+            { "LowLightP", new State(F(a["lowLP"]), "Crouching", 0, low: true, will_hit: true)},
+            { "AirLightP", new State(F(a["airLP"]), "Landing", 0, change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
+            { "LightK", new State(F(a["LK"]), "Idle", 0, will_hit: true)},
+            { "LowLightK", new State(F(a["lowLK"]), "Crouching", 1, hitstop: "Medium", low: true, will_hit: true)},
+            { "AirLightK", new State(F(a["airLK"]), "Landing", 0, change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
+            { "MediumP", new State(F(a["MP"]), "Idle", 1, hitstop: "Medium", will_hit: true)},
+            { "LowMediumP", new State(F(a["lowMP"]), "Crouching", 1, hitstop: "Medium", low: true, will_hit: true)},
+            { "AirMediumP", new State(F(a["airMP"]), "Landing", 1, hitstop: "Medium", change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
             { "BackMediumP", new State(F(a["backMPframes"]), "Idle", 2, hitstop: "Heavy", will_hit: true)},
-            { "MediumK", new State(F(a["MKFrames"]), "Idle", 1, hitstop: "Medium", will_hit: true)},
-            { "LowMediumK", new State(F(a["lowMKFrames"]), "Crouching", 2, hitstop: "Heavy", low: true, will_hit: true)},
-            { "AirMediumK", new State(F(a["airMKFrames"]), "Landing", 1, hitstop: "Medium", change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
-            { "BackMediumK", new State(F(a["BackMKFrames"]), "Idle", 1, will_hit: true)},
-            { "CloseMP", new State(F(a["cl_HPFrames"]), "Idle", 1, hitstop: "Medium", will_hit: true)},
+            { "MediumK", new State(F(a["MK"]), "Idle", 1, hitstop: "Medium", will_hit: true)},
+            { "LowMediumK", new State(F(a["lowMK"]), "Crouching", 2, hitstop: "Heavy", low: true, will_hit: true)},
+            { "AirMediumK", new State(F(a["airMK"]), "Landing", 1, hitstop: "Medium", change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
+            { "BackMediumK", new State(F(a["BackMK"]), "Idle", 1, will_hit: true)},
+            { "FrontMediumK", new State(F(a["frontMK"]), "Idle", 1, hitstop: "Medium", will_hit: true)},
+            { "CloseMP", new State(F(a["cl_HP"]), "Idle", 1, hitstop: "Medium", will_hit: true)},
             // Throw
-            { "Throw", new State(F(a["throw"]), "Idle", 5, will_hit: true, is_grab: true, hitstop: "None")},
-            { "ThrowLeft", new State(F(a["throwLeft"]), "Idle", 5, will_hit: true, is_grab: true, hitstop: "None")},
-            { "ThrowRight", new State(F(a["throwRight"]), "Idle", 5, will_hit: true, is_grab: true, hitstop: "None")},
-            { "onThrow_KEN_RIGHT", new State(F(a["onThrow_KEN_RIGHT"]), "Falling", 0, has_gravity: false, on_hit: true)},
-            { "onThrow_KEN_LEFT", new State(F(a["onThrow_KEN_LEFT"]), "Airboned", 0, has_gravity: false, on_hit: true)},
+            { "Throw", new State(F(a["throw"]), "Idle", 5, will_hit: true, is_grab: true, hitstop: "")},
+            { "ThrowLeft", new State(F(a["throwLeft"]), "Idle", 5, will_hit: true, is_grab: true, hitstop: "")},
+            { "ThrowRight", new State(F(a["throwRight"]), "Idle", 5, will_hit: true, is_grab: true, hitstop: "")},
+            { "OnThrowRight_KEN", new State(F(a["on_throw_right_KEN"]), "Falling", 0, has_gravity: false, on_hit: true)},
+            { "OnThrowLeft_KEN", new State(F(a["on_throw_left_KEN"]), "Airboned", 0, has_gravity: false, on_hit: true)},
+            { "OnThrow_REMY", new State(F(a["on_throw_REMY"]), "Falling", 0, has_gravity: false, on_hit: true)},
             // Movement
-            { "WalkingForward", new State(F(a["walkingForwardFrames"]), "WalkingForward", not_busy: true)},
-            { "WalkingBackward", new State(F(a["walkingBackwardFrames"]), "WalkingBackward", not_busy: true)},
-            { "DashForward", new State(F(a["dashForwardFrames"]), "Idle", 20)},
-            { "DashBackward", new State(F(a["dashBackwardFrames"]), "Idle", 20)},
-            { "Jump", new State(F(a["jumpFrames"]), "JumpFalling", not_busy: true, air: true)},
-            { "JumpForward", new State(F(a["jumpForward"]), "JumpFalling", not_busy: true, air: true)}, 
-            { "JumpBackward", new State(F(a["JumpBackward"]), "JumpFalling", not_busy: true, air: true)},
-            { "JumpFalling", new State(F(a["jumpFallingFrames"]), "Landing", not_busy: true, change_on_end: false, change_on_ground: true, loop: false, air: true)},
-            { "Landing", new State(F(a["landingFrames"]), "Idle", not_busy: true)},
-            { "CrouchingIn", new State(F(a["crouchingInFrames"]), "Crouching", not_busy: true, low: true)},
-            { "Crouching", new State(F(a["crouchingFrames"]), "Crouching", not_busy: true, low: true)},
+            { "WalkingForward", new State(F(a["walkingForward"]), "WalkingForward", idle: true)},
+            { "WalkingBackward", new State(F(a["walkingBackward"]), "WalkingBackward", idle: true)},
+            { "DashIn", new State(F(a["dashIn"]), "Idle", 20)},
+            { "DashOut", new State(F(a["dashBackward"]), "Idle", 20)},
+            { "Jump", new State(F(a["jump"]), "JumpFalling", idle: true, air: true)},
+            { "JumpForward", new State(F(a["jumpForward"]), "JumpFalling", idle: true, air: true)}, 
+            { "JumpBackward", new State(F(a["JumpBackward"]), "JumpFalling", idle: true, air: true)},
+            { "JumpFalling", new State(F(a["jumpFalling"]), "Landing", idle: true, change_on_end: false, change_on_ground: true, loop: false, air: true)},
+            { "Landing", new State(F(a["landing"]), "Idle", idle: true)},
+            { "CrouchingIn", new State(F(a["crouchingIn"]), "Crouching", idle: true, low: true)},
+            { "Crouching", new State(F(a["crouching"]), "Crouching", idle: true, low: true)},
             // Super
             { "SA1", new State(F(a["SA1"]), "Idle", 4, trace: true, drama_wait: true, will_hit: true, hitstop: "")},
             { "SA1_tail", new State(F(a["SA1_tail"]), "SA1_exit", 4, trace: true, air: true, drama_wait: true, will_hit: true, hitstop: "Light")},
             { "SA1_exit", new State(F(a["SA1_exit"]), "JumpFalling", 4)},
             // Specials
-            { "LightShory", new State(F(a["lightShoryFrames"]), "ShoryFalling", 3, hitstop: "Heavy", air: true, will_hit: true)},
-            { "HeavyShory", new State(F(a["heavyShoryFrames"]), "ShoryFalling", 3, hitstop: "Heavy", air: true, will_hit: true)},
-            { "ShoryEX", new State(F(a["EXShoryFrames"]), "ShoryFalling", 3, hitstop: "Heavy", glow: true, trace: true, air: true, can_be_hit: false, will_hit: true)},
-            { "ShoryFalling", new State(F(a["shoryFallingFrames"]), "Landing", change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
-            { "LightHaduken", new State(F(a["hadukenFrames"]), "Idle", 3, hitstop: "Medium", air: true, will_hit: true)},
-            { "HeavyHaduken", new State(F(a["hadukenFrames"]), "Idle", 3, hitstop: "Medium", will_hit: true)},
-            { "HadukenEX", new State(F(a["hadukenFrames"]), "Idle", 3, hitstop: "Heavy", glow: true, trace: true, will_hit: true)},
-            { "LightTatso", new State(F(a["lightTatsoFrames"]), "Landing", 3, hitstop: "Light", will_hit: true)},
-            { "HeavyTatso", new State(F(a["heavyTatsoFrames"]), "Landing", 3, hitstop: "Light", will_hit: true)},
-            { "TatsoEX", new State(F(a["EXTatsoFrames"]), "Landing", 3, hitstop: "Light", glow: true, trace: true, will_hit: true)},
-            { "AirTatso", new State(F(a["airTatsoFrames"]), "Landing", 3, change_on_ground: true, change_on_end: false, air: true, will_hit: true)},
-            { "AirTatsoEX", new State(F(a["airTatsoFrames"]), "Landing", 3, change_on_ground: true, change_on_end: false, glow: true, trace: true, air: true, will_hit: true)},
+            { "LightShory", new State(F(a["lightShory"]), "ShoryFalling", 3, hitstop: "Heavy", air: true, will_hit: true)},
+            { "HeavyShory", new State(F(a["heavyShory"]), "ShoryFalling", 3, hitstop: "Heavy", air: true, will_hit: true)},
+            { "ShoryEX", new State(F(a["EXShory"]), "ShoryFalling", 3, hitstop: "Heavy", glow: true, trace: true, air: true, can_be_hit: false, will_hit: true)},
+            { "ShoryFalling", new State(F(a["shoryFalling"]), "Landing", change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
+            { "LightHaduken", new State(F(a["haduken"]), "Idle", 3, will_hit: true)},
+            { "HeavyHaduken", new State(F(a["haduken"]), "Idle", 3, will_hit: true)},
+            { "HadukenEX", new State(F(a["haduken"]), "Idle", 3, glow: true, trace: true, will_hit: true)},
+            { "LightTatso", new State(F(a["lightTatso"]), "Landing", 3, hitstop: "Light", will_hit: true)},
+            { "HeavyTatso", new State(F(a["heavyTatso"]), "Landing", 3, hitstop: "Light", will_hit: true)},
+            { "TatsoEX", new State(F(a["EXTatso"]), "Landing", 3, hitstop: "Light", glow: true, trace: true, will_hit: true)},
+            { "AirTatso", new State(F(a["airTatso"]), "Landing", 3, change_on_ground: true, change_on_end: false, air: true, will_hit: true)},
+            { "AirTatsoEX", new State(F(a["airTatso"]), "Landing", 3, change_on_ground: true, change_on_end: false, glow: true, trace: true, air: true, will_hit: true)},
             // Other
-            { "Falling", new State(F(a["fallingFrames"]), "OnGround", can_be_hit: false)},
-            { "Sweeped", new State(F(a["sweepedFrames"]), "Falling", on_hit: true, low: true, can_be_hit: false)},
-            { "OnGround", new State(F(a["OnGroundFrames"]), "WakeUp", low: true, can_be_hit: false)},
-            { "WakeUp", new State(F(a["wakeupFrames"]), "Idle", can_be_hit: false)},
+            { "Falling", new State(F(a["falling"]), "OnGround", can_be_hit: false)},
+            { "Sweeped", new State(F(a["sweeped"]), "Falling", on_hit: true, low: true, can_be_hit: false)},
+            { "OnGround", new State(F(a["OnGround"]), "WakeUp", low: true, can_be_hit: false)},
+            { "WakeUp", new State(F(a["wakeUp"]), "Idle", can_be_hit: false)},
         };
     }
     public override void Behave() {
         if (this.behave == false) return;
-
-        // Crouching
-        if (Input.Key_hold("Down", player: this.player_index, facing: this.facing) && !Input.Key_hold("Up", player: this.player_index, facing: this.facing) && this.not_acting) {
-            this.ChangeState("CrouchingIn");
-        }
-        
-        // Dashing
-        if (Input.Key_sequence("Right Right", 10, flexEntry: false, flexTransition: false, player: this.player_index, facing: this.facing) && this.can_dash) {
-            this.ChangeState("DashForward");
-            return;
-        } 
-        else if (Input.Key_sequence("Left Left", 10, flexEntry: false, flexTransition: false, player: this.player_index, facing: this.facing) && this.can_dash) {
-            this.ChangeState("DashBackward");
-            return;
-        }
-
-        // Walking
-        if (Input.Key_hold("Left", player: this.player_index, facing: this.facing) && !Input.Key_hold("Right", player: this.player_index, facing: this.facing) && this.not_acting && this.current_state != "WalkingBackward") {
-            this.ChangeState("WalkingBackward");
-        } else if (Input.Key_hold("Right", player: this.player_index, facing: this.facing) && !Input.Key_hold("Left", player: this.player_index, facing: this.facing) && this.not_acting && this.current_state != "WalkingForward") {
-            this.ChangeState("WalkingForward");
-        }
-
-        // Fallback to Idle
-        if ((this.current_state == "Crouching" && !Input.Key_hold("Down", player: this.player_index, facing: this.facing)) || (this.current_state == "WalkingForward" && !Input.Key_hold("Right", player: this.player_index, facing: this.facing)) || (this.current_state == "WalkingBackward" && !Input.Key_hold("Left", player: this.player_index, facing: this.facing))) {
-            this.ChangeState("Idle");
-        }
-
-        // Jumps
-        if (this.can_jump && Input.Key_hold("Up", player: this.player_index, facing: this.facing) && !Input.Key_hold("Left", player: this.player_index, facing: this.facing) && Input.Key_hold("Right", player: this.player_index, facing: this.facing)) {
-            this.ChangeState("JumpForward");
-            return;
-        } else if (this.current_state == "JumpForward" && this.current_anim_frame_index == 1 && this.has_frame_change) {
-            this.SetVelocity(
-                X: 4, 
-                Y: this.jump_hight);
-        } 
-        else if (this.can_jump && Input.Key_hold("Up", player: this.player_index, facing: this.facing) && Input.Key_hold("Left", player: this.player_index, facing: this.facing) && !Input.Key_hold("Right", player: this.player_index, facing: this.facing)) {
-            this.ChangeState("JumpBackward");
-            return;
-        } else if (this.current_state == "JumpBackward" && this.current_anim_frame_index == 1 && this.has_frame_change) {
-            this.SetVelocity(
-                X: -4, 
-                Y: this.jump_hight);
-        }
-        else if (this.can_jump && Input.Key_hold("Up", player: this.player_index, facing: this.facing)) {
-            this.ChangeState("Jump");
-            this.SetVelocity(X: 0, Y: this.jump_hight);
-            return;
-        }
 
         // Super
         if (Input.Key_sequence("Down Down RB", 10, player: this.player_index, facing: this.facing) && !this.on_air && (this.not_acting || this.not_acting_low || (this.has_hit && (this.current_state == "CloseMP" || this.current_state.Contains("Shory") || this.current_state == "LowLightK"))) && Character.CheckAuraPoints(this, 100)) {
@@ -173,7 +125,7 @@ public class Ken : Character {
             this.stage.StopFor(12, 0, this);
             return;
 
-        } else if (this.current_state == "SA1" && this.current_anim_frame_index == 3 && this.has_frame_change) {
+        } else if (this.current_state == "SA1" && this.current_anim_frame_index == 3 && this.has_frame_changed) {
             this.stage.PSSuper("SALighting", this.body.position.X, this.body.position.Y, X_offset: 50, Y_offset: -120, facing: this.facing);
             this.stage.StopFor(50);
 
@@ -182,7 +134,7 @@ public class Ken : Character {
             this.SA_flag = false;
             return;
 
-        } else if (this.current_state == "SA1_tail" && this.current_anim_frame_index == 3 && this.has_frame_change ) {
+        } else if (this.current_state == "SA1_tail" && this.current_anim_frame_index == 3 && this.has_frame_changed ) {
             this.AddVelocity(X: 1, Y: 150);
             return;
         }
@@ -191,15 +143,16 @@ public class Ken : Character {
         if (Input.Key_sequence("Right Down Right C", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || this.has_hit && (this.current_state == "MediumP" || this.current_state == "LightP" || this.current_state == "CloseMP" || this.current_state == "LowLightK" || this.current_state == "LowMediumP"))) {
             this.ChangeState("LightShory");
             return;
-        } else if (this.current_state == "LightShory" && this.current_anim_frame_index == 3 && this.has_frame_change) {
+        } else if (this.current_state == "LightShory" && this.current_anim_frame_index == 3 && this.has_frame_changed) {
             this.AddVelocity(
                 X: this.has_hit ? 0f : 1.5f,
                 Y: 50);
         } 
         if (Input.Key_sequence("Right Down Right D", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || this.has_hit && (this.current_state == "LowMediumP" || this.current_state == "LowLightK" ))) {
             this.ChangeState("HeavyShory");
+            this.SpawnEffect("Fire", this.body.position.X, this.body.position.Y, this.facing, set_fireball: false);
             return;
-        } else if (this.current_state == "HeavyShory" && this.current_anim_frame_index == 3 && this.has_frame_change) {
+        } else if (this.current_state == "HeavyShory" && this.current_anim_frame_index == 3 && this.has_frame_changed) {
             this.AddVelocity(
                 X: this.has_hit ? 0f : 3f, 
                 Y: 80);
@@ -207,8 +160,9 @@ public class Ken : Character {
         if (Input.Key_sequence("Right Down Right RB", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low || this.has_hit && (this.current_state == "LowMediumP" || this.current_state == "LowLightK")) && Character.CheckAuraPoints(this, 50)) {
             Character.UseAuraPoints(this, 50);
             this.ChangeState("ShoryEX");
+            this.SpawnEffect("Fire", this.body.position.X, this.body.position.Y, this.facing, set_fireball: false);
             return;
-        } else if (this.current_state == "ShoryEX" && this.current_anim_frame_index == 3 && this.has_frame_change) {
+        } else if (this.current_state == "ShoryEX" && this.current_anim_frame_index == 3 && this.has_frame_changed) {
             this.AddVelocity(
                 X: this.has_hit ? 0f : 5f, 
                 Y: 100);
@@ -220,22 +174,22 @@ public class Ken : Character {
         if (this.current_fireball == null && Input.Key_sequence("Down Right C", 10, player: this.player_index, facing: this.facing) && ((this.not_acting || this.not_acting_low) || (this.has_hit && (this.current_state == "MediumP" || this.current_state == "LightP" || this.current_state == "LowLightK")))) {
             this.ChangeState("LightHaduken");
             return;
-        } else if (this.current_state == "LightHaduken" && this.current_anim_frame_index == 3 && this.has_frame_change) {
-            this.spawnFireball("Ken1", this.body.position.X, this.body.position.Y - 5, this.facing, this.player_index, X_offset: 25);
+        } else if (this.current_state == "LightHaduken" && this.current_anim_frame_index == 3 && this.has_frame_changed) {
+            this.SpawnEffect("Ken1", this.body.position.X, this.body.position.Y - 5, this.facing, X_offset: 25);
         } 
         if (this.current_fireball == null && Input.Key_sequence("Down Right D", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low)) {
             this.ChangeState("HeavyHaduken");
             return;
-        } else if (this.current_state == "HeavyHaduken" && this.current_anim_frame_index == 4 && this.has_frame_change) {
-            this.spawnFireball("Ken2", this.body.position.X, this.body.position.Y - 5, this.facing, this.player_index, X_offset: 25);
+        } else if (this.current_state == "HeavyHaduken" && this.current_anim_frame_index == 4 && this.has_frame_changed) {
+            this.SpawnEffect("Ken2", this.body.position.X, this.body.position.Y - 5, this.facing, X_offset: 25);
         }
         if (this.current_fireball == null && Input.Key_sequence("Down Right RB", 10, player: this.player_index, facing: this.facing) && (this.not_acting || this.not_acting_low) && Character.CheckAuraPoints(this, 50)) {
             Character.UseAuraPoints(this, 50);
             this.ChangeState("HadukenEX");
             return;
-        } else if (this.current_state == "HadukenEX" && this.current_anim_frame_index == 4 && this.has_frame_change) {
-            this.spawnFireball("Ken3", this.body.position.X, this.body.position.Y - 5, this.facing, this.player_index, life_points: 2, X_offset: 25);
-            this.PlaySound("EX");
+        } else if (this.current_state == "HadukenEX" && this.current_anim_frame_index == 4 && this.has_frame_changed) {
+            this.SpawnEffect("Ken3", this.body.position.X, this.body.position.Y - 5, this.facing, life_points: 2, X_offset: 25);
+            this.PlaySound("generic:ex");
         }
 
         // Tatso
@@ -270,7 +224,7 @@ public class Ken : Character {
         } else if (Input.Key_sequence("Down Left RB", 10, player: this.player_index, facing: this.facing) && this.not_acting_air && Character.CheckAuraPoints(this, 50)) {
             Character.UseAuraPoints(this, 50);
             this.ChangeState("AirTatsoEX");
-            this.PlaySound("EX");
+            this.PlaySound("generic:ex");
             this.PlaySound("tatso");
             return;
         } 
@@ -291,8 +245,11 @@ public class Ken : Character {
             this.SetVelocity();
             this.ChangeState("CloseMP");
             return;
-        } else if (Input.Key_press("B", player: this.player_index, facing: this.facing) && Input.Key_hold("Left", player: this.player_index, facing: this.facing) && this.not_acting && !this.crounching) {
+        } else if (Input.Key_press("B", player: this.player_index, facing: this.facing) && Input.Key_hold("Left", player: this.player_index, facing: this.facing) && this.not_acting) {
             this.ChangeState("BackMediumK");
+            return;
+        } else if (Input.Key_press("B", player: this.player_index, facing: this.facing) && Input.Key_hold("Right", player: this.player_index, facing: this.facing) && this.not_acting) {
+            this.ChangeState("FrontMediumK");
             return;
         } else if (Input.Key_press("D", player: this.player_index, facing: this.facing) && Input.Key_hold("Left", player: this.player_index, facing: this.facing) && (this.not_acting || (this.has_hit && this.current_state == "CloseMP"))) {
             this.ChangeState("BackMediumP");
@@ -316,6 +273,58 @@ public class Ken : Character {
             else if (Input.Key_press("D", player: this.player_index, facing: this.facing)) this.ChangeState("AirMediumP");
             else if (Input.Key_press("B", player: this.player_index, facing: this.facing)) this.ChangeState("AirMediumK");
         }
+    
+        // Crouching
+        if (Input.Key_hold("Down", player: this.player_index, facing: this.facing) && !Input.Key_hold("Up", player: this.player_index, facing: this.facing) && this.not_acting) {
+            this.ChangeState("CrouchingIn");
+        }
+        if (this.current_state == "Crouching" && !Input.Key_hold("Down", player: this.player_index, facing: this.facing)) {
+            this.ChangeState("Idle");
+        }
+
+        // Dashing
+        if (Input.Key_sequence("Right Right", 10, flexEntry: false, flexTransition: false, player: this.player_index, facing: this.facing) && this.can_dash) {
+            this.ChangeState("DashIn");
+            return;
+        } 
+        else if (Input.Key_sequence("Left Left", 10, flexEntry: false, flexTransition: false, player: this.player_index, facing: this.facing) && this.can_dash) {
+            this.ChangeState("DashOut");
+            return;
+        }
+
+        // Walking
+        if (Input.Key_hold("Left", player: this.player_index, facing: this.facing) && !Input.Key_hold("Right", player: this.player_index, facing: this.facing) && this.not_acting && this.current_state != "WalkingBackward") {
+            this.ChangeState("WalkingBackward");
+        } else if (Input.Key_hold("Right", player: this.player_index, facing: this.facing) && !Input.Key_hold("Left", player: this.player_index, facing: this.facing) && this.not_acting && this.current_state != "WalkingForward") {
+            this.ChangeState("WalkingForward");
+        }
+        if (this.current_state == "WalkingForward" && !Input.Key_hold("Right", player: this.player_index, facing: this.facing) || (this.current_state == "WalkingBackward" && !Input.Key_hold("Left", player: this.player_index, facing: this.facing))) {
+            this.ChangeState("Idle");
+        }
+        
+        // Jumps
+        if (this.can_jump && Input.Key_hold("Up", player: this.player_index, facing: this.facing) && !Input.Key_hold("Left", player: this.player_index, facing: this.facing) && Input.Key_hold("Right", player: this.player_index, facing: this.facing)) {
+            this.ChangeState("JumpForward");
+            return;
+        } else if (this.current_state == "JumpForward" && this.current_anim_frame_index == 1 && this.has_frame_changed) {
+            this.SetVelocity(
+                X: 4, 
+                Y: this.jump_hight);
+        } 
+        else if (this.can_jump && Input.Key_hold("Up", player: this.player_index, facing: this.facing) && Input.Key_hold("Left", player: this.player_index, facing: this.facing) && !Input.Key_hold("Right", player: this.player_index, facing: this.facing)) {
+            this.ChangeState("JumpBackward");
+            return;
+        } else if (this.current_state == "JumpBackward" && this.current_anim_frame_index == 1 && this.has_frame_changed) {
+            this.SetVelocity(
+                X: -4, 
+                Y: this.jump_hight);
+        }
+        else if (this.can_jump && Input.Key_hold("Up", player: this.player_index, facing: this.facing)) {
+            this.ChangeState("Jump");
+            this.SetVelocity(X: 0, Y: this.jump_hight);
+            return;
+        }
+
     }
     public override int ImposeBehavior(Character target) {
         int hit = -1;
@@ -492,6 +501,19 @@ public class Ken : Character {
                 Character.AddAuraPoints(target, this, hit, self_amount: 6);
                 break;
 
+            case "FrontMediumK":
+                if (target.isBlockingHigh()) {
+                    hit = Character.BLOCK;
+                    target.BlockStun(this, -6);
+                } else {
+                    hit = Character.HIT;
+                    Character.Damage(target: target, self: this, 120, 235);
+                    target.Stun(this, 0);
+                }
+                Character.Push(target: target, self: this, Config.medium_pushback);
+                Character.AddAuraPoints(target, this, hit, self_amount: 16);
+                break;
+
             case "BackMediumP":
                 if (target.isBlockingHigh()) {
                     hit = Character.BLOCK;
@@ -529,17 +551,18 @@ public class Ken : Character {
 
                 if (Input.Key_hold("Left", this.player_index, this.facing)) {
                     this.ChangeState("ThrowLeft");
-                    target.ChangeState("onThrow_KEN_LEFT");
+                    target.ChangeState("OnThrowLeft_KEN");
                 } else {
                     this.ChangeState("ThrowRight");
-                    target.ChangeState("onThrow_KEN_RIGHT");
+                    target.ChangeState("OnThrowRight_KEN");
                 }
                 
                 hit = Character.GRAB;
                 break;
             
             case "ThrowLeft":
-                target.SetVelocity(-5, 20);
+                target.body.velocity = new Vector2f(5 * -this.facing, 7);
+                target.Stun(this, 0, airbone: true);
                 Character.Damage(target: target, self: this, 100, 203);
                 Character.AddAuraPoints(target, this, hit, self_amount: 10);
                 break;
@@ -553,13 +576,13 @@ public class Ken : Character {
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -10);
-                    Character.Push(target: target, self: this, 1.1f);
+                    Character.Push(target: target, self: this, 1.3f);
 
                 } else {
                     hit = Character.HIT;
                     Character.Damage(target: target, self: this, 80, 160);
                     target.Stun(this, 0, airbone: true);
-                    Character.Push(target: target, self: this, 1.1f, Y_amount: 110f, airbone: true, fixed_height: true);
+                    Character.Push(target: target, self: this, 1.3f, Y_amount: 110f, airbone: true, fixed_height: true);
                 }
                 Character.AddAuraPoints(target, this, hit);
                 break;
@@ -1014,16 +1037,14 @@ public class Ken : Character {
         base.Reset(start_point, facing, state, total_reset);
         this.current_fireball = null;
     }
-    public void spawnFireball(string state, float X, float Y, int facing, int team, int life_points = 1, int X_offset = 10, int Y_offset = 0) {        
-        var fb = new Fireball(state, life_points, X + X_offset * facing, Y + Y_offset, team, facing);
-        fb.ChangeState(state, reset: true);
+    public void SpawnEffect(string state, float X, float Y, int facing, int life_points = 1, int X_offset = 10, int Y_offset = 0, bool set_fireball = true) {        
+        var fb = new KenEffects(this, state, life_points, X + X_offset * facing, Y + Y_offset, facing);
         fb.Load();
         Program.stage?.newCharacters.Add(fb);
-        this.current_fireball = fb;
+        if (set_fireball) this.current_fireball = fb;
     }
-    public void spawnShungoku(string state, float X, float Y, int facing) {
+    public void SpawnShungoku(string state, float X, float Y, int facing) {
         var fb = new Shungokusatso(state, X, Y, facing);
-        fb.ChangeState(state, reset: true);
         fb.Load();
         Program.stage?.newCharacters.Add(fb);
     }
