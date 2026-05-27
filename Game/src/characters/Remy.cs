@@ -178,6 +178,7 @@ public class Remy : Character {
             this.SpawnEffect("FireballLow", this.body.position.X, this.body.position.Y, this.facing, X_offset: 35, Y_offset: 0);
         }
         else if (this.not_acting && Input.Key_sequence("Left Right RB", 10, this.player_index, this.facing)) {
+            Character.UseAuraPoints(this, 50);
             this.ChangeState("Special2EX");
             this.PlaySound("generic:ex");
             return;
