@@ -46,8 +46,8 @@ namespace UI_space {
         private static int aura_bar_Y = 96;
         private static int aura_bar_X = -179;
 
-        private static int stun_bar_Y = -84;
-        private static int stun_bar_X = -178;
+        // private static int stun_bar_Y = -84;
+        // private static int stun_bar_X = -178;
 
         public UI() {
             UI.hud = new Sprite(Data.textures["ui:hud"]);
@@ -63,6 +63,7 @@ namespace UI_space {
             UI.time_tick_sound = new Sound(Data.sounds["ui:time_tick"]) {Volume = Config.Effect_Volume};
             BitmapFont.Load();
         }
+        
         public static void Update() {
             UI.frame_counter++;
             UI.blink30Hz = UI.frame_counter % (60/30) == 0 ? UI.blink30Hz = !UI.blink30Hz : UI.blink30Hz;
@@ -343,6 +344,7 @@ namespace UI_space {
             UI.DrawText(new[] {string.Concat(Enumerable.Repeat("-", Math.Max(Config.max_rounds - stage.rounds_A, 0))) + string.Concat(Enumerable.Repeat("*", stage.rounds_A))}, -20, -91, spacing: -19, alignment: "right", textureName: "icons");
             UI.DrawText(new[] {string.Concat(Enumerable.Repeat("*", stage.rounds_B)) + string.Concat(Enumerable.Repeat("-", Math.Max(Config.max_rounds - stage.rounds_B, 0)))},  20, -91, spacing: -19, alignment: "left", textureName: "icons");
         }
+    
     }
 
     public static class BitmapFont {

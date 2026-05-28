@@ -101,7 +101,7 @@ public class Remy : Character {
             { "Special2Kick", new State(F(a["special2_kick"]), "Idle", 3, air: true, will_hit: true)},
             { "Special2EX", new State(F(a["special2_ex"]), "Idle", 3, air: true, will_hit: true, glow: true, trace: true)},
             // Other
-            { "Falling", new State(F(a["falling"]), "OnGround", can_be_hit: false)},
+            { "Falling", new State(F(a["falling"]), "OnGround", on_hit: true, can_be_hit: false)},
             { "Sweeped", new State(F(a["sweeped"]), "Falling", on_hit: true, low: true, can_be_hit: false)},
             { "OnGround", new State(F(a["onGround"]), "WakeUp", low: true, can_be_hit: false)},
             { "WakeUp", new State(F(a["wakeUp"]), "Idle", can_be_hit: false)},
@@ -149,7 +149,7 @@ public class Remy : Character {
             this.SpawnEffect("Cut", this.body.position.X, this.body.position.Y, this.facing);
             this.SpawnEffect("Dust", this.body.position.X, this.floor_line, this.facing, X_offset: 50, Y_offset: 0);
             this.SetVelocity(
-                X: 2.5f,
+                X: 2.0f,
                 Y: 60);
             return;
         } 
@@ -160,7 +160,7 @@ public class Remy : Character {
             this.SpawnEffect("Cut", this.body.position.X, this.body.position.Y, this.facing);
             this.SpawnEffect("Dust", this.body.position.X, this.floor_line, this.facing, X_offset: 50, Y_offset: 0);
             this.SetVelocity(
-                X: 3.5f,
+                X: 3.0f,
                 Y: 80);
             return;
         } 
@@ -543,13 +543,13 @@ public class Remy : Character {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 18);
                     target.BlockStun(this, -15);
-                    Character.Push(target: target, self: this, 3.0f);
+                    Character.Push(target: target, self: this, 3.5f);
 
                 } else {
                     hit = Character.HIT;
                     Character.Damage(target: target, self: this, 100, 180);
                     target.Stun(this, 0, airbone: true);
-                    Character.Push(target: target, self: this, 3.0f, Y_amount: 120f, airbone: true, fixed_height: true);
+                    Character.Push(target: target, self: this, 3.5f, Y_amount: 120f, airbone: true, fixed_height: true);
                 }
                 Character.AddAuraPoints(target, this, hit);
                 break;
@@ -558,13 +558,13 @@ public class Remy : Character {
                 if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -10);
-                    Character.Push(target: target, self: this, 3.5f);
+                    Character.Push(target: target, self: this, 4.0f);
 
                 } else {
                     hit = Character.HIT;
                     Character.Damage(target: target, self: this, 50, 60);
                     target.Stun(this, 0, airbone: true);
-                    Character.Push(target: target, self: this, 3.5f, Y_amount: 140f, airbone: true, fixed_height: true);
+                    Character.Push(target: target, self: this, 4.0f, Y_amount: 140f, airbone: true, fixed_height: true);
                 }
                 break;
 
@@ -629,227 +629,187 @@ public class Remy : Character {
     }
     public override void SelectAction(FightState f_state) {
         if (f_state.enemyIsDead) return;
-        if (this.state.will_hit && !this.on_hit && !this.state.on_block && !this.state.on_parry) return;
 
-        if (this.on_hit || this.state.on_block || ((f_state.enemyIsAttacking || f_state.enemyIsGrabbing) && f_state.enemyDistance <= 0.5f)) { // Block
+        // Follow up
+        if (this.current_state == "ThrowRight" && this.current_animation.on_last_frame && Character.CheckAuraPoints(this, 50)) {
+            this.BOT.EnqueueAction("Down", 5);
+            this.BOT.EnqueueAction("Up RB", 5);
+            return;
+        } else if ((f_state.enemyDistance <= 0.3f && f_state.enemyIsAirborne && !f_state.enemyIsOnHit) || (this.has_hit && this.state.air) || this.current_state == "LightP") {
+            var choise = AI.rand.Next(0, this.BOT.difficulty + 2);
+            if (choise == 0) { // Facão
+                this.BOT.EnqueueAction("Down *", 10);
+                this.BOT.EnqueueAction("Up *", 2);
+
+                choise = AI.rand.Next(0, 2);
+                if (Character.CheckAuraPoints(this, 50)) 
+                    this.BOT.EnqueueAction("RB *", 5);
+                else if (choise == 0) 
+                    this.BOT.EnqueueAction("B *", 5);
+                else 
+                    this.BOT.EnqueueAction("A *", 5);
+                
+                this.BOT.EnqueueAction("", 20);
+
+            } else if (choise == 1 && Character.CheckAuraPoints(this, 100)) { // Super
+                this.BOT.EnqueueAction("Down *", 5);
+                this.BOT.EnqueueAction("Down RB *", 5);
+            } 
+        } 
+
+        // Block
+        if (this.on_hit || this.state.on_block || ((f_state.enemyIsAttacking || f_state.enemyIsGrabbing) && f_state.enemyDistance <= 0.5f)) {
             if (f_state.enemyIsGrabbing) this.BOT.EnqueueAction("LB *", 5);
             else if (f_state.enemyIsCrouching) this.BOT.EnqueueAction("Left Down *", 5);
             else this.BOT.EnqueueAction("Left *", 5);
             return;
         }
-        
-        if (f_state.enemyIsAirborne && f_state.enemyDistance <= 0.3f) { // Anti air
-            var choise = AI.rand.Next(0, this.BOT.difficulty);
-            if (choise == 0) { // Shoryuken
-                this.BOT.EnqueueAction("Right *", 2);
-                this.BOT.EnqueueAction("Down *", 2);
-                this.BOT.EnqueueAction("Right *", 2);
-                this.BOT.EnqueueAction("C", 5);
-            } else if (choise == 1) {
-                this.BOT.EnqueueAction("Down D *", 5);
-            }
 
-        } else if (this.state.air && f_state.enemyDistance < 0.5f) { // Air
+        // Atack
+        if (this.state.air && f_state.enemyDistance < 0.5f) { // Air
             var choise = AI.rand.Next(0, 4);
-
             if (choise == 0) {
                 this.BOT.EnqueueAction("A", 3);
             } else if (choise == 1) {
                 this.BOT.EnqueueAction("B", 3);
             } else if (choise == 2) {
-                this.BOT.EnqueueAction("D", 3);
+                this.BOT.EnqueueAction("C", 3);
             } else {
-                this.BOT.EnqueueAction("Down *", 5);
-                this.BOT.EnqueueAction("Left *", 5);
-
-                if (Character.CheckAuraPoints(this, 50))
-                    this.BOT.EnqueueAction("RB", 1);
-                else
-                    this.BOT.EnqueueAction("A", 1);
+                this.BOT.EnqueueAction("D", 3);
             }
             
         } else if (f_state.enemyDistance < 0.3f) { // Close range
-            var choise = AI.rand.Next(0, 10);
-            if (f_state.enemyIsCrouching) { // LOW
-                if (choise < 3) { // Normais
-                    choise = AI.rand.Next(0, 2);
-                    if (choise < 1) this.BOT.EnqueueAction("A", 3);
-                    else if (choise < 2) this.BOT.EnqueueAction("B", 3);
+            var choise = AI.rand.Next(0, 5);
+            if (this.crounching || choise == 0) { // LOW
+                this.BOT.EnqueueAction("Down *", 3);
 
-                } else if (choise < 5) { // Low LK
-                    this.BOT.EnqueueAction("Down *", 3);
+                choise = AI.rand.Next(0, 10);
+
+                if (choise < 2) { 
                     this.BOT.EnqueueAction("Down A *", 3);
-                    this.BOT.EnqueueAction("", 3);
 
-                    choise = AI.rand.Next(0, 10);
-                    if (choise < 1) { // Path: Light Tatso
-                        this.BOT.EnqueueAction("Down *", 3);
-                        this.BOT.EnqueueAction("Left *", 3);
-                        this.BOT.EnqueueAction("A *", 3);
+                } else if (choise < 5) {
+                    this.BOT.EnqueueAction("Down D *", 3);
 
-                    } else if (choise < 3 && Character.CheckAuraPoints(this, 50)) { // Path: Tatso
-                        this.BOT.EnqueueAction("Down *", 3);
-                        this.BOT.EnqueueAction("Left *", 3);
-
-                        if (choise == 1) this.BOT.EnqueueAction("RB *", 3);
-                        else this.BOT.EnqueueAction("A *", 3);
-
-                    } else if (choise < 5) { // Path: Light Shoryuken
-                        this.BOT.EnqueueAction("Right *", 3);
-                        this.BOT.EnqueueAction("Down *", 3);
-                        this.BOT.EnqueueAction("Right *", 3);
-                        this.BOT.EnqueueAction("C *", 3);
-
-                    }
-                } else if (choise < 6) { // Sweep
+                } else if (choise < 8) { // Low LP
+                    this.BOT.EnqueueAction("Down C *", 3);
+                    
+                } else { // Sweep
                     this.BOT.EnqueueAction("Down *", 5);
                     this.BOT.EnqueueAction("Down B *", 5);
-                } else if (choise < 7) { // Overhead
-                    this.BOT.EnqueueAction("Left B *", 5);
+                } 
+
+            } else if (choise == 1) { // Special
+                choise = AI.rand.Next(0, 5);
+                if (choise == 0) { // Target combo 1
+                    this.BOT.EnqueueAction("Right C *", 5);
+                    this.BOT.EnqueueAction("D *", 5);
+
+                } else if (choise == 1) { // Facão
+                    this.BOT.EnqueueAction("Down *", 10);
+                    this.BOT.EnqueueAction("Up *", 5);
+
+                    choise = AI.rand.Next(0, 2);
+                    if (Character.CheckAuraPoints(this, 50)) this.BOT.EnqueueAction("RB *", 5);
+                    else if (choise == 1) this.BOT.EnqueueAction("B *", 5);
+                    else this.BOT.EnqueueAction("A *", 5);
+
+                } else if (choise == 2) { // Target combo 2
+                    this.BOT.EnqueueAction("Down *", 10);
+                    this.BOT.EnqueueAction("Down C *", 5);
+                    this.BOT.EnqueueAction("Down D *", 5);
+
+                } else if (choise == 3) { // Target combo 3
+                    this.BOT.EnqueueAction("Down *", 10);
+                    this.BOT.EnqueueAction("Down A *", 5);
+                    this.BOT.EnqueueAction("Down B *", 5);
+
+                } else if (Character.CheckAuraPoints(this, 100)) { // Super
+                    this.BOT.EnqueueAction("C *", 5);
+                    this.BOT.EnqueueAction("Down *", 3);
+                    this.BOT.EnqueueAction("Down RB *", 3);
                 }
 
             } else { // STAND
-                if (choise < 2) { // Normais
-                    choise = AI.rand.Next(0, 4);
-                    if (choise < 1) this.BOT.EnqueueAction("D", 3);
-                    else if (choise < 2) this.BOT.EnqueueAction("B", 3);
-                    else if (choise < 3) this.BOT.EnqueueAction("C", 3);
-                    else this.BOT.EnqueueAction("A", 3);
-
-                } else if (choise == 3) { // Grab
+                choise = AI.rand.Next(0, 10);
+                if (choise < 3) {
+                    this.BOT.EnqueueAction("A", 3);
+                } else if (choise < 5) {
+                    this.BOT.EnqueueAction("B", 3);
+                } else if (choise < 7) {
+                    this.BOT.EnqueueAction("C", 3);
+                } else if (choise < 9) {
+                    this.BOT.EnqueueAction("D", 3);
+                } else { // Grab
                     choise = AI.rand.Next(0, 2);
                     if (choise == 0) this.BOT.EnqueueAction("LB *", 5);
                     else this.BOT.EnqueueAction("LB Left *", 5);
-
-                } else if (choise == 4) { // Low LK
-                    this.BOT.EnqueueAction("Down *", 3);
-                    this.BOT.EnqueueAction("Down A *", 3);
-                    this.BOT.EnqueueAction("", 3);
-
-                    choise = AI.rand.Next(0, 10);
-                    if (choise == 0) { // Path: Light Tatso
-                        this.BOT.EnqueueAction("Down *", 3);
-                        this.BOT.EnqueueAction("Left *", 3);
-                        this.BOT.EnqueueAction("A *", 3);
-
-                    } else if (choise == 1 && Character.CheckAuraPoints(this, 50)) { // Path: EX Tatso
-                        this.BOT.EnqueueAction("Down *", 3);
-                        this.BOT.EnqueueAction("Left *", 3);
-                        this.BOT.EnqueueAction("RB *", 3);
-
-                    } else if (choise == 3) { // Path: Light Shoryuken
-                        this.BOT.EnqueueAction("Right *", 3);
-                        this.BOT.EnqueueAction("Down *", 3);
-                        this.BOT.EnqueueAction("Right *", 3);
-                        this.BOT.EnqueueAction("C *", 3);
-
-                    } else if (Character.CheckAuraPoints(this, 100)) { // Path: Super Art 1
-                        this.BOT.EnqueueAction("Down *", 3);
-                        this.BOT.EnqueueAction(" *", 3);
-                        this.BOT.EnqueueAction("Down *", 3);
-                        this.BOT.EnqueueAction("RB *", 3);
-
-                    }
-
-                } else if (choise == 5) { // Sweep
-                    this.BOT.EnqueueAction("Down *", 5);
-                    this.BOT.EnqueueAction("Down B *", 5);
-
-                } else if (choise == 6) { // Light Shory
-                    this.BOT.EnqueueAction("Right *", 5);
-                    this.BOT.EnqueueAction("Down *", 5);
-                    this.BOT.EnqueueAction("Right *", 5);
-                    this.BOT.EnqueueAction("C", 1);
-
-                } else if (choise == 7) { // Tatso                
-                    this.BOT.EnqueueAction("Down *", 5);
-                    this.BOT.EnqueueAction("Left *", 5);
-
-                    choise = AI.rand.Next(0, 10);
-                    if (choise == 0 && Character.CheckAuraPoints(this, 50)) this.BOT.EnqueueAction("RB", 1);
-                    else if (choise < 4) this.BOT.EnqueueAction("B", 1);
-                    else this.BOT.EnqueueAction("A", 1);
-
-                } else if (choise < 10) { // Target combo
-                    this.BOT.EnqueueAction("C", 3);
-                    this.BOT.EnqueueAction("D", 3);
-                    this.BOT.EnqueueAction("*", 3);
-
-                    choise = AI.rand.Next(0, 4);
-                    if (choise == 0) { // Path: BackMP
-                        this.BOT.EnqueueAction("Left *", 3);
-                        this.BOT.EnqueueAction("Left D *", 5);
-
-                    } else if (choise == 1) { // Path: Light Shoryuken
-                        this.BOT.EnqueueAction("Right *", 5);
-                        this.BOT.EnqueueAction("Down *", 5);
-                        this.BOT.EnqueueAction("Right *", 5);
-                        this.BOT.EnqueueAction("C", 1);
-
-                    } else if (Character.CheckAuraPoints(this, 100)) { // Path: Super Art 1
-                        this.BOT.EnqueueAction("Down *", 3);
-                        this.BOT.EnqueueAction("*", 3);
-                        this.BOT.EnqueueAction("Down *", 3);
-                        this.BOT.EnqueueAction("RB", 3);
-                    }
                 }
             }
 
         } else if (f_state.enemyDistance < 0.4f) { // Mid range
             var choise = AI.rand.Next(0, 10);
-            if (choise < 1) { // Medium kick
-                this.BOT.EnqueueAction("B", 1);
+            if (choise < 1) { // MK
+                choise = AI.rand.Next(0, 2);
+                if (choise == 0) this.BOT.EnqueueAction("B", 5);
+                else this.BOT.EnqueueAction("Down B", 10);
 
             } else if (choise < 2) { // Low LK
                 this.BOT.EnqueueAction("Right *", 20);
-                this.BOT.EnqueueAction("Down A *", 2);
+                this.BOT.EnqueueAction("Down A *", 5);
 
-                if (AI.rand.Next(0, 10) < 3) { // Follow up with Tatso
-                    choise = AI.rand.Next(0, 10);
-                    if (choise == 0 && Character.CheckAuraPoints(this, 50)) {  // EX Tatso
-                        this.BOT.EnqueueAction("Down *", 5);
-                        this.BOT.EnqueueAction("Left *", 5);
-                        this.BOT.EnqueueAction("RB", 1);
-
-                    } else if (choise < 4) { // Heavy Tatso
-                        this.BOT.EnqueueAction("Down *", 5);
-                        this.BOT.EnqueueAction("Left *", 5);
-                        this.BOT.EnqueueAction("B", 1);
-
-                    } else { // Light Tatso
-                        this.BOT.EnqueueAction("Down *", 5);
-                        this.BOT.EnqueueAction("Left *", 5);
-                        this.BOT.EnqueueAction("A", 1);
-                    }
+                if (AI.rand.Next(0, 10) < 3) { // Follow up
+                    this.BOT.EnqueueAction("B", 5);
                 }
-            } else if (choise < 3) { // Tatso
-                choise = AI.rand.Next(0, 10);
-                this.BOT.EnqueueAction("Down *", 15);
-                this.BOT.EnqueueAction("Left *", 15);
-                
-                if (choise == 0 && Character.CheckAuraPoints(this, 50)) {  // EX Tatso
-                    this.BOT.EnqueueAction("RB", 1);
-                } else if (choise < 4) { // Heavy Tatso
-                    this.BOT.EnqueueAction("B", 1);
-                } else { // Light Tatso
-                    this.BOT.EnqueueAction("A", 1);
-                }
-            } 
-
-        } else { // Long range
-            if (AI.rand.Next(0, 5) == 0) {  // Fireball
+            
+            } else if (choise < 3) { // Fireball
                 this.BOT.EnqueueAction("Left *", 10);
                 this.BOT.EnqueueAction("Right *", 5);
 
-                var choise = AI.rand.Next(0, 3);
+                choise = AI.rand.Next(0, 3);
                 if (choise == 0 && Character.CheckAuraPoints(this, 50)) 
                     this.BOT.EnqueueAction("RB", 5);
                 else if (choise == 1) 
                     this.BOT.EnqueueAction("C", 5);
                 else 
                     this.BOT.EnqueueAction("A", 5);
-            } else 
-                this.BOT.EnqueueAction("", AI.rand.Next(10, 30)); // Nothing
+
+            } else if (choise < 4) { // Facão
+                this.BOT.EnqueueAction("Down *", 10);
+                this.BOT.EnqueueAction("Up *", 5);
+
+                choise = AI.rand.Next(0, 3);
+                if (choise == 0 && Character.CheckAuraPoints(this, 50)) this.BOT.EnqueueAction("RB *", 5);
+                else if (choise == 1) this.BOT.EnqueueAction("B *", 5);
+                else this.BOT.EnqueueAction("A *", 5);
+
+            } else if (choise == 0 && Character.CheckAuraPoints(this, 100)) { // Super
+                this.BOT.EnqueueAction("Down *", 5);
+                this.BOT.EnqueueAction("Down *", 5);
+                this.BOT.EnqueueAction("RB *", 5);
+            }
+
+        } else { // Long range
+            var choise = AI.rand.Next(0, 25);
+            if (choise <= 5) {  // Fireball
+                this.BOT.EnqueueAction("Left *", 10);
+                this.BOT.EnqueueAction("Right *", 5);
+
+                choise = AI.rand.Next(0, 3);
+                if (choise == 0 && Character.CheckAuraPoints(this, 50)) 
+                    this.BOT.EnqueueAction("RB", 5);
+                else if (choise == 1) 
+                    this.BOT.EnqueueAction("C", 5);
+                else 
+                    this.BOT.EnqueueAction("A", 5);
+
+            } else if (choise == 0 && Character.CheckAuraPoints(this, 100)) { // Super
+                this.BOT.EnqueueAction("Down *", 5);
+                this.BOT.EnqueueAction("Down *", 5);
+                this.BOT.EnqueueAction("RB *", 5);
+            } else {
+                this.BOT.EnqueueAction("", 30);
+            }
         }
     
         this.BOT.EnqueueAction("", AI.rand.Next(5 * this.BOT.difficulty, 25 * this.BOT.difficulty));

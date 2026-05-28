@@ -132,7 +132,7 @@ public class WGPause : Widget {
         if (UI.DrawButton(S("accessibility settings"), 0, -45, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: s_acc.is_on(0, 0), click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
             Program.ChangeState(Program.AccessibilityMenu);
         // 1
-        if (UI.DrawButton(S("sounds list"), 0, -30, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: s_acc.is_on(0, 1), click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
+        if (UI.DrawButton(S("sound dictionary"), 0, -30, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: s_acc.is_on(0, 1), click_font: "default medium click", hover_font: "default medium hover", font: "default medium"))
             Program.ChangeState(Program.AccessibilitySounds);
         // 2
         if (UI.DrawButton(S("return"), 0, 70, spacing: Config.spacing_medium, click: face_hold, action: face_release, hover: s_acc.is_on(0, 2), click_font: "default medium click", hover_font: "default medium hover", font: "default medium") || Input.Key_down("B")) {

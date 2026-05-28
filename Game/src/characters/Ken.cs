@@ -109,7 +109,7 @@ public class Ken : Character {
             { "AirTatso", new State(F(a["airTatso"]), "Landing", 3, change_on_ground: true, change_on_end: false, air: true, will_hit: true)},
             { "AirTatsoEX", new State(F(a["airTatso"]), "Landing", 3, change_on_ground: true, change_on_end: false, glow: true, trace: true, air: true, will_hit: true)},
             // Other
-            { "Falling", new State(F(a["falling"]), "OnGround", can_be_hit: false)},
+            { "Falling", new State(F(a["falling"]), "OnGround", can_be_hit: false, on_hit: true)},
             { "Sweeped", new State(F(a["sweeped"]), "Falling", on_hit: true, low: true, can_be_hit: false)},
             { "OnGround", new State(F(a["OnGround"]), "WakeUp", low: true, can_be_hit: false)},
             { "WakeUp", new State(F(a["wakeUp"]), "Idle", can_be_hit: false)},

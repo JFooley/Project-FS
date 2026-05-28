@@ -8443,7 +8443,7 @@
       ],
       "lenght": 4,
       "facing": 1,
-      "Sound_index": "golpe3",
+      "Sound_index": "golpe4",
       "hasHit": true
     },
     {
@@ -9305,7 +9305,7 @@
       ],
       "lenght": 3,
       "facing": 1,
-      "Sound_index": "golpe5",
+      "Sound_index": "golpe1",
       "hasHit": true
     },
     {
@@ -10422,7 +10422,7 @@
       ],
       "lenght": 3,
       "facing": 1,
-      "Sound_index": "golpe5",
+      "Sound_index": "golpe1",
       "hasHit": true
     },
     {
@@ -11438,7 +11438,7 @@
       ],
       "lenght": 2,
       "facing": 1,
-      "Sound_index": "golpe3",
+      "Sound_index": "golpe4",
       "hasHit": true
     },
     {
@@ -12577,7 +12577,7 @@
       ],
       "lenght": 4,
       "facing": 1,
-      "Sound_index": "golpe5",
+      "Sound_index": "golpe1",
       "hasHit": true
     },
     {
@@ -13533,7 +13533,7 @@
       "Boxes": [],
       "lenght": 4,
       "facing": 1,
-      "Sound_index": "golpe3",
+      "Sound_index": "golpe4",
       "hasHit": true
     },
     {
@@ -14448,7 +14448,7 @@
       ],
       "lenght": 3,
       "facing": 1,
-      "Sound_index": "golpe1",
+      "Sound_index": "special1",
       "hasHit": true
     },
     {
@@ -14780,7 +14780,7 @@
       ],
       "lenght": 3,
       "facing": 1,
-      "Sound_index": "golpe1",
+      "Sound_index": "special1",
       "hasHit": false
     },
     {
@@ -15167,7 +15167,7 @@
       ],
       "lenght": 3,
       "facing": 1,
-      "Sound_index": "golpe2",
+      "Sound_index": "special2",
       "hasHit": true
     },
     {
@@ -15565,7 +15565,7 @@
       ],
       "lenght": 3,
       "facing": 1,
-      "Sound_index": "golpe2",
+      "Sound_index": "special2",
       "hasHit": true
     },
     {
@@ -15897,7 +15897,7 @@
       ],
       "lenght": 3,
       "facing": 1,
-      "Sound_index": "golpe2",
+      "Sound_index": "special2",
       "hasHit": true
     },
     {
