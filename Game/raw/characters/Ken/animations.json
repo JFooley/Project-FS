@@ -984,7 +984,7 @@
       "hasHit": true
     }
   ],
-  "OnHit": [
+  "OnHit1": [
     {
       "Sprite_index": "14807",
       "DeltaX": 0,
@@ -1015,7 +1015,7 @@
       ],
       "lenght": 2,
       "facing": 1,
-      "Sound_index": "",
+      "Sound_index": "onhit1",
       "hasHit": true
     },
     {
@@ -1245,6 +1245,340 @@
         }
       ],
       "lenght": 2,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    }
+  ],
+  "OnHit2": [
+    {
+      "Sprite_index": "14816",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 97,
+            "y": 104
+          },
+          "pB": {
+            "x": 151,
+            "y": 195
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 94
+          },
+          "pB": {
+            "x": 157,
+            "y": 195
+          }
+        }
+      ],
+      "lenght": 3,
+      "facing": 1,
+      "Sound_index": "onhit2",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "14817",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 97,
+            "y": 104
+          },
+          "pB": {
+            "x": 151,
+            "y": 195
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 94
+          },
+          "pB": {
+            "x": 157,
+            "y": 195
+          }
+        }
+      ],
+      "lenght": 2,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "14818",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 97,
+            "y": 104
+          },
+          "pB": {
+            "x": 151,
+            "y": 195
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 94
+          },
+          "pB": {
+            "x": 157,
+            "y": 195
+          }
+        }
+      ],
+      "lenght": 2,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "14819",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 97,
+            "y": 104
+          },
+          "pB": {
+            "x": 151,
+            "y": 195
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 94
+          },
+          "pB": {
+            "x": 157,
+            "y": 195
+          }
+        }
+      ],
+      "lenght": 2,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "14820",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 97,
+            "y": 104
+          },
+          "pB": {
+            "x": 151,
+            "y": 195
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 94
+          },
+          "pB": {
+            "x": 157,
+            "y": 195
+          }
+        }
+      ],
+      "lenght": 2,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "14821",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 97,
+            "y": 104
+          },
+          "pB": {
+            "x": 151,
+            "y": 195
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 94
+          },
+          "pB": {
+            "x": 157,
+            "y": 195
+          }
+        }
+      ],
+      "lenght": 1,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    }
+  ],
+  "OnHit3": [
+    {
+      "Sprite_index": "14800",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 100,
+            "y": 98
+          },
+          "pB": {
+            "x": 151,
+            "y": 197
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 158,
+            "y": 197
+          }
+        }
+      ],
+      "lenght": 1,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "14801",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 100,
+            "y": 98
+          },
+          "pB": {
+            "x": 151,
+            "y": 197
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 158,
+            "y": 197
+          }
+        }
+      ],
+      "lenght": 1,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "14802",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 100,
+            "y": 98
+          },
+          "pB": {
+            "x": 151,
+            "y": 197
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 158,
+            "y": 197
+          }
+        }
+      ],
+      "lenght": 1,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "14803",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 100,
+            "y": 98
+          },
+          "pB": {
+            "x": 151,
+            "y": 197
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 158,
+            "y": 197
+          }
+        }
+      ],
+      "lenght": 1,
       "facing": 1,
       "Sound_index": "",
       "hasHit": true
@@ -6694,7 +7028,7 @@
       ],
       "lenght": 3,
       "facing": 1,
-      "Sound_index": "generic:ar3 --RP",
+      "Sound_index": "",
       "hasHit": true
     },
     {
@@ -6727,7 +7061,7 @@
       ],
       "lenght": 3,
       "facing": 1,
-      "Sound_index": "generic:golpe5",
+      "Sound_index": "",
       "hasHit": true
     },
     {
@@ -6771,7 +7105,7 @@
       ],
       "lenght": 3,
       "facing": 1,
-      "Sound_index": "",
+      "Sound_index": "golpe1",
       "hasHit": true
     },
     {
@@ -6892,7 +7226,7 @@
       ],
       "lenght": 3,
       "facing": 1,
-      "Sound_index": "",
+      "Sound_index": "generic:ar3 --RP",
       "hasHit": true
     },
     {
@@ -11133,7 +11467,7 @@
       ],
       "lenght": 1,
       "facing": 1,
-      "Sound_index": "shory",
+      "Sound_index": "",
       "hasHit": true
     },
     {
@@ -11177,7 +11511,7 @@
       ],
       "lenght": 2,
       "facing": 1,
-      "Sound_index": "",
+      "Sound_index": "shory",
       "hasHit": false
     },
     {
@@ -11432,7 +11766,7 @@
       ],
       "lenght": 3,
       "facing": 1,
-      "Sound_index": "shory",
+      "Sound_index": "generic:ar3 --RP ",
       "hasHit": true
     },
     {
@@ -11476,7 +11810,7 @@
       ],
       "lenght": 4,
       "facing": 1,
-      "Sound_index": "generic:ar3 --RP",
+      "Sound_index": "shory",
       "hasHit": false
     },
     {
@@ -12186,7 +12520,7 @@
       ],
       "lenght": 1,
       "facing": 1,
-      "Sound_index": "tatso",
+      "Sound_index": "",
       "hasHit": false
     },
     {
@@ -12285,7 +12619,7 @@
       ],
       "lenght": 2,
       "facing": 1,
-      "Sound_index": "",
+      "Sound_index": "tatso",
       "hasHit": true
     },
     {
@@ -13145,7 +13479,7 @@
       ],
       "lenght": 1,
       "facing": 1,
-      "Sound_index": "tatso",
+      "Sound_index": "",
       "hasHit": false
     },
     {
@@ -13211,7 +13545,7 @@
       ],
       "lenght": 1,
       "facing": 1,
-      "Sound_index": "",
+      "Sound_index": "tatso",
       "hasHit": true
     },
     {
@@ -13862,7 +14196,7 @@
       ],
       "lenght": 1,
       "facing": 1,
-      "Sound_index": "tatso",
+      "Sound_index": "",
       "hasHit": false
     },
     {
@@ -13928,7 +14262,7 @@
       ],
       "lenght": 1,
       "facing": 1,
-      "Sound_index": "",
+      "Sound_index": "tatso",
       "hasHit": true
     },
     {
@@ -15450,18 +15784,18 @@
         {
           "type": 0,
           "pA": {
-            "x": 172,
-            "y": 95
+            "x": 176,
+            "y": 97
           },
           "pB": {
-            "x": 204,
-            "y": 122
+            "x": 194,
+            "y": 121
           }
         }
       ],
       "lenght": 4,
       "facing": 1,
-      "Sound_index": "",
+      "Sound_index": "generic:ar1 --RP",
       "hasHit": true
     },
     {
@@ -16975,7 +17309,7 @@
     },
     {
       "Sprite_index": "15138",
-      "DeltaX": 1,
+      "DeltaX": 3,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -17019,7 +17353,7 @@
     },
     {
       "Sprite_index": "15139",
-      "DeltaX": 9,
+      "DeltaX": 13,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -17063,7 +17397,7 @@
     },
     {
       "Sprite_index": "15140",
-      "DeltaX": 1,
+      "DeltaX": 9,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -17173,7 +17507,7 @@
     },
     {
       "Sprite_index": "15142",
-      "DeltaX": 1,
+      "DeltaX": -1,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -17217,7 +17551,7 @@
     },
     {
       "Sprite_index": "15143",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -17305,7 +17639,7 @@
     },
     {
       "Sprite_index": "15145",
-      "DeltaX": 1,
+      "DeltaX": 3,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -17613,7 +17947,7 @@
     },
     {
       "Sprite_index": "15072",
-      "DeltaX": 1,
+      "DeltaX": 13,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -17657,7 +17991,7 @@
     },
     {
       "Sprite_index": "15073",
-      "DeltaX": 1,
+      "DeltaX": 8,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -17712,7 +18046,7 @@
     },
     {
       "Sprite_index": "15074",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -17767,7 +18101,7 @@
     },
     {
       "Sprite_index": "15075",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -17811,7 +18145,7 @@
     },
     {
       "Sprite_index": "15076",
-      "DeltaX": 9,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -17855,7 +18189,7 @@
     },
     {
       "Sprite_index": "15077",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -17987,7 +18321,7 @@
     },
     {
       "Sprite_index": "15080",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18031,7 +18365,7 @@
     },
     {
       "Sprite_index": "15136",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18163,7 +18497,7 @@
     },
     {
       "Sprite_index": "15072",
-      "DeltaX": 1,
+      "DeltaX": 13,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18207,7 +18541,7 @@
     },
     {
       "Sprite_index": "15073",
-      "DeltaX": 1,
+      "DeltaX": 8,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18262,7 +18596,7 @@
     },
     {
       "Sprite_index": "15074",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18317,7 +18651,7 @@
     },
     {
       "Sprite_index": "15075",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18361,7 +18695,7 @@
     },
     {
       "Sprite_index": "15076",
-      "DeltaX": 9,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18405,7 +18739,7 @@
     },
     {
       "Sprite_index": "15077",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18537,7 +18871,7 @@
     },
     {
       "Sprite_index": "15080",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18581,7 +18915,7 @@
     },
     {
       "Sprite_index": "15136",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18625,7 +18959,7 @@
     },
     {
       "Sprite_index": "15137",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18669,7 +19003,7 @@
     },
     {
       "Sprite_index": "15138",
-      "DeltaX": 1,
+      "DeltaX": 3,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18713,7 +19047,7 @@
     },
     {
       "Sprite_index": "15139",
-      "DeltaX": 1,
+      "DeltaX": 12,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18757,7 +19091,7 @@
     },
     {
       "Sprite_index": "15140",
-      "DeltaX": 1,
+      "DeltaX": 10,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18867,7 +19201,7 @@
     },
     {
       "Sprite_index": "15142",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18911,7 +19245,7 @@
     },
     {
       "Sprite_index": "15143",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -18955,7 +19289,7 @@
     },
     {
       "Sprite_index": "15144",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -19043,7 +19377,7 @@
     },
     {
       "Sprite_index": "15146",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -19087,7 +19421,7 @@
     },
     {
       "Sprite_index": "15147",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {
@@ -19131,7 +19465,7 @@
     },
     {
       "Sprite_index": "15148",
-      "DeltaX": 1,
+      "DeltaX": 0,
       "DeltaY": 0,
       "Boxes": [
         {

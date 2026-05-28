@@ -21,13 +21,13 @@ public class Accessibility{
     public const float defend_feedback_intensity = 0.5f;
 
     // Audio cue data
-    private static Sound? radar_beep_BA;
-    private static Sound? radar_beep_AB;
-    private static Sound? falling_sound;
-    private static Sound? wake_up_sound;
-    private static Sound? air_hit_sound;
-    private static Sound? stand_hit_sound;
-    private static Sound? crouch_hit_sound;
+    private static Sound radar_beep_BA;
+    private static Sound radar_beep_AB;
+    private static Sound falling_sound;
+    private static Sound wake_up_sound;
+    private static Sound air_hit_sound;
+    private static Sound stand_hit_sound;
+    private static Sound crouch_hit_sound;
 
     // TTS data
     private static HashSet<string> current_tts_ids = new();
@@ -103,18 +103,18 @@ public class Accessibility{
         if (!Accessibility.distance_cue) return;
 
         float pos_diff = char_B.body.position.X - char_A.body.position.X;
-        float distance = Math.Abs(pos_diff) / Config.RenderWidth;
+        float distance = (Math.Abs(pos_diff) / Config.RenderWidth - 0.08f) / (0.65f - 0.08f);
+        distance = Math.Max(0f, Math.Min(distance, 1f));
 
-        float frequency = 20;
-        if (distance < 0.3f) frequency /= 2;
-        else if (distance > 0.6f) frequency *= 2;
+        double pitch = 2f - 1.6f * Math.Sqrt(distance);
+        float frequency = distance < 0.4f ? 10f : 20f;
 
         if (UI.ForEach(frequency)) {
             if (pos_diff > 0) {
-                Accessibility.radar_beep_AB.Pitch = 1.5f - 1f * distance;
+                Accessibility.radar_beep_AB.Pitch = (float) pitch;
                 Accessibility.radar_beep_AB?.Play();
             } else {
-                Accessibility.radar_beep_BA.Pitch = 1.5f - 1f * distance;
+                Accessibility.radar_beep_BA.Pitch = (float) pitch;
                 Accessibility.radar_beep_BA?.Play();
             }
         }

@@ -50,7 +50,7 @@ public class Ken : Character {
             { "Idle", new State(F(a["idle"]), "Idle", idle: true)},
             { "OnBlock", new State(F(a["OnBlock"]), "Idle", on_block: true)}, 
             { "OnBlockLow", new State(F(a["OnBlockLow"]), "Crouching", low: true, on_block: true)},
-            { "OnHit", new State(F(a["OnHit"]), "Idle", on_hit: true)},
+            { "OnHit", new State(F(a["OnHit1"], a["OnHit2"], a["OnHit3"]), "Idle", on_hit: true)},
             { "OnHitLow", new State(F(a["OnHitLow"]), "Crouching", low: true, on_hit: true)},
             { "Airboned", new State(F(a["Airboned"]), "Falling", change_on_ground: true, change_on_end: false, loop: false, air: true, on_hit: true)},
             { "Parry", new State(F(a["parry"]), "Idle", 6, glow: true, is_parry: true)},

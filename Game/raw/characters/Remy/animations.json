@@ -12975,7 +12975,7 @@
       ],
       "lenght": 2,
       "facing": 1,
-      "Sound_index": "",
+      "Sound_index": "generic:ar1 --RP",
       "hasHit": true
     },
     {
