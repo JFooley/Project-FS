@@ -2,10 +2,11 @@ using Newtonsoft.Json;
 
 public static class Config {
     // Window
-    public const string GameTitle = "Project FS";
+    public const string GameTitle = "Project FS " + Version;
     public const int RenderWidth = 384;
     public const int RenderHeight = 216;
     public const int Framerate = 60;
+    public const string Version = "v0.1.1";
 
     public static bool Fullscreen = true;
     public static bool Vsync = true;

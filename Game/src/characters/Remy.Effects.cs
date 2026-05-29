@@ -69,7 +69,7 @@ public class RemyEffects : Character {
 
         switch (this.current_state) {
             case "FireballHigh":
-                if (target.isBlockingHigh()) {
+                if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 0);
                     target.BlockStun(this, 20, raw_value: true);
@@ -97,7 +97,7 @@ public class RemyEffects : Character {
                 break;
 
             case "FireballDizzy":
-                if (target.isBlockingHigh()) {
+                if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 0);
                     target.BlockStun(this, 20, raw_value: true);
@@ -111,7 +111,7 @@ public class RemyEffects : Character {
                 break;
 
             case "FireballEXHigh":
-                if (target.isBlockingHigh()) {
+                if (target.isBlocking()) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 20, 0);
                     target.BlockStun(this, 20, raw_value: true);
