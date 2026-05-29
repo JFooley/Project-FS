@@ -69,7 +69,7 @@ public class RemyEffects : Character {
 
         switch (this.current_state) {
             case "FireballHigh":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 0);
                     target.BlockStun(this, 20, raw_value: true);
@@ -83,7 +83,7 @@ public class RemyEffects : Character {
                 break;
             
             case "FireballLow":
-                if (target.isBlockingLow()) {
+                if (target.isBlockingLow(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 0);
                     target.BlockStun(this, 20, raw_value: true);
@@ -97,7 +97,7 @@ public class RemyEffects : Character {
                 break;
 
             case "FireballDizzy":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 0);
                     target.BlockStun(this, 20, raw_value: true);
@@ -111,7 +111,7 @@ public class RemyEffects : Character {
                 break;
 
             case "FireballEXHigh":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 20, 0);
                     target.BlockStun(this, 20, raw_value: true);
@@ -124,7 +124,7 @@ public class RemyEffects : Character {
                 break;
 
             case "FireballEXLow":
-                if (target.isBlockingLow()) {
+                if (target.isBlockingLow(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 20, 0);
                     target.BlockStun(this, 20, raw_value: true);

@@ -331,7 +331,7 @@ public class Ken : Character {
 
         switch (this.current_state) {
             case "LightP":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 3);
                 } else {
@@ -344,7 +344,7 @@ public class Ken : Character {
                 break;
                 
             case "LowLightP":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 3);
                 } else {
@@ -357,7 +357,7 @@ public class Ken : Character {
                 break;
 
             case "AirLightP":
-                if (target.isBlockingHigh()) {
+                if (target.isBlockingHigh(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 7);
                 } else {
@@ -370,7 +370,7 @@ public class Ken : Character {
                 break;
 
             case "LightK":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 2);
                 } else {
@@ -383,7 +383,7 @@ public class Ken : Character {
                 break;
                 
             case "LowLightK":
-                if (target.isBlockingLow()) {
+                if (target.isBlockingLow(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -4);
                 } else {
@@ -396,7 +396,7 @@ public class Ken : Character {
                 break;
             
             case "AirLightK":
-                if (target.isBlockingHigh()) {
+                if (target.isBlockingHigh(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 10);
                 } else {
@@ -409,7 +409,7 @@ public class Ken : Character {
                 break;
 
             case "MediumP":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -2);
                 } else {
@@ -422,7 +422,7 @@ public class Ken : Character {
                 break;
 
             case "LowMediumP":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 3);
                 } else {
@@ -435,7 +435,7 @@ public class Ken : Character {
                 break;
 
             case "AirMediumP":
-                if (target.isBlockingHigh()) {
+                if (target.isBlockingHigh(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 10);
                 } else {
@@ -448,7 +448,7 @@ public class Ken : Character {
                 break;
 
             case "MediumK":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -6);
                 } else {
@@ -461,7 +461,7 @@ public class Ken : Character {
                 break;
 
             case "LowMediumK":
-                if (target.isBlockingLow()) {
+                if (target.isBlockingLow(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -14);
 
@@ -475,7 +475,7 @@ public class Ken : Character {
                 break;
 
             case "AirMediumK":
-                if (target.isBlockingHigh()) {
+                if (target.isBlockingHigh(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 13);
                 } else {
@@ -488,7 +488,7 @@ public class Ken : Character {
                 break;
 
             case "BackMediumK":
-                if (target.isBlockingHigh()) {
+                if (target.isBlockingHigh(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 1);
 
@@ -502,7 +502,7 @@ public class Ken : Character {
                 break;
 
             case "FrontMediumK":
-                if (target.isBlockingHigh()) {
+                if (target.isBlockingHigh(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -6);
                 } else {
@@ -515,7 +515,7 @@ public class Ken : Character {
                 break;
 
             case "BackMediumP":
-                if (target.isBlockingHigh()) {
+                if (target.isBlockingHigh(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 1);
 
@@ -529,7 +529,7 @@ public class Ken : Character {
                 break;
 
             case "CloseMP":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -2);
 
@@ -573,7 +573,7 @@ public class Ken : Character {
                 break;
 
             case "LightShory":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -10);
                     Character.Push(target: target, self: this, 1.3f);
@@ -588,7 +588,7 @@ public class Ken : Character {
                 break;
 
             case "HeavyShory":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -17);
                     Character.Push(target: target, self: this, 2.0f);
@@ -607,7 +607,7 @@ public class Ken : Character {
                 break;
 
             case "ShoryEX":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 20, 20);
                     target.BlockStun(this, -10);
@@ -628,7 +628,7 @@ public class Ken : Character {
                 break;
             
             case "LightTatso":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 20);
                     target.BlockStun(this, 12, raw_value: true);
@@ -642,7 +642,7 @@ public class Ken : Character {
                 break;
             
             case "HeavyTatso":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 30);
                     target.BlockStun(this, 12, raw_value: true);
@@ -656,7 +656,7 @@ public class Ken : Character {
                 break;
 
             case "TatsoEX":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 30);
                     target.BlockStun(this, 6, raw_value: true);
@@ -671,7 +671,7 @@ public class Ken : Character {
                 break;
             
             case "AirTatso":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 30);
                     target.BlockStun(this, 15, raw_value: true);
@@ -686,7 +686,7 @@ public class Ken : Character {
                 break;
 
             case "AirTatsoEX":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 20);
                     target.BlockStun(this, 1);
@@ -701,7 +701,7 @@ public class Ken : Character {
                 break;
 
             case "SA1":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 5, 0);
                     target.BlockStun(this, 30, raw_value: true);

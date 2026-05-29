@@ -100,7 +100,7 @@ public class KenEffects : Character {
                 Character.Push(target: target, self: this, Config.light_pushback);
                 this.SetVelocity(raw_set: true);
 
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 0);
                     target.BlockStun(this, 20, raw_value: true);
@@ -118,7 +118,7 @@ public class KenEffects : Character {
                 Character.Push(target: target, self: this, Config.light_pushback);
                 this.SetVelocity(raw_set: true);
 
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 0);
                     target.BlockStun(this, 20, raw_value: true);
@@ -136,7 +136,7 @@ public class KenEffects : Character {
                 Character.Push(target: target, self: this, Config.light_pushback);
                 this.SetVelocity(raw_set: true);
 
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 0);
                     target.BlockStun(this, 20, raw_value: true);

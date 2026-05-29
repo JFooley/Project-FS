@@ -386,16 +386,16 @@ public abstract class Character : Object {
         else if (target.state.is_grab && this.state.is_grab) return Character.TECH;
         else return this.ImposeBehavior(target);
     }
-    public bool isBlocking() {
-        return this.isBlockingHigh() || this.isBlockingLow();
+    public bool isBlocking(Character character) {
+        return this.isBlockingHigh(character) || this.isBlockingLow(character);
     }
-    public bool isBlockingHigh() {
-        if ((this.not_acting_all || this.state.on_block) && (this.blocking_high || this.blocking)) return true;
-        return (this.not_acting || (this.state.on_block && !this.state.low)) && Input.Key_hold("Left", player: this.player_index, facing: this.facing) && !Input.Key_hold("Down", player: this.player_index, facing: this.facing);
+    public bool isBlockingHigh(Character character) {
+        if ((this.not_acting || this.not_acting_low || this.state.on_block) && (this.blocking_high || this.blocking)) return true;
+        return (this.not_acting || this.state.on_block) && Input.Key_hold("Left", player: this.player_index, facing: -character.facing) && !Input.Key_hold("Down", player: this.player_index, facing: -character.facing);
     }
-    public bool isBlockingLow() {
-        if ((this.not_acting_all || this.state.on_block) && (this.blocking_low || this.blocking)) return true;
-        return (this.not_acting_low || (this.state.on_block && this.state.low)) && Input.Key_hold("Left", player: this.player_index, facing: this.facing) && Input.Key_hold("Down", player: this.player_index);
+    public bool isBlockingLow(Character character) {
+        if ((this.not_acting || this.not_acting_low || this.state.on_block) && (this.blocking_low || this.blocking)) return true;
+        return (this.not_acting_low || this.state.on_block) && Input.Key_hold("Left", player: this.player_index, facing: -character.facing) && Input.Key_hold("Down", player: this.player_index, facing: -character.facing);
     }
     public void Stun(Character enemy, int advantage, bool hit = true, bool airbone = false, bool sweep = false, bool force_crounch = false, bool force_stand = false, bool raw_value = false) {
         this.facing = this.GetFacingTo(enemy);
@@ -419,7 +419,7 @@ public abstract class Character : Object {
             }
 
         } else { // Block stun states
-            if (this.crounching) this.ChangeState("OnBlockLow", reset: true, lenght: lenght);
+            if (enemy.state.low) this.ChangeState("OnBlockLow", reset: true, lenght: lenght);
             else this.ChangeState("OnBlock", reset: true, lenght: lenght);
         }
     }

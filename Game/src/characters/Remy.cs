@@ -297,7 +297,7 @@ public class Remy : Character {
 
         switch (this.current_state) {
             case "LightP":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 3);
                 } else {
@@ -310,7 +310,7 @@ public class Remy : Character {
                 break;
                 
             case "LowLightP":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 3);
                 } else {
@@ -323,7 +323,7 @@ public class Remy : Character {
                 break;
 
             case "AirLightP":
-                if (target.isBlockingHigh()) {
+                if (target.isBlockingHigh(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 7);
                 } else {
@@ -337,7 +337,7 @@ public class Remy : Character {
 
 
             case "LightK":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 2);
                 } else {
@@ -350,7 +350,7 @@ public class Remy : Character {
                 break;
                 
             case "LowLightK":
-                if (target.isBlockingLow()) {
+                if (target.isBlockingLow(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -4);
                 } else {
@@ -363,7 +363,7 @@ public class Remy : Character {
                 break;
             
             case "AirLightK":
-                if (target.isBlockingHigh()) {
+                if (target.isBlockingHigh(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 10);
                 } else {
@@ -377,7 +377,7 @@ public class Remy : Character {
 
 
             case "MediumP":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -2);
                 } else {
@@ -390,7 +390,7 @@ public class Remy : Character {
                 break;
 
             case "LowMediumP":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 3);
                 } else {
@@ -403,7 +403,7 @@ public class Remy : Character {
                 break;
 
             case "AirMediumP":
-                if (target.isBlockingHigh()) {
+                if (target.isBlockingHigh(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 10);
                 } else {
@@ -417,7 +417,7 @@ public class Remy : Character {
 
 
             case "MediumK":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -6);
                 } else {
@@ -430,7 +430,7 @@ public class Remy : Character {
                 break;
 
             case "LowMediumK":
-                if (target.isBlockingLow()) {
+                if (target.isBlockingLow(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -10);
 
@@ -444,7 +444,7 @@ public class Remy : Character {
                 break;
 
             case "AirMediumK":
-                if (target.isBlockingHigh()) {
+                if (target.isBlockingHigh(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 13);
                 } else {
@@ -458,7 +458,7 @@ public class Remy : Character {
 
 
             case "FrontMediumK":
-                if (target.isBlockingHigh()) {
+                if (target.isBlockingHigh(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -2);
 
@@ -472,7 +472,7 @@ public class Remy : Character {
                 break;
 
             case "FrontLightP":
-                if (target.isBlockingHigh()) {
+                if (target.isBlockingHigh(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, 0);
 
@@ -524,7 +524,7 @@ public class Remy : Character {
 
 
             case "LightSpecial1":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -10);
                     Character.Push(target: target, self: this, 2.5f);
@@ -539,7 +539,7 @@ public class Remy : Character {
                 break;
             
             case "MediumSpecial1":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     Character.Damage(target: target, self: this, 10, 18);
                     target.BlockStun(this, -15);
@@ -555,7 +555,7 @@ public class Remy : Character {
                 break;
             
             case "EXSpecial1":
-                if (target.isBlocking()) {
+                if (target.isBlocking(this)) {
                     hit = Character.BLOCK;
                     target.BlockStun(this, -10);
                     Character.Push(target: target, self: this, 4.0f);
