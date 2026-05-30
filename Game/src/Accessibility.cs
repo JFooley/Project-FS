@@ -4,7 +4,7 @@ using UI_space;
 
 public class Accessibility{
     // Accessibility options
-    public static bool TTS = false;
+    public static bool TTS = true;
     public static bool high_contrast = false;
     public static bool atack_haptic_feedback = true;
     public static bool spacialized_audio = true;
