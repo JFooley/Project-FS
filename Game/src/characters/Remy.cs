@@ -153,7 +153,7 @@ public class Remy : Character {
                 Y: 60);
             return;
         } 
-        else if (Input.Key_sequence("Down Up RB", 10, player: this.player_index, facing: this.facing) && this.can_sp1) {
+        else if (Input.Key_sequence("Down Up RB", 10, player: this.player_index, facing: this.facing) && this.can_sp1 && Character.CheckAuraPoints(this, 50)) {
             Character.UseAuraPoints(this, 50);
             this.PlaySound("generic:ex");
             this.ChangeState("EXSpecial1");
@@ -177,7 +177,7 @@ public class Remy : Character {
         } else if (this.current_state == "Special2Kick" && this.current_anim_frame_index == 3 && this.has_frame_changed) {
             this.SpawnEffect("FireballLow", this.body.position.X, this.body.position.Y, this.facing, X_offset: 35, Y_offset: 0);
         }
-        else if (this.not_acting && Input.Key_sequence("Left Right RB", 10, this.player_index, this.facing)) {
+        else if (this.not_acting && Input.Key_sequence("Left Right RB", 10, this.player_index, this.facing) && Character.CheckAuraPoints(this, 50)) {
             Character.UseAuraPoints(this, 50);
             this.ChangeState("Special2EX");
             this.PlaySound("generic:ex");
