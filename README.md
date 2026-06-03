@@ -1,6 +1,16 @@
 O Project Fighting System (Project FS) é um protótipo de fighting game feito em C# usando SFML com a plataforma de desenvolvimento .NET
 
 Implementado:
+- Recursos de acessibilidade: Alto contraste
+- Recursos de acessibilidade: Indicação sonora de altura do golpe
+- Recursos de acessibilidade: Indicação sonora dinamica de proximidade dos jogadores
+- Recursos de acessibilidade: Feedback háptico de contato do golpe e intensidade
+- Recursos de acessibilidade: Indicação sonora de sweep/wake up
+- Recursos de acessibilidade: Feedback sonoro de navegação nos menus
+- Recursos de acessibilidade: Text-to-Speech
+- Recursos de acessibilidade: Indicação de tempo do round
+- Recursos de acessibilidade: Sinalização sonora da barra de aura (50% e 100%)
+
 - Sistema de input segregrado para player 1 e 2
 - Sistema de detecção de motion inputs (meia lua, etc)
 - Sistema de som
@@ -51,10 +61,3 @@ Implementado:
 - Load unificado e mais eficiente (usando arquivos binários)
 - Inteligência artificial dos BOTs
 - Widgets
-- Recursos de acessibilidade: Alto contraste
-- Recursos de acessibilidade: Indicação sonora de altura do golpe
-- Recursos de acessibilidade: Indicação sonora dinamica de proximidade dos jogadores
-- Recursos de acessibilidade: Feedback háptico de contato do golpe e intensidade
-- Recursos de acessibilidade: Indicação sonora de sweep/wake up
-- Recursos de acessibilidade: Feedback sonoro de navegação nos menus
-
