@@ -23,11 +23,14 @@ public class Accessibility{
     // Audio cue data
     private static Sound radar_beep_BA;
     private static Sound radar_beep_AB;
+
     private static Sound falling_sound;
     private static Sound wake_up_sound;
+
     private static Sound air_hit_sound;
     private static Sound stand_hit_sound;
     private static Sound crouch_hit_sound;
+    private static Sound overhead_hit_sound;
 
     // TTS data
     private static HashSet<string> current_tts_ids = new();
@@ -47,9 +50,10 @@ public class Accessibility{
         Accessibility.falling_sound = new Sound(Data.sounds["accessibility:falling"]) {Volume = Config.Effect_Volume};
         Accessibility.wake_up_sound = new Sound(Data.sounds["accessibility:wake_up"]) {Volume = Config.Effect_Volume};
 
-        Accessibility.stand_hit_sound = new Sound(Data.sounds["accessibility:toneA"]) {Volume = Config.Effect_Volume};
-        Accessibility.crouch_hit_sound = new Sound(Data.sounds["accessibility:toneB"]) {Volume = Config.Effect_Volume};
-        Accessibility.air_hit_sound = new Sound(Data.sounds["accessibility:toneC"]) {Volume = Config.Effect_Volume};
+        Accessibility.stand_hit_sound = new Sound(Data.sounds["accessibility:stand_hit"]) {Volume = Config.Effect_Volume};
+        Accessibility.crouch_hit_sound = new Sound(Data.sounds["accessibility:low_hit"]) {Volume = Config.Effect_Volume};
+        Accessibility.air_hit_sound = new Sound(Data.sounds["accessibility:air_hit"]) {Volume = Config.Effect_Volume};
+        Accessibility.overhead_hit_sound = new Sound(Data.sounds["accessibility:overhead_hit"]) {Volume = Config.Effect_Volume};
     }
 
     public static void Speak(string id, int type, bool priority, params string[] strings) {
@@ -141,8 +145,22 @@ public class Accessibility{
             else if (char_B.state.air) Accessibility.air_hit_sound?.Play();
             else Accessibility.stand_hit_sound?.Play();
         }
+
+        // if (!atack_hight_cue) return;
+
+        // if (!char_A.state.is_grab && char_A.state.will_hit && char_A.current_animation.on_first_frame && char_A.GetDistance(char_B) <= char_A.state.range) {
+        //     if (char_A.state.overhead) overhead_hit_sound.Play();
+        //     else if (char_A.state.low) crouch_hit_sound.Play();
+        //     else if (char_A.state.air) air_hit_sound.Play();
+        //     else stand_hit_sound.Play();
+        // }
+        // if (!char_B.state.is_grab && char_B.state.will_hit && char_B.current_animation.on_first_frame && char_B.GetDistance(char_A) <= char_B.state.range) {
+        //     if (char_B.state.overhead) overhead_hit_sound.Play();
+        //     else if (char_B.state.low) crouch_hit_sound.Play();
+        //     else if (char_B.state.air) air_hit_sound.Play();
+        //     else stand_hit_sound.Play();
+        // }
     }
-    
 }
 
 public class TTSRequisition {

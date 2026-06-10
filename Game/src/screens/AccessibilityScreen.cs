@@ -109,9 +109,10 @@ public class WGAccessibilitySounds : Widget {
             new[] {"Players distance", "normal side", "accessibility:beepSAB"},
             new[] {"Players distance", "inverted side", "accessibility:beepSBA"},
 
-            new[] {"atack height", "stand", "accessibility:toneA"},
-            new[] {"atack height", "low", "accessibility:toneB"},
-            new[] {"atack height", "air", "accessibility:toneC"},
+            new[] {"atack height", "stand", "accessibility:stand_hit"},
+            new[] {"atack height", "low", "accessibility:low_hit"},
+            new[] {"atack height", "air", "accessibility:air_hit"},
+            new[] {"atack height", "overhead", "accessibility:overhead_hit"},
 
             new[] {"fall/get up", "fall", "accessibility:falling"},
             new[] {"fall/get up", "get up", "accessibility:wake_up"},

@@ -1,4 +1,4 @@
-uniform sampler2D texture; // Textura da sprite
+uniform sampler2D tex; // Textura da sprite
 uniform vec3 color; // Cor para tintar (RGB, 0-255)
 
 void main() {
@@ -6,7 +6,7 @@ void main() {
     vec3 normalizedTintColor = color / 255.0;
 
     // Obtém a cor original do pixel da textura
-    vec4 pixelColor = texture(texture, gl_TexCoord[0].xy);
+    vec4 pixelColor = texture2D(tex, gl_TexCoord[0].xy);
 
     // Mistura a cor original com a cor de tintura
     vec3 tintedColor = pixelColor.rgb * normalizedTintColor;

@@ -567,6 +567,7 @@ public abstract class Character : Object {
         return new RenderStates(Program.highContrastShader);
     }
     public int GetFacingTo(Character target) => target.body.position.X > this.body.position.X ? 1 : -1;
+    public float GetDistance(Character target) => Math.Abs(this.body.position.X - target.body.position.X);
     public static string[] S(params string[] strings) => strings;
 
     // Loads

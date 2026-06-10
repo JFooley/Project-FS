@@ -34,11 +34,11 @@ public class RemyEffects : Character {
         this.states = new Dictionary<string, State> {
             {"Cut", new State(F(a["sp1_cut"]), "Remove", 7, change_on_end: false, has_gravity: false)},
             {"Dust", new State(F(a["sp1_dust"]), "Remove", 7, change_on_end: false, has_gravity: false)},
-            {"FireballEXHigh", new State(F(a["sp2_fb"]), "Remove", 7, change_on_end: false, has_gravity: false, will_hit: true, glow: true, hitstop: "")},
-            {"FireballEXLow", new State(F(a["sp2_fb"]), "Remove", 7, low: true, change_on_end: false, has_gravity: false, will_hit: true, glow: true, hitstop: "")},
-            {"FireballHigh", new State(F(a["sp2_fb"]), "Remove", 7, change_on_end: false, has_gravity: false, will_hit: true)},
-            {"FireballLow", new State(F(a["sp2_fb"]), "Remove", 7, low: true, change_on_end: false, has_gravity: false, will_hit: true)},
-            {"FireballDizzy", new State(F(a["sp2_fb_dizzy"]), "Remove", 7, change_on_end: false, has_gravity: false, will_hit: true)},
+            {"FireballEXHigh", new State(F(a["sp2_fb"]), "Remove", 7, change_on_end: false, has_gravity: false, will_hit: true, glow: true, hitstop: "", range: 60)},
+            {"FireballEXLow", new State(F(a["sp2_fb"]), "Remove", 7, low: true, change_on_end: false, has_gravity: false, will_hit: true, glow: true, hitstop: "", range: 60)},
+            {"FireballHigh", new State(F(a["sp2_fb"]), "Remove", 7, change_on_end: false, has_gravity: false, will_hit: true, overhead: true, range: 60)},
+            {"FireballLow", new State(F(a["sp2_fb"]), "Remove", 7, low: true, change_on_end: false, has_gravity: false, will_hit: true, range: 60)},
+            {"FireballDizzy", new State(F(a["sp2_fb_dizzy"]), "Remove", 7, change_on_end: false, has_gravity: false, will_hit: true, range: 60)},
             {"FireballHit", new State(F(a["sp2_hit"]), "Remove", 7, change_on_end: false, has_gravity: false)},
         };
     }

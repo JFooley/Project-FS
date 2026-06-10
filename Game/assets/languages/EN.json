@@ -131,6 +131,7 @@
   "stand" : "Stand",
   "low" : "Low",
   "air" : "Air",
+  "overhead" : "Overhead",
   "interface" : "Interface",
   "blow" : "Blow",
   "hit" : "Hit",
