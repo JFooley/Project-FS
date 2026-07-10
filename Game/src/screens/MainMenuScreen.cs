@@ -1,4 +1,4 @@
-using UI_space;
+
 using SFML.Graphics;
 
 public class WGMainMenu : Widget {
@@ -21,8 +21,8 @@ public class WGMainMenu : Widget {
     }
 
     public override void Render() {
-        Program.window.Draw(new Sprite(main_menu.ElementAt(selector.pointer.X).Value));
-        Program.window.Draw(frame);
+        RenderBuffer.Draw(new Sprite(main_menu.ElementAt(selector.pointer.X).Value));
+        RenderBuffer.Draw(frame);
         for (int i = 0; i < main_menu.Count; i++) 
             UI.DrawText(S(i == selector.pointer.X ? ")" : "("), (i * 10) - ((main_menu.Count - 1) * 5), -80, textureName: "icons");
         

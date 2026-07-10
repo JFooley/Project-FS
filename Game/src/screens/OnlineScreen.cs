@@ -1,8 +1,9 @@
 public class WGOnlineSender : Widget {
     public override void Render() {
         // Desenha as sprites que recebeu
+        OnlineInput.RenderFrame();
 
         // Envia o input
-        OnlineInput.SendLocalInput(Input.currentInput[1]);
+        OnlineInput.SendInput(Input.currentInput[1]);
     }
 }

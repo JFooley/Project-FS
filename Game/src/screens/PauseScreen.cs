@@ -1,6 +1,6 @@
 using SFML.System;
 using SFML.Graphics;
-using UI_space;
+
 
 public class WGPause : Widget {
     private Selector s_main = new Selector(new List<int>{1, 1, 1, 1, 1});
@@ -18,7 +18,7 @@ public class WGPause : Widget {
 
     public override void Render() {
         fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
-        Program.window.Draw(fade90);
+        RenderBuffer.Draw(fade90);
 
         var face_release = Input.Key_up("A");
         var face_hold = Input.Key_hold("A");

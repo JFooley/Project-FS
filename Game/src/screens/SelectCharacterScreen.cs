@@ -1,4 +1,4 @@
-using UI_space;
+
 using SFML.Graphics;
 using SFML.System;
 
@@ -28,7 +28,7 @@ public class WGSelectCharacter : Widget {
     }
 
     public override void Render() {
-        Program.window.Draw(char_bg);
+        RenderBuffer.Draw(char_bg);
         Program.colorFillShader.SetUniform("fillColor", Color.Black);
 
         Accessibility.Speak("SC", TTSRequisition.TEXT, true, S("select char"));
@@ -49,7 +49,7 @@ public class WGSelectCharacter : Widget {
 
         // Ends when chars are selected and ready
         if (selectorA.state == WGSelector.READY && selectorB.state == WGSelector.READY) {
-            Program.window.Draw(fade90);
+            RenderBuffer.Draw(fade90);
             offset += 5;
             fade90.Color = new Color(255, 255, 255, (byte) Math.Min(255, fade90.Color.A + 15));
             if (offset >= Config.RenderWidth / 2 && fade90.Color.A == 255) {
@@ -126,12 +126,12 @@ public class WGSelector : Widget {
         // Shadow
         if (state == SELECTING_PALETTE || state == SELECTING_DIFFICULTY || state == READY) {
             sprite.Position = position + new Vector2f(shadow_x_offset, 0);
-            Program.window.Draw(sprite, new RenderStates(Program.colorFillShader));
+            RenderBuffer.Draw(sprite, new RenderStates(Program.colorFillShader));
         }
 
         // Sprite
         sprite.Position = position;
-        Program.window.Draw(sprite, Data.characters[pointer].SetSwaperShader(
+        RenderBuffer.Draw(sprite, Data.characters[pointer].SetSwaperShader(
             palette_index: (int) (state == SELECTING_CHAR ? 0 : selected.palette_index), 
             light: state == READY || Input.anyKey[player] ? new Color(128, 128, 128) : Color.White
         ));

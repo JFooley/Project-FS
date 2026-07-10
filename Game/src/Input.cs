@@ -4,7 +4,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Collections.Concurrent;
 using SFML.System;
-using UI_space;
+using Newtonsoft.Json;
+using System.Text;
 
 public class Input {
     public const int NONE_INPUT = 0;
@@ -134,10 +135,6 @@ public class Input {
         }
 
         Input.buffers = new LinkedList<int>[] {new LinkedList<int>(), new LinkedList<int>(), new LinkedList<int>()};
-
-        Thread listner = new Thread(OnlineInput.ServerThread);
-        listner.IsBackground = true;
-        listner.Start();
     }
 
     // Behaviour
@@ -163,7 +160,7 @@ public class Input {
                 currentInput[i] = JoystickInput.ReadJoystickState(joystickMap, dwUserIndex: 1);
             }
             else if (inputDevice[i] == ONLINE_INPUT) {
-                currentInput[i] = OnlineInput.ReadOnlineInput();
+                currentInput[i] = OnlineInput.ReadInput();
             }
         }
 
@@ -409,9 +406,7 @@ public class JoystickInput {
     }
 }
 
-public static class OnlineInput {
-    // Papel deste lado na comunicação: exatamente um dos dois lados deve ser SENDER
-    // e o outro RECEIVER. Nunca os dois enviam nem os dois recebem.
+public class OnlineInput {
     public const int NONE = 0;
     public const int SENDER = 1;
     public const int RECEIVER = 2;
@@ -428,11 +423,10 @@ public static class OnlineInput {
     private static IPEndPoint remoteEndPoint;
 
     private static ConcurrentDictionary<long, int> receivedInputs = new ConcurrentDictionary<long, int>();
+    public static ConcurrentQueue<NetworkFramePacket> receivedFrames = new ConcurrentQueue<NetworkFramePacket>();
     private static long lastReceivedFrame = -1;
     private static readonly object lastReceivedLock = new object();
 
-    // Flags de debug: garantem que certas mensagens só apareçam uma vez por conexão,
-    // em vez de spammar o console a cada frame (60x por segundo).
     private static bool loggedFirstSend = false;
     private static bool loggedFirstReceive = false;
 
@@ -454,8 +448,13 @@ public static class OnlineInput {
 
             connected = true;
 
+            Thread listner = new Thread(OnlineInput.Thread);
+            listner.IsBackground = true;
+            listner.Start();
+
             Console.WriteLine($"[OnlineInput] Conectado com sucesso como {RoleName(role)}. Socket local na porta {localPort}, destino {remoteEndPoint}.");
             return true;
+
         } catch (Exception ex) {
             connected = false;
             Console.WriteLine($"[OnlineInput] FALHA ao conectar: {ex.GetType().Name} - {ex.Message}");
@@ -482,17 +481,17 @@ public static class OnlineInput {
         Console.WriteLine("[OnlineInput] Desconectado.");
     }
 
-    public static void ServerThread() {
-        while (true) {
-            if (connected && role == RECEIVER && udpClient != null) {
-                try {
-                    IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
-                    byte[] data = udpClient.Receive(ref sender);
+    public static void Thread() {
+        IPEndPoint anyEP = new IPEndPoint(IPAddress.Any, 0);
+        
+        while (connected) {
+            try {
+                if (udpClient != null && udpClient.Available > 0) {
+                    byte[] data = udpClient.Receive(ref anyEP);
 
-                    // Pacote: [8 bytes frame (long)] + [4 bytes input state (int)]
-                    if (data != null && data.Length >= sizeof(long) + sizeof(int)) {
+                    if (data.Length == 12 && role == RECEIVER) {
                         long frame = BitConverter.ToInt64(data, 0);
-                        int inputState = BitConverter.ToInt32(data, sizeof(long));
+                        int inputState = BitConverter.ToInt32(data, 8);
 
                         receivedInputs[frame] = inputState;
 
@@ -500,34 +499,35 @@ public static class OnlineInput {
                             if (frame > lastReceivedFrame) lastReceivedFrame = frame;
                         }
 
-                        // Remove entradas antigas para o buffer não crescer indefinidamente
                         long cutoff = frame - Config.input_buffer_size;
                         foreach (var key in receivedInputs.Keys) {
                             if (key < cutoff) receivedInputs.TryRemove(key, out _);
                         }
-
-                        if (!loggedFirstReceive) {
-                            loggedFirstReceive = true;
-                            Console.WriteLine($"[OnlineInput] Primeiro pacote recebido de {sender}! Conexão confirmada (frame {frame}, input {inputState}).");
-                        }
+                    } 
+                    else if (data.Length > 12 && role == SENDER) {
+                        string json = Encoding.UTF8.GetString(data);
+                        var packet = JsonConvert.DeserializeObject<NetworkFramePacket>(json);
+                        
+                        if (packet != null) receivedFrames.Enqueue(packet);
                     }
-                } catch (SocketException ex) {
-                    // Timeout é esperado quando nenhum pacote chega dentro de SOCKET_TIMEOUT_MS;
-                    // outros códigos de erro indicam problema real de rede.
-                    if (ex.SocketErrorCode != SocketError.TimedOut) {
-                        Console.WriteLine($"[OnlineInput] Erro de socket ao receber: {ex.SocketErrorCode} - {ex.Message}");
-                    }
-                } catch (ObjectDisposedException) {
-                    // socket foi fechado (Disconnect chamado durante o Receive): sai do laço de leitura
-                    Console.WriteLine("[OnlineInput] Socket fechado durante a escuta, encerrando thread de recebimento.");
-                    return;
                 }
-            } else {
-                Thread.Sleep(100);
+            } catch (SocketException ex) {
+                if (ex.SocketErrorCode != SocketError.TimedOut) {
+                    Console.WriteLine($"[OnlineInput] Erro de socket: {ex.Message}");
+                }
+
+            } catch (ObjectDisposedException) {
+                return;
+
+            } catch (Exception ex) {
+                Console.WriteLine($"[OnlineInput] Erro inesperado na thread: {ex.Message}");
             }
+
+            System.Threading.Thread.Sleep(1);
         }
     }
-    public static void SendLocalInput(int localInputState) {
+    
+    public static void SendInput(int localInputState) {
         if (!connected || role != SENDER || udpClient == null || remoteEndPoint == null) return;
 
         try {
@@ -549,9 +549,7 @@ public static class OnlineInput {
             Console.WriteLine("[OnlineInput] Tentativa de enviar em um socket já fechado.");
         }
     }
-    public static int ReadOnlineInput() {
-        // Pega o input do frame atual do par online.
-        // Só faz sentido do lado RECEIVER — o SENDER nunca tem nada no buffer, pois nunca escuta a rede.
+    public static int ReadInput() {
         if (role != RECEIVER) return 0;
 
         long currentFrame = UI.frame_counter;
@@ -560,8 +558,6 @@ public static class OnlineInput {
             return inputState;
         }
 
-        // Se o pacote do frame exato ainda não chegou (lag de rede), repete o último input conhecido
-        // para evitar que o personagem "solte" os botões momentaneamente
         long lastFrame;
         lock (lastReceivedLock) {
             lastFrame = lastReceivedFrame;
@@ -572,6 +568,24 @@ public static class OnlineInput {
         }
 
         return 0;
+    }
+
+    public static void SendFrame(NetworkFramePacket frame) {
+        if (!connected || role != RECEIVER || udpClient == null) return;
+        
+
+        try {
+            string json = JsonConvert.SerializeObject(frame);
+            byte[] data = Encoding.UTF8.GetBytes(json);
+            udpClient.Send(data, data.Length, remoteEndPoint);
+        } catch (Exception ex) {
+            Console.WriteLine($"[OnlineInput] Erro ao enviar frame: {ex.Message}");
+        }
+    }
+    public static void RenderFrame() {
+        if (receivedFrames.TryDequeue(out var frame)) {
+           // NetworkReceiver.RenderFrameFromServer(frame);
+        }
     }
 
     private static string RoleName(int role) {

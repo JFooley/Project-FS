@@ -2,7 +2,7 @@ using SFML.Graphics;
 using SFML.System;
 using SFML.Audio;
 
-using UI_space;
+
 
 // ----- Default States -------
 // Intro
@@ -220,7 +220,7 @@ public abstract class Character : Object {
             Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
 
             for (int i = 0; i < 3; i++) {
-                if (last_sprites[i] != null) Program.window.Draw(last_sprites[i], new RenderStates(Program.hueChange));
+                if (last_sprites[i] != null) RenderBuffer.Draw(last_sprites[i], new RenderStates(Program.hueChange));
             }
             
             if (this.has_frame_changed) {               
@@ -234,13 +234,13 @@ public abstract class Character : Object {
         // Draw current sprite
         if (this.state.glow && UI.blink30Hz) {
             Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
-            Program.window.Draw(temp_sprite, new RenderStates(shader: Program.hueChange));
+            RenderBuffer.Draw(temp_sprite, new RenderStates(shader: Program.hueChange));
         } else if (Accessibility.high_contrast) {
-            Program.window.Draw(temp_sprite, this.SetHighContrastShader(this.current_palette_color));
+            RenderBuffer.Draw(temp_sprite, this.SetHighContrastShader(this.current_palette_color));
         } else if (this.palette != null) {
-            Program.window.Draw(temp_sprite, this.SetSwaperShader(this.own_light == Color.Transparent ? this.light_tint : this.own_light));
+            RenderBuffer.Draw(temp_sprite, this.SetSwaperShader(this.own_light == Color.Transparent ? this.light_tint : this.own_light));
         } else {
-            Program.window.Draw(temp_sprite);
+            RenderBuffer.Draw(temp_sprite);
         }
 
 
@@ -278,7 +278,7 @@ public abstract class Character : Object {
                 };
 
                 // Desenha o retângulo da hitbox na janela
-                Program.window.Draw(hitboxRect);
+                RenderBuffer.Draw(hitboxRect);
             }
         }
     }

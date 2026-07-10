@@ -1,6 +1,6 @@
 using SFML.Graphics;
 using SFML.System;
-using UI_space;
+
 
 class WGBattle : Widget {
     // Battle States
@@ -45,7 +45,7 @@ class WGBattle : Widget {
             case Intro:
                 this.fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
                 this.fade90.Color = new Color(255, 255, 255, (byte) Math.Max(0, this.fade90.Color.A - 15));
-                Program.window.Draw(fade90);
+                RenderBuffer.Draw(fade90);
 
                 Program.stage?.SetMusicVolume();
                 Program.stage?.StopRoundTime();
@@ -63,7 +63,7 @@ class WGBattle : Widget {
                 }
                 else if (Program.stage.CheckTimer(2)) {
                     fight_logo.Position = new Vector2f(Camera.X - 89, Camera.Y - 54);
-                    Program.window.Draw(fight_logo);
+                    RenderBuffer.Draw(fight_logo);
                     Accessibility.Speak("RoundFight", TTSRequisition.TEXT, true, S("fight!"));
                 }
                 else if (Program.stage.CheckTimer(1)) 
@@ -102,11 +102,11 @@ class WGBattle : Widget {
                 } else if (!Program.stage.CheckTimer(3)) {
                     if (Program.stage.character_A.life_points.X <= 0 || Program.stage.character_B.life_points.X <= 0) {
                         KO_logo.Position = new Vector2f(Camera.X - 75, Camera.Y - 54);
-                        Program.window.Draw(KO_logo);
+                        RenderBuffer.Draw(KO_logo);
                         Accessibility.Speak("RoundEndLogo", TTSRequisition.TEXT, true, S("K.O."));
                     } else {
                         timesup_logo.Position = new Vector2f(Camera.X - 131, Camera.Y - 55);
-                        Program.window.Draw(timesup_logo);
+                        RenderBuffer.Draw(timesup_logo);
                         Accessibility.Speak("RoundEndLogo", TTSRequisition.TEXT, true, S("time's up"));
                     }
                 } 
@@ -115,7 +115,7 @@ class WGBattle : Widget {
             case MatchEnd: // Fim da partida
                 this.fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
                 this.fade90.Color = new Color(255, 255, 255, (byte) Math.Min(255, this.fade90.Color.A + 15));
-                Program.window.Draw(fade90);
+                RenderBuffer.Draw(fade90);
 
                 if (this.fade90.Color.A == 255) {
                     Camera.Reset();

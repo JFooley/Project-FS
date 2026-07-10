@@ -1,4 +1,4 @@
-using UI_space;
+
 using SFML.Graphics;
 using SFML.System;
 using SFML.Audio;
@@ -19,7 +19,7 @@ public class WGAccessibilityMenu : Widget {
 
     public override void Render() {
         Camera.UnlockCamera();
-        Program.window.Draw(bg);
+        RenderBuffer.Draw(bg);
         selector.Update();
 
         UI.DrawText(S("accessibility"), -80, -107, spacing: Config.spacing_medium);
@@ -138,7 +138,7 @@ public class WGAccessibilitySounds : Widget {
 
     public override void Render() {
         Camera.UnlockCamera();
-        Program.window.Draw(bg);
+        RenderBuffer.Draw(bg);
         selector.Update();
         Program.stage?.StopMusic(); 
 

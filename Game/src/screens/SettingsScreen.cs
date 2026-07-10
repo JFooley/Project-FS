@@ -1,4 +1,4 @@
-using UI_space;
+
 using SFML.Graphics;
 using SFML.Window;
 using SFML.System;
@@ -14,7 +14,7 @@ public class WGSettings : Widget {
     public override void Render() {
         selector.Update();
         Camera.UnlockCamera();
-        Program.window.Draw(settings_bg);
+        RenderBuffer.Draw(settings_bg);
 
         UI.DrawText(S("Settings"), -80, -107, TTS: true, TTS_id: "Settings", priority: true, spacing: Config.spacing_medium);
         //0

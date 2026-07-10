@@ -1,4 +1,4 @@
-using UI_space;
+
 using SFML.Graphics;
 
 public class WGControls : Widget {
@@ -16,8 +16,8 @@ public class WGControls : Widget {
         selector.Update();
 
         bg.Texture = new Sprite(Data.textures["screens:controls_" + selector.pointer.X]).Texture;
-        Program.window.Draw(bg);
-        Program.window.Draw(frame);
+        RenderBuffer.Draw(bg);
+        RenderBuffer.Draw(frame);
 
         UI.DrawText(S("Q"), 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
         if (UI.DrawButton(S("Return"), 182, 67, tts: false, alignment: "right", action: Input.Key_up("B"), click: Input.Key_hold("B"), hover_font: "default small")) {

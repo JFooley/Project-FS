@@ -1,7 +1,7 @@
 ﻿using SFML.Graphics;
 using SFML.Window;
 using SFML.System;
-using UI_space;
+
 using System.Diagnostics;
 
 public static class Program {
@@ -126,6 +126,7 @@ public static class Program {
             UI.Update();
             Camera.Update();
             Accessibility.UpdateTTS();
+            window.Clear();
 
             switch (state) {
                 case Intro:
@@ -193,14 +194,17 @@ public static class Program {
                     break;
             }
 
-            // Debug toggle
+            // Debug
             if (Input.Key_sequence("Up Up Down Down Left Right Left Right B A Start", 20, flexEntry: false)) Config.debug = !Config.debug;
-
-            // Finally
             last_frame_time = frametimer.Elapsed.TotalMilliseconds/1000;
             if (Config.debug) UI.ShowFramerate("default small white");
+            
+            // Display
             window.Display();
-            window.Clear();            
+
+            // Send Frame
+            if (OnlineInput.connected && OnlineInput.role == OnlineInput.RECEIVER) OnlineInput.SendFrame(RenderBuffer.GetAndClear());
+
         }
     }
 
