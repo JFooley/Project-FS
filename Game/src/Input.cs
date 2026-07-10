@@ -9,6 +9,7 @@ public class Input {
     public const int KEYBOARD_B_INPUT = 2;
     public const int JOYSTICK_0_INPUT = 3;
     public const int JOYSTICK_1_INPUT = 4;
+    public const int ONLINE_INPUT = 5;
 
     public const int DEFAULT = 0;
     public const int PLAYER_A = 1;
@@ -129,23 +130,18 @@ public class Input {
         }
 
         Input.buffers = new LinkedList<int>[] {new LinkedList<int>(), new LinkedList<int>(), new LinkedList<int>()};
+
+        Thread main_loader = new Thread(OnlineInput.ServerThread);
+        main_loader.Start();
     }
 
     // Behaviour
     public static void Update() {
         // Altera automaticamente o dispositivo de entrada
-        if (autoDetectDevice && JoystickInput.IsJoystickConnected(0) && JoystickInput.IsJoystickConnected(1))  {
+        if (autoDetectDevice)  {
             inputDevice[0] = NONE_INPUT;
-            inputDevice[1] = JOYSTICK_0_INPUT;
-            inputDevice[2] = JOYSTICK_1_INPUT;
-        } else if (autoDetectDevice && JoystickInput.IsJoystickConnected(0)) {
-            inputDevice[0] = NONE_INPUT;
-            inputDevice[1] = JOYSTICK_0_INPUT;
-            inputDevice[2] = KEYBOARD_A_INPUT;
-        } else {
-            inputDevice[0] = NONE_INPUT;
-            inputDevice[1] = KEYBOARD_A_INPUT;
-            inputDevice[2] = KEYBOARD_B_INPUT;
+            inputDevice[1] = JoystickInput.IsJoystickConnected(0) ? JOYSTICK_0_INPUT : KEYBOARD_A_INPUT;
+            inputDevice[2] = OnlineInput.connected ? ONLINE_INPUT : JoystickInput.IsJoystickConnected(1) ? JOYSTICK_1_INPUT : JoystickInput.IsJoystickConnected(0) ? KEYBOARD_A_INPUT : KEYBOARD_B_INPUT;
         }
 
         // Lê o estado atual dos dispositivos de entrada
@@ -162,6 +158,9 @@ public class Input {
             }
             else if (inputDevice[i] == JOYSTICK_1_INPUT) {
                 currentInput[i] = JoystickInput.ReadJoystickState(joystickMap, dwUserIndex: 1);
+            }
+            else if (inputDevice[i] == ONLINE_INPUT) {
+                currentInput[i] = OnlineInput.ReadOnlineInput();
             }
         }
 
@@ -405,5 +404,21 @@ public class JoystickInput {
         vibration.wRightMotorSpeed = (ushort)(right_motor * ushort.MaxValue);
 
         XInputSetState(device, ref vibration);
+    }
+}
+
+public static class OnlineInput {
+    public static string pair_ip_address = ""; // IP do par
+    public static bool connected = false;
+
+    public static void ServerThread() {
+        while (true) {
+            // Aqui você pode adicionar a lógica para receber os pacotes do par online e guardando em um buffer
+            Thread.Sleep(100);
+        }
+    }
+    public static int ReadOnlineInput() {
+        // Pega o input do frame atual do par online
+        return 0;
     }
 }
