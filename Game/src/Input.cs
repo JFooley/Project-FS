@@ -414,6 +414,8 @@ public class OnlineInput {
     public static bool connected = false;
     public static int role = NONE;
 
+    private static System.IO.MemoryStream frameBuffer = new System.IO.MemoryStream();
+
     // Configuração de rede
     private const int LOCAL_PORT = 55123;
     private const int REMOTE_PORT = 55123;
@@ -504,21 +506,25 @@ public class OnlineInput {
                             if (key < cutoff) receivedInputs.TryRemove(key, out _);
                         }
                     } 
-                    else if (data.Length > 12 && role == SENDER) {
-                        string json = Encoding.UTF8.GetString(data);
-                        var packet = JsonConvert.DeserializeObject<NetworkFramePacket>(json);
+                    else if (role == SENDER) {
+                        frameBuffer.Write(data, 0, data.Length);
                         
-                        if (packet != null) receivedFrames.Enqueue(packet);
+                        if (data.Length < 1024) {
+                            string json = Encoding.UTF8.GetString(frameBuffer.ToArray());
+                            var packet = JsonConvert.DeserializeObject<NetworkFramePacket>(json);
+                            
+                            if (packet != null) receivedFrames.Enqueue(packet);
+                            
+                            frameBuffer.SetLength(0);
+                        }
                     }
                 }
             } catch (SocketException ex) {
                 if (ex.SocketErrorCode != SocketError.TimedOut) {
                     Console.WriteLine($"[OnlineInput] Erro de socket: {ex.Message}");
                 }
-
             } catch (ObjectDisposedException) {
                 return;
-
             } catch (Exception ex) {
                 Console.WriteLine($"[OnlineInput] Erro inesperado na thread: {ex.Message}");
             }
@@ -526,7 +532,7 @@ public class OnlineInput {
             System.Threading.Thread.Sleep(1);
         }
     }
-    
+
     public static void SendInput(int localInputState) {
         if (!connected || role != SENDER || udpClient == null || remoteEndPoint == null) return;
 
@@ -572,18 +578,21 @@ public class OnlineInput {
 
     public static void SendFrame(NetworkFramePacket frame) {
         if (!connected || role != RECEIVER || udpClient == null) return;
-        
 
-        try {
-            string json = JsonConvert.SerializeObject(frame);
-            byte[] data = Encoding.UTF8.GetBytes(json);
-            udpClient.Send(data, data.Length, remoteEndPoint);
-        } catch (Exception ex) {
-            Console.WriteLine($"[OnlineInput] Erro ao enviar frame: {ex.Message}");
+        string json = JsonConvert.SerializeObject(frame);
+        byte[] data = Encoding.UTF8.GetBytes(json);
+
+        const int MAX_SIZE = 1024;
+        for (int i = 0; i < data.Length; i += MAX_SIZE) {
+            int size = Math.Min(MAX_SIZE, data.Length - i);
+            byte[] chunk = new byte[size];
+            System.Buffer.BlockCopy(data, i, chunk, 0, size);
+            udpClient.Send(chunk, chunk.Length, remoteEndPoint);
         }
     }
     public static void RenderFrame() {
         if (receivedFrames.TryDequeue(out var frame)) {
+            Console.WriteLine($"[OnlineInput] Renderizando frame {frame} recebido do servidor.");
            // NetworkReceiver.RenderFrameFromServer(frame);
         }
     }
