@@ -43,9 +43,9 @@ public class WGIntro : Widget {
 
             if (VirtualKeyboard.ended) {
                 state = LOADING;
-                UI.virtual_keyboard?.Clear();
-
                 OnlineInput.Connect(VirtualKeyboard.text, online_type);
+
+                UI.virtual_keyboard?.Clear();
             }
 
         } else {
