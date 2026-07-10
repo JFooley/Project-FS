@@ -1,7 +1,7 @@
 {
-  "version": 4,
+  "version": 3,
   "targets": {
-    "net472": {
+    ".NETFramework,Version=v4.7.2": {
       "CSFML/3.0.0": {
         "type": "package",
         "build": {
@@ -579,7 +579,7 @@
         }
       }
     },
-    "net472/win-x64": {
+    ".NETFramework,Version=v4.7.2/win-x64": {
       "CSFML/3.0.0": {
         "type": "package",
         "native": {
@@ -1638,7 +1638,7 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net472": [
+    ".NETFramework,Version=v4.7.2": [
       "Microsoft.NETFramework.ReferenceAssemblies >= 1.0.3",
       "Newtonsoft.Json >= 13.0.3",
       "SFML.Net >= 3.0.0",
@@ -1648,19 +1648,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\joaop\\.nuget\\packages\\": {}
+    "C:\\Users\\gabri\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\joaop\\Documents\\GIT\\Project-FS\\Game\\Project FS.csproj",
+      "projectUniqueName": "A:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj",
       "projectName": "Project FS",
-      "projectPath": "C:\\Users\\joaop\\Documents\\GIT\\Project-FS\\Game\\Project FS.csproj",
-      "packagesPath": "C:\\Users\\joaop\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\joaop\\Documents\\GIT\\Project-FS\\Game\\obj\\",
+      "projectPath": "A:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj",
+      "packagesPath": "C:\\Users\\gabri\\.nuget\\packages\\",
+      "outputPath": "A:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\joaop\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\gabri\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net472"
@@ -1670,7 +1670,6 @@
       },
       "frameworks": {
         "net472": {
-          "framework": "net472",
           "targetAlias": "net472",
           "projectReferences": {}
         }
@@ -1685,11 +1684,10 @@
         "auditLevel": "low",
         "auditMode": "direct"
       },
-      "SdkAnalysisLevel": "10.0.300"
+      "SdkAnalysisLevel": "10.0.200"
     },
     "frameworks": {
       "net472": {
-        "framework": "net472",
         "targetAlias": "net472",
         "dependencies": {
           "Microsoft.NETFramework.ReferenceAssemblies": {
@@ -1719,7 +1717,7 @@
             "version": "[4.0.0, )"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201\\RuntimeIdentifierGraph.json"
       }
     },
     "runtimes": {

@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\joaop\\Documents\\GIT\\Project-FS\\Game\\Project FS.csproj": {}
+    "A:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj": {}
   },
   "projects": {
-    "C:\\Users\\joaop\\Documents\\GIT\\Project-FS\\Game\\Project FS.csproj": {
+    "A:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\joaop\\Documents\\GIT\\Project-FS\\Game\\Project FS.csproj",
+        "projectUniqueName": "A:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj",
         "projectName": "Project FS",
-        "projectPath": "C:\\Users\\joaop\\Documents\\GIT\\Project-FS\\Game\\Project FS.csproj",
-        "packagesPath": "C:\\Users\\joaop\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\joaop\\Documents\\GIT\\Project-FS\\Game\\obj\\",
+        "projectPath": "A:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\Project FS.csproj",
+        "packagesPath": "C:\\Users\\gabri\\.nuget\\packages\\",
+        "outputPath": "A:\\GABRIEL\\Repos\\CS Fighting Game\\Game\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\joaop\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\gabri\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net472"
@@ -24,7 +24,6 @@
         },
         "frameworks": {
           "net472": {
-            "framework": "net472",
             "targetAlias": "net472",
             "projectReferences": {}
           }
@@ -39,11 +38,10 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.300"
+        "SdkAnalysisLevel": "10.0.200"
       },
       "frameworks": {
         "net472": {
-          "framework": "net472",
           "targetAlias": "net472",
           "dependencies": {
             "Microsoft.NETFramework.ReferenceAssemblies": {
@@ -73,7 +71,7 @@
               "version": "[4.0.0, )"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.301\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.201\\RuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {

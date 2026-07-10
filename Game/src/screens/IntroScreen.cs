@@ -10,6 +10,8 @@ public class WGIntro : Widget {
     private int pointer = 0;
     private int state = 1;
     private Selector selector = new Selector(new List<int> {2, 1});
+    private int online_type = 0;
+
     Sprite fslogo;
 
     public WGIntro() {
@@ -22,15 +24,15 @@ public class WGIntro : Widget {
 
             if (UI.DrawButton(S("RECEIVER"), 0, 0, action: Input.Key_up("A"), click: Input.Key_down("A"), hover: selector.is_on(0, 0), alignment: "right")) {
                 state = TYPING_IP;
-                Program.online_type = OnlineInput.RECEIVER;
+                online_type = OnlineInput.RECEIVER;
             }
             if (UI.DrawButton(S("SENDER"), 0, 0, action: Input.Key_up("A"), click: Input.Key_down("A"), hover: selector.is_on(1, 0), alignment: "left")) {
                 state = TYPING_IP;
-                Program.online_type = OnlineInput.SENDER;
+                online_type = OnlineInput.SENDER;
             }
             if (UI.DrawButton(S("OFFLINE"), 0, 15, action: Input.Key_up("A"), click: Input.Key_down("A"), hover: selector.is_on(0, 1), alignment: "center")) {
                 state = LOADING;
-                Program.online_type = OnlineInput.NONE;
+                online_type = OnlineInput.NONE;
             }
 
         } else if (state == TYPING_IP) {
@@ -41,8 +43,9 @@ public class WGIntro : Widget {
 
             if (VirtualKeyboard.ended) {
                 state = LOADING;
-                Program.pairing_ip = VirtualKeyboard.text;
                 UI.virtual_keyboard?.Clear();
+
+                OnlineInput.Connect(VirtualKeyboard.text, online_type);
             }
 
         } else {
