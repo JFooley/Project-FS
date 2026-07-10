@@ -3,8 +3,12 @@ using SFML.Graphics;
 using SFML.System;
 
 public class WGIntro : Widget {
+    private const int LOADING = 0;
+    private const int SELECTING_MODE = 1;
+    private const int TYPING_IP = 2;
+    
     private int pointer = 0;
-    private bool loading = false;
+    private int state = 1;
     private Selector selector = new Selector(new List<int> {2, 1});
     Sprite fslogo;
 
@@ -13,20 +17,32 @@ public class WGIntro : Widget {
     }
 
     public override void Render() {
-        if (!loading) {
+        if (state == SELECTING_MODE) {
             selector.Update();
 
-            if (UI.DrawButton(S("RECIVER"), 0, 0, action: Input.Key_up("A"), click: Input.Key_down("A"), hover: selector.is_on(0, 0), alignment: "right")) {
-                loading = true;
-                Program.online_type = 2;
+            if (UI.DrawButton(S("RECEIVER"), 0, 0, action: Input.Key_up("A"), click: Input.Key_down("A"), hover: selector.is_on(0, 0), alignment: "right")) {
+                state = TYPING_IP;
+                Program.online_type = OnlineInput.RECEIVER;
             }
             if (UI.DrawButton(S("SENDER"), 0, 0, action: Input.Key_up("A"), click: Input.Key_down("A"), hover: selector.is_on(1, 0), alignment: "left")) {
-                loading = true;
-                Program.online_type = 1;
+                state = TYPING_IP;
+                Program.online_type = OnlineInput.SENDER;
             }
             if (UI.DrawButton(S("OFFLINE"), 0, 15, action: Input.Key_up("A"), click: Input.Key_down("A"), hover: selector.is_on(0, 1), alignment: "center")) {
-                loading = true;
-                Program.online_type = 0;
+                state = LOADING;
+                Program.online_type = OnlineInput.NONE;
+            }
+
+        } else if (state == TYPING_IP) {
+            UI.DrawText(S("IP ADDRESS:"), 0, -55, alignment: "center", spacing: Config.spacing_medium);
+            UI.DrawText(S(VirtualKeyboard.text), 0, -40, alignment: "center", spacing: Config.spacing_medium);
+
+            UI.virtual_keyboard?.Render(0, 30);
+
+            if (VirtualKeyboard.ended) {
+                state = LOADING;
+                Program.pairing_ip = VirtualKeyboard.text;
+                UI.virtual_keyboard?.Clear();
             }
 
         } else {

@@ -8,6 +8,8 @@ namespace UI_space {
         private static int elapsed = 0;
         public static uint frame_counter = 0;
 
+        public static VirtualKeyboard? virtual_keyboard;
+
         // Clocks
         public static bool blink30Hz = true;
         public static bool blink10Hz = true;
@@ -61,6 +63,7 @@ namespace UI_space {
                 new Sound(Data.sounds["ui:aura_half"]) {Volume = Config.Effect_Volume}
             };
             UI.time_tick_sound = new Sound(Data.sounds["ui:time_tick"]) {Volume = Config.Effect_Volume};
+            UI.virtual_keyboard = new VirtualKeyboard();
             BitmapFont.Load();
         }
         

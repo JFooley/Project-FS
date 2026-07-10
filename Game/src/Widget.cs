@@ -69,3 +69,91 @@ public class Selector : Widget {
         return this.pointer.X == x && this.pointer.Y == y;
     }
 }
+
+public class VirtualKeyboard : Widget {
+    public static string text = "";
+    private static readonly string[][] keyboard = {
+        S("1","2","3","4","5","6","7","8","9","0"), 
+        S("A","B","C","D","E","F","G","H","I","J"), 
+        S("K","L","M","N","O","P","Q","R","S","T"), 
+        S("U","V","W","X","Y","Z","Ç",",",".",":"),
+        S("?","!","Shift","[  ]","Del","Enter"),
+        S("End")
+    };
+    private static Selector selector = new Selector(new List<int>() { 10, 10, 10, 10, 6, 1});
+    public static bool ended = false;
+
+    const float char_size = 7f;
+    const float gapX = 15f; 
+    const float gapY = 10f;
+
+    public void Clear() {
+        text = "";
+        ended = false;
+    }
+    public void Render(float x, float y) {
+        if (ended) return;
+
+        if (text.Length > 0 && Input.Key_down("B")) {
+            text = text.Substring(0, text.Length - 1);
+        }
+
+        selector.Update();
+
+        x = x - ((char_size + gapX) * keyboard[0].Length) / 2f;
+        y = y - ((char_size + gapY) * keyboard.Length) / 2f;
+
+        float currentY = y;
+        for (int i = 0; i < keyboard.Length; i++) {
+            float currentX = x;
+
+            for (int j = 0; j < keyboard[i].Length; j++) {
+                string k = keyboard[i][j];
+                float button_width = k.Length * char_size;
+                float drawX = currentX + (button_width / 2f);
+                float drawY = currentY + (char_size / 2f);
+                            
+                if (UI.DrawButton(
+                    S(k),
+                    drawX,
+                    drawY,
+                    alignment: "center",
+                    action: Input.Key_up("A"),
+                    click: Input.Key_down("A"),
+                    hover: selector.is_on(j, i),
+                    hover_font: "default small red"
+                )) {
+                    switch (k) {
+                        case "[ ]":
+                            text += " ";
+                            break;
+
+                        case "Del":
+                            if (text.Length > 0)
+                                text = text.Substring(0, text.Length - 1);
+                            break;
+
+                        case "Shift":
+                            break;
+
+                        case "Enter":
+                            text += "\n";
+                            break;
+
+                        case "End":
+                            ended = true;
+                            break;
+
+                        default:
+                            text += k;
+                            break;
+                    }
+                }
+
+                currentX += button_width + gapX;
+            }
+
+            currentY += char_size + gapY;
+        }
+    }
+}

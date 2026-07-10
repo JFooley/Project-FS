@@ -1,5 +1,8 @@
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Net;
+using System.Net.Sockets;
+using System.Collections.Concurrent;
 using SFML.System;
 using UI_space;
 
@@ -131,8 +134,9 @@ public class Input {
 
         Input.buffers = new LinkedList<int>[] {new LinkedList<int>(), new LinkedList<int>(), new LinkedList<int>()};
 
-        Thread main_loader = new Thread(OnlineInput.ServerThread);
-        main_loader.Start();
+        Thread listner = new Thread(OnlineInput.ServerThread);
+        listner.IsBackground = true;
+        listner.Start();
     }
 
     // Behaviour
@@ -141,7 +145,11 @@ public class Input {
         if (autoDetectDevice)  {
             inputDevice[0] = NONE_INPUT;
             inputDevice[1] = JoystickInput.IsJoystickConnected(0) ? JOYSTICK_0_INPUT : KEYBOARD_A_INPUT;
-            inputDevice[2] = OnlineInput.connected ? ONLINE_INPUT : JoystickInput.IsJoystickConnected(1) ? JOYSTICK_1_INPUT : JoystickInput.IsJoystickConnected(0) ? KEYBOARD_A_INPUT : KEYBOARD_B_INPUT;
+
+            // Só assume o dispositivo ONLINE_INPUT para o player B se este lado for RECEIVER.
+            // O lado SENDER continua controlando player B localmente (ou deixando-o sem input).
+            bool isOnlineReceiver = OnlineInput.connected && OnlineInput.role == OnlineInput.RECEIVER;
+            inputDevice[2] = isOnlineReceiver ? ONLINE_INPUT : JoystickInput.IsJoystickConnected(1) ? JOYSTICK_1_INPUT : JoystickInput.IsJoystickConnected(0) ? KEYBOARD_A_INPUT : KEYBOARD_B_INPUT;
         }
 
         // Lê o estado atual dos dispositivos de entrada
@@ -161,6 +169,13 @@ public class Input {
             }
             else if (inputDevice[i] == ONLINE_INPUT) {
                 currentInput[i] = OnlineInput.ReadOnlineInput();
+            }
+
+            // Envia o input do player A (local) para o par online — só o lado SENDER envia,
+            // e só o input do player A é transmitido (é ele quem é reproduzido remotamente
+            // como player B do lado RECEIVER).
+            if (i == 1 && OnlineInput.connected && OnlineInput.role == OnlineInput.SENDER) {
+                OnlineInput.SendLocalInput(currentInput[i]);
             }
         }
 
@@ -408,17 +423,149 @@ public class JoystickInput {
 }
 
 public static class OnlineInput {
+    // Papel deste lado na comunicação: exatamente um dos dois lados deve ser SENDER
+    // e o outro RECEIVER. Nunca os dois enviam nem os dois recebem.
+    public const int NONE = 0;
+    public const int SENDER = 1;
+    public const int RECEIVER = 2;
+
     public static string pair_ip_address = ""; // IP do par
     public static bool connected = false;
+    public static int role = NONE;
+
+    // Configuração de rede
+    private const int LOCAL_PORT = 55123;
+    private const int REMOTE_PORT = 55123;
+    private const int SOCKET_TIMEOUT_MS = 200;
+
+    private static UdpClient udpClient;
+    private static IPEndPoint remoteEndPoint;
+
+    // Buffer thread-safe com o input recebido do par, indexado pelo número do frame
+    // (só é usado/preenchido do lado RECEIVER)
+    private static ConcurrentDictionary<long, int> receivedInputs = new ConcurrentDictionary<long, int>();
+    private static long lastReceivedFrame = -1;
+    private static readonly object lastReceivedLock = new object();
+
+    // Estabelece a conexão com o par (deve ser chamado antes de iniciar a partida online).
+    // 'role' define se este lado vai SÓ enviar (SENDER) ou SÓ receber (RECEIVER) input.
+    public static bool Connect(string ip, int role, int localPort = LOCAL_PORT, int remotePort = REMOTE_PORT) {
+        try {
+            OnlineInput.role = role;
+            pair_ip_address = ip;
+            remoteEndPoint = new IPEndPoint(IPAddress.Parse(ip), remotePort);
+
+            udpClient?.Close();
+            udpClient = new UdpClient(localPort);
+            udpClient.Client.ReceiveTimeout = SOCKET_TIMEOUT_MS;
+
+            receivedInputs.Clear();
+            lastReceivedFrame = -1;
+
+            connected = true;
+            return true;
+        } catch (Exception) {
+            connected = false;
+            return false;
+        }
+    }
+
+    // Encerra a conexão com o par
+    public static void Disconnect() {
+        connected = false;
+        role = NONE;
+
+        try {
+            udpClient?.Close();
+        } catch (Exception) {
+            // ignora erros ao fechar o socket
+        }
+
+        udpClient = null;
+        remoteEndPoint = null;
+        receivedInputs.Clear();
+        lastReceivedFrame = -1;
+    }
 
     public static void ServerThread() {
         while (true) {
             // Aqui você pode adicionar a lógica para receber os pacotes do par online e guardando em um buffer
-            Thread.Sleep(100);
+            // Só o lado RECEIVER escuta a rede; o lado SENDER nunca lê pacotes, só envia.
+            if (connected && role == RECEIVER && udpClient != null) {
+                try {
+                    IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
+                    byte[] data = udpClient.Receive(ref sender);
+
+                    // Pacote: [8 bytes frame (long)] + [4 bytes input state (int)]
+                    if (data != null && data.Length >= sizeof(long) + sizeof(int)) {
+                        long frame = BitConverter.ToInt64(data, 0);
+                        int inputState = BitConverter.ToInt32(data, sizeof(long));
+
+                        receivedInputs[frame] = inputState;
+
+                        lock (lastReceivedLock) {
+                            if (frame > lastReceivedFrame) lastReceivedFrame = frame;
+                        }
+
+                        // Remove entradas antigas para o buffer não crescer indefinidamente
+                        long cutoff = frame - Config.input_buffer_size;
+                        foreach (var key in receivedInputs.Keys) {
+                            if (key < cutoff) receivedInputs.TryRemove(key, out _);
+                        }
+                    }
+                } catch (SocketException) {
+                    // timeout de leitura ou erro momentâneo de rede: ignora e tenta de novo
+                } catch (ObjectDisposedException) {
+                    // socket foi fechado (Disconnect chamado durante o Receive): sai do laço de leitura
+                }
+            } else {
+                Thread.Sleep(100);
+            }
         }
     }
+
+    // Envia o input local do frame atual para o par online.
+    // Só tem efeito do lado SENDER — o lado RECEIVER nunca envia nada pela rede.
+    public static void SendLocalInput(int localInputState) {
+        if (!connected || role != SENDER || udpClient == null || remoteEndPoint == null) return;
+
+        try {
+            long frame = UI.frame_counter;
+
+            byte[] packet = new byte[sizeof(long) + sizeof(int)];
+            System.Buffer.BlockCopy(BitConverter.GetBytes(frame), 0, packet, 0, sizeof(long));
+            System.Buffer.BlockCopy(BitConverter.GetBytes(localInputState), 0, packet, sizeof(long), sizeof(int));
+
+            udpClient.Send(packet, packet.Length, remoteEndPoint);
+        } catch (SocketException) {
+            // ignora falhas pontuais de envio (ex: rede momentaneamente indisponível)
+        } catch (ObjectDisposedException) {
+            // socket já foi fechado
+        }
+    }
+
     public static int ReadOnlineInput() {
-        // Pega o input do frame atual do par online
+        // Pega o input do frame atual do par online.
+        // Só faz sentido do lado RECEIVER — o SENDER nunca tem nada no buffer, pois nunca escuta a rede.
+        if (role != RECEIVER) return 0;
+
+        long currentFrame = UI.frame_counter;
+
+        if (receivedInputs.TryGetValue(currentFrame, out int inputState)) {
+            return inputState;
+        }
+
+        // Se o pacote do frame exato ainda não chegou (lag de rede), repete o último input conhecido
+        // para evitar que o personagem "solte" os botões momentaneamente
+        long lastFrame;
+        lock (lastReceivedLock) {
+            lastFrame = lastReceivedFrame;
+        }
+
+        if (lastFrame >= 0 && receivedInputs.TryGetValue(lastFrame, out int lastInput)) {
+            return lastInput;
+        }
+
         return 0;
     }
 }
