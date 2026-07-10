@@ -134,18 +134,10 @@ public class Input {
     // Behaviour
     public static void Update() {
         // Altera automaticamente o dispositivo de entrada
-        if (autoDetectDevice && JoystickInput.IsJoystickConnected(0) && JoystickInput.IsJoystickConnected(1))  {
+        if (autoDetectDevice)  {
             inputDevice[0] = NONE_INPUT;
-            inputDevice[1] = JOYSTICK_0_INPUT;
-            inputDevice[2] = JOYSTICK_1_INPUT;
-        } else if (autoDetectDevice && JoystickInput.IsJoystickConnected(0)) {
-            inputDevice[0] = NONE_INPUT;
-            inputDevice[1] = JOYSTICK_0_INPUT;
-            inputDevice[2] = KEYBOARD_A_INPUT;
-        } else {
-            inputDevice[0] = NONE_INPUT;
-            inputDevice[1] = KEYBOARD_A_INPUT;
-            inputDevice[2] = KEYBOARD_B_INPUT;
+            inputDevice[1] = JoystickInput.IsJoystickConnected(0) ? JOYSTICK_0_INPUT : KEYBOARD_A_INPUT;
+            inputDevice[2] = JoystickInput.IsJoystickConnected(1) ? JOYSTICK_1_INPUT : JoystickInput.IsJoystickConnected(0) ? KEYBOARD_A_INPUT : KEYBOARD_B_INPUT;
         }
 
         // Lê o estado atual dos dispositivos de entrada
