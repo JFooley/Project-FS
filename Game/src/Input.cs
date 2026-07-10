@@ -4,8 +4,6 @@ using System.Net;
 using System.Net.Sockets;
 using System.Collections.Concurrent;
 using SFML.System;
-using Newtonsoft.Json;
-using System.Text;
 
 public class Input {
     public const int NONE_INPUT = 0;
@@ -140,9 +138,15 @@ public class Input {
     // Behaviour
     public static void Update() {
         if (autoDetectDevice)  {
-            inputDevice[0] = NONE_INPUT;
-            inputDevice[1] = JoystickInput.IsJoystickConnected(0) ? JOYSTICK_0_INPUT : KEYBOARD_A_INPUT;
-            inputDevice[2] = (OnlineInput.connected && OnlineInput.role == OnlineInput.RECEIVER) ? ONLINE_INPUT : JoystickInput.IsJoystickConnected(1) ? JOYSTICK_1_INPUT : JoystickInput.IsJoystickConnected(0) ? KEYBOARD_A_INPUT : KEYBOARD_B_INPUT;
+            if (OnlineInput.connected) {
+                inputDevice[0] = NONE_INPUT;
+                inputDevice[1] = OnlineInput.role == OnlineInput.PLAYER2 ? ONLINE_INPUT : JoystickInput.IsJoystickConnected(0) ? JOYSTICK_0_INPUT : KEYBOARD_A_INPUT;
+                inputDevice[2] = OnlineInput.role == OnlineInput.PLAYER1 ? ONLINE_INPUT : JoystickInput.IsJoystickConnected(0) ? JOYSTICK_0_INPUT : KEYBOARD_A_INPUT;   
+            } else {
+                inputDevice[0] = NONE_INPUT;
+                inputDevice[1] = JoystickInput.IsJoystickConnected(0) ? JOYSTICK_0_INPUT : KEYBOARD_A_INPUT;
+                inputDevice[2] = JoystickInput.IsJoystickConnected(1) ? JOYSTICK_1_INPUT : JoystickInput.IsJoystickConnected(0) ? KEYBOARD_A_INPUT : KEYBOARD_B_INPUT;
+            }
         }
 
         currentInput =  new int[3] {0, 0, 0};
@@ -408,13 +412,11 @@ public class JoystickInput {
 
 public class OnlineInput {
     public const int NONE = 0;
-    public const int SENDER = 1;
-    public const int RECEIVER = 2;
+    public const int PLAYER1 = 1;
+    public const int PLAYER2 = 2;
 
     public static bool connected = false;
     public static int role = NONE;
-
-    private static System.IO.MemoryStream frameBuffer = new System.IO.MemoryStream();
 
     // Configuração de rede
     private const int LOCAL_PORT = 55123;
@@ -425,7 +427,6 @@ public class OnlineInput {
     private static IPEndPoint remoteEndPoint;
 
     private static ConcurrentDictionary<long, int> receivedInputs = new ConcurrentDictionary<long, int>();
-    public static ConcurrentQueue<NetworkFramePacket> receivedFrames = new ConcurrentQueue<NetworkFramePacket>();
     private static long lastReceivedFrame = -1;
     private static readonly object lastReceivedLock = new object();
 
@@ -463,25 +464,6 @@ public class OnlineInput {
             return false;
         }
     }
-    public static void Disconnect() {
-        Console.WriteLine($"[OnlineInput] Desconectando (era {RoleName(role)})...");
-
-        connected = false;
-        role = NONE;
-
-        try {
-            udpClient?.Close();
-        } catch (Exception ex) {
-            Console.WriteLine($"[OnlineInput] Erro ao fechar socket: {ex.Message}");
-        }
-
-        udpClient = null;
-        remoteEndPoint = null;
-        receivedInputs.Clear();
-        lastReceivedFrame = -1;
-
-        Console.WriteLine("[OnlineInput] Desconectado.");
-    }
 
     public static void Thread() {
         IPEndPoint anyEP = new IPEndPoint(IPAddress.Any, 0);
@@ -491,7 +473,7 @@ public class OnlineInput {
                 if (udpClient != null && udpClient.Available > 0) {
                     byte[] data = udpClient.Receive(ref anyEP);
 
-                    if (data.Length == 12 && role == RECEIVER) {
+                    if (data.Length == 12) {
                         long frame = BitConverter.ToInt64(data, 0);
                         int inputState = BitConverter.ToInt32(data, 8);
 
@@ -506,18 +488,6 @@ public class OnlineInput {
                             if (key < cutoff) receivedInputs.TryRemove(key, out _);
                         }
                     } 
-                    else if (role == SENDER) {
-                        frameBuffer.Write(data, 0, data.Length);
-                        
-                        if (data.Length < 1024) {
-                            string json = Encoding.UTF8.GetString(frameBuffer.ToArray());
-                            var packet = JsonConvert.DeserializeObject<NetworkFramePacket>(json);
-                            
-                            if (packet != null) receivedFrames.Enqueue(packet);
-                            
-                            frameBuffer.SetLength(0);
-                        }
-                    }
                 }
             } catch (SocketException ex) {
                 if (ex.SocketErrorCode != SocketError.TimedOut) {
@@ -534,7 +504,7 @@ public class OnlineInput {
     }
 
     public static void SendInput(int localInputState) {
-        if (!connected || role != SENDER || udpClient == null || remoteEndPoint == null) return;
+        if (!connected || udpClient == null || remoteEndPoint == null) return;
 
         try {
             long frame = UI.frame_counter;
@@ -556,8 +526,6 @@ public class OnlineInput {
         }
     }
     public static int ReadInput() {
-        if (role != RECEIVER) return 0;
-
         long currentFrame = UI.frame_counter;
 
         if (receivedInputs.TryGetValue(currentFrame, out int inputState)) {
@@ -576,31 +544,10 @@ public class OnlineInput {
         return 0;
     }
 
-    public static void SendFrame(NetworkFramePacket frame) {
-        if (!connected || role != RECEIVER || udpClient == null) return;
-
-        string json = JsonConvert.SerializeObject(frame);
-        byte[] data = Encoding.UTF8.GetBytes(json);
-
-        const int MAX_SIZE = 1024;
-        for (int i = 0; i < data.Length; i += MAX_SIZE) {
-            int size = Math.Min(MAX_SIZE, data.Length - i);
-            byte[] chunk = new byte[size];
-            System.Buffer.BlockCopy(data, i, chunk, 0, size);
-            udpClient.Send(chunk, chunk.Length, remoteEndPoint);
-        }
-    }
-    public static void RenderFrame() {
-        if (receivedFrames.TryDequeue(out var frame)) {
-            Console.WriteLine($"[OnlineInput] Renderizando frame {frame} recebido do servidor.");
-           // NetworkReceiver.RenderFrameFromServer(frame);
-        }
-    }
-
     private static string RoleName(int role) {
         switch (role) {
-            case SENDER: return "SENDER";
-            case RECEIVER: return "RECEIVER";
+            case PLAYER1: return "Player 1";
+            case PLAYER2: return "Player 2";
             default: return "NONE";
         }
     }

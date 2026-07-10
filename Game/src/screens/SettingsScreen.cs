@@ -14,7 +14,7 @@ public class WGSettings : Widget {
     public override void Render() {
         selector.Update();
         Camera.UnlockCamera();
-        RenderBuffer.Draw(settings_bg);
+        Program.window.Draw(settings_bg);
 
         UI.DrawText(S("Settings"), -80, -107, TTS: true, TTS_id: "Settings", priority: true, spacing: Config.spacing_medium);
         //0

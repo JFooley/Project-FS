@@ -14,8 +14,6 @@ public static class Data {
     public static Dictionary<string, Texture> LoadTexturesDat(string fileName, Dictionary<string, Texture> existingTextures = null) {
         var result = existingTextures ?? new Dictionary<string, Texture>();
 
-        string folderName = Path.GetFileName(Path.GetDirectoryName(fileName));
-
         using (var fs = new FileStream(fileName, FileMode.Open)) {
             using (var reader = new BinaryReader(fs)) {
                 int count = reader.ReadInt32();
@@ -29,10 +27,6 @@ public static class Data {
                         using (var ms = new MemoryStream(data)) {
                             Texture tex = new Texture(ms);
                             result[name] = tex;
-                            
-                            // Cria um ID único combinando a pasta com o nome da imagem (ex: "stage1/1.png")
-                            string uniqueNetworkId = folderName + "/" + name;
-                            RenderBuffer.RegisterTexture(uniqueNetworkId, tex);
                         }
                     }
                     catch (Exception ex) {

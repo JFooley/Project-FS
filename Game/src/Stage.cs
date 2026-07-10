@@ -153,7 +153,7 @@ public class Stage {
         // TEST
         if (Accessibility.cover_screen) {
             WGAccessibilityMenu.fade.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
-            RenderBuffer.Draw(WGAccessibilityMenu.fade);
+            Program.window.Draw(WGAccessibilityMenu.fade);
         }
 
         // Render Pause menu and Traning assets
@@ -197,7 +197,7 @@ public class Stage {
             Sprite temp_sprite = new Sprite(this.textures[this.CurrentSprite.sprite_index]);
             temp_sprite.Position = new Vector2f(0, 0);
             temp_sprite.Color = Accessibility.high_contrast ? new Color(15, 15, 15, 255) : Color.White;
-            RenderBuffer.Draw(temp_sprite);
+            Program.window.Draw(temp_sprite);
         }
 
         // Advance to the next frame
@@ -319,7 +319,7 @@ public class Stage {
             this.shadow.Texture = Data.textures["ui:shadow" + shadow_index];
             this.shadow.Position = new Vector2f(char_obj.body.position.X - this.shadow.GetLocalBounds().Width/2, this.floor_line - this.shadow.GetLocalBounds().Height/2 - 55 );
             this.shadow.Color = this.AmbientLight;
-            RenderBuffer.Draw(this.shadow);
+            Program.window.Draw(this.shadow);
         }
     }
 

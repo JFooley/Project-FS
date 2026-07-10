@@ -117,7 +117,6 @@ public static class Program {
         WGAccessibilityMenu accessibility_screen = new WGAccessibilityMenu();
         WGAccessibilitySounds accessibility_sounds_screen = new WGAccessibilitySounds();
         WGCredits credits_screen = new WGCredits();
-        WGOnlineSender online_screen = new WGOnlineSender();
 
         while (window.IsOpen) {
             frametimer.Restart();
@@ -188,10 +187,6 @@ public static class Program {
                 case Credits:
                     credits_screen.Render();
                     break;
-
-                case OnlineSender:
-                    online_screen.Render();
-                    break;
             }
 
             // Debug
@@ -201,10 +196,6 @@ public static class Program {
             
             // Display
             window.Display();
-
-            // Send Frame
-            if (OnlineInput.connected && OnlineInput.role == OnlineInput.RECEIVER) OnlineInput.SendFrame(RenderBuffer.GetAndClear());
-
         }
     }
 

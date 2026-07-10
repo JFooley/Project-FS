@@ -18,7 +18,7 @@ public class WGPause : Widget {
 
     public override void Render() {
         fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
-        RenderBuffer.Draw(fade90);
+        Program.window.Draw(fade90);
 
         var face_release = Input.Key_up("A");
         var face_hold = Input.Key_hold("A");

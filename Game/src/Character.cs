@@ -2,8 +2,6 @@ using SFML.Graphics;
 using SFML.System;
 using SFML.Audio;
 
-
-
 // ----- Default States -------
 // Intro
 // Win
@@ -43,7 +41,7 @@ using SFML.Audio;
 // Wakeup
 
 public class AI {
-    public static Random rand = new Random();
+    public static Rand rand = new Rand();
     public int difficulty = 0; // lower = harder
     public Queue<string> moveQueue = new Queue<string>();
     public Queue<string> actionQueue = new Queue<string>();
@@ -220,7 +218,7 @@ public abstract class Character : Object {
             Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
 
             for (int i = 0; i < 3; i++) {
-                if (last_sprites[i] != null) RenderBuffer.Draw(last_sprites[i], new RenderStates(Program.hueChange));
+                if (last_sprites[i] != null) Program.window.Draw(last_sprites[i], new RenderStates(Program.hueChange));
             }
             
             if (this.has_frame_changed) {               
@@ -234,13 +232,13 @@ public abstract class Character : Object {
         // Draw current sprite
         if (this.state.glow && UI.blink30Hz) {
             Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
-            RenderBuffer.Draw(temp_sprite, new RenderStates(shader: Program.hueChange));
+            Program.window.Draw(temp_sprite, new RenderStates(shader: Program.hueChange));
         } else if (Accessibility.high_contrast) {
-            RenderBuffer.Draw(temp_sprite, this.SetHighContrastShader(this.current_palette_color));
+            Program.window.Draw(temp_sprite, this.SetHighContrastShader(this.current_palette_color));
         } else if (this.palette != null) {
-            RenderBuffer.Draw(temp_sprite, this.SetSwaperShader(this.own_light == Color.Transparent ? this.light_tint : this.own_light));
+            Program.window.Draw(temp_sprite, this.SetSwaperShader(this.own_light == Color.Transparent ? this.light_tint : this.own_light));
         } else {
-            RenderBuffer.Draw(temp_sprite);
+            Program.window.Draw(temp_sprite);
         }
 
 
@@ -278,7 +276,7 @@ public abstract class Character : Object {
                 };
 
                 // Desenha o retângulo da hitbox na janela
-                RenderBuffer.Draw(hitboxRect);
+                Program.window.Draw(hitboxRect);
             }
         }
     }

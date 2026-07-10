@@ -22,13 +22,13 @@ public class WGIntro : Widget {
         if (state == SELECTING_MODE) {
             selector.Update();
 
-            if (UI.DrawButton(S("RECEIVER"), 0, 0, action: Input.Key_up("A"), click: Input.Key_down("A"), hover: selector.is_on(0, 0), alignment: "right")) {
+            if (UI.DrawButton(S("PLAYER", " ", "1"), 0, 0, action: Input.Key_up("A"), click: Input.Key_down("A"), hover: selector.is_on(0, 0), alignment: "right")) {
                 state = TYPING_IP;
-                online_type = OnlineInput.RECEIVER;
+                online_type = OnlineInput.PLAYER1;
             }
-            if (UI.DrawButton(S("SENDER"), 0, 0, action: Input.Key_up("A"), click: Input.Key_down("A"), hover: selector.is_on(1, 0), alignment: "left")) {
+            if (UI.DrawButton(S("PLAYER", " ", "2"), 0, 0, action: Input.Key_up("A"), click: Input.Key_down("A"), hover: selector.is_on(1, 0), alignment: "left")) {
                 state = TYPING_IP;
-                online_type = OnlineInput.SENDER;
+                online_type = OnlineInput.PLAYER2;
             }
             if (UI.DrawButton(S("OFFLINE"), 0, 15, action: Input.Key_up("A"), click: Input.Key_down("A"), hover: selector.is_on(0, 1), alignment: "center")) {
                 state = LOADING;
@@ -50,7 +50,7 @@ public class WGIntro : Widget {
 
         } else {
             fslogo.Position = new Vector2f(10, 139);
-            RenderBuffer.Draw(fslogo);
+            Program.window.Draw(fslogo);
 
             if (UI.frame_counter % 20 == 0) pointer = pointer < 3 ? pointer + 1 : 0;
             UI.DrawText(S(string.Concat(Enumerable.Repeat(".", pointer))), -122, 68, alignment: "left", spacing: -24);
