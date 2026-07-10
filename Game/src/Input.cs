@@ -141,18 +141,12 @@ public class Input {
 
     // Behaviour
     public static void Update() {
-        // Altera automaticamente o dispositivo de entrada
         if (autoDetectDevice)  {
             inputDevice[0] = NONE_INPUT;
             inputDevice[1] = JoystickInput.IsJoystickConnected(0) ? JOYSTICK_0_INPUT : KEYBOARD_A_INPUT;
-
-            // Só assume o dispositivo ONLINE_INPUT para o player B se este lado for RECEIVER.
-            // O lado SENDER continua controlando player B localmente (ou deixando-o sem input).
-            bool isOnlineReceiver = OnlineInput.connected && OnlineInput.role == OnlineInput.RECEIVER;
-            inputDevice[2] = isOnlineReceiver ? ONLINE_INPUT : JoystickInput.IsJoystickConnected(1) ? JOYSTICK_1_INPUT : JoystickInput.IsJoystickConnected(0) ? KEYBOARD_A_INPUT : KEYBOARD_B_INPUT;
+            inputDevice[2] = (OnlineInput.connected && OnlineInput.role == OnlineInput.RECEIVER) ? ONLINE_INPUT : JoystickInput.IsJoystickConnected(1) ? JOYSTICK_1_INPUT : JoystickInput.IsJoystickConnected(0) ? KEYBOARD_A_INPUT : KEYBOARD_B_INPUT;
         }
 
-        // Lê o estado atual dos dispositivos de entrada
         int[] currentInput =  new int[3] {0, 0, 0};
         for (int i = 1; i < 3; i++) {
             if (inputDevice[i] == KEYBOARD_A_INPUT) {
@@ -171,15 +165,11 @@ public class Input {
                 currentInput[i] = OnlineInput.ReadOnlineInput();
             }
 
-            // Envia o input do player A (local) para o par online — só o lado SENDER envia,
-            // e só o input do player A é transmitido (é ele quem é reproduzido remotamente
-            // como player B do lado RECEIVER).
             if (i == 1 && OnlineInput.connected && OnlineInput.role == OnlineInput.SENDER) {
                 OnlineInput.SendLocalInput(currentInput[i]);
             }
         }
 
-        // Atualiza o estado dos botões
         for (int j = 2; j >= 0; j--) {
             Input.buttonLastState[j] = Input.buttonState[j];
             Input.buttonState[j] = 0;
@@ -429,7 +419,6 @@ public static class OnlineInput {
     public const int SENDER = 1;
     public const int RECEIVER = 2;
 
-    public static string pair_ip_address = ""; // IP do par
     public static bool connected = false;
     public static int role = NONE;
 
@@ -441,18 +430,13 @@ public static class OnlineInput {
     private static UdpClient udpClient;
     private static IPEndPoint remoteEndPoint;
 
-    // Buffer thread-safe com o input recebido do par, indexado pelo número do frame
-    // (só é usado/preenchido do lado RECEIVER)
     private static ConcurrentDictionary<long, int> receivedInputs = new ConcurrentDictionary<long, int>();
     private static long lastReceivedFrame = -1;
     private static readonly object lastReceivedLock = new object();
 
-    // Estabelece a conexão com o par (deve ser chamado antes de iniciar a partida online).
-    // 'role' define se este lado vai SÓ enviar (SENDER) ou SÓ receber (RECEIVER) input.
     public static bool Connect(string ip, int role, int localPort = LOCAL_PORT, int remotePort = REMOTE_PORT) {
         try {
             OnlineInput.role = role;
-            pair_ip_address = ip;
             remoteEndPoint = new IPEndPoint(IPAddress.Parse(ip), remotePort);
 
             udpClient?.Close();
@@ -469,8 +453,6 @@ public static class OnlineInput {
             return false;
         }
     }
-
-    // Encerra a conexão com o par
     public static void Disconnect() {
         connected = false;
         role = NONE;
@@ -489,8 +471,6 @@ public static class OnlineInput {
 
     public static void ServerThread() {
         while (true) {
-            // Aqui você pode adicionar a lógica para receber os pacotes do par online e guardando em um buffer
-            // Só o lado RECEIVER escuta a rede; o lado SENDER nunca lê pacotes, só envia.
             if (connected && role == RECEIVER && udpClient != null) {
                 try {
                     IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
@@ -513,6 +493,8 @@ public static class OnlineInput {
                             if (key < cutoff) receivedInputs.TryRemove(key, out _);
                         }
                     }
+
+                    Console.WriteLine($"[OnlineInput] Received input for frame {BitConverter.ToInt64(data, 0)}: {BitConverter.ToInt32(data, sizeof(long))}");
                 } catch (SocketException) {
                     // timeout de leitura ou erro momentâneo de rede: ignora e tenta de novo
                 } catch (ObjectDisposedException) {
@@ -523,9 +505,6 @@ public static class OnlineInput {
             }
         }
     }
-
-    // Envia o input local do frame atual para o par online.
-    // Só tem efeito do lado SENDER — o lado RECEIVER nunca envia nada pela rede.
     public static void SendLocalInput(int localInputState) {
         if (!connected || role != SENDER || udpClient == null || remoteEndPoint == null) return;
 
@@ -543,7 +522,6 @@ public static class OnlineInput {
             // socket já foi fechado
         }
     }
-
     public static int ReadOnlineInput() {
         // Pega o input do frame atual do par online.
         // Só faz sentido do lado RECEIVER — o SENDER nunca tem nada no buffer, pois nunca escuta a rede.
