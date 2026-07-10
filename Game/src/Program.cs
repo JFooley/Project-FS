@@ -32,6 +32,7 @@ public static class Program {
     // Session infos
     public static int playerA_wins = 0;
     public static int playerB_wins = 0;
+    public static int online_type = 0;
     
     // View
     public static View view = new View(new FloatRect(new Vector2f(0, 0), new Vector2f(Config.RenderWidth, Config.RenderHeight)));
