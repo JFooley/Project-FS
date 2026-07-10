@@ -2446,3 +2446,83 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Remy-E
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken-Effects\animations.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken-Effects\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken-Effects\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\characters\Ken-Effects\animations.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\characters\Ken-Effects\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\characters\Ken-Effects\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\characters\Ken\animations.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\characters\Ken\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\characters\Ken\palette.bmp
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\characters\Ken\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\characters\Remy-Effects\animations.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\characters\Remy-Effects\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\characters\Remy-Effects\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\characters\Remy\animations.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\characters\Remy\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\characters\Remy\palette.bmp
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\characters\Remy\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\fonts\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\icon.ico
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\languages\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\languages\EN.json
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\languages\PT.json
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\particles\Hitspark\animations.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\particles\Hitspark\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\particles\Hitspark\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\particles\Shungokusatso\animations.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\particles\Shungokusatso\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\particles\Shungokusatso\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\particles\Super\animations.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\particles\Super\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\particles\Super\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\shaders\color_fill.frag
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\shaders\color_tinter.frag
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\shaders\high_contrast.frag
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\shaders\hue_change.frag
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\shaders\palette_swaper.frag
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\sounds\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\Burning Dojo\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\Burning Dojo\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\Japan Fields\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\Japan Fields\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\Night Alley\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\Night Alley\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\NYC Subway\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\NYC Subway\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\Rindo-Kan Dojo\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\Rindo-Kan Dojo\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\The Midnight Duel\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\The Midnight Duel\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\The Savana\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\The Savana\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\Training Stage\audio.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\stages\Training Stage\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\assets\visuals\textures.dat
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\Project FS.exe.config
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\Project FS.exe
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\Project FS.pdb
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\Newtonsoft.Json.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\SFML.Audio.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\SFML.Graphics.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\SFML.System.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\SFML.Window.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\System.Windows.Forms.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\csfml-audio.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\csfml-graphics.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\csfml-system.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\csfml-window.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\msvcp140.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\sfml-audio-3.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\sfml-graphics-3.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\sfml-system-3.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\sfml-window-3.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\vcruntime140.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\bin\Debug\net472\vcruntime140_1.dll
+C:\Users\joaop\Documents\GIT\Project-FS\Game\obj\Debug\net472\Project FS.csproj.AssemblyReference.cache
+C:\Users\joaop\Documents\GIT\Project-FS\Game\obj\Debug\net472\Project FS.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\joaop\Documents\GIT\Project-FS\Game\obj\Debug\net472\Project FS.AssemblyInfoInputs.cache
+C:\Users\joaop\Documents\GIT\Project-FS\Game\obj\Debug\net472\Project FS.AssemblyInfo.cs
+C:\Users\joaop\Documents\GIT\Project-FS\Game\obj\Debug\net472\Project FS.csproj.CoreCompileInputs.cache
+C:\Users\joaop\Documents\GIT\Project-FS\Game\obj\Debug\net472\Project FS.sourcelink.json
+C:\Users\joaop\Documents\GIT\Project-FS\Game\obj\Debug\net472\Project FS.csproj.Up2Date
+C:\Users\joaop\Documents\GIT\Project-FS\Game\obj\Debug\net472\Project FS.exe
+C:\Users\joaop\Documents\GIT\Project-FS\Game\obj\Debug\net472\Project FS.pdb

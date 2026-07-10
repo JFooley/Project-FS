@@ -434,7 +434,14 @@ public static class OnlineInput {
     private static long lastReceivedFrame = -1;
     private static readonly object lastReceivedLock = new object();
 
+    // Flags de debug: garantem que certas mensagens só apareçam uma vez por conexão,
+    // em vez de spammar o console a cada frame (60x por segundo).
+    private static bool loggedFirstSend = false;
+    private static bool loggedFirstReceive = false;
+
     public static bool Connect(string ip, int role, int localPort = LOCAL_PORT, int remotePort = REMOTE_PORT) {
+        Console.WriteLine($"[OnlineInput] Tentando conectar como {RoleName(role)} -> {ip}:{remotePort} (porta local {localPort})...");
+
         try {
             OnlineInput.role = role;
             remoteEndPoint = new IPEndPoint(IPAddress.Parse(ip), remotePort);
@@ -445,28 +452,37 @@ public static class OnlineInput {
 
             receivedInputs.Clear();
             lastReceivedFrame = -1;
+            loggedFirstSend = false;
+            loggedFirstReceive = false;
 
             connected = true;
+
+            Console.WriteLine($"[OnlineInput] Conectado com sucesso como {RoleName(role)}. Socket local na porta {localPort}, destino {remoteEndPoint}.");
             return true;
-        } catch (Exception) {
+        } catch (Exception ex) {
             connected = false;
+            Console.WriteLine($"[OnlineInput] FALHA ao conectar: {ex.GetType().Name} - {ex.Message}");
             return false;
         }
     }
     public static void Disconnect() {
+        Console.WriteLine($"[OnlineInput] Desconectando (era {RoleName(role)})...");
+
         connected = false;
         role = NONE;
 
         try {
             udpClient?.Close();
-        } catch (Exception) {
-            // ignora erros ao fechar o socket
+        } catch (Exception ex) {
+            Console.WriteLine($"[OnlineInput] Erro ao fechar socket: {ex.Message}");
         }
 
         udpClient = null;
         remoteEndPoint = null;
         receivedInputs.Clear();
         lastReceivedFrame = -1;
+
+        Console.WriteLine("[OnlineInput] Desconectado.");
     }
 
     public static void ServerThread() {
@@ -492,13 +508,22 @@ public static class OnlineInput {
                         foreach (var key in receivedInputs.Keys) {
                             if (key < cutoff) receivedInputs.TryRemove(key, out _);
                         }
-                    }
 
-                    Console.WriteLine($"[OnlineInput] Received input for frame {BitConverter.ToInt64(data, 0)}: {BitConverter.ToInt32(data, sizeof(long))}");
-                } catch (SocketException) {
-                    // timeout de leitura ou erro momentâneo de rede: ignora e tenta de novo
+                        if (!loggedFirstReceive) {
+                            loggedFirstReceive = true;
+                            Console.WriteLine($"[OnlineInput] Primeiro pacote recebido de {sender}! Conexão confirmada (frame {frame}, input {inputState}).");
+                        }
+                    }
+                } catch (SocketException ex) {
+                    // Timeout é esperado quando nenhum pacote chega dentro de SOCKET_TIMEOUT_MS;
+                    // outros códigos de erro indicam problema real de rede.
+                    if (ex.SocketErrorCode != SocketError.TimedOut) {
+                        Console.WriteLine($"[OnlineInput] Erro de socket ao receber: {ex.SocketErrorCode} - {ex.Message}");
+                    }
                 } catch (ObjectDisposedException) {
                     // socket foi fechado (Disconnect chamado durante o Receive): sai do laço de leitura
+                    Console.WriteLine("[OnlineInput] Socket fechado durante a escuta, encerrando thread de recebimento.");
+                    return;
                 }
             } else {
                 Thread.Sleep(100);
@@ -516,10 +541,15 @@ public static class OnlineInput {
             System.Buffer.BlockCopy(BitConverter.GetBytes(localInputState), 0, packet, sizeof(long), sizeof(int));
 
             udpClient.Send(packet, packet.Length, remoteEndPoint);
-        } catch (SocketException) {
-            // ignora falhas pontuais de envio (ex: rede momentaneamente indisponível)
+
+            if (!loggedFirstSend) {
+                loggedFirstSend = true;
+                Console.WriteLine($"[OnlineInput] Primeiro pacote enviado para {remoteEndPoint}! (frame {frame}, input {localInputState}).");
+            }
+        } catch (SocketException ex) {
+            Console.WriteLine($"[OnlineInput] Erro de socket ao enviar: {ex.SocketErrorCode} - {ex.Message}");
         } catch (ObjectDisposedException) {
-            // socket já foi fechado
+            Console.WriteLine("[OnlineInput] Tentativa de enviar em um socket já fechado.");
         }
     }
     public static int ReadOnlineInput() {
@@ -545,5 +575,13 @@ public static class OnlineInput {
         }
 
         return 0;
+    }
+
+    private static string RoleName(int role) {
+        switch (role) {
+            case SENDER: return "SENDER";
+            case RECEIVER: return "RECEIVER";
+            default: return "NONE";
+        }
     }
 }
