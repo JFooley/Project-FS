@@ -166,6 +166,10 @@ public class Input {
             else if (inputDevice[i] == ONLINE_INPUT) {
                 currentInput[i] = OnlineInput.ReadInput();
             }
+
+            if (OnlineInput.connected && i == OnlineInput.role) {
+                OnlineInput.SendInput(currentInput[i]);
+            }
         }
 
         for (int j = 2; j >= 0; j--) {
