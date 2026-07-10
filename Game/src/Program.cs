@@ -19,6 +19,7 @@ public static class Program {
     public const int AccessibilityMenu = 10;
     public const int AccessibilitySounds = 11;
     public const int Credits = 12;
+    public const int OnlineSender = 13;
 
     // State holders
     public static int state;
@@ -116,6 +117,7 @@ public static class Program {
         WGAccessibilityMenu accessibility_screen = new WGAccessibilityMenu();
         WGAccessibilitySounds accessibility_sounds_screen = new WGAccessibilitySounds();
         WGCredits credits_screen = new WGCredits();
+        WGOnlineSender online_screen = new WGOnlineSender();
 
         while (window.IsOpen) {
             frametimer.Restart();
@@ -184,6 +186,10 @@ public static class Program {
 
                 case Credits:
                     credits_screen.Render();
+                    break;
+
+                case OnlineSender:
+                    online_screen.Render();
                     break;
             }
 

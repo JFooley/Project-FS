@@ -15,7 +15,7 @@ public class WGStart : Widget {
         Accessibility.Speak("PFS", TTSRequisition.TEXT, true, S("wc to project fs"));
         Accessibility.Speak("PS", TTSRequisition.TEXT, false, S("press start"));
         if (UI.DrawButton(S("press start"), 0, 50, tts: false, spacing: Config.spacing_medium, click: Input.Key_hold("Start"), action: Input.Key_up("Start"), button_sound: 2, hover_font: UI.blink2Hz ? "default medium white" : "", click_font: "default medium click")) {
-            Program.ChangeState(Program.MainMenu);
+            Program.ChangeState((OnlineInput.connected && OnlineInput.role == OnlineInput.SENDER) ? Program.OnlineSender : Program.MainMenu);
         }
     }
 }

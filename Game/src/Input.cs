@@ -63,6 +63,7 @@ public class Input {
     public static int[] buttonState = new int[3];
     public static int[] buttonLastState = new int[3];
     private static Vector3f[] vibration = new Vector3f[3]; // X = Left, Y = Right, Z = Stamp
+    public static int[] currentInput =  new int[3] {0, 0, 0};
 
     // Shortcuts
     public static bool[] anyKey => new bool[] { Input.buttonState[DEFAULT] > 0, Input.buttonState[PLAYER_A] > 0, Input.buttonState[PLAYER_B] > 0 };
@@ -147,7 +148,7 @@ public class Input {
             inputDevice[2] = (OnlineInput.connected && OnlineInput.role == OnlineInput.RECEIVER) ? ONLINE_INPUT : JoystickInput.IsJoystickConnected(1) ? JOYSTICK_1_INPUT : JoystickInput.IsJoystickConnected(0) ? KEYBOARD_A_INPUT : KEYBOARD_B_INPUT;
         }
 
-        int[] currentInput =  new int[3] {0, 0, 0};
+        currentInput =  new int[3] {0, 0, 0};
         for (int i = 1; i < 3; i++) {
             if (inputDevice[i] == KEYBOARD_A_INPUT) {
                 currentInput[i] = RawInput.ReadKeyboardState(keyMapA);
@@ -163,10 +164,6 @@ public class Input {
             }
             else if (inputDevice[i] == ONLINE_INPUT) {
                 currentInput[i] = OnlineInput.ReadOnlineInput();
-            }
-
-            if (i == 1 && OnlineInput.connected && OnlineInput.role == OnlineInput.SENDER) {
-                OnlineInput.SendLocalInput(currentInput[i]);
             }
         }
 
