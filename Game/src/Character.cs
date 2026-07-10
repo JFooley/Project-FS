@@ -41,7 +41,7 @@ using SFML.Audio;
 // Wakeup
 
 public class AI {
-    public static Rand rand = new Rand();
+    public static Random rand = new Random();
     public int difficulty = 0; // lower = harder
     public Queue<string> moveQueue = new Queue<string>();
     public Queue<string> actionQueue = new Queue<string>();
