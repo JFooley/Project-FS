@@ -46,6 +46,7 @@ public class Ken : Character {
         this.states = new Dictionary<string, State> {
             { "Intro", new State(F(a["introFrames1"], a["introFrames2"], a["introFrames3"]), "Idle", can_be_hit: false)},
             { "Win", new State(F(a["win"]), "Idle", change_on_end: false, loop: false)},
+            { "Taunt", new State(F(a["taunt"]), "Idle", trace: true)},
             // Basic
             { "Idle", new State(F(a["idle"]), "Idle", idle: true)},
             { "OnBlock", new State(F(a["OnBlock"]), "Idle", on_block: true)}, 
@@ -98,16 +99,16 @@ public class Ken : Character {
             // Specials
             { "LightShory", new State(F(a["lightShory"]), "ShoryFalling", 3, hitstop: "Heavy", air: true, will_hit: true)},
             { "HeavyShory", new State(F(a["heavyShory"]), "ShoryFalling", 3, hitstop: "Heavy", air: true, will_hit: true)},
-            { "ShoryEX", new State(F(a["EXShory"]), "ShoryFalling", 3, hitstop: "Heavy", glow: true, trace: true, air: true, can_be_hit: false, will_hit: true)},
+            { "ShoryEX", new State(F(a["EXShory"]), "ShoryFalling", 3, hitstop: "Heavy", glow: true, air: true, can_be_hit: false, will_hit: true)},
             { "ShoryFalling", new State(F(a["shoryFalling"]), "Landing", change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
             { "LightHaduken", new State(F(a["haduken"]), "Idle", 3, will_hit: true, range: 0)},
             { "HeavyHaduken", new State(F(a["haduken"]), "Idle", 3, will_hit: true, range: 0)},
-            { "HadukenEX", new State(F(a["haduken"]), "Idle", 3, glow: true, trace: true, will_hit: true, range: 0)},
+            { "HadukenEX", new State(F(a["haduken"]), "Idle", 3, glow: true, will_hit: true, range: 0)},
             { "LightTatso", new State(F(a["lightTatso"]), "Landing", 3, hitstop: "Light", will_hit: true)},
             { "HeavyTatso", new State(F(a["heavyTatso"]), "Landing", 3, hitstop: "Light", will_hit: true)},
-            { "TatsoEX", new State(F(a["EXTatso"]), "Landing", 3, hitstop: "Light", glow: true, trace: true, will_hit: true)},
+            { "TatsoEX", new State(F(a["EXTatso"]), "Landing", 3, hitstop: "Light", glow: true, will_hit: true)},
             { "AirTatso", new State(F(a["airTatso"]), "Landing", 3, change_on_ground: true, change_on_end: false, air: true, will_hit: true)},
-            { "AirTatsoEX", new State(F(a["airTatso"]), "Landing", 3, change_on_ground: true, change_on_end: false, glow: true, trace: true, air: true, will_hit: true)},
+            { "AirTatsoEX", new State(F(a["airTatso"]), "Landing", 3, change_on_ground: true, change_on_end: false, glow: true, air: true, will_hit: true)},
             // Other
             { "Falling", new State(F(a["falling"]), "OnGround", can_be_hit: false, on_hit: true)},
             { "Sweeped", new State(F(a["sweeped"]), "Falling", on_hit: true, low: true, can_be_hit: false)},
@@ -167,7 +168,7 @@ public class Ken : Character {
                 X: this.has_hit ? 0f : 5f, 
                 Y: 100);
         } 
-        if (this.current_state.Contains("Shory") && this.state.animation.on_last_frame && Math.Sign(this.body.velocity.X) == this.facing) this.body.velocity.X = 0;
+        if (this.current_state.Contains("Shory") && this.state.current_anim.on_last_frame && Math.Sign(this.body.velocity.X) == this.facing) this.body.velocity.X = 0;
 
         // Haduken
         if (this.current_fireball != null && this.current_fireball.remove) this.current_fireball = null;
@@ -325,6 +326,12 @@ public class Ken : Character {
             return;
         }
 
+        // Taunt
+        if (Input.Key_press("RB", player: this.player_index, facing: this.facing) && this.not_acting) {
+            this.ChangeState("Taunt");
+        } else if (this.current_state == "Taunt" && this.has_frame_changed) {
+            this.aura_points.X = (int) Math.Min(this.aura_points.Y, this.aura_points.X + 2);
+        }
     }
     public override int ImposeBehavior(Character target) {
         int hit = -1;

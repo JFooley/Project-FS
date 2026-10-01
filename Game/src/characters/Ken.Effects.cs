@@ -15,16 +15,18 @@ public class KenEffects : Character {
     private Ken character;
 
     public KenEffects(Ken character, string initialState, int life_points, float startX, float startY, int facing)
-        : base("Ken-Effects", initialState, startX, startY, Data.GetPath("assets/characters/Ken-Effects"), 1) {
+        : base("Ken-Effects", initialState, startX, startY, Data.GetPath("assets/characters/Ken-Effects")) {
             this.character = character;
             this.player_index = character.player_index;
             this.facing = facing;
             this.life_points = new Vector2i(life_points, life_points);
             this.shadow_size = 1;
             this.own_light = new Color(255, 255, 255, 255);
+            this.existing_layer = new HashSet<string> {"Effects"};
+            this.interact_layer = new HashSet<string> {"Character", "Effects"};
     }
     public KenEffects()
-        : base("Ken-Effects", "", 0, 0, Data.GetPath("assets/characters/Ken-Effects"), 1) {
+        : base("Ken-Effects", "", 0, 0, Data.GetPath("assets/characters/Ken-Effects")) {
             this.shadow_size = 1;
             this.own_light = new Color(255, 255, 255, 255);
     }

@@ -84,7 +84,8 @@ public abstract class Character : Object {
 
     // Infos
     public string name;
-    public int type;
+    public HashSet<string> existing_layer = new HashSet<string> {"Character"};
+    public HashSet<string> interact_layer = new HashSet<string> {"Character"};
     public string folder_path;
     public float floor_line;
     public Stage stage => Program.stage;
@@ -165,21 +166,21 @@ public abstract class Character : Object {
     // Gets
     public string current_sprite => current_animation.GetCurrentFrame().sprite_index;
     public string current_sound => current_animation.GetCurrentFrame().sound_index;
-    public List<GenericBox> current_boxes => current_animation.GetCurrentFrame().Boxes;
+    public List<ColliderBox> current_boxes => current_animation.GetCurrentFrame().Boxes;
     public int current_anim_frame_index => current_animation.anim_frame_index;
     public int current_logic_frame_index => current_animation.logic_frame_index;
-    public Animation current_animation => states[current_state].animation;
+    public Animation current_animation => states[current_state].current_anim;
     public State state => states[current_state];
 
     // Flags and counters
     public int combo_counter = 0;
     public int hitstop_counter = 0;
-    public float damage_scaling => Math.Max(0.1f, 1 - combo_counter * 0.1f);
+    public float combo_scaling => Math.Max(0.1f, 1 - combo_counter * 0.1f);
+    public float damage_scaling = 1;
 
-    public Character(string name, string initialState, float startX, float startY, string folderPath, int type = 0) : base() {
+    public Character(string name, string initialState, float startX, float startY, string folderPath) : base() {
         this.folder_path = folderPath;
         this.name = name;
-        this.type = type;
         this.last_state = initialState;
         base.body.position.X = startX; 
         base.body.position.Y = startY;
@@ -235,10 +236,13 @@ public abstract class Character : Object {
         if (this.state.glow && UI.blink30Hz) {
             Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
             Program.window.Draw(temp_sprite, new RenderStates(shader: Program.hueChange));
+
         } else if (Accessibility.high_contrast) {
             Program.window.Draw(temp_sprite, this.SetHighContrastShader(this.current_palette_color));
+
         } else if (this.palette != null) {
             Program.window.Draw(temp_sprite, this.SetSwaperShader(this.own_light == Color.Transparent ? this.light_tint : this.own_light));
+            
         } else {
             Program.window.Draw(temp_sprite);
         }
@@ -246,7 +250,7 @@ public abstract class Character : Object {
 
         // Draw Hitboxes
         if (drawHitboxes) {  
-            foreach (GenericBox box in this.current_boxes) {
+            foreach (ColliderBox box in this.current_boxes) {
                 // Calcula as coordenadas absolutas da hitbox
                 float x1 = box.getRealA(this).X;
                 float y1 = box.getRealA(this).Y;
@@ -316,7 +320,7 @@ public abstract class Character : Object {
                 this.current_state = this.next_state;
                 if (this.current_state != this.last_state || this.next_state_reset) this.current_animation.Reset();
                 if (this.next_state_lenght != null) this.current_animation.lenght = this.next_state_lenght.Value;
-                if (this.state.variation_amount > 1) this.state.variation_index = AI.rand.Next(0, this.state.variation_amount);
+                if (this.state.anim_amount > 1) this.state.anim_index = AI.rand.Next(0, this.state.anim_amount);
             }
 
             this.next_state = null;
@@ -413,9 +417,11 @@ public abstract class Character : Object {
 
             } else if ((this.crounching && !force_stand) || force_crounch) {
                 this.ChangeState("OnHitLow", reset: true, lenght: lenght);
+                return;
                 
             } else {
                 this.ChangeState("OnHit", reset: true, lenght: lenght);
+                return;
             }
 
         } else { // Block stun states
@@ -428,21 +434,19 @@ public abstract class Character : Object {
     }
     public void CheckColisions() {   
         foreach (var enemy in Program.stage.OnSceneCharacters) {
-            if (enemy == this) continue;
+            if (enemy == this || this.player_index == enemy.player_index) continue;
             
-            foreach (GenericBox boxA in this.current_boxes) {
-                if (boxA.type != GenericBox.HITBOX && boxA.type != GenericBox.PUSHBOX) continue;
+            foreach (ColliderBox boxA in this.current_boxes) {
+                if (boxA.type != ColliderBox.HITBOX && boxA.type != ColliderBox.PUSHBOX) continue;
                 
-                foreach (GenericBox boxB in enemy.current_boxes) {
-                    if ((boxA.type == GenericBox.HITBOX && boxB.type != GenericBox.HURTBOX) || (boxA.type == GenericBox.PUSHBOX && boxB.type != GenericBox.PUSHBOX)) continue;
-                    
-                    if (GenericBox.Intersects(boxA, boxB, this, enemy)) {
+                foreach (ColliderBox boxB in enemy.current_boxes) {                    
+                    if (boxA.CanInteract(boxB) && boxA.Intersects(boxB, charA: this, charB: enemy)) {
                         // A push B
-                        if (boxA.type == GenericBox.PUSHBOX && boxB.type == GenericBox.PUSHBOX) {
-                            GenericBox.Colide(boxA, boxB, this, enemy);
+                        if (boxA.type == ColliderBox.PUSHBOX) {
+                            boxA.ColideAndPush(boxB, charA: this, charB: enemy);
 
                         // A hit B
-                        } else if (this.player_index != enemy.player_index && this.has_hit == false && enemy.state.can_be_hit && this.type >= enemy.type && boxA.type == GenericBox.HITBOX && boxB.type == GenericBox.HURTBOX) { 
+                        } else if (this.has_hit == false && enemy.state.can_be_hit && this.interact_layer.Overlaps(enemy.existing_layer)) { 
                             this.has_hit = true;
                             
                             int hit_type = DefineColisionType(enemy);
@@ -485,8 +489,8 @@ public abstract class Character : Object {
     }
     public static void Damage(Character target, Character self, int damage, int dizzy_damage) {
         // NOTE: Before stun and blockstun
-        target.life_points.X = (int) Math.Max(target.life_points.X - damage * self.damage_scaling, 0);
-        target.dizzy_points.X = (int) Math.Max(target.dizzy_points.X - dizzy_damage * self.damage_scaling, 0);
+        target.life_points.X = (int) Math.Max(target.life_points.X - damage * self.damage_scaling * self.combo_scaling, 0);
+        target.dizzy_points.X = (int) Math.Max(target.dizzy_points.X - dizzy_damage * self.damage_scaling * self.combo_scaling, 0);
     }
     public static void AddAuraPoints(Character target, Character self, int hit , int target_amount = 3, int self_amount = 10) {
         target.aura_points.X = (int) Math.Min(target.aura_points.Y, target.aura_points.X + target_amount);

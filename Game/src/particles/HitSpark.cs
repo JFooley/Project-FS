@@ -16,6 +16,8 @@ public class Hitspark : Character {
         : base("Hitspark", initialState, startX, startY, Data.GetPath("assets/particles/Hitspark")) {
             this.facing = facing;
             this.own_light = Color.White;
+            this.existing_layer = new HashSet<string> {};
+            this.interact_layer = new HashSet<string> {};
         }
     public Hitspark() : base("Hitspark", "", 0, 0, Data.GetPath("assets/particles/Hitspark")) {}
 

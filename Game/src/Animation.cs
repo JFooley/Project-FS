@@ -72,7 +72,7 @@ using SFML.System;
         }
     }
 
-    public class GenericBox {
+    public class ColliderBox {
         public const int HITBOX = 0;
         public const int HURTBOX = 1;
         public const int PUSHBOX = 2;
@@ -86,7 +86,7 @@ using SFML.System;
         public int type;
         public int quadsize = 250;
 
-        public GenericBox(int type, int x1, int y1, int x2, int y2) {   
+        public ColliderBox(int type, int x1, int y1, int x2, int y2) {   
             this.type = type;
             this.pA.X = x1;
             this.pB.X = x2;
@@ -96,24 +96,24 @@ using SFML.System;
             this.height = y2 - y1;
         }
 
-        public static bool Intersects(GenericBox boxA, GenericBox boxB, Character charA, Character charB) {
-            return (boxA.getRealA(charA).X < boxB.getRealB(charB).X) &&
-                (boxA.getRealB(charA).X > boxB.getRealA(charB).X) &&
-                (boxA.getRealA(charA).Y < boxB.getRealB(charB).Y) &&
-                (boxA.getRealB(charA).Y > boxB.getRealA(charB).Y);
+        public bool CanInteract(ColliderBox boxB) {
+            if (this.type == HITBOX && boxB.type == HURTBOX) return true;
+            if (this.type == PUSHBOX && boxB.type == PUSHBOX) return true;
+            return false;
         }
+        public bool Intersects(ColliderBox boxB, Character charA, Character charB) {
+            return (this.getRealA(charA).X < boxB.getRealB(charB).X) &&
+                (this.getRealB(charA).X > boxB.getRealA(charB).X) &&
+                (this.getRealA(charA).Y < boxB.getRealB(charB).Y) &&
+                (this.getRealB(charA).Y > boxB.getRealA(charB).Y);
+        }
+        public void ColideAndPush(ColliderBox boxB, Character charA, Character charB) {
+            var overlapX = Math.Min(this.getRealB(charA).X, boxB.getRealB(charB).X) - Math.Max(this.getRealA(charA).X, boxB.getRealA(charB).X);
 
-        public static void Colide(GenericBox boxA, GenericBox boxB, Character charA, Character charB) {
-            // Calcule a sobreposição entre boxA e boxB no eixo X
-            var overlapX = Math.Min(boxA.getRealB(charA).X, boxB.getRealB(charB).X) - Math.Max(boxA.getRealA(charA).X, boxB.getRealA(charB).X);
-
-            // Verifique quem está à esquerda
-            if (boxA.getRealA(charA).X < boxB.getRealA(charB).X) {
-                // A está à esquerda de B; mova-os para afastá-los até o limite da sobreposição
+            if (this.getRealA(charA).X < boxB.getRealA(charB).X) {
                 charA.body.position.X -= overlapX / 2;
                 charB.body.position.X += overlapX / 2;
             } else {
-                // B está à esquerda de A; mova-os para afastá-los até o limite da sobreposição
                 charA.body.position.X += overlapX / 2;
                 charB.body.position.X -= overlapX / 2;
             }
@@ -134,14 +134,14 @@ using SFML.System;
         } 
     }
 
-    public class FrameData : Frame{
+    public class FrameData : Frame {
         public bool has_hit;
         public float delta_X;
         public float delta_Y;
         public int facing;
-        public List<GenericBox> Boxes;
+        public List<ColliderBox> Boxes;
 
-        public FrameData(string sprite_index, float deltaX, float deltaY, List<GenericBox> boxes, int len = 1, int facing = 1, string sound = "", bool hasHit = true) {
+        public FrameData(string sprite_index, float deltaX, float deltaY, List<ColliderBox> boxes, int len = 1, int facing = 1, string sound = "", bool hasHit = true) {
             this.sprite_index = sprite_index;
             this.delta_X = deltaX;
             this.delta_Y = deltaY;
@@ -153,7 +153,7 @@ using SFML.System;
         }
 
         public FrameData() {
-            this.Boxes = new List<GenericBox>(){};
+            this.Boxes = new List<ColliderBox>(){};
         }
     }
 

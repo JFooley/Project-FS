@@ -1,7 +1,6 @@
 uniform sampler2D tex;
 uniform vec3 hslInput;
 
-// Função para converter HSL para RGB
 vec3 hslToRgb(vec3 hsl) {
     float h = hsl.x;
     float s = hsl.y;
@@ -35,24 +34,40 @@ vec3 hslToRgb(vec3 hsl) {
     return rgb + m;
 }
 
-void main() {
-    vec4 pixelColor = texture2D(tex, gl_TexCoord[0].xy);
-
-    float luminance = dot(pixelColor.rgb, vec3(0.2126, 0.7152, 0.0722));
-
-    vec3 hslAdjusted = hslInput;
-
-    float N = 0.0;
-
-    if (hslAdjusted.z >= 0.5) {
-        N = 1.0 - hslAdjusted.z;
-    } else {
-        N = hslAdjusted.z;
+bool isEdge(vec2 texCoord, sampler2D tex) {
+    if (texture(tex, texCoord).a == 0.0) {
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                if (texture(tex, texCoord + vec2(i, j) / vec2(textureSize(tex, 0))).a > 0.0) {
+                    return true;
+                }
+            }
+        }
     }
+    return false;
+}   
 
-    hslAdjusted.z = luminance * ((hslAdjusted.z + N) - (hslAdjusted.z - N)) + (hslAdjusted.z - N);
+void main() {
+    // Edge pixel
+    if (isEdge(gl_TexCoord[0].xy, tex)) {
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+        return;
+        
+    // Non-edge pixel
+    } else {
+        vec4 pixelColor = texture2D(tex, gl_TexCoord[0].xy);
+        float luminance = dot(pixelColor.rgb, vec3(0.2126, 0.7152, 0.0722));
+        vec3 hslAdjusted = hslInput;
 
-    vec3 finalColor = hslToRgb(hslAdjusted);
+        float N = 0.0;
+        if (hslAdjusted.z >= 0.5) {
+            N = 1.0 - hslAdjusted.z;
+        } else {
+            N = hslAdjusted.z;
+        }
 
-    gl_FragColor = vec4(finalColor, pixelColor.a);
+        hslAdjusted.z = luminance * ((hslAdjusted.z + N) - (hslAdjusted.z - N)) + (hslAdjusted.z - N);
+        vec3 finalColor = hslToRgb(hslAdjusted);
+        gl_FragColor = vec4(finalColor, pixelColor.a);
+    }
 }

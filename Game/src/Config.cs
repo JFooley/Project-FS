@@ -6,7 +6,7 @@ public static class Config {
     public const int RenderWidth = 384;
     public const int RenderHeight = 216;
     public const int Framerate = 60;
-    public const string Version = "v0.1.1";
+    public const string Version = "v0.1.5";
 
     public static bool Fullscreen = true;
     public static bool Vsync = true;

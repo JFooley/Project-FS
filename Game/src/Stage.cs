@@ -16,7 +16,7 @@ public class Stage {
     public static bool training_mode => WGBattle.battle_mode == WGBattle.Training;
     public static bool pause = false;
     public static bool show_boxs = false;
-    public static int block = 0; // 0 - never, 1 - after hit, 2 - always
+    public static int block = 1; // 0 - never, 1 - after hit, 2 - always
     public static int parry = 0; // 0 - never, 1 - always
     public static bool refil_life = true;
     public static bool refil_super = true;
@@ -68,7 +68,7 @@ public class Stage {
     public Frame CurrentSprite => CurrentAnimation.GetCurrentFrameSimple();
     public Sound music;
     public State state => states[CurrentState];
-    public Animation CurrentAnimation => states[CurrentState].animation;
+    public Animation CurrentAnimation => states[CurrentState].current_anim;
 
     // Visual info
     public Color AmbientLight = new Color(255, 255, 255, 255);
@@ -206,7 +206,7 @@ public class Stage {
             if (states.ContainsKey(this.state.post_state)) {
                 this.LastState = this.CurrentState;
                 this.CurrentState = this.state.post_state;
-                if (CurrentState != LastState) this.states[LastState].animation.Reset();
+                if (CurrentState != LastState) this.states[LastState].current_anim.Reset();
             }
         }
 

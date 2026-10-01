@@ -45,6 +45,7 @@ public class Remy : Character {
         this.states = new Dictionary<string, State> {
             { "Intro", new State(F(a["intro1"], a["intro2"]), "Idle", can_be_hit: false)},
             { "Win", new State(F(a["win1"]), "Idle", change_on_end: false, loop: false)},
+            { "Taunt", new State(F(a["taunt"]), "Idle", trace: true)},
             // Basic
             { "Idle", new State(F(a["idle"]), "Idle", idle: true)},
             { "OnBlock", new State(F(a["onBlock"]), "Idle", on_block: true)}, 
@@ -94,12 +95,12 @@ public class Remy : Character {
             // Specials special1_falling
             { "LightSpecial1", new State(F(a["special1"]), "Special1Falling", 3, hitstop: "Light", air: true, will_hit: true)},
             { "MediumSpecial1", new State(F(a["special1"]), "Special1Falling", 3, hitstop: "Medium", air: true, will_hit: true)},
-            { "EXSpecial1", new State(F(a["ex_special1"]), "Special1Falling", 3, hitstop: "Heavy", air: true, will_hit: true, can_be_hit: false, glow: true, trace: true)},
+            { "EXSpecial1", new State(F(a["ex_special1"]), "Special1Falling", 3, hitstop: "Heavy", air: true, will_hit: true, can_be_hit: false, glow: true)},
             { "Special1Falling", new State(F(a["jumpFalling"]), "Special1Landing", change_on_end: false, change_on_ground: true, loop: false, air: true)},
             { "Special1Landing", new State(F(a["landing"]), "CrouchingOut")},
             { "Special2Punch", new State(F(a["special2_punch"]), "Idle", 3, air: true, will_hit: true, range: 0, overhead: true)},
             { "Special2Kick", new State(F(a["special2_kick"]), "Idle", 3, air: true, will_hit: true, range: 0)},
-            { "Special2EX", new State(F(a["special2_ex"]), "Idle", 3, air: true, will_hit: true, glow: true, trace: true, range: 0)},
+            { "Special2EX", new State(F(a["special2_ex"]), "Idle", 3, air: true, will_hit: true, glow: true, range: 0)},
             // Other
             { "Falling", new State(F(a["falling"]), "OnGround", on_hit: true, can_be_hit: false)},
             { "Sweeped", new State(F(a["sweeped"]), "Falling", on_hit: true, low: true, can_be_hit: false)},
@@ -291,6 +292,12 @@ public class Remy : Character {
             return;
         }
 
+        // Taunt
+        if (Input.Key_press("RB", player: this.player_index, facing: this.facing) && this.not_acting) {
+            this.ChangeState("Taunt");
+        } else if (this.current_state == "Taunt" && this.has_frame_changed) {
+            this.aura_points.X = (int) Math.Min(this.aura_points.Y, this.aura_points.X + 2);
+        }
     }
     public override int ImposeBehavior(Character target) {
         int hit = -1;

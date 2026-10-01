@@ -10,7 +10,7 @@ public class WGStart : Widget {
 
     public override void Render() {
         Program.window.Draw(main_bg);
-        UI.DrawText(S("2026 - by JFooley"), 0, 76, spacing: Config.spacing_small, textureName: "default small");
+        UI.DrawText(S(Config.Version + " - by JFooley"), 0, 76, spacing: Config.spacing_small, textureName: "default small");
 
         Accessibility.Speak("PFS", TTSRequisition.TEXT, true, S("wc to project fs"));
         Accessibility.Speak("PS", TTSRequisition.TEXT, false, S("press start"));

@@ -46,6 +46,7 @@ public static class Program {
     public static Shader hueChange = new Shader(null, null, Data.GetPath("assets/shaders/hue_change.frag"));
     public static Shader paletteSwaper = new Shader(null, null, Data.GetPath("assets/shaders/palette_swaper.frag"));
     public static Shader highContrastShader = new Shader(null, null, Data.GetPath("assets/shaders/high_contrast.frag"));
+    public static Shader outlineShader = new Shader(null, null, Data.GetPath("assets/shaders/outline.frag"));
 
     public static void Main() {  
         Config.LoadFromFile();
@@ -198,8 +199,8 @@ public static class Program {
         }
     }
 
-    public static void ChangeState(int new_state) {
-        previous_state = state;
+    public static void ChangeState(int new_state, bool keep_previous = false) {
+        previous_state = keep_previous ? previous_state : state;
         state = new_state;
     }
 

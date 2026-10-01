@@ -15,16 +15,18 @@ public class RemyEffects : Character {
     private Remy character;
 
     public RemyEffects(Remy character, string initialState, float startX, float startY, int facing)
-        : base("Remy-Effects", initialState, startX, startY, Data.GetPath("assets/characters/Remy-Effects"), 1) {
+        : base("Remy-Effects", initialState, startX, startY, Data.GetPath("assets/characters/Remy-Effects")) {
             this.character = character;
             this.player_index = character.player_index;
             this.facing = facing;
             this.life_points = new Vector2i(1, 1);
             this.shadow_size = 1;
             this.own_light = new Color(255, 255, 255, 255);
+            this.existing_layer = new HashSet<string> {"Effects"};
+            this.interact_layer = new HashSet<string> {"Character", "Effects"};
     }
     public RemyEffects()
-        : base("Remy-Effects", "", 0, 0, Data.GetPath("assets/characters/Remy-Effects"), 1) {
+        : base("Remy-Effects", "", 0, 0, Data.GetPath("assets/characters/Remy-Effects")) {
             this.shadow_size = 1;
             this.own_light = new Color(255, 255, 255, 255);
     }

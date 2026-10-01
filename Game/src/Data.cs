@@ -84,7 +84,7 @@ public static class Data {
                 bool hasHit = br.ReadBoolean();
 
                 int boxCount = br.ReadInt32();
-                var boxes = new List<GenericBox>(boxCount);
+                var boxes = new List<ColliderBox>(boxCount);
 
                 for (int k = 0; k < boxCount; k++) {
                     int type = br.ReadInt32();
@@ -93,7 +93,7 @@ public static class Data {
                     int bx = (int) br.ReadSingle();
                     int by = (int) br.ReadSingle();
 
-                    boxes.Add(new GenericBox(type, ax, ay, bx, by));
+                    boxes.Add(new ColliderBox(type, ax, ay, bx, by));
                 }
 
                 if (have_data) frames[j] = new FrameData(sprite, dx, dy, boxes, len, facing, sound, hasHit);

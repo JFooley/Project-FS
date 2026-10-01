@@ -1,8 +1,8 @@
 public class State {
     private Animation[] _animations;
-    public int variation_index = 0;
-    public int variation_amount => _animations.Length;
-    public Animation animation => _animations[variation_index];
+    public int anim_index = 0;
+    public int anim_amount => _animations.Length;
+    public Animation current_anim => _animations[anim_index];
 
     public string post_state;
     public int priority; // Light: 0, Medium: 1, Heavy: 2, Special: 3, Super: 4, Throw: 5, Parry: 6, Particles: 7

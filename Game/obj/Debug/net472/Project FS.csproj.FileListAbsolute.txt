@@ -2446,3 +2446,4 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Remy-E
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken-Effects\animations.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken-Effects\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken-Effects\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\shaders\outline.frag

@@ -19,6 +19,8 @@ public class Super : Character {
             this.facing = facing;
             this.own_light = Color.White;
             this.initial_pos = new Vector2f(startX, startY);
+            this.existing_layer = new HashSet<string> {};
+            this.interact_layer = new HashSet<string> {};
         }
     public Super() : base("Super", "", 0, 0, Data.GetPath("assets/particles/Super")) {}
 

@@ -16,6 +16,8 @@ public class Shungokusatso : Character {
         : base("Shungokusatso", initialState, startX, startY, Data.GetPath("assets/particles/Shungokusatso")) {
             this.facing = facing;
             this.own_light = Color.White;
+            this.existing_layer = new HashSet<string> {};
+            this.interact_layer = new HashSet<string> {};
         }
     public Shungokusatso() : base("Shungokusatso", "", 0, 0, Data.GetPath("assets/particles/Shungokusatso")) {}
 

@@ -18,23 +18,23 @@ public class WGSettings : Widget {
 
         UI.DrawText(S("Settings"), -80, -107, TTS: true, TTS_id: "Settings", priority: true, spacing: Config.spacing_medium);
         //0
-        UI.DrawButton(S("Main volume", ": < ", Config.Main_Volume.ToString(), "% >"), -185, -74, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 0), hover_font: "default small hover", font: "default small");
+        UI.DrawButton(S("Main volume", ": < ", Config.Main_Volume.ToString(), "% >"), -185, -74, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 0), hover_font: "default small", font: "default small hover");
         //1
-        UI.DrawButton(S("Music volume", ": < ", Config._music_volume.ToString(), "% >"), -185, -64, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 1), hover_font: "default small hover", font: "default small");
+        UI.DrawButton(S("Music volume", ": < ", Config._music_volume.ToString(), "% >"), -185, -64, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 1), hover_font: "default small", font: "default small hover");
         //2
-        UI.DrawButton(S("V-sync", ": < ", Config.Vsync ? "on": "off", " >"), -185, -54, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 2), hover_font: "default small hover", font: "default small");
+        UI.DrawButton(S("V-sync", ": < ", Config.Vsync ? "on": "off", " >"), -185, -54, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 2), hover_font: "default small", font: "default small hover");
         //3
-        UI.DrawButton(S("Window mode", ": < ", Config.Fullscreen ? "Fullscreen" : "Windowed", " >"), -185, -44, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 3), hover_font: "default small hover", font: "default small");
+        UI.DrawButton(S("Window mode", ": < ", Config.Fullscreen ? "Fullscreen" : "Windowed", " >"), -185, -44, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 3), hover_font: "default small", font: "default small hover");
         //4
-        UI.DrawButton(S("Round Length", ": < ", Config.round_length == Config.default_round_length ? "Default" : "", " " + Config.round_length + "s", " >"), -185, -34, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 4), hover_font: "default small hover", font: "default small");
+        UI.DrawButton(S("Round Length", ": < ", Config.round_length == Config.default_round_length ? "Default" : "", " " + Config.round_length + "s", " >"), -185, -34, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 4), hover_font: "default small", font: "default small hover");
         //5
-        UI.DrawButton(S("Match rounds", ": < ", Config.max_rounds == Config.default_max_rounds ? "Default" : Config.max_rounds.ToString(), " >"), -185, -24, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 5), hover_font: "default small hover", font: "default small");
+        UI.DrawButton(S("Match rounds", ": < ", Config.max_rounds == Config.default_max_rounds ? "Default" : Config.max_rounds.ToString(), " >"), -185, -24, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 5), hover_font: "default small", font: "default small hover");
         //6
-        UI.DrawButton(S("Hitstop frames", ": < ", Config.hit_stop_time == Config.default_hit_stop_time ? "Default" : Config.hit_stop_time.ToString(), " >"), -185, -14, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 6), hover_font: "default small hover", font: "default small");
+        UI.DrawButton(S("Hitstop frames", ": < ", Config.hit_stop_time == Config.default_hit_stop_time ? "Default" : Config.hit_stop_time.ToString(), " >"), -185, -14, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 6), hover_font: "default small", font: "default small hover");
         //7
-        UI.DrawButton(S("Language", " < ", Language.Supported[Config.Language], " >"), -185, -4, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 7), hover_font: "default small hover", font: "default small");
+        UI.DrawButton(S("Language", " < ", Language.Supported[Config.Language], " >"), -185, -4, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 7), hover_font: "default small", font: "default small hover");
         //8
-        UI.DrawButton(S("Save and Exit"), -185, 16, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 8), hover_font: "default small hover", font: "default small");
+        UI.DrawButton(S("Save and Exit"), -185, 16, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 8), hover_font: "default small", font: "default small hover");
 
         if (Input.Key_down("B")) selector.pointer.Y = 8;
 

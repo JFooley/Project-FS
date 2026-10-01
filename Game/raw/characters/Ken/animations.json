@@ -21178,5 +21178,249 @@
       "Sound_index": "onhit1",
       "hasHit": true
     }
+  ],
+  "taunt": [
+    {
+      "Sprite_index": "15383",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 92
+          },
+          "pB": {
+            "x": 140,
+            "y": 194
+          }
+        }
+      ],
+      "lenght": 3,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "15376",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 92
+          },
+          "pB": {
+            "x": 140,
+            "y": 194
+          }
+        }
+      ],
+      "lenght": 3,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "15377",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 92
+          },
+          "pB": {
+            "x": 140,
+            "y": 194
+          }
+        }
+      ],
+      "lenght": 3,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "15378",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 92
+          },
+          "pB": {
+            "x": 140,
+            "y": 194
+          }
+        }
+      ],
+      "lenght": 3,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "15379",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 92
+          },
+          "pB": {
+            "x": 140,
+            "y": 194
+          }
+        }
+      ],
+      "lenght": 3,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "15376",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 92
+          },
+          "pB": {
+            "x": 140,
+            "y": 194
+          }
+        }
+      ],
+      "lenght": 3,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "15377",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 92
+          },
+          "pB": {
+            "x": 140,
+            "y": 194
+          }
+        }
+      ],
+      "lenght": 3,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "15378",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 92
+          },
+          "pB": {
+            "x": 140,
+            "y": 194
+          }
+        }
+      ],
+      "lenght": 3,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "15379",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 92
+          },
+          "pB": {
+            "x": 140,
+            "y": 194
+          }
+        }
+      ],
+      "lenght": 12,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "15383",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 1,
+          "pA": {
+            "x": 93,
+            "y": 94
+          },
+          "pB": {
+            "x": 149,
+            "y": 188
+          }
+        }
+      ],
+      "lenght": 3,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    },
+    {
+      "Sprite_index": "15384",
+      "DeltaX": 0,
+      "DeltaY": 0,
+      "Boxes": [
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 93
+          },
+          "pB": {
+            "x": 157,
+            "y": 190
+          }
+        }
+      ],
+      "lenght": 3,
+      "facing": 1,
+      "Sound_index": "",
+      "hasHit": true
+    }
   ]
 }

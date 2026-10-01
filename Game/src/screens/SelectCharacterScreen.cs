@@ -33,6 +33,12 @@ public class WGSelectCharacter : Widget {
 
         Accessibility.Speak("SC", TTSRequisition.TEXT, true, S("select char"));
 
+         DrawSessionInfo();
+
+        if (Input.Key_up("B", 1) && selectorA.state == WGSelector.SELECTING_CHAR || Input.Key_up("B", 2) && selectorB.state == WGSelector.SELECTING_CHAR) {
+            Program.ChangeState(Program.previous_state);
+        }
+
         switch (WGBattle.battle_mode) {
             case WGBattle.Versus:
                 Versus();
@@ -44,10 +50,7 @@ public class WGSelectCharacter : Widget {
                 Training();
                 break;
         }
-
-        DrawSessionInfo();
-
-        // Ends when chars are selected and ready
+    
         if (selectorA.state == WGSelector.READY && selectorB.state == WGSelector.READY) {
             Program.window.Draw(fade90);
             offset += 5;
@@ -171,7 +174,7 @@ public class WGSelector : Widget {
             }
         }
 
-        if (Input.Key_down("B", player)) {
+        if (Input.Key_up("B", player)) {
             state = SELECTING_CHAR;
             selected = null;
         }
