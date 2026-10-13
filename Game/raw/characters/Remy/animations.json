@@ -17685,7 +17685,30 @@
       "Sprite_index": "taunt_1",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17695,7 +17718,30 @@
       "Sprite_index": "taunt_2",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17705,7 +17751,30 @@
       "Sprite_index": "taunt_3",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17715,7 +17784,30 @@
       "Sprite_index": "taunt_4",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17725,7 +17817,30 @@
       "Sprite_index": "taunt_5",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17735,7 +17850,30 @@
       "Sprite_index": "taunt_6",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17745,7 +17883,30 @@
       "Sprite_index": "taunt_7",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17755,7 +17916,30 @@
       "Sprite_index": "taunt_8",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17765,7 +17949,30 @@
       "Sprite_index": "taunt_9",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17775,7 +17982,30 @@
       "Sprite_index": "taunt_10",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17785,7 +18015,30 @@
       "Sprite_index": "taunt_11",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17795,7 +18048,30 @@
       "Sprite_index": "taunt_12",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17805,7 +18081,30 @@
       "Sprite_index": "taunt_13",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17815,7 +18114,30 @@
       "Sprite_index": "taunt_14",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17825,7 +18147,30 @@
       "Sprite_index": "taunt_15",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17835,7 +18180,30 @@
       "Sprite_index": "taunt_16",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17845,7 +18213,30 @@
       "Sprite_index": "taunt_17",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17855,7 +18246,30 @@
       "Sprite_index": "taunt_18",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17865,7 +18279,30 @@
       "Sprite_index": "taunt_19",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
@@ -17875,7 +18312,30 @@
       "Sprite_index": "taunt_20",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [],
+      "Boxes": [
+        {
+          "type": 2,
+          "pA": {
+            "x": 93,
+            "y": 93
+          },
+          "pB": {
+            "x": 156,
+            "y": 196
+          }
+        },
+        {
+          "type": 1,
+          "pA": {
+            "x": 92,
+            "y": 81
+          },
+          "pB": {
+            "x": 142,
+            "y": 195
+          }
+        }
+      ],
       "lenght": 3,
       "facing": 1,
       "Sound_index": "",
