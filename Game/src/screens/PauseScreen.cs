@@ -18,7 +18,7 @@ public class WGPause : Widget {
 
     public override void Render() {
         fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
-        Program.window.Draw(fade90);
+        MainRender.Draw(fade90, MainRender.InterfaceLayer);
 
         var face_release = Input.Key_up("A");
         var face_hold = Input.Key_hold("A");
@@ -60,7 +60,7 @@ public class WGPause : Widget {
             WGBattle.match_winner = WGBattle.Drawn;
             WGBattle.battle_state = WGBattle.MatchEnd;
             Stage.show_boxs = false;
-            Stage.block = 0;
+            Stage.block = Stage.BlockMode.Never;
             Stage.refil_life = true;
             Stage.refil_super = true;
             s_main.pointer = new Vector2i(0, 0);
@@ -79,21 +79,29 @@ public class WGPause : Widget {
         if (UI.DrawButton(S("Hitboxes",  ": ", Stage.show_boxs ? "Show" : "Hide"), 0, anchor + spacing*1, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: s_tra.is_on(0, 1), click_font: "default small click", hover_font: "default small", font: "default small hover"))
             Stage.show_boxs = !Stage.show_boxs;
         // 2.0
-        if (UI.DrawButton(Stage.block switch { 
-                0 => S("Block", ": ", "Never"), 
-                1 => S("Block", ": ", "After hit"), 
-                2 => S("Block", ": ", "Always"), 
+        if (UI.DrawButton(Stage.block switch {
+                Stage.BlockMode.Never => S("Block", ": ", "Never"),
+                Stage.BlockMode.AfterHit => S("Block", ": ", "After hit"),
+                Stage.BlockMode.Always => S("Block", ": ", "Always"),
                 _ => S("Block", ": ", "Error")
             }, 0, anchor + spacing*2, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: s_tra.is_on(0, 2), click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: "right"))
-            Stage.block = Stage.block >= 2 ? 0 : Stage.block + 1;
+            Stage.block = Stage.block switch {
+                Stage.BlockMode.Never => Stage.BlockMode.AfterHit,
+                Stage.BlockMode.AfterHit => Stage.BlockMode.Always,
+                _ => Stage.BlockMode.Never
+            };
         // 2.1
-        if (UI.DrawButton(Stage.parry switch { 
-                0 => S("Parry", ": ", "Never"), 
-                1 => S("Parry", ": ", "After hit"), 
-                2 => S("Parry", ": ", "Always"), 
+        if (UI.DrawButton(Stage.parry switch {
+                Stage.ParryMode.Never => S("Parry", ": ", "Never"),
+                Stage.ParryMode.AfterHit => S("Parry", ": ", "After hit"),
+                Stage.ParryMode.Always => S("Parry", ": ", "Always"),
                 _ => S("Parry", ": ", "Error")
             }, 0, anchor + spacing*2, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: s_tra.is_on(1, 2), click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: "left"))
-            Stage.parry = Stage.parry >= 2 ? 0 : Stage.parry + 1;
+            Stage.parry = Stage.parry switch {
+                Stage.ParryMode.Never => Stage.ParryMode.AfterHit,
+                Stage.ParryMode.AfterHit => Stage.ParryMode.Always,
+                _ => Stage.ParryMode.Never
+            };
         // 3.0
         if (UI.DrawButton(Stage.refil_life ? S("Life", ": ", "Refil") : S("Life", ": ", "Keep"), 0, anchor + spacing*3, spacing: Config.spacing_small, click: face_hold, action: face_release, hover: s_tra.is_on(0, 3), click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: "right"))
             Stage.refil_life = !Stage.refil_life;

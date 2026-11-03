@@ -39,6 +39,11 @@ public static class Program {
     // Aux
     public static bool loading = false;
     public static double last_frame_time = 0;
+    public static double framerate = 0;
+    public static float game_speed = 1f;
+    public static float match_speed = 1f;
+    public static float match_slow_speed => match_normal_speed * 0.3f;
+    public static float match_normal_speed = 1f;
 
     // Shaders
     public static Shader colorTinterShader = new Shader(null, null, Data.GetPath("assets/shaders/color_tinter.frag"));
@@ -118,13 +123,47 @@ public static class Program {
         WGAccessibilitySounds accessibility_sounds_screen = new WGAccessibilitySounds();
         WGCredits credits_screen = new WGCredits();
 
+        float logicAccumulator = 0f;
+        float matchAccumulator = 1f;
         while (window.IsOpen) {
-            frametimer.Restart();
             window.DispatchEvents();
+            if (!window.IsOpen) break;
+
+            bool updateGame = !MainRender.HasPreviousFrame;
+            if (!updateGame) {
+                float speed = float.IsNaN(game_speed) ? 1f : Math.Max(0f, Math.Min(1f, game_speed));
+                logicAccumulator += speed;
+                if (logicAccumulator >= 1f) {
+                    logicAccumulator -= 1f;
+                    updateGame = true;
+                }
+            }
+            if (!updateGame) {
+                stage?.PauseTimersForFrameSkip();
+                MainRender.PresentPreviousFrame();
+                continue;
+            }
+
+            bool updateMatch = false;
+            if (state == Battle) {
+                float speed = float.IsNaN(match_speed) ? 1f : Math.Max(0.1f, Math.Min(1f, match_speed));
+                matchAccumulator += speed;
+                updateMatch = matchAccumulator >= 1f;
+                if (updateMatch) matchAccumulator -= 1f;
+            } else {
+                matchAccumulator = 1f;
+                updateMatch = false;
+            }
+
+            stage?.ResumeTimersAfterFrameSkip();
+            frametimer.Restart();
             Input.Update();
             UI.Update();
             Camera.Update();
             Accessibility.UpdateTTS();
+
+            // Start frame
+            MainRender.BeginFrame();
 
             switch (state) {
                 case Intro:
@@ -160,7 +199,7 @@ public static class Program {
                     break;
 
                 case Battle:
-                    battle_screen.Render();
+                    battle_screen.Render(updateMatch);
                     break;
 
                 case PostBattle:
@@ -192,10 +231,10 @@ public static class Program {
             if (Input.Key_sequence("Up Up Down Down Left Right Left Right B A Start", 20, flexEntry: false)) Config.debug = !Config.debug;
 
             // Finally
-            last_frame_time = frametimer.Elapsed.TotalMilliseconds/1000;
+            last_frame_time = frametimer.Elapsed.TotalSeconds;
+            framerate = last_frame_time > 0 ? 1d / last_frame_time : 0;
             if (Config.debug) UI.ShowFramerate("default small white");
-            window.Display();
-            window.Clear();            
+            MainRender.EndFrame();
         }
     }
 
@@ -231,4 +270,3 @@ public static class Program {
         ChangeState(StartScreen);
     }
 }
-

@@ -21,8 +21,8 @@ public class WGMainMenu : Widget {
     }
 
     public override void Render() {
-        Program.window.Draw(new Sprite(main_menu.ElementAt(selector.pointer.X).Value));
-        Program.window.Draw(frame);
+        MainRender.Draw(new Sprite(main_menu.ElementAt(selector.pointer.X).Value), MainRender.BackgroundLayer);
+        MainRender.Draw(frame, MainRender.InterfaceLayer);
         for (int i = 0; i < main_menu.Count; i++) 
             UI.DrawText(S(i == selector.pointer.X ? ")" : "("), (i * 10) - ((main_menu.Count - 1) * 5), -80, textureName: "icons");
         

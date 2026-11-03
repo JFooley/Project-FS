@@ -333,16 +333,16 @@ public class Ken : Character {
             this.aura_points.X = (int) Math.Min(this.aura_points.Y, this.aura_points.X + 2);
         }
     }
-    public override int ImposeBehavior(Character target) {
-        int hit = -1;
+    public override Character.CollisionType ImposeBehavior(Character target) {
+        Character.CollisionType hit = Character.CollisionType.None;
 
         switch (this.current_state) {
             case "LightP":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 3);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 13, 50);
                     target.Stun(this, 6);
                 }
@@ -352,10 +352,10 @@ public class Ken : Character {
                 
             case "LowLightP":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 3);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 13, 50);
                     target.Stun(this, 6);
                 }
@@ -365,10 +365,10 @@ public class Ken : Character {
 
             case "AirLightP":
                 if (target.isBlockingHigh(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 7);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 50, 100);
                     target.Stun(this, 7);
                 }
@@ -378,10 +378,10 @@ public class Ken : Character {
 
             case "LightK":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 2);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 44, 50);
                     target.Stun(this, 2);
                 }
@@ -391,10 +391,10 @@ public class Ken : Character {
                 
             case "LowLightK":
                 if (target.isBlockingLow(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, -4);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 85, 50);
                     target.Stun(this, -3);
                 }
@@ -404,10 +404,10 @@ public class Ken : Character {
             
             case "AirLightK":
                 if (target.isBlockingHigh(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 10);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 90, 150);
                     target.Stun(this, 10);
                 }
@@ -417,10 +417,10 @@ public class Ken : Character {
 
             case "MediumP":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, -2);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 100, 172);
                     target.Stun(this, 0);
                 }
@@ -430,10 +430,10 @@ public class Ken : Character {
 
             case "LowMediumP":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 3);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 90, 100);
                     target.Stun(this, 4);
                 }
@@ -443,10 +443,10 @@ public class Ken : Character {
 
             case "AirMediumP":
                 if (target.isBlockingHigh(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 10);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 100, 180);
                     target.Stun(this, 10);
                 }
@@ -456,10 +456,10 @@ public class Ken : Character {
 
             case "MediumK":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, -6);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 120, 235);
                     target.Stun(this, 0);
                 }
@@ -469,11 +469,11 @@ public class Ken : Character {
 
             case "LowMediumK":
                 if (target.isBlockingLow(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, -14);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 110, 200);
                     target.Stun(this, 0, sweep: true);
                 }
@@ -483,10 +483,10 @@ public class Ken : Character {
 
             case "AirMediumK":
                 if (target.isBlockingHigh(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 13);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 125, 235);
                     target.Stun(this, 13);
                 }
@@ -496,11 +496,11 @@ public class Ken : Character {
 
             case "BackMediumK":
                 if (target.isBlockingHigh(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 1);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 56, 94);
                     target.Stun(this, 10);
                 }
@@ -510,10 +510,10 @@ public class Ken : Character {
 
             case "FrontMediumK":
                 if (target.isBlockingHigh(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, -6);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 120, 235);
                     target.Stun(this, 0);
                 }
@@ -523,11 +523,11 @@ public class Ken : Character {
 
             case "BackMediumP":
                 if (target.isBlockingHigh(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 1);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 56, 94);
                     target.Stun(this, 10);
                 }
@@ -537,11 +537,11 @@ public class Ken : Character {
 
             case "CloseMP":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, -2);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 80, 100);
                     target.Stun(this, 0);
                 }
@@ -564,7 +564,7 @@ public class Ken : Character {
                     target.ChangeState("OnThrowRight_KEN");
                 }
                 
-                hit = Character.GRAB;
+                hit = Character.CollisionType.Grab;
                 break;
             
             case "ThrowLeft":
@@ -581,12 +581,12 @@ public class Ken : Character {
 
             case "LightShory":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, -10);
                     Character.Push(target: target, self: this, 1.3f);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 80, 160);
                     target.Stun(this, 0, airbone: true);
                     Character.Push(target: target, self: this, 1.3f, Y_amount: 110f, airbone: true, fixed_height: true);
@@ -596,12 +596,12 @@ public class Ken : Character {
 
             case "HeavyShory":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, -17);
                     Character.Push(target: target, self: this, 2.0f);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 100, 85);
                     if (this.current_anim_frame_index >= 3) {
                         target.Stun(this, 0, airbone: true);
@@ -615,13 +615,13 @@ public class Ken : Character {
 
             case "ShoryEX":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     Character.Damage(target: target, self: this, 20, 20);
                     target.BlockStun(this, -10);
                     Character.Push(target: target, self: this, 2.5f);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 120, 85);
                     if (this.current_anim_frame_index >= 3) {
                         target.Stun(this, 0, airbone: true);
@@ -636,11 +636,11 @@ public class Ken : Character {
             
             case "LightTatso":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     Character.Damage(target: target, self: this, 10, 20);
                     target.BlockStun(this, 12, raw_value: true);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 66, 203);
                     target.Stun(this, 15, raw_value: true);
                 }
@@ -650,11 +650,11 @@ public class Ken : Character {
             
             case "HeavyTatso":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     Character.Damage(target: target, self: this, 10, 30);
                     target.BlockStun(this, 12, raw_value: true);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 54, 234);
                     target.Stun(this, 15, raw_value: true);
                 }
@@ -664,12 +664,12 @@ public class Ken : Character {
 
             case "TatsoEX":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     Character.Damage(target: target, self: this, 10, 30);
                     target.BlockStun(this, 6, raw_value: true);
                     
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 54, 234);
                     target.Stun(this, 8, raw_value: true);
                 }
@@ -679,12 +679,12 @@ public class Ken : Character {
             
             case "AirTatso":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     Character.Damage(target: target, self: this, 10, 30);
                     target.BlockStun(this, 15, raw_value: true);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 80, 140);
                     target.Stun(this, 15, raw_value: true);
                 }
@@ -694,12 +694,12 @@ public class Ken : Character {
 
             case "AirTatsoEX":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     Character.Damage(target: target, self: this, 10, 20);
                     target.BlockStun(this, 1);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 80, 140);
                     target.Stun(this, -6, airbone: true);
                     Character.Push(target: target, self: this, 2f, Y_amount: 50, airbone: true);
@@ -709,12 +709,12 @@ public class Ken : Character {
 
             case "SA1":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     Character.Damage(target: target, self: this, 5, 0);
                     target.BlockStun(this, 30, raw_value: true);
                     Character.Push(target: target, self: this, 0);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 50, 35);
                     target.Stun(this, 10, force_stand: true);
                     Character.Push(target: target, self: this, 1, Y_amount: 20);
@@ -723,7 +723,7 @@ public class Ken : Character {
                 break;
                 
             case "SA1_tail":
-                hit = Character.HIT;
+                hit = Character.CollisionType.Hit;
                 Character.Damage(target: target, self: this, 45, 35);
                 target.Stun(this, 5, airbone: true);
 

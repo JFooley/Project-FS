@@ -5,7 +5,6 @@ using SFML.System;
 
 namespace UI_space {
     public class UI {
-        private static int elapsed = 0;
         public static uint frame_counter = 0;
 
         // Clocks
@@ -80,8 +79,7 @@ namespace UI_space {
         
         // Draws
         public static void ShowFramerate(string textureName) {
-            UI.elapsed = UI.frame_counter % 60 == 0 ? (int) (1 / Program.last_frame_time) : UI.elapsed;
-            UI.DrawText(new[] {UI.elapsed.ToString() + " - " + Program.last_frame_time.ToString("F5")}, 0, 82, spacing: Config.spacing_small, textureName: textureName);
+            UI.DrawText(new[] {Program.framerate.ToString("F0") + " - " + Program.last_frame_time.ToString("F5")}, 0, 82, spacing: Config.spacing_small, textureName: textureName);
         }
         public static void ShowDebugInfo(Character c) {
             float px = c.player_index == 1 ? -Config.RenderWidth/2 : Config.RenderWidth/2;
@@ -117,9 +115,9 @@ namespace UI_space {
                 Origin = new Vector2f(0, 0)
             };
 
-            Program.window.Draw(anchor);
-            Program.window.Draw(vel);
-            Program.window.Draw(acc);
+            MainRender.Draw(anchor, MainRender.DebugLayer);
+            MainRender.Draw(vel, MainRender.DebugLayer);
+            MainRender.Draw(acc, MainRender.DebugLayer);
         }
         public static void DrawText(string[] raw_text, float X, float Y, float spacing = 0, string alignment = "center", bool absolutePosition = false, string textureName = "default medium", string TTS_id = "", bool TTS = false, bool priority = false) {           
             if (!BitmapFont.textures.TryGetValue(textureName, out var texture)) return;
@@ -138,6 +136,9 @@ namespace UI_space {
 
             float currentX = absolutePosition ? X + offset_X : Camera.X + offset_X;
             float currentY = absolutePosition ? Y : Camera.Y + Y;
+            Vector2f alignedPosition = MainRender.AlignToVirtualPixel(new Vector2f(currentX, currentY));
+            currentX = alignedPosition.X;
+            currentY = alignedPosition.Y;
 
             foreach (char c in text) {
                 IntRect rect = BitmapFont.GetCharacter(c);
@@ -161,7 +162,7 @@ namespace UI_space {
             }
 
             RenderStates states = new RenderStates(texture);
-            Program.window.Draw(vertices, states);
+            MainRender.Draw(vertices, states, MainRender.InterfaceLayer);
         }
         public static void DrawRectangle(float X, float Y, float width, float height, SFML.Graphics.Color? outline_color = null, SFML.Graphics.Color? fill_color = null, string alignment = "center", bool absolutePosition = false) {
             RectangleShape rectangle;
@@ -188,7 +189,7 @@ namespace UI_space {
                     FillColor = fill_color.HasValue ? fill_color.Value : SFML.Graphics.Color.Transparent};  
             }
 
-            Program.window.Draw(rectangle);
+            MainRender.Draw(rectangle, MainRender.InterfaceLayer);
         }
         public static void DrawBar(float X, float Y, float currentValue, float maxValue, string textureName, string alignment = "center", bool mirrored = false, SFML.Graphics.Color? color = null, bool grow_inverted = true, bool absolutePosition = false) {
             if (!Data.textures.ContainsKey(textureName)) return;
@@ -244,7 +245,7 @@ namespace UI_space {
             barSprite.TextureRect = textureRect;
             barSprite.Position = new Vector2f(posX, posY);
             
-            Program.window.Draw(barSprite, renderStates);
+            MainRender.Draw(barSprite, renderStates, MainRender.InterfaceLayer);
         }
         public static bool DrawButton(string[] text, float pos_X, float pos_Y, bool action = false, bool hover = true, bool click = false, float spacing = Config.spacing_small, string alignment = "center", bool absolutePosition = false, int button_sound = 1, string font = "default small white", string hover_font = "default small hover", string click_font = "default small click", bool tts = true, string id = "", bool priority = false) {
             if (click && hover) {
@@ -267,7 +268,7 @@ namespace UI_space {
         public static void DrawBattleUI(Stage stage) {
             // Draw hud
             if (hud != null) hud.Position = new Vector2f(Camera.X - 192, Camera.Y - 108);
-            Program.window.Draw(hud);
+            MainRender.Draw(hud, MainRender.InterfaceLayer);
 
             // Lifebar A
             var lifeA_scale = stage.character_A.life_points.X * 150 / stage.character_A.life_points.Y;

@@ -90,8 +90,8 @@ public class KenEffects : Character {
                 break;
         }
     }
-    public override int ImposeBehavior(Character target) {
-        int hit = Character.NOTHING;
+    public override Character.CollisionType ImposeBehavior(Character target) {
+        Character.CollisionType hit = Character.CollisionType.None;
 
         if (this.next_state != null) return hit;
 
@@ -103,12 +103,12 @@ public class KenEffects : Character {
                 this.SetVelocity(raw_set: true);
 
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     Character.Damage(target: target, self: this, 10, 0);
                     target.BlockStun(this, 20, raw_value: true);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 63, 48);
                     target.Stun(this, 30, raw_value: true);
                 }
@@ -121,12 +121,12 @@ public class KenEffects : Character {
                 this.SetVelocity(raw_set: true);
 
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     Character.Damage(target: target, self: this, 10, 0);
                     target.BlockStun(this, 20, raw_value: true);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 125, 78);
                     target.Stun(this, 30, raw_value: true);
                 }
@@ -139,12 +139,12 @@ public class KenEffects : Character {
                 this.SetVelocity(raw_set: true);
 
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     Character.Damage(target: target, self: this, 10, 0);
                     target.BlockStun(this, 20, raw_value: true);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 80, 60);
                     target.Stun(this, 30, raw_value: true);
                 }
@@ -158,8 +158,8 @@ public class KenEffects : Character {
         }
         return hit;
     }
-    public override int DefineColisionType(Character target) {
+    public override Character.CollisionType DefineCollisionType(Character target) {
         this.life_points.X -= 1;
-        return base.DefineColisionType(target);
+        return base.DefineCollisionType(target);
     }
 }

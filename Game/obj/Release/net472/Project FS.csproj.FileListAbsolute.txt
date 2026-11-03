@@ -78,3 +78,4 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Remy
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Remy\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Remy\palette.bmp
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\characters\Remy\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Release\net472\assets\shaders\outline.frag

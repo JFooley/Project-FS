@@ -16,8 +16,8 @@ public class WGPostBattle : Widget {
     public override void Render() {
         selector.Update();
         stage_thumb.Texture = Program.stage?.thumb;
-        Program.window.Draw(stage_thumb);
-        Program.window.Draw(fade90);
+        MainRender.Draw(stage_thumb, MainRender.BackgroundLayer);
+        MainRender.Draw(fade90, MainRender.InterfaceLayer);
 
         if (Program.stage?.music != null) Program.stage.music.Volume = Math.Max(0, Program.stage.music.Volume - 0.5f);
 

@@ -39,13 +39,22 @@ class WGBattle : Widget {
     }
 
     public override void Render() {
-        Program.stage?.Update();
+        Render(updateStage: true);
+    }
+
+    public void Render(bool updateStage) {
+        if (updateStage) Program.stage?.Update();
+        Program.stage?.Render();
+        
+        if (Input.Key_down("Start") && WGBattle.battle_state == WGBattle.Battling) Program.stage?.Pause();
+        if (Stage.training_mode) Program.stage?.TrainingMode();
+        if (Stage.pause) Program.stage?.PauseScreen();
 
         switch (WGBattle.battle_state) {
             case Intro:
                 this.fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
                 this.fade90.Color = new Color(255, 255, 255, (byte) Math.Max(0, this.fade90.Color.A - 15));
-                Program.window.Draw(fade90);
+                MainRender.Draw(fade90, MainRender.OverlayLayer);
 
                 Program.stage?.SetMusicVolume();
                 Program.stage?.StopRoundTime();
@@ -63,7 +72,7 @@ class WGBattle : Widget {
                 }
                 else if (Program.stage.CheckTimer(2)) {
                     fight_logo.Position = new Vector2f(Camera.X - 89, Camera.Y - 54);
-                    Program.window.Draw(fight_logo);
+                    MainRender.Draw(fight_logo, MainRender.OverlayLayer);
                     Accessibility.Speak("RoundFight", TTSRequisition.TEXT, true, S("fight!"));
                 }
                 else if (Program.stage.CheckTimer(1)) 
@@ -78,11 +87,12 @@ class WGBattle : Widget {
                     WGBattle.battle_state = RoundEnd;
                     Program.stage.StopRoundTime();
                     Program.stage.ResetTimer();
+                    Program.match_speed = Program.match_slow_speed;
                 }
                 break;
 
             case RoundEnd: // Fim de round
-                if (Program.stage.CheckTimer(6)) {
+                if (Program.stage.CheckTimer(9)) {
                     Program.stage.LockPlayers();
                     Program.stage.ResetTimer();
                     if (Program.stage.CheckMatchEnd()) {
@@ -92,21 +102,22 @@ class WGBattle : Widget {
                         Program.stage.ResetPlayers();
                     }
 
-                } else if (Program.stage.CheckTimer(3)) {
+                } else if (Program.stage.CheckTimer(6)) {
                     if (WGBattle.round_winner == Drawn) {
                         UI.DrawText(S("draw"), 0, -30, TTS: true, TTS_id: "RoundResult", priority: true, spacing: Config.spacing_medium, textureName: "default medium white");
                     } else {
                         UI.DrawText(S(WGBattle.round_winner == 1 ? "player 1" : "player 2", " ", "wins"), 0, -30, TTS: true, TTS_id: "RoundResult", priority: true, spacing: Config.spacing_medium, textureName: "default medium white");
                     }
+                    Program.match_speed = Program.match_normal_speed;
 
-                } else if (!Program.stage.CheckTimer(3)) {
+                } else if (Program.stage.CheckTimer(3)) {
                     if (Program.stage.character_A.life_points.X <= 0 || Program.stage.character_B.life_points.X <= 0) {
                         KO_logo.Position = new Vector2f(Camera.X - 75, Camera.Y - 54);
-                        Program.window.Draw(KO_logo);
+                        MainRender.Draw(KO_logo, MainRender.OverlayLayer);
                         Accessibility.Speak("RoundEndLogo", TTSRequisition.TEXT, true, S("K.O."));
                     } else {
                         timesup_logo.Position = new Vector2f(Camera.X - 131, Camera.Y - 55);
-                        Program.window.Draw(timesup_logo);
+                        MainRender.Draw(timesup_logo, MainRender.OverlayLayer);
                         Accessibility.Speak("RoundEndLogo", TTSRequisition.TEXT, true, S("time's up"));
                     }
                 } 
@@ -115,7 +126,7 @@ class WGBattle : Widget {
             case MatchEnd: // Fim da partida
                 this.fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
                 this.fade90.Color = new Color(255, 255, 255, (byte) Math.Min(255, this.fade90.Color.A + 15));
-                Program.window.Draw(fade90);
+                MainRender.Draw(fade90, MainRender.OverlayLayer);
 
                 if (this.fade90.Color.A == 255) {
                     Camera.Reset();

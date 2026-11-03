@@ -9,7 +9,7 @@ public class WGStart : Widget {
     }
 
     public override void Render() {
-        Program.window.Draw(main_bg);
+        MainRender.Draw(main_bg, MainRender.BackgroundLayer);
         UI.DrawText(S(Config.Version + " - by JFooley"), 0, 76, spacing: Config.spacing_small, textureName: "default small");
 
         Accessibility.Speak("PFS", TTSRequisition.TEXT, true, S("wc to project fs"));

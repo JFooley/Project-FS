@@ -5,7 +5,7 @@ using SFML.System;
 
 public class WGSettings : Widget {
     Sprite settings_bg;
-    private static Selector selector = new Selector(new List<int> {1, 1, 1, 1, 1, 1, 1, 1, 1});
+    private static Selector selector = new Selector(new List<int> {1, 1, 1, 1, 1, 1, 1, 1, 1, 1});
 
     public WGSettings() {
         settings_bg = new Sprite(Data.textures["screens:settings_bg"]);
@@ -14,7 +14,7 @@ public class WGSettings : Widget {
     public override void Render() {
         selector.Update();
         Camera.UnlockCamera();
-        Program.window.Draw(settings_bg);
+        MainRender.Draw(settings_bg, MainRender.BackgroundLayer);
 
         UI.DrawText(S("Settings"), -80, -107, TTS: true, TTS_id: "Settings", priority: true, spacing: Config.spacing_medium);
         //0
@@ -34,9 +34,11 @@ public class WGSettings : Widget {
         //7
         UI.DrawButton(S("Language", " < ", Language.Supported[Config.Language], " >"), -185, -4, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 7), hover_font: "default small", font: "default small hover");
         //8
-        UI.DrawButton(S("Save and Exit"), -185, 16, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 8), hover_font: "default small", font: "default small hover");
+        UI.DrawButton(S("Match speed", ": < ", Program.match_normal_speed.ToString("0.0"), "x >"), -185, 6, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 8), hover_font: "default small", font: "default small hover");
+        //9
+        UI.DrawButton(S("Save and Exit"), -185, 16, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 9), hover_font: "default small", font: "default small hover");
 
-        if (Input.Key_down("B")) selector.pointer.Y = 8;
+        if (Input.Key_down("B")) selector.pointer.Y = 9;
 
         // Do option
         switch (selector.pointer.Y) {
@@ -94,8 +96,17 @@ public class WGSettings : Widget {
                     Config.Language -= 1;
                 else if (Input.Key_down("Right") && Config.Language < Language.Supported.Length - 1) 
                     Config.Language += 1;
-                break;            
+                break;
             case 8:
+                if ((Input.Key_down("Left") || (Input.Key_hold_for("Left", Config.hold_time) && UI.ForEach(Config.hold_clock - 5))) && Program.match_normal_speed > 0.1f) {
+                    Program.match_normal_speed = Math.Max(0.1f, (float)Math.Round(Program.match_normal_speed - 0.1f, 1));
+                    Program.match_speed = Program.match_normal_speed;
+                } else if ((Input.Key_down("Right") || (Input.Key_hold_for("Right", Config.hold_time) && UI.ForEach(Config.hold_clock - 5))) && Program.match_normal_speed < 1f) {
+                    Program.match_normal_speed = Math.Min(1f, (float)Math.Round(Program.match_normal_speed + 0.1f, 1));
+                    Program.match_speed = Program.match_normal_speed;
+                }
+                break;
+            case 9:
                 if (Input.Key_up("A")) {
                     Config.SaveToFile();
                     Camera.LockCamera();

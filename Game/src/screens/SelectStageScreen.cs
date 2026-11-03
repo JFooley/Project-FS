@@ -14,8 +14,8 @@ public class WGSelectStage : Widget {
     public override void Render() {
         selector.Update();
         stage_thumb.Texture = Data.stages[selector.pointer.X].thumb;
-        Program.window.Draw(stage_thumb);
-        Program.window.Draw(frame);
+        MainRender.Draw(stage_thumb, MainRender.BackgroundLayer);
+        MainRender.Draw(frame, MainRender.InterfaceLayer);
         
         Accessibility.Speak("SS", TTSRequisition.TEXT, true, S("select stage"));
         for (int i = 0; i < Data.stages.Count; i++) UI.DrawText(S(i == selector.pointer.X ? ")" : "("), (i * 10) - ((Data.stages.Count - 1) * 5), -80, textureName: "icons");

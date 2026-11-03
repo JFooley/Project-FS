@@ -19,7 +19,7 @@ public class WGAccessibilityMenu : Widget {
 
     public override void Render() {
         Camera.UnlockCamera();
-        Program.window.Draw(bg);
+        MainRender.Draw(bg, MainRender.BackgroundLayer);
         selector.Update();
 
         UI.DrawText(S("accessibility"), -80, -107, spacing: Config.spacing_medium);
@@ -42,8 +42,7 @@ public class WGAccessibilityMenu : Widget {
         if (UI.DrawButton(S("fall/get up", ": ", Accessibility.fall_get_up_cue ? "enabled" : "disabled"), anchor.X, anchor.Y+2*n, hover: selector.is_on(0, 2), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: "Left")) {
             Accessibility.fall_get_up_cue = !Accessibility.fall_get_up_cue;
         }
-
-        // 3
+        
         if (UI.DrawButton(S("players distance", ": ", Accessibility.distance_cue ? "enabled" : "disabled"), anchor.X, anchor.Y+3*n, hover: selector.is_on(0, 3), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: "Left")) {
             Accessibility.distance_cue = !Accessibility.distance_cue;
         }
@@ -138,7 +137,7 @@ public class WGAccessibilitySounds : Widget {
 
     public override void Render() {
         Camera.UnlockCamera();
-        Program.window.Draw(bg);
+        MainRender.Draw(bg, MainRender.BackgroundLayer);
         selector.Update();
         Program.stage?.StopMusic(); 
 

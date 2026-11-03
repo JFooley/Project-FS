@@ -74,13 +74,7 @@ public struct FightState {
 public abstract class Character : Object {
     protected static Frame[][] F(params Frame[][] frames) => frames;
 
-    // Consts
-    public const int NOTHING = -1;
-    public const int BLOCK = 0;
-    public const int HIT = 1;
-    public const int PARRY = 2;
-    public const int GRAB = 3;
-    public const int TECH = 4;
+    public enum CollisionType { None = -1, Block = 0, Hit = 1, Parry = 2, Grab = 3, Tech = 4 }
 
     // Infos
     public string name;
@@ -156,6 +150,7 @@ public abstract class Character : Object {
 
     public int shadow_size = 2;
     public bool has_frame_changed = false;
+    private bool traceFrameRecorded;
 
     public virtual Texture palette {get; protected set;}
     public uint palette_size => this.palette.Size.X;
@@ -198,18 +193,16 @@ public abstract class Character : Object {
     }
 
     // Every Frame methods
-    public override void Update() { // Animate > Render > Bot > Behave > Colide > Advance Frame > Update state
+    public override void Update() { // Animate > Render > Bot  > Colide > Behave > Advance Frame > Update state
+        this.PlayFrameSound();
         if (this.hitstop_counter <= 0) {
             this.Bot();
-            this.Behave();
             this.CheckColisions();
+            this.Behave();
         }
     }
     public override void Render(bool drawHitboxes = false) {
         base.Render(drawHitboxes);
-
-        // Play sounds
-        this.PlayFrameSound();
 
         // Set current sprite
         var temp_sprite = this.GetCurrentSprite();
@@ -221,13 +214,14 @@ public abstract class Character : Object {
             Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
 
             for (int i = 0; i < 3; i++) {
-                if (last_sprites[i] != null) Program.window.Draw(last_sprites[i], new RenderStates(Program.hueChange));
+                if (last_sprites[i] != null) MainRender.Draw(last_sprites[i], new RenderStates(Program.hueChange), MainRender.CharacterLayer);
             }
             
-            if (this.has_frame_changed) {               
+            if (this.has_frame_changed && !this.traceFrameRecorded) {
                 last_sprites[2] = last_sprites[1];
                 last_sprites[1] = last_sprites[0];
                 last_sprites[0] = temp_sprite;
+                this.traceFrameRecorded = true;
             }
             
         } else last_sprites = new Sprite[3];
@@ -235,16 +229,16 @@ public abstract class Character : Object {
         // Draw current sprite
         if (this.state.glow && UI.blink30Hz) {
             Program.hueChange.SetUniform("hslInput", new SFML.Graphics.Glsl.Vec3(0.66f, 0.5f, 0.75f));
-            Program.window.Draw(temp_sprite, new RenderStates(shader: Program.hueChange));
+            MainRender.Draw(temp_sprite, new RenderStates(shader: Program.hueChange), MainRender.CharacterLayer);
 
         } else if (Accessibility.high_contrast) {
-            Program.window.Draw(temp_sprite, this.SetHighContrastShader(this.current_palette_color));
+            MainRender.Draw(temp_sprite, this.SetHighContrastShader(this.current_palette_color), MainRender.CharacterLayer);
 
         } else if (this.palette != null) {
-            Program.window.Draw(temp_sprite, this.SetSwaperShader(this.own_light == Color.Transparent ? this.light_tint : this.own_light));
+            MainRender.Draw(temp_sprite, this.SetSwaperShader(this.own_light == Color.Transparent ? this.light_tint : this.own_light), MainRender.CharacterLayer);
             
         } else {
-            Program.window.Draw(temp_sprite);
+            MainRender.Draw(temp_sprite, MainRender.CharacterLayer);
         }
 
 
@@ -282,7 +276,7 @@ public abstract class Character : Object {
                 };
 
                 // Desenha o retângulo da hitbox na janela
-                Program.window.Draw(hitboxRect);
+                MainRender.Draw(hitboxRect, MainRender.DebugLayer);
             }
         }
     }
@@ -329,6 +323,7 @@ public abstract class Character : Object {
         }
     }
     public void AdvanceFrame() {
+        this.traceFrameRecorded = false;
         if (this.hitstop_counter > 0 || this.next_state != null || !this.animate) return;
 
         // Advance to the next frame and reset hit if necessary
@@ -382,12 +377,12 @@ public abstract class Character : Object {
     public virtual void SelectAction(FightState state) {}
 
     // Battle methods
-    public virtual int ImposeBehavior(Character target) {
-        return -1;
+    public virtual CollisionType ImposeBehavior(Character target) {
+        return CollisionType.None;
     }
-    public virtual int DefineColisionType(Character target) {
-        if (target.can_parry && this.state.can_be_parried) return Character.PARRY;
-        else if (target.state.is_grab && this.state.is_grab) return Character.TECH;
+    public virtual CollisionType DefineCollisionType(Character target) {
+        if (target.can_parry && this.state.can_be_parried) return CollisionType.Parry;
+        else if (target.state.is_grab && this.state.is_grab) return CollisionType.Tech;
         else return this.ImposeBehavior(target);
     }
     public bool isBlocking(Character character) {
@@ -449,16 +444,16 @@ public abstract class Character : Object {
                         } else if (this.has_hit == false && enemy.state.can_be_hit && this.interact_layer.Overlaps(enemy.existing_layer)) { 
                             this.has_hit = true;
                             
-                            int hit_type = DefineColisionType(enemy);
+                            CollisionType hit_type = DefineCollisionType(enemy);
 
-                            if (hit_type == Character.NOTHING) {
+                            if (hit_type == CollisionType.None) {
                                 continue;
                                 
-                            } else if (hit_type == Character.PARRY) {
+                            } else if (hit_type == CollisionType.Parry) {
                                 enemy.ChangeState(enemy.on_air ? "AirParry" : "Parry", reset: true, lenght: Config.parry_lenght);
                                 enemy.aura_points.X = Math.Min(enemy.aura_points.Y, enemy.aura_points.X + 10);
                                 
-                            } else if (hit_type == Character.TECH) {
+                            } else if (hit_type == CollisionType.Tech) {
                                 enemy.facing = enemy.GetFacingTo(this);
                                 this.AddAcceleration(-3);
                                 enemy.AddAcceleration(-3);
@@ -466,8 +461,8 @@ public abstract class Character : Object {
                             
                             stage.Hitstop(this.state.hitstop, hit_type: hit_type, on_hit_char: enemy, hitting_char: this);
                             
-                            if (this.player_index == 1) stage.character_A.combo_counter += hit_type == Character.HIT ? 1 : 0; 
-                            else stage.character_B.combo_counter += hit_type == Character.HIT ? 1 : 0;
+                            if (this.player_index == 1) stage.character_A.combo_counter += hit_type == CollisionType.Hit ? 1 : 0;
+                            else stage.character_B.combo_counter += hit_type == CollisionType.Hit ? 1 : 0;
 
                             stage.PSHitspark(hit_type, boxA.getRealB(this).X - (boxA.width * 1/3), (boxA.getRealA(this).Y + boxA.getRealB(this).Y) / 2 + 125, this.GetFacingTo(enemy), weight: this.state.hitstop);
                             return;
@@ -492,9 +487,9 @@ public abstract class Character : Object {
         target.life_points.X = (int) Math.Max(target.life_points.X - damage * self.damage_scaling * self.combo_scaling, 0);
         target.dizzy_points.X = (int) Math.Max(target.dizzy_points.X - dizzy_damage * self.damage_scaling * self.combo_scaling, 0);
     }
-    public static void AddAuraPoints(Character target, Character self, int hit , int target_amount = 3, int self_amount = 10) {
+    public static void AddAuraPoints(Character target, Character self, CollisionType hit, int target_amount = 3, int self_amount = 10) {
         target.aura_points.X = (int) Math.Min(target.aura_points.Y, target.aura_points.X + target_amount);
-        self.aura_points.X = (int) Math.Min(self.aura_points.Y, hit == 1 ? self.aura_points.X + self_amount : self.aura_points.X + (self_amount / 3));
+        self.aura_points.X = (int) Math.Min(self.aura_points.Y, hit == CollisionType.Hit ? self.aura_points.X + self_amount : self.aura_points.X + (self_amount / 3));
     }
     public static bool CheckAuraPoints(Character target, int amount) {
         return target.aura_points.X >= amount;

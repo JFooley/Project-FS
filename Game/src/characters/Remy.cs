@@ -299,16 +299,16 @@ public class Remy : Character {
             this.aura_points.X = (int) Math.Min(this.aura_points.Y, this.aura_points.X + 2);
         }
     }
-    public override int ImposeBehavior(Character target) {
-        int hit = -1;
+    public override Character.CollisionType ImposeBehavior(Character target) {
+        Character.CollisionType hit = Character.CollisionType.None;
 
         switch (this.current_state) {
             case "LightP":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 3);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 20, 50);
                     target.Stun(this, 6);
                 }
@@ -318,10 +318,10 @@ public class Remy : Character {
                 
             case "LowLightP":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 3);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 13, 50);
                     target.Stun(this, 6);
                 }
@@ -331,10 +331,10 @@ public class Remy : Character {
 
             case "AirLightP":
                 if (target.isBlockingHigh(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 7);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 50, 100);
                     target.Stun(this, 7);
                 }
@@ -345,10 +345,10 @@ public class Remy : Character {
 
             case "LightK":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 2);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 35, 50);
                     target.Stun(this, 2);
                 }
@@ -358,10 +358,10 @@ public class Remy : Character {
                 
             case "LowLightK":
                 if (target.isBlockingLow(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, -4);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 70, 50);
                     target.Stun(this, 2);
                 }
@@ -371,10 +371,10 @@ public class Remy : Character {
             
             case "AirLightK":
                 if (target.isBlockingHigh(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 10);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 90, 150);
                     target.Stun(this, 10);
                 }
@@ -385,10 +385,10 @@ public class Remy : Character {
 
             case "MediumP":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, -2);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 120, 172);
                     target.Stun(this, 2);
                 }
@@ -398,10 +398,10 @@ public class Remy : Character {
 
             case "LowMediumP":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 3);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 60, 100);
                     target.Stun(this, 4);
                 }
@@ -411,10 +411,10 @@ public class Remy : Character {
 
             case "AirMediumP":
                 if (target.isBlockingHigh(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 10);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 100, 180);
                     target.Stun(this, 10);
                 }
@@ -425,10 +425,10 @@ public class Remy : Character {
 
             case "MediumK":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, -6);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 120, 235);
                     target.Stun(this, 2);
                 }
@@ -438,11 +438,11 @@ public class Remy : Character {
 
             case "LowMediumK":
                 if (target.isBlockingLow(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, -10);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 60, 100);
                     target.Stun(this, -10, sweep: this.current_anim_frame_index >= 12 ? true : false);
                 }
@@ -452,10 +452,10 @@ public class Remy : Character {
 
             case "AirMediumK":
                 if (target.isBlockingHigh(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 13);
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 125, 235);
                     target.Stun(this, 13);
                 }
@@ -466,11 +466,11 @@ public class Remy : Character {
 
             case "FrontMediumK":
                 if (target.isBlockingHigh(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, -2);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 70, 94);
                     target.Stun(this, 10);
                 }
@@ -480,11 +480,11 @@ public class Remy : Character {
 
             case "FrontLightP":
                 if (target.isBlockingHigh(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, 0);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 45, 94);
                     target.Stun(this, 10);
                 }
@@ -507,7 +507,7 @@ public class Remy : Character {
                     this.ChangeState("ThrowRight");
                 }
                 
-                hit = Character.GRAB;
+                hit = Character.CollisionType.Grab;
                 break;
             
             case "ThrowLeft":
@@ -526,18 +526,18 @@ public class Remy : Character {
                 } else {
                     target.Stun(this, 0, force_stand: true);
                 }
-                hit = Character.HIT;
+                hit = Character.CollisionType.Hit;
                 break;
 
 
             case "LightSpecial1":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, -10);
                     Character.Push(target: target, self: this, 2.5f);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 80, 160);
                     target.Stun(this, 0, airbone: true);
                     Character.Push(target: target, self: this, 2.5f, Y_amount: 100f, airbone: true, fixed_height: true);
@@ -547,13 +547,13 @@ public class Remy : Character {
             
             case "MediumSpecial1":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     Character.Damage(target: target, self: this, 10, 18);
                     target.BlockStun(this, -15);
                     Character.Push(target: target, self: this, 3.5f);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 100, 180);
                     target.Stun(this, 0, airbone: true);
                     Character.Push(target: target, self: this, 3.5f, Y_amount: 120f, airbone: true, fixed_height: true);
@@ -563,12 +563,12 @@ public class Remy : Character {
             
             case "EXSpecial1":
                 if (target.isBlocking(this)) {
-                    hit = Character.BLOCK;
+                    hit = Character.CollisionType.Block;
                     target.BlockStun(this, -10);
                     Character.Push(target: target, self: this, 4.0f);
 
                 } else {
-                    hit = Character.HIT;
+                    hit = Character.CollisionType.Hit;
                     Character.Damage(target: target, self: this, 50, 60);
                     target.Stun(this, 0, airbone: true);
                     Character.Push(target: target, self: this, 4.0f, Y_amount: 140f, airbone: true, fixed_height: true);

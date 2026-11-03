@@ -28,12 +28,12 @@ public class WGSelectCharacter : Widget {
     }
 
     public override void Render() {
-        Program.window.Draw(char_bg);
+        MainRender.Draw(char_bg, MainRender.BackgroundLayer);
         Program.colorFillShader.SetUniform("fillColor", Color.Black);
 
         Accessibility.Speak("SC", TTSRequisition.TEXT, true, S("select char"));
 
-         DrawSessionInfo();
+        DrawSessionInfo();
 
         if (Input.Key_up("B", 1) && selectorA.state == WGSelector.SELECTING_CHAR || Input.Key_up("B", 2) && selectorB.state == WGSelector.SELECTING_CHAR) {
             Program.ChangeState(Program.previous_state);
@@ -52,7 +52,7 @@ public class WGSelectCharacter : Widget {
         }
     
         if (selectorA.state == WGSelector.READY && selectorB.state == WGSelector.READY) {
-            Program.window.Draw(fade90);
+            MainRender.Draw(fade90, MainRender.OverlayLayer);
             offset += 5;
             fade90.Color = new Color(255, 255, 255, (byte) Math.Min(255, fade90.Color.A + 15));
             if (offset >= Config.RenderWidth / 2 && fade90.Color.A == 255) {
@@ -129,15 +129,15 @@ public class WGSelector : Widget {
         // Shadow
         if (state == SELECTING_PALETTE || state == SELECTING_DIFFICULTY || state == READY) {
             sprite.Position = position + new Vector2f(shadow_x_offset, 0);
-            Program.window.Draw(sprite, new RenderStates(Program.colorFillShader));
+            MainRender.Draw(sprite, new RenderStates(Program.colorFillShader), MainRender.ShadowLayer);
         }
 
         // Sprite
         sprite.Position = position;
-        Program.window.Draw(sprite, Data.characters[pointer].SetSwaperShader(
+        MainRender.Draw(sprite, Data.characters[pointer].SetSwaperShader(
             palette_index: (int) (state == SELECTING_CHAR ? 0 : selected.palette_index), 
             light: state == READY || Input.anyKey[player] ? new Color(128, 128, 128) : Color.White
-        ));
+        ), MainRender.CharacterLayer);
 
         // Info
         if (state == READY) { 
@@ -145,7 +145,7 @@ public class WGSelector : Widget {
         } else if (state == SELECTING_CHAR) {
             for (int i = 0; i < Data.characters.Count; i++) UI.DrawText(S(i == pointer ? ")" : "("), (i * 10) - ((Data.characters.Count - 1) * 5) + x, y + info_y_offset, textureName: "icons");
         } else if (state == SELECTING_PALETTE) {
-            for (int i = 0; i < selected.palette_quantity; i++) UI.DrawText(S(i == selected.palette_index ? ")" : "("), (i * 10) - ((selected.palette_quantity - 1) * 5) + x, y + info_y_offset, textureName: "icons");
+            for (int i = 0; i < selected?.palette_quantity; i++) UI.DrawText(S(i == selected.palette_index ? ")" : "("), (i * 10) - ((selected.palette_quantity - 1) * 5) + x, y + info_y_offset, textureName: "icons");
         } else if (state == SELECTING_DIFFICULTY) {
             UI.DrawText(S("difficulty", ": ", (5 - WGSelectCharacter.difficulty).ToString()), x, y + info_y_offset, TTS: true, spacing: Config.spacing_small, textureName: "default small");
         } 
@@ -163,7 +163,7 @@ public class WGSelector : Widget {
             else if (state == SELECTING_DIFFICULTY) WGSelectCharacter.difficulty -= WGSelectCharacter.difficulty > 0 ? 1 : 0;
         }
 
-        if (UI.DrawButton(S(Data.characters[pointer].name), x, y + info_y_offset - 10, id: selector_id, priority: true, spacing: Config.spacing_small, action: Input.Key_up("A", player), click: Input.Key_hold("A", player: player) && this.state != READY, hover_font: "default small", button_sound: 1)) {
+        if (UI.DrawButton(S(Data.characters[pointer].name), x, y + info_y_offset - 10, id: selector_id, priority: true, spacing: Config.spacing_medium, action: Input.Key_up("A", player), click: Input.Key_hold("A", player: player) && this.state != READY, hover_font: "default small", button_sound: 1)) {
             if (state == SELECTING_CHAR) {
                 selected = Data.characters[pointer].Copy();
                 state = SELECTING_PALETTE;

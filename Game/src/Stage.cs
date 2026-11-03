@@ -6,6 +6,10 @@ using System.Diagnostics;
 
 public class Stage {
     protected static Frame[][] F(params Frame[][] frames) => frames;
+
+    public enum BlockMode {Never, AfterHit, Always}
+
+    public enum ParryMode {Never, AfterHit, Always}
     
     // Basic Infos
     public string name;
@@ -16,8 +20,8 @@ public class Stage {
     public static bool training_mode => WGBattle.battle_mode == WGBattle.Training;
     public static bool pause = false;
     public static bool show_boxs = false;
-    public static int block = 1; // 0 - never, 1 - after hit, 2 - always
-    public static int parry = 0; // 0 - never, 1 - always
+    public static BlockMode block = BlockMode.AfterHit;
+    public static ParryMode parry = ParryMode.Never;
     public static bool refil_life = true;
     public static bool refil_super = true;
     public static int reset_frames = 0;
@@ -58,6 +62,9 @@ public class Stage {
     // Timers
     private Stopwatch timer;
     private Stopwatch matchTimer;
+    private bool timersPausedForFrameSkip;
+    private bool timerWasRunningBeforeFrameSkip;
+    private bool matchTimerWasRunningBeforeFrameSkip;
 
     // Animation infos
     public string CurrentState { get; set; }
@@ -94,6 +101,8 @@ public class Stage {
     public Stage(string name, Texture thumb) {
         this.name = name;
         this.thumb = thumb;
+        this.timer = new Stopwatch();
+        this.matchTimer = new Stopwatch();
     }
 
     // Behaviour
@@ -101,29 +110,22 @@ public class Stage {
         if (!this.character_A.on_hit) this.character_B.combo_counter = 0;
         if (!this.character_B.on_hit) this.character_A.combo_counter = 0;
 
-        // Pause
-        if (Input.Key_down("Start") && WGBattle.battle_state == WGBattle.Battling) this.Pause();
+        this.UpdateAnimation();
 
-        this.Animate();
-        
-        // Animate > Render
         foreach (Character char_object in this.OnSceneCharactersSorted) {
             char_object.Animate();
-            this.DrawShadow(char_object);
-            char_object.Render(Stage.show_boxs);
         }
         foreach (Character part_object in this.OnSceneParticles) {
             part_object.Animate();
-            part_object.Render(Stage.show_boxs);
         }
 
-        // Bot > Behave > Colide (chars)
+        // Bot > Colide > Behave (chars)
         foreach (Character char_object in this.OnSceneCharactersSorted) char_object.Update();
         this.OnSceneCharacters.RemoveAll(obj => obj.remove);
         this.OnSceneCharacters.AddRange(this.newCharacters);
         this.newCharacters.Clear();
 
-        // Bot > Behave > Colide (particles)
+        // Bot > Colide > Behave (particles)
         foreach (Character part_object in this.OnSceneParticles) part_object.Update();
         this.OnSceneParticles.RemoveAll(obj => obj.remove);
         this.OnSceneParticles.AddRange(this.newParticles);
@@ -132,7 +134,6 @@ public class Stage {
         // Stage Behave
         this.Behave();
         this.DoSpecialBehaviour();
-        UI.DrawBattleUI(this);
 
         // Advance > update
         foreach (Character char_object in this.OnSceneCharactersSorted) {
@@ -149,17 +150,30 @@ public class Stage {
             Accessibility.DistanceAudioCue(this.character_A, this.character_B);
             Accessibility.FallWakeUpAudioCue(this.character_A, this.character_B);
         }
+    }
 
-        // TEST
-        if (Accessibility.cover_screen) {
-            WGAccessibilityMenu.fade.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
-            Program.window.Draw(WGAccessibilityMenu.fade);
+    public void Render() {
+        this.RenderStage();
+        foreach (Character char_object in this.OnSceneCharactersSorted) {
+            this.DrawShadow(char_object);
+            char_object.Render(Stage.show_boxs);
+        }
+        foreach (Character part_object in this.OnSceneParticles) {
+            part_object.Render(Stage.show_boxs);
         }
 
-        // Render Pause menu and Traning assets
-        if (Config.debug) {UI.ShowDebugInfo(this.character_A); UI.ShowDebugInfo(this.character_B);}
-        if (Stage.training_mode) this.TrainingMode();
-        if (Stage.pause) this.PauseScreen();
+        // DEBUG
+        if (Accessibility.cover_screen) {
+            WGAccessibilityMenu.fade.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
+            MainRender.Draw(WGAccessibilityMenu.fade, MainRender.OverlayLayer);
+        }
+
+        UI.DrawBattleUI(this);
+
+        if (Config.debug) {
+            UI.ShowDebugInfo(this.character_A);
+            UI.ShowDebugInfo(this.character_B);
+        }
     }
     private void Behave() {
         // Move characters away from border
@@ -191,16 +205,8 @@ public class Stage {
             if (this.character_B.not_acting || this.character_B.not_acting_low) this.character_B.ChangeState("Win");
         }
     }
-    private void Animate() {
-        // Render stage sprite
-        if (this.textures.ContainsKey(this.CurrentSprite.sprite_index)) {
-            Sprite temp_sprite = new Sprite(this.textures[this.CurrentSprite.sprite_index]);
-            temp_sprite.Position = new Vector2f(0, 0);
-            temp_sprite.Color = Accessibility.high_contrast ? new Color(15, 15, 15, 255) : Color.White;
-            Program.window.Draw(temp_sprite);
-        }
-
-        // Advance to the next frame
+    private void UpdateAnimation() {
+        // Advance the stage animation
         CurrentAnimation.AdvanceFrame();
         if (this.CurrentAnimation.ended && state.change_on_end) {
             if (states.ContainsKey(this.state.post_state)) {
@@ -212,6 +218,14 @@ public class Stage {
 
         // Keep music playing
         this.PlayMusic();
+    }
+    private void RenderStage() {
+        if (this.textures.ContainsKey(this.CurrentSprite.sprite_index)) {
+            Sprite temp_sprite = new Sprite(this.textures[this.CurrentSprite.sprite_index]);
+            temp_sprite.Position = new Vector2f(0, 0);
+            temp_sprite.Color = Accessibility.high_contrast ? new Color(15, 15, 15, 255) : Color.White;
+            MainRender.Draw(temp_sprite, MainRender.BackgroundLayer);
+        }
     }
     public virtual void DoSpecialBehaviour() {}
     public void TrainingMode() {
@@ -230,24 +244,24 @@ public class Stage {
 
         // Parry & Block: After hit (NOT WORKING)
         if (this.character_B.on_hit) {
-            if (Stage.block == 1) this.character_B.blocking = true;
-            if (Stage.parry == 1) this.character_B.parring = true;
+            if (Stage.block == BlockMode.AfterHit) this.character_B.blocking = true;
+            if (Stage.parry == ParryMode.AfterHit) this.character_B.parring = true;
             Stage.reset_frames = 0;
         } 
         if (this.character_A.on_hit) {
-            if (Stage.block == 1) this.character_A.blocking = true;
-            if (Stage.parry == 1) this.character_A.parring = true;
+            if (Stage.block == BlockMode.AfterHit) this.character_A.blocking = true;
+            if (Stage.parry == ParryMode.AfterHit) this.character_A.parring = true;
             Stage.reset_frames = 0;
         }
 
         // Block: Allways
-        if (Stage.block == 2) {
+        if (Stage.block == BlockMode.Always) {
             this.character_A.blocking = true;
             this.character_B.blocking = true;
         }
 
         // Parry: Allways
-        if (Stage.parry == 2) {
+        if (Stage.parry == ParryMode.Always) {
             this.character_A.parring = true;
             this.character_B.parring = true;
         }
@@ -255,8 +269,8 @@ public class Stage {
         // Reset chars life, stun and super bar
         if (Stage.reset_frames >= Config.reset_frames) {
             if (this.character_B.not_acting_all) {
-                if (Stage.block != 2) this.character_B.blocking = false;
-                if (Stage.parry != 2) this.character_B.parring = false;
+                if (Stage.block != BlockMode.Always) this.character_B.blocking = false;
+                if (Stage.parry != ParryMode.Always) this.character_B.parring = false;
 
                 if (Stage.refil_life) {
                     this.character_B.life_points.X = this.character_B.life_points.Y;
@@ -266,8 +280,8 @@ public class Stage {
             }
 
             if (this.character_A.not_acting_all) {
-                if (Stage.block != 2) this.character_A.blocking = false;
-                if (Stage.parry != 2) this.character_A.parring = false;
+                if (Stage.block != BlockMode.Always) this.character_A.blocking = false;
+                if (Stage.parry != ParryMode.Always) this.character_A.parring = false;
 
                 if (Stage.refil_life) {
                     this.character_A.life_points.X = this.character_A.life_points.Y;
@@ -290,19 +304,19 @@ public class Stage {
         par.Load();
         this.newParticles.Add(par);
     }
-    public void PSHitspark(int hit, float X, float Y, int facing, string weight = "Light", int X_offset = 0, int Y_offset = 0) {
+    public void PSHitspark(Character.CollisionType hit, float X, float Y, int facing, string weight = "Light", int X_offset = 0, int Y_offset = 0) {
         if (weight == "") weight = "Light";
 
         string state;
-        if (hit == Character.PARRY) {
+        if (hit == Character.CollisionType.Parry) {
             state = "Parry";
-        } else if (hit == Character.HIT) {
+        } else if (hit == Character.CollisionType.Hit) {
             state = "Hit" + weight;
-        } else if (hit == Character.BLOCK) {
+        } else if (hit == Character.CollisionType.Block) {
             state = "Block";
-        } else if (hit == Character.GRAB) {
+        } else if (hit == Character.CollisionType.Grab) {
             state = "Grab";
-        } else if (hit == Character.TECH) {
+        } else if (hit == Character.CollisionType.Tech) {
             state = "Tech";
         } else return;
 
@@ -319,7 +333,7 @@ public class Stage {
             this.shadow.Texture = Data.textures["ui:shadow" + shadow_index];
             this.shadow.Position = new Vector2f(char_obj.body.position.X - this.shadow.GetLocalBounds().Width/2, this.floor_line - this.shadow.GetLocalBounds().Height/2 - 55 );
             this.shadow.Color = this.AmbientLight;
-            Program.window.Draw(this.shadow);
+            MainRender.Draw(this.shadow, MainRender.ShadowLayer);
         }
     }
 
@@ -401,10 +415,10 @@ public class Stage {
         foreach (Character char_object in this.OnSceneCharacters) char_object.animate = !char_object.animate;
         foreach (Character part_object in this.OnSceneParticles) part_object.animate = ! part_object.animate;
     }
-    public void Hitstop(string amount, int hit_type, Character on_hit_char, Character hitting_char) {
+    public void Hitstop(string amount, Character.CollisionType hit_type, Character on_hit_char, Character hitting_char) {
         int frames;
 
-        if (hit_type == Character.PARRY) {
+        if (hit_type == Character.CollisionType.Parry) {
             frames = Config.hit_stop_time * 1/3;
             switch (amount) {
                 case "Light":
@@ -542,6 +556,22 @@ public class Stage {
     public double GetTimerValue() {
         return this.timer.Elapsed.TotalMilliseconds/1000;
     }
+    public void PauseTimersForFrameSkip() {
+        if (timersPausedForFrameSkip) return;
+
+        timerWasRunningBeforeFrameSkip = timer.IsRunning;
+        matchTimerWasRunningBeforeFrameSkip = matchTimer.IsRunning;
+        timer.Stop();
+        matchTimer.Stop();
+        timersPausedForFrameSkip = true;
+    }
+    public void ResumeTimersAfterFrameSkip() {
+        if (!timersPausedForFrameSkip) return;
+
+        if (timerWasRunningBeforeFrameSkip) timer.Start();
+        if (matchTimerWasRunningBeforeFrameSkip) matchTimer.Start();
+        timersPausedForFrameSkip = false;
+    }
     
     // Music
     public void SetMusicVolume(float amount = 100) {
@@ -640,4 +670,3 @@ public class Stage {
     }
 
 }
-
