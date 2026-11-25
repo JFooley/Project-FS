@@ -34,14 +34,14 @@ public class RemyEffects : Character {
         var a = this.animations;
     
         this.states = new Dictionary<string, State> {
-            {"Cut", new State(F(a["sp1_cut"]), "Remove", 7, change_on_end: false, has_gravity: false)},
-            {"Dust", new State(F(a["sp1_dust"]), "Remove", 7, change_on_end: false, has_gravity: false)},
-            {"FireballEXHigh", new State(F(a["sp2_fb"]), "Remove", 7, change_on_end: false, has_gravity: false, will_hit: true, glow: true, hitstop: "", range: 60)},
-            {"FireballEXLow", new State(F(a["sp2_fb"]), "Remove", 7, low: true, change_on_end: false, has_gravity: false, will_hit: true, glow: true, hitstop: "", range: 60)},
-            {"FireballHigh", new State(F(a["sp2_fb"]), "Remove", 7, change_on_end: false, has_gravity: false, will_hit: true, overhead: true, range: 60)},
-            {"FireballLow", new State(F(a["sp2_fb"]), "Remove", 7, low: true, change_on_end: false, has_gravity: false, will_hit: true, range: 60)},
-            {"FireballDizzy", new State(F(a["sp2_fb_dizzy"]), "Remove", 7, change_on_end: false, has_gravity: false, will_hit: true, range: 60)},
-            {"FireballHit", new State(F(a["sp2_hit"]), "Remove", 7, change_on_end: false, has_gravity: false)},
+            {"Cut", new State(F(a["sp1_cut"]), "Remove", State.Priority.Particles, change_on_end: false, has_gravity: false)},
+            {"Dust", new State(F(a["sp1_dust"]), "Remove", State.Priority.Particles, change_on_end: false, has_gravity: false)},
+            {"FireballEXHigh", new State(F(a["sp2_fb"]), "Remove", State.Priority.Particles, change_on_end: false, has_gravity: false, will_hit: true, glow: true, hitstop: State.Hitstop.None, range: 60)},
+            {"FireballEXLow", new State(F(a["sp2_fb"]), "Remove", State.Priority.Particles, low: true, change_on_end: false, has_gravity: false, will_hit: true, glow: true, hitstop: State.Hitstop.None, range: 60)},
+            {"FireballHigh", new State(F(a["sp2_fb"]), "Remove", State.Priority.Particles, change_on_end: false, has_gravity: false, will_hit: true, overhead: true, range: 60)},
+            {"FireballLow", new State(F(a["sp2_fb"]), "Remove", State.Priority.Particles, low: true, change_on_end: false, has_gravity: false, will_hit: true, range: 60)},
+            {"FireballDizzy", new State(F(a["sp2_fb_dizzy"]), "Remove", State.Priority.Particles, change_on_end: false, has_gravity: false, will_hit: true, range: 60)},
+            {"FireballHit", new State(F(a["sp2_hit"]), "Remove", State.Priority.Particles, change_on_end: false, has_gravity: false)},
         };
     }
     public override void Behave() {
@@ -51,7 +51,7 @@ public class RemyEffects : Character {
             this.current_animation.Reset();
         }
         
-        if (Math.Abs(Camera.X - this.visual_position.X) > Config.RenderWidth) this.remove = true;  
+        if (Math.Abs(Camera.X - this.sprite_position.X) > Config.RenderWidth) this.remove = true;  
 
         if (this.current_state == "Cut") {
             this.body.position = new Vector2f(this.character.body.position.X, this.character.body.position.Y);

@@ -10,12 +10,12 @@ public class WGStart : Widget {
 
     public override void Render() {
         MainRender.Draw(main_bg, MainRender.BackgroundLayer);
-        UI.DrawText(S(Config.Version + " - by JFooley"), 0, 76, spacing: Config.spacing_small, textureName: "default small");
+        UI.DrawTextAtlas(S(Config.Version + " - by JFooley"), 0, 76, spacing: Config.spacing_small, textureName: "default small");
 
         Accessibility.Speak("PFS", TTSRequisition.TEXT, true, S("wc to project fs"));
         Accessibility.Speak("PS", TTSRequisition.TEXT, false, S("press start"));
         if (UI.DrawButton(S("press start"), 0, 50, tts: false, spacing: Config.spacing_medium, click: Input.Key_hold("Start"), action: Input.Key_up("Start"), button_sound: 2, hover_font: UI.blink2Hz ? "default medium white" : "", click_font: "default medium click")) {
-            Program.ChangeState(Program.MainMenu);
+            Program.ChangeState(Program.State.MainMenu);
         }
     }
 }

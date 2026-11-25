@@ -22,15 +22,15 @@ public class WGAccessibilityMenu : Widget {
         MainRender.Draw(bg, MainRender.BackgroundLayer);
         selector.Update();
 
-        UI.DrawText(S("accessibility"), -80, -107, spacing: Config.spacing_medium);
+        UI.DrawTextAtlas(S("accessibility"), -80, -107, spacing: Config.spacing_medium);
 
         // 0
-        if (UI.DrawButton(S("text-to-speech", ": ", Accessibility.TTS ? "enabled" : "disabled"), anchor.X, anchor.Y, hover: selector.is_on(0, 0), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: "Left")) {
+        if (UI.DrawButton(S("text-to-speech", ": ", Accessibility.TTS ? "enabled" : "disabled"), anchor.X, anchor.Y, hover: selector.is_on(0, 0), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: UI.Alignment.Left)) {
             Accessibility.TTS = !Accessibility.TTS;
         }
 
         // 1
-        UI.DrawButton(S("tts speed", ": < " + Accessibility.TTS_speed + "x >"), anchor.X, anchor.Y+n, hover: selector.is_on(0, 1), click: Input.Key_hold("Left") || Input.Key_hold("Right"), spacing: Config.spacing_small, click_font: Accessibility.TTS ? "default small click" : "default small grad", hover_font: Accessibility.TTS ? "default small" : "default small grad", font: "default small hover", alignment: "Left");
+        UI.DrawButton(S("tts speed", ": < " + Accessibility.TTS_speed + "x >"), anchor.X, anchor.Y+n, hover: selector.is_on(0, 1), click: Input.Key_hold("Left") || Input.Key_hold("Right"), spacing: Config.spacing_small, click_font: Accessibility.TTS ? "default small click" : "default small grad", hover_font: Accessibility.TTS ? "default small" : "default small grad", font: "default small hover", alignment: UI.Alignment.Left);
         if (selector.is_on(0, 1) && Accessibility.TTS) {
             if (Input.Key_up("Left") || (Input.Key_hold_for("Left", Config.hold_time) && UI.ForEach(Config.hold_clock))) 
                 Accessibility.TTS_speed -= 0.1f;
@@ -39,46 +39,46 @@ public class WGAccessibilityMenu : Widget {
         }
 
         // 2 
-        if (UI.DrawButton(S("fall/get up", ": ", Accessibility.fall_get_up_cue ? "enabled" : "disabled"), anchor.X, anchor.Y+2*n, hover: selector.is_on(0, 2), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: "Left")) {
+        if (UI.DrawButton(S("fall/get up", ": ", Accessibility.fall_get_up_cue ? "enabled" : "disabled"), anchor.X, anchor.Y+2*n, hover: selector.is_on(0, 2), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: UI.Alignment.Left)) {
             Accessibility.fall_get_up_cue = !Accessibility.fall_get_up_cue;
         }
         
-        if (UI.DrawButton(S("players distance", ": ", Accessibility.distance_cue ? "enabled" : "disabled"), anchor.X, anchor.Y+3*n, hover: selector.is_on(0, 3), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: "Left")) {
+        if (UI.DrawButton(S("players distance", ": ", Accessibility.distance_cue ? "enabled" : "disabled"), anchor.X, anchor.Y+3*n, hover: selector.is_on(0, 3), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: UI.Alignment.Left)) {
             Accessibility.distance_cue = !Accessibility.distance_cue;
         }
 
         // 4
-        if (UI.DrawButton(S("atack height", ": ", Accessibility.atack_hight_cue ? "enabled" : "disabled"), anchor.X, anchor.Y+4*n, hover: selector.is_on(0, 4), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: "Left")) {
+        if (UI.DrawButton(S("atack height", ": ", Accessibility.atack_hight_cue ? "enabled" : "disabled"), anchor.X, anchor.Y+4*n, hover: selector.is_on(0, 4), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: UI.Alignment.Left)) {
             Accessibility.atack_hight_cue = !Accessibility.atack_hight_cue;
         }
         
         // 5
-        if (UI.DrawButton(S("haptic feedback", ": ", Accessibility.atack_haptic_feedback ? "enabled" : "disabled"), anchor.X, anchor.Y+5*n, hover: selector.is_on(0, 5), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: "Left")) {
+        if (UI.DrawButton(S("haptic feedback", ": ", Accessibility.atack_haptic_feedback ? "enabled" : "disabled"), anchor.X, anchor.Y+5*n, hover: selector.is_on(0, 5), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: UI.Alignment.Left)) {
             Accessibility.atack_haptic_feedback = !Accessibility.atack_haptic_feedback;
         }
 
         // 6
-        if (UI.DrawButton(S("high contrast", ": ", Accessibility.high_contrast ? "enabled" : "disabled"), anchor.X, anchor.Y+6*n, hover: selector.is_on(0, 6), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: "Left")) {
+        if (UI.DrawButton(S("high contrast", ": ", Accessibility.high_contrast ? "enabled" : "disabled"), anchor.X, anchor.Y+6*n, hover: selector.is_on(0, 6), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: UI.Alignment.Left)) {
             Accessibility.high_contrast = !Accessibility.high_contrast;
         }
 
         // 7
-        if (UI.DrawButton(S("navigation sounds", ": ", Accessibility.navigation_cue ? "enabled" : "disabled"), anchor.X, anchor.Y+7*n, hover: selector.is_on(0, 7), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: "Left")) {
+        if (UI.DrawButton(S("navigation sounds", ": ", Accessibility.navigation_cue ? "enabled" : "disabled"), anchor.X, anchor.Y+7*n, hover: selector.is_on(0, 7), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: UI.Alignment.Left)) {
             Accessibility.navigation_cue = !Accessibility.navigation_cue;
         }
 
         // 8
-        if (UI.DrawButton(S("spacialized audio", ": ", Accessibility.spacialized_audio ? "enabled" : "disabled"), anchor.X, anchor.Y+8*n, hover: selector.is_on(0, 8), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: "Left")) {
+        if (UI.DrawButton(S("spacialized audio", ": ", Accessibility.spacialized_audio ? "enabled" : "disabled"), anchor.X, anchor.Y+8*n, hover: selector.is_on(0, 8), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: UI.Alignment.Left)) {
             Accessibility.spacialized_audio = !Accessibility.spacialized_audio;
         }
 
         // 9
-        if (UI.DrawButton(S("sounds dictionary"), anchor.X, anchor.Y+10*n, hover: selector.is_on(0, 9), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: "Left")) {
-            Program.ChangeState(Program.AccessibilitySounds, keep_previous: true);
+        if (UI.DrawButton(S("sounds dictionary"), anchor.X, anchor.Y+10*n, hover: selector.is_on(0, 9), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: UI.Alignment.Left)) {
+            Program.ChangeState(Program.State.AccessibilitySounds, keep_previous: true);
         }
 
         // 11
-        if (UI.DrawButton(S("save and exit"), anchor.X, anchor.Y+12*n, hover: selector.is_on(0, 10), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: "Left")) {
+        if (UI.DrawButton(S("save and exit"), anchor.X, anchor.Y+12*n, hover: selector.is_on(0, 10), click: Input.Key_hold("A"), action: Input.Key_up("A"), spacing: Config.spacing_small, click_font: "default small click", hover_font: "default small", font: "default small hover", alignment: UI.Alignment.Left)) {
             Config.SaveToFile();
             Camera.LockCamera();
             Program.ChangeState(Program.previous_state);
@@ -141,16 +141,16 @@ public class WGAccessibilitySounds : Widget {
         selector.Update();
         Program.stage?.StopMusic(); 
 
-        UI.DrawText(S("sound dictionary"), -80, -107, spacing: Config.spacing_medium, TTS: true, TTS_id: "AStitle", priority: true);
+        UI.DrawTextAtlas(S("sound dictionary"), -80, -107, spacing: Config.spacing_medium, TTS: true, TTS_id: "AStitle", priority: true);
 
         for (int i = 0; i < ROWS; i++) {
             int j = Math.Max(0, Math.Min(selector.pointer.Y + ROLL_OFFSET - ROWS, selector.options.Count - ROWS)) + i;
             RenderPlayer(keys[j][0], keys[j][1], "sound"+j , keys[j][2], selector.is_on(0, j), POSITION_x, POSITION_Y + i * ROW_SPACING);
         }
 
-        UI.DrawText(S("Q"), 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
-        if (UI.DrawButton(S("Return"), 182, 67, tts: false, spacing: Config.spacing_small, alignment: "right", click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
-            Program.ChangeState(Program.AccessibilityMenu, keep_previous: true);
+        UI.DrawTextAtlas(S("Q"), 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: UI.Alignment.Right);
+        if (UI.DrawButton(S("Return"), 182, 67, tts: false, spacing: Config.spacing_small, alignment: UI.Alignment.Right, click: Input.Key_hold("B"), action: Input.Key_up("B"), click_font: "default small click", hover_font: "default small")) {
+            Program.ChangeState(Program.State.AccessibilityMenu, keep_previous: true);
             Camera.LockCamera();
             Program.stage?.PlayMusic();
             selector.pointer = new Vector2i(0, 0);
@@ -158,7 +158,7 @@ public class WGAccessibilitySounds : Widget {
     }
 
     public void RenderPlayer(string label, string value, string id, string sound, bool selected, float X, float Y) { 
-        UI.DrawText(S(label, ": ", value), X, Y, spacing: Config.spacing_small, alignment: "Left", TTS: selected, TTS_id: id, priority: false, textureName: selected ? "default small" : "default small hover");
+        UI.DrawTextAtlas(S(label, ": ", value), X, Y, spacing: Config.spacing_small, alignment: UI.Alignment.Left, TTS: selected, TTS_id: id, priority: false, textureName: selected ? "default small" : "default small hover");
 
         if (selected && Input.Key_down("A")) {
             current_sound = new Sound(Data.sounds[sound]) {Volume = Config.Main_Volume};

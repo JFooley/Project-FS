@@ -16,27 +16,27 @@ public class WGSettings : Widget {
         Camera.UnlockCamera();
         MainRender.Draw(settings_bg, MainRender.BackgroundLayer);
 
-        UI.DrawText(S("Settings"), -80, -107, TTS: true, TTS_id: "Settings", priority: true, spacing: Config.spacing_medium);
+        UI.DrawTextAtlas(S("Settings"), -80, -107, TTS: true, TTS_id: "Settings", priority: true, spacing: Config.spacing_medium);
         //0
-        UI.DrawButton(S("Main volume", ": < ", Config.Main_Volume.ToString(), "% >"), -185, -74, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 0), hover_font: "default small", font: "default small hover");
+        UI.DrawButton(S("Main volume", ": < ", Config.Main_Volume.ToString(), "% >"), -185, -74, alignment: UI.Alignment.Left, spacing: Config.spacing_small, hover: selector.is_on(0, 0), hover_font: "default small", font: "default small hover");
         //1
-        UI.DrawButton(S("Music volume", ": < ", Config._music_volume.ToString(), "% >"), -185, -64, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 1), hover_font: "default small", font: "default small hover");
+        UI.DrawButton(S("Music volume", ": < ", Config._music_volume.ToString(), "% >"), -185, -64, alignment: UI.Alignment.Left, spacing: Config.spacing_small, hover: selector.is_on(0, 1), hover_font: "default small", font: "default small hover");
         //2
-        UI.DrawButton(S("V-sync", ": < ", Config.Vsync ? "on": "off", " >"), -185, -54, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 2), hover_font: "default small", font: "default small hover");
+        UI.DrawButton(S("V-sync", ": < ", Config.Vsync ? "on": "off", " >"), -185, -54, alignment: UI.Alignment.Left, spacing: Config.spacing_small, hover: selector.is_on(0, 2), hover_font: "default small", font: "default small hover");
         //3
-        UI.DrawButton(S("Window mode", ": < ", Config.Fullscreen ? "Fullscreen" : "Windowed", " >"), -185, -44, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 3), hover_font: "default small", font: "default small hover");
+        UI.DrawButton(S("Window mode", ": < ", Config.Fullscreen ? "Fullscreen" : "Windowed", " >"), -185, -44, alignment: UI.Alignment.Left, spacing: Config.spacing_small, hover: selector.is_on(0, 3), hover_font: "default small", font: "default small hover");
         //4
-        UI.DrawButton(S("Round Length", ": < ", Config.round_length == Config.default_round_length ? "Default" : "", " " + Config.round_length + "s", " >"), -185, -34, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 4), hover_font: "default small", font: "default small hover");
+        UI.DrawButton(S("Round Length", ": < ", Config.round_length == Config.default_round_length ? "Default" : "", " " + Config.round_length + "s", " >"), -185, -34, alignment: UI.Alignment.Left, spacing: Config.spacing_small, hover: selector.is_on(0, 4), hover_font: "default small", font: "default small hover");
         //5
-        UI.DrawButton(S("Match rounds", ": < ", Config.max_rounds == Config.default_max_rounds ? "Default" : Config.max_rounds.ToString(), " >"), -185, -24, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 5), hover_font: "default small", font: "default small hover");
+        UI.DrawButton(S("Match rounds", ": < ", Config.max_rounds == Config.default_max_rounds ? "Default" : Config.max_rounds.ToString(), " >"), -185, -24, alignment: UI.Alignment.Left, spacing: Config.spacing_small, hover: selector.is_on(0, 5), hover_font: "default small", font: "default small hover");
         //6
-        UI.DrawButton(S("Hitstop frames", ": < ", Config.hit_stop_time == Config.default_hit_stop_time ? "Default" : Config.hit_stop_time.ToString(), " >"), -185, -14, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 6), hover_font: "default small", font: "default small hover");
+        UI.DrawButton(S("Hitstop frames", ": < ", Config.hit_stop_time == Config.default_hit_stop_time ? "Default" : Config.hit_stop_time.ToString(), " >"), -185, -14, alignment: UI.Alignment.Left, spacing: Config.spacing_small, hover: selector.is_on(0, 6), hover_font: "default small", font: "default small hover");
         //7
-        UI.DrawButton(S("Language", " < ", Language.Supported[Config.Language], " >"), -185, -4, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 7), hover_font: "default small", font: "default small hover");
+        UI.DrawButton(S("Language", " < ", Language.Supported[Config.Language], " >"), -185, -4, alignment: UI.Alignment.Left, spacing: Config.spacing_small, hover: selector.is_on(0, 7), hover_font: "default small", font: "default small hover");
         //8
-        UI.DrawButton(S("Match speed", ": < ", Program.match_normal_speed.ToString("0.0"), "x >"), -185, 6, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 8), hover_font: "default small", font: "default small hover");
+        UI.DrawButton(S("Match speed", ": < ", Program.match_normal_speed.ToString("0.0"), "x >"), -185, 6, alignment: UI.Alignment.Left, spacing: Config.spacing_small, hover: selector.is_on(0, 8), hover_font: "default small", font: "default small hover");
         //9
-        UI.DrawButton(S("Save and Exit"), -185, 16, alignment: "left", spacing: Config.spacing_small, hover: selector.is_on(0, 9), hover_font: "default small", font: "default small hover");
+        UI.DrawButton(S("Save and Exit"), -185, 16, alignment: UI.Alignment.Left, spacing: Config.spacing_small, hover: selector.is_on(0, 9), hover_font: "default small", font: "default small hover");
 
         if (Input.Key_down("B")) selector.pointer.Y = 9;
 
@@ -62,15 +62,7 @@ public class WGSettings : Widget {
                 break;
             case 3:
                 if (Input.Key_down("Left") || Input.Key_down("Right")) {
-                    Config.Fullscreen = !Config.Fullscreen;
-                    Program.window.Close();
-                    if (Config.Fullscreen == true) Program.window = new RenderWindow(VideoMode.DesktopMode, Config.GameTitle, Styles.Default, SFML.Window.State.Fullscreen);
-                    else Program.window = new RenderWindow(new VideoMode( new Vector2u(Config.RenderWidth * 3, Config.RenderHeight * 3)), Config.GameTitle, Styles.Default, SFML.Window.State.Windowed);
-                    Program.window.Closed += (sender, e) => Program.window.Close();
-                    Program.window.SetFramerateLimit(Config.Framerate);
-                    Program.window.SetVerticalSyncEnabled(Config.Vsync);
-                    Program.window.SetMouseCursorVisible(false);
-                    Program.window.SetView(Program.view);   
+                    MainRender.ToggleFullscreen();
                 }
                 break;
             case 4:

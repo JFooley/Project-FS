@@ -74,7 +74,7 @@ public struct FightState {
 public abstract class Character : Object {
     protected static Frame[][] F(params Frame[][] frames) => frames;
 
-    public enum CollisionType { None = -1, Block = 0, Hit = 1, Parry = 2, Grab = 3, Tech = 4 }
+    public enum CollisionType {None, Block, Hit, Parry, Grab, Tech }
 
     // Infos
     public string name;
@@ -96,15 +96,15 @@ public abstract class Character : Object {
     public Vector2i life_points = new Vector2i(1000, 1000);
     public Vector2i dizzy_points = new Vector2i(500, 500);
     public Vector2i aura_points = new Vector2i(0, 100);
-    public Vector2f visual_position => new Vector2f(this.body.position.X - 125, this.body.position.Y - 250);
-    public Vector2f visual_center => new Vector2f(this.body.position.X, this.body.position.Y - 125);
-    public int jump_hight = 100;
+    public Vector2f sprite_position => new Vector2f(this.body.position.X - 125, this.body.position.Y - 250);
+    public Vector2f sprite_center => new Vector2f(this.body.position.X, this.body.position.Y - 125);
+    public int jump_strenght = 100;
     public int push_box_width = 25;
 
     // State info
     public string current_state;
-
     public string last_state;
+
     public Vector2f last_position;
     private Sprite[] last_sprites = new Sprite[3]; 
 
@@ -115,10 +115,10 @@ public abstract class Character : Object {
     public int next_frame_hitstop = 0;
 
     // Combat logic infos
-    public bool not_acting => this.state.idle && !this.state.low && !this.state.air && !this.on_air;
+    public bool not_acting_stand => this.state.idle && !this.state.low && !this.state.air && !this.on_air;
     public bool not_acting_low => this.state.idle && this.state.low && !this.state.air && !this.on_air;
     public bool not_acting_air => this.state.idle && !this.state.low && this.state.air && this.on_air;
-    public bool not_acting_all => not_acting || not_acting_air || not_acting_low;
+    public bool not_acting => this.state.idle;
 
     public bool on_parry => this.state.on_parry;
     public bool on_block => this.state.on_block;
@@ -126,9 +126,9 @@ public abstract class Character : Object {
     public bool on_air => this.body.position.Y < this.floor_line;
     public bool crounching => this.state.low;
 
-    public bool can_parry => (not_acting_all && parring) || (not_acting_all && Input.Key_press("Left", input_window: this.state.air? Config.parry_window/2 : Config.parry_window, player: this.player_index, facing: this.facing));
-    public bool can_dash => not_acting && !this.state.on_parry;
-    public virtual bool can_jump => not_acting && (this.current_state != "Landing" || this.current_anim_frame_index >= 1);
+    public bool can_parry => (not_acting && parring) || (not_acting && Input.Key_press("Left", input_window: this.state.air? Config.parry_window/2 : Config.parry_window, player: this.player_index, facing: this.facing));
+    public bool can_dash => not_acting_stand && !this.state.on_parry;
+    public virtual bool can_jump => not_acting_stand && (this.current_state != "Landing" || this.current_anim_frame_index >= 1);
     public bool has_hit = false;
 
     public bool blocking_high = false;
@@ -389,11 +389,11 @@ public abstract class Character : Object {
         return this.isBlockingHigh(character) || this.isBlockingLow(character);
     }
     public bool isBlockingHigh(Character character) {
-        if ((this.not_acting || this.not_acting_low || this.state.on_block) && (this.blocking_high || this.blocking)) return true;
-        return (this.not_acting || this.state.on_block) && Input.Key_hold("Left", player: this.player_index, facing: -character.facing) && !Input.Key_hold("Down", player: this.player_index, facing: -character.facing);
+        if ((this.not_acting_stand || this.not_acting_low || this.state.on_block) && (this.blocking_high || this.blocking)) return true;
+        return (this.not_acting_stand || this.state.on_block) && Input.Key_hold("Left", player: this.player_index, facing: -character.facing) && !Input.Key_hold("Down", player: this.player_index, facing: -character.facing);
     }
     public bool isBlockingLow(Character character) {
-        if ((this.not_acting || this.not_acting_low || this.state.on_block) && (this.blocking_low || this.blocking)) return true;
+        if ((this.not_acting_stand || this.not_acting_low || this.state.on_block) && (this.blocking_low || this.blocking)) return true;
         return (this.not_acting_low || this.state.on_block) && Input.Key_hold("Left", player: this.player_index, facing: -character.facing) && Input.Key_hold("Down", player: this.player_index, facing: -character.facing);
     }
     public void Stun(Character enemy, int advantage, bool hit = true, bool airbone = false, bool sweep = false, bool force_crounch = false, bool force_stand = false, bool raw_value = false) {
@@ -522,7 +522,7 @@ public abstract class Character : Object {
         if (textures.TryGetValue(this.current_sprite, out Texture texture)) {
             return new Sprite(texture);
         }
-        return null; 
+        return new Sprite(texture); 
     }
     public void PlayFrameSound() {
         if (!this.current_animation.playing_sound && this.current_sound != "") this.PlaySound(this.current_sound, follow_player: true);

@@ -12,5 +12,5 @@ void main() {
     vec3 tintedColor = pixelColor.rgb * normalizedTintColor;
 
     // Define a cor final do pixel, mantendo o canal alfa (transparência)
-    gl_FragColor = vec4(tintedColor, pixelColor.a);
+    gl_FragColor = vec4(tintedColor, pixelColor.a) * gl_Color;
 }

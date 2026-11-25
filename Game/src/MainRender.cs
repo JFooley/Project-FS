@@ -1,5 +1,6 @@
 using SFML.Graphics;
 using SFML.System;
+using SFML.Window;
 
 public static class MainRender {
     public const int BackgroundLayer = 0;
@@ -40,7 +41,9 @@ public static class MainRender {
     public static void Draw(IDrawable drawable, int layer_index = BackgroundLayer) {
         Draw(drawable, RenderStates.Default, layer_index);
     }
-
+    public static void Draw(Sprite sprite, Color color, int layer_index = BackgroundLayer) {
+        Draw(sprite, RenderStates.Default, color, layer_index);
+    }
     public static void Draw(IDrawable drawable, RenderStates states, int layer_index = BackgroundLayer) {
         if (!layers.TryGetValue(layer_index, out RenderTexture? layer)) {
             layer = new RenderTexture(new Vector2u(Config.RenderWidth, Config.RenderHeight));
@@ -51,6 +54,15 @@ public static class MainRender {
         }
 
         layer.Draw(drawable, states);
+    }
+    public static void Draw(Sprite sprite, RenderStates states, Color color, int layer_index = BackgroundLayer) {
+        Color originalColor = sprite.Color;
+        sprite.Color = ModulateColor(originalColor, color);
+        try {
+            Draw((IDrawable)sprite, states, layer_index);
+        } finally {
+            sprite.Color = originalColor;
+        }
     }
 
     public static bool HasPreviousFrame => hasPreviousFrame;
@@ -83,7 +95,6 @@ public static class MainRender {
 
         PresentFrame();
     }
-
     public static void PresentPreviousFrame() {
         if (!hasPreviousFrame) {
             throw new InvalidOperationException("There is no rendered frame to present.");
@@ -91,7 +102,6 @@ public static class MainRender {
 
         PresentFrame();
     }
-
     private static void PresentFrame() {
         if (cachedFrame == null) {
             throw new InvalidOperationException("There is no rendered frame to present.");
@@ -119,7 +129,13 @@ public static class MainRender {
         float pixelPosition = (position - viewCenter) * targetSize / viewSize;
         return viewCenter + (float)Math.Round(pixelPosition) * viewSize / targetSize;
     }
-
+    private static Color ModulateColor(Color color, Color modulation) {
+        return new Color(
+            (byte)(color.R * modulation.R / 255),
+            (byte)(color.G * modulation.G / 255),
+            (byte)(color.B * modulation.B / 255),
+            (byte)(color.A * modulation.A / 255));
+    }
     private static void UpdateOutputView() {
         Vector2u currentSize = Program.window.Size;
         if (outputSize.X == currentSize.X && outputSize.Y == currentSize.Y) return;
@@ -127,5 +143,17 @@ public static class MainRender {
         outputSize = currentSize;
         outputView.Size = new Vector2f(outputSize.X, outputSize.Y);
         outputView.Center = new Vector2f(outputSize.X / 2f, outputSize.Y / 2f);
+    }
+
+    public static void ToggleFullscreen() {
+        Config.Fullscreen = !Config.Fullscreen;
+        Program.window.Close();
+        if (Config.Fullscreen == true) Program.window = new RenderWindow(VideoMode.DesktopMode, Config.GameTitle, Styles.Default, SFML.Window.State.Fullscreen);
+        else Program.window = new RenderWindow(new VideoMode( new Vector2u(Config.RenderWidth * 3, Config.RenderHeight * 3)), Config.GameTitle, Styles.Default, SFML.Window.State.Windowed);
+        Program.window.Closed += (sender, e) => Program.window.Close();
+        Program.window.SetFramerateLimit(Config.Framerate);
+        Program.window.SetVerticalSyncEnabled(Config.Vsync);
+        Program.window.SetMouseCursorVisible(false);
+        Program.window.SetView(Program.view);   
     }
 }

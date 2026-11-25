@@ -492,7 +492,7 @@ class AnimationEditor:
             return
         
         frame: FrameData = self.animation.frames[self.current_frame]
-        last_frame: FrameData = self.animation.frames[self.current_frame - 1] if self.current_frame > 0 else None
+        if self.current_frame > 0: last_frame: FrameData = self.animation.frames[self.current_frame - 1] 
 
         if last_frame.hitboxes:
             frame.hitboxes = last_frame.hitboxes.copy() if last_frame else []
@@ -607,6 +607,9 @@ class AnimationEditor:
 
 
     def rebuild_timeline(self):
+
+        self.play_frame = 0
+        self.playing = False
 
         for w in self.timeline.winfo_children():
             w.destroy()

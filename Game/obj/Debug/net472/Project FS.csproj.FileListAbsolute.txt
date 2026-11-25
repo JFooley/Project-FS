@@ -2405,7 +2405,6 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\hue_chang
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\Assets\shaders\palette_swaper.frag
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken\textures.dat
-A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\fonts\textures.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Hitspark\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\particles\Hitspark\textures.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\stages\Burning Dojo\audio.dat
@@ -2447,3 +2446,5 @@ A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken-Ef
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken-Effects\audio.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\characters\Ken-Effects\textures.dat
 A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\shaders\outline.frag
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\fonts\atlas\textures.dat
+A:\GABRIEL\Repos\CS Fighting Game\Game\bin\Debug\net472\assets\fonts\fonts.dat

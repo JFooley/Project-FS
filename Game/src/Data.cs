@@ -59,6 +59,23 @@ public static class Data {
 
         return result;
     }
+    public static Dictionary<string, byte[]> LoadFontsDat(string fileName, Dictionary<string, byte[]>? existingFonts = null) {
+        var result = existingFonts ?? new Dictionary<string, byte[]>();
+
+        using var fs = new FileStream(fileName, FileMode.Open);
+        using var reader = new BinaryReader(fs);
+
+        int count = reader.ReadInt32();
+
+        for (int i = 0; i < count; i++) {
+            string name = reader.ReadString();
+            int length = reader.ReadInt32();
+            byte[] data = reader.ReadBytes(length);
+            result[name] = data;
+        }
+
+        return result;
+    }
     public static Dictionary<string, Frame[]> LoadAnimationDat(string path, bool have_data = true) {
         var result = new Dictionary<string, Frame[]>();
 

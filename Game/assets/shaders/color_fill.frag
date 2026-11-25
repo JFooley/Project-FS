@@ -15,4 +15,6 @@ void main()
     {
         gl_FragColor = pixelColor;
     }
+
+    gl_FragColor *= gl_Color;
 }

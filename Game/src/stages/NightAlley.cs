@@ -9,7 +9,7 @@ public class NightAlley : Stage {
         Frame[] frames = Enumerable.Range(0, 202).Select(i => new Frame(i)).ToArray();
 
         var animations = new Dictionary<string, State> {
-            { "Default", new State(F(frames), "Default", 60)},
+            { "Default", new State(F(frames), "Default")},
         };
 
         this.states = animations;

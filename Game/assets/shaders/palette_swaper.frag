@@ -36,5 +36,5 @@ void main() {
 
     color *= light;
 
-    gl_FragColor = vec4(color, spriteData.a);
+    gl_FragColor = vec4(color, spriteData.a) * gl_Color;
 }

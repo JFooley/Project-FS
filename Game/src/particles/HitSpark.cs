@@ -25,13 +25,13 @@ public class Hitspark : Character {
         var a = this.animations;
         
         this.states = new Dictionary<string, State> {
-            {"HitLight", new State(F(a["HitLight"]), "Remove")},
-            {"HitMedium", new State(F(a["HitMedium"]), "Remove")},
-            {"HitHeavy", new State(F(a["HitHeavy"]), "Remove")},
-            {"Parry", new State(F(a["Parry"]), "Remove")},
-            {"Block", new State(F(a["Block"]), "Remove")},
-            {"Grab", new State(F(a["Grab"]), "Remove")},
-            {"Tech", new State(F(a["Tech"]), "Remove")},
+            {"HitLight", new State(F(a["HitLight"]), "Remove", State.Priority.Particles)},
+            {"HitMedium", new State(F(a["HitMedium"]), "Remove", State.Priority.Particles)},
+            {"HitHeavy", new State(F(a["HitHeavy"]), "Remove", State.Priority.Particles)},
+            {"Parry", new State(F(a["Parry"]), "Remove", State.Priority.Particles)},
+            {"Block", new State(F(a["Block"]), "Remove", State.Priority.Particles)},
+            {"Grab", new State(F(a["Grab"]), "Remove", State.Priority.Particles)},
+            {"Tech", new State(F(a["Tech"]), "Remove", State.Priority.Particles)},
 
         };
     }

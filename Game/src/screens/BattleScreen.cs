@@ -4,11 +4,13 @@ using UI_space;
 
 class WGBattle : Widget {
     // Battle States
-    public const int Intro = 0;
-    public const int RoundStart = 1;
-    public const int Battling = 2;
-    public const int RoundEnd = 3;
-    public const int MatchEnd = 4;
+    public enum State {
+        Intro,
+        RoundStart,
+        Battling,
+        RoundEnd,
+        MatchEnd
+    }
 
     // Battle modes
     public const int Versus = 0;
@@ -23,18 +25,12 @@ class WGBattle : Widget {
     public static int match_winner = 0;
     public static int round_winner = 0;
 
-    public static int battle_state = Intro;
+    public static State battle_state = State.Intro;
     public static int battle_mode = Versus;
     
-    private Sprite fight_logo;
-    private Sprite timesup_logo;
-    private Sprite KO_logo;
     private Sprite fade90;
 
     public WGBattle() {
-        fight_logo = new Sprite(Data.textures["typography:fight"]);
-        timesup_logo = new Sprite(Data.textures["typography:timesup"]);
-        KO_logo = new Sprite(Data.textures["typography:ko"]); 
         fade90 = new Sprite(Data.textures["screens:90fade"]) {Color = Color.White};
     }
 
@@ -46,12 +42,12 @@ class WGBattle : Widget {
         if (updateStage) Program.stage?.Update();
         Program.stage?.Render();
         
-        if (Input.Key_down("Start") && WGBattle.battle_state == WGBattle.Battling) Program.stage?.Pause();
+        if (Input.Key_down("Start") && WGBattle.battle_state == State.Battling) Program.stage?.Pause();
         if (Stage.training_mode) Program.stage?.TrainingMode();
         if (Stage.pause) Program.stage?.PauseScreen();
 
         switch (WGBattle.battle_state) {
-            case Intro:
+            case State.Intro:
                 this.fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
                 this.fade90.Color = new Color(255, 255, 255, (byte) Math.Max(0, this.fade90.Color.A - 15));
                 MainRender.Draw(fade90, MainRender.OverlayLayer);
@@ -60,70 +56,63 @@ class WGBattle : Widget {
                 Program.stage?.StopRoundTime();
                 Program.stage?.ResetTimer();
                 if (Program.stage.character_A.state.idle && Program.stage.character_B.state.idle && fade90.Color.A == 0) 
-                    WGBattle.battle_state = RoundStart;
+                    WGBattle.battle_state = State.RoundStart;
                 break;
 
-            case RoundStart: // Inicia a round
+            case State.RoundStart: // Inicia a round
                 if (Program.stage.CheckTimer(3)) {
                     Program.stage.ResetRoundTime();
                     Program.stage.StartRoundTime();
                     Program.stage.ReleasePlayers();
-                    WGBattle.battle_state = Battling;
+                    WGBattle.battle_state = State.Battling;
                 }
-                else if (Program.stage.CheckTimer(2)) {
-                    fight_logo.Position = new Vector2f(Camera.X - 89, Camera.Y - 54);
-                    MainRender.Draw(fight_logo, MainRender.OverlayLayer);
-                    Accessibility.Speak("RoundFight", TTSRequisition.TEXT, true, S("fight!"));
-                }
+                else if (Program.stage.CheckTimer(2))
+                    UI.DrawText(S("fight!"), 0, -20, font: "style", color: new Color(240, 240, 255), layer: MainRender.ShadowLayer, TTS: true, TTS_id: "RoundFight", priority: true);
                 else if (Program.stage.CheckTimer(1)) 
-                    UI.DrawText(S("ready?"), 0, -30, TTS: true, TTS_id: "RoundReady", priority: true, spacing: Config.spacing_medium, textureName: "default medium white");
-                else 
-                    UI.DrawText(S("round", " ", Program.stage.round.ToString()), 0, -30, TTS: true, TTS_id: "RoundStart", priority: true, spacing: Config.spacing_medium, textureName: "default medium white");
-
+                    UI.DrawText(S("ready?"), 0, -30, font: "style_medium", color: new Color(240, 240, 255), layer: MainRender.ShadowLayer, TTS: true, TTS_id: "RoundReady", priority: true);
+                else
+                    UI.DrawText(S("round", " ", Program.stage.round.ToString()), 0, -30, font: "style_medium", color: new Color(240, 240, 255), layer: MainRender.ShadowLayer, TTS: true, TTS_id: "RoundStart", priority: true);
                 break;
 
-            case Battling: // Durante a batalha
+            case State.Battling: // Durante a batalha
                 if (Program.stage.CheckRoundEnd()) {
-                    WGBattle.battle_state = RoundEnd;
+                    WGBattle.battle_state = State.RoundEnd;
                     Program.stage.StopRoundTime();
                     Program.stage.ResetTimer();
+                    Program.stage.PauseTimer();
                     Program.match_speed = Program.match_slow_speed;
                 }
                 break;
 
-            case RoundEnd: // Fim de round
-                if (Program.stage.CheckTimer(9)) {
+            case State.RoundEnd: // Fim de round
+                if (Program.stage.CheckTimer(6)) {
                     Program.stage.LockPlayers();
                     Program.stage.ResetTimer();
                     if (Program.stage.CheckMatchEnd()) {
-                        WGBattle.battle_state = MatchEnd;
+                        WGBattle.battle_state = State.MatchEnd;
                     } else {
-                        WGBattle.battle_state = RoundStart;
+                        WGBattle.battle_state = State.RoundStart;
                         Program.stage.ResetPlayers();
                     }
 
-                } else if (Program.stage.CheckTimer(6)) {
-                    if (WGBattle.round_winner == Drawn) {
-                        UI.DrawText(S("draw"), 0, -30, TTS: true, TTS_id: "RoundResult", priority: true, spacing: Config.spacing_medium, textureName: "default medium white");
-                    } else {
-                        UI.DrawText(S(WGBattle.round_winner == 1 ? "player 1" : "player 2", " ", "wins"), 0, -30, TTS: true, TTS_id: "RoundResult", priority: true, spacing: Config.spacing_medium, textureName: "default medium white");
-                    }
+                } else if (Program.stage.CheckTimer(3)) {
+                    if (WGBattle.round_winner == Drawn)
+                        UI.DrawText(S("drawn"), 0, -30, font: "style_medium", color: new Color(240, 240, 255), layer: MainRender.ShadowLayer, TTS: true, TTS_id: "DrawResult", priority: true);
+                    else
+                        UI.DrawText(S(WGBattle.round_winner == 1 ? Program.stage.character_A.name : Program.stage.character_B.name, " ", "wins"), 0, -30, font: "style_medium", color: new Color(240, 240, 255), layer: MainRender.ShadowLayer, TTS: true, TTS_id: "RoundResult", priority: true);
                     Program.match_speed = Program.match_normal_speed;
 
-                } else if (Program.stage.CheckTimer(3)) {
-                    if (Program.stage.character_A.life_points.X <= 0 || Program.stage.character_B.life_points.X <= 0) {
-                        KO_logo.Position = new Vector2f(Camera.X - 75, Camera.Y - 54);
-                        MainRender.Draw(KO_logo, MainRender.OverlayLayer);
-                        Accessibility.Speak("RoundEndLogo", TTSRequisition.TEXT, true, S("K.O."));
-                    } else {
-                        timesup_logo.Position = new Vector2f(Camera.X - 131, Camera.Y - 55);
-                        MainRender.Draw(timesup_logo, MainRender.OverlayLayer);
-                        Accessibility.Speak("RoundEndLogo", TTSRequisition.TEXT, true, S("time's up"));
-                    }
+                } else {
+                    if (Program.stage.character_A.life_points.X <= 0 || Program.stage.character_B.life_points.X <= 0)
+                        UI.DrawText(S("k.o."), 0, -20, font: "style", color: new Color(240, 240, 255), layer: MainRender.ShadowLayer, TTS: true, TTS_id: "KO_logo", priority: true);
+                    else
+                        UI.DrawText(S("time's up"), 0, -20, font: "style_medium", color: new Color(240, 240, 255), layer: MainRender.ShadowLayer, TTS: true, TTS_id: "TimesUp_logo", priority: true);
+
+                    if (Program.stage.PlayersGrounded()) Program.stage.PauseTimer();
                 } 
                 break;
 
-            case MatchEnd: // Fim da partida
+            case State.MatchEnd: // Fim da partida
                 this.fade90.Position = new Vector2f(Camera.X - Config.RenderWidth/2, Camera.Y - Config.RenderHeight/2);
                 this.fade90.Color = new Color(255, 255, 255, (byte) Math.Min(255, this.fade90.Color.A + 15));
                 MainRender.Draw(fade90, MainRender.OverlayLayer);
@@ -132,8 +121,8 @@ class WGBattle : Widget {
                     Camera.Reset();
                     Program.stage?.ResetMatch();
                     Program.stage?.ResetPlayers(force: true, total_reset: true);
-                    WGBattle.battle_state = Intro;
-                    Program.ChangeState(Program.PostBattle);   
+                    WGBattle.battle_state = State.Intro;
+                    Program.ChangeState(Program.State.PostBattle);
                 }
                 break;
         } 

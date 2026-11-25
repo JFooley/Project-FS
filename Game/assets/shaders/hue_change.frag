@@ -50,7 +50,7 @@ bool isEdge(vec2 texCoord, sampler2D tex) {
 void main() {
     // Edge pixel
     if (isEdge(gl_TexCoord[0].xy, tex)) {
-        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+        gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0) * gl_Color;
         return;
         
     // Non-edge pixel
@@ -68,6 +68,6 @@ void main() {
 
         hslAdjusted.z = luminance * ((hslAdjusted.z + N) - (hslAdjusted.z - N)) + (hslAdjusted.z - N);
         vec3 finalColor = hslToRgb(hslAdjusted);
-        gl_FragColor = vec4(finalColor, pixelColor.a);
+        gl_FragColor = vec4(finalColor, pixelColor.a) * gl_Color;
     }
 }

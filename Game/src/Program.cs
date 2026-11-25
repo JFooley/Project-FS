@@ -6,23 +6,25 @@ using System.Diagnostics;
 
 public static class Program {
     // Game States
-    public const int Intro = 0;
-    public const int StartScreen = 1;
-    public const int MainMenu = 2;
-    public const int SelectStage = 3;
-    public const int SelectChar = 4;
-    public const int LoadScreen = 5;
-    public const int Battle = 6;
-    public const int PostBattle = 7;
-    public const int Settings = 8;
-    public const int Controls = 9;
-    public const int AccessibilityMenu = 10;
-    public const int AccessibilitySounds = 11;
-    public const int Credits = 12;
+    public enum State {
+        Intro,
+        StartScreen,
+        MainMenu,
+        SelectStage,
+        SelectChar,
+        LoadScreen,
+        Battle,
+        PostBattle,
+        Settings,
+        Controls,
+        AccessibilityMenu,
+        AccessibilitySounds,
+        Credits
+    }
 
     // State holders
-    public static int state;
-    public static int previous_state;
+    public static State state;
+    public static State previous_state;
 
     // Common objects
     public static Stage? stage;
@@ -57,7 +59,7 @@ public static class Program {
         Config.LoadFromFile();
 
         // Set initial states
-        state = Intro;
+        state = State.Intro;
         
         // Carregamento de texturas genéricas
         Data.LoadTexturesDat(Data.GetPath("assets/visuals/textures.dat"), Data.textures);
@@ -137,7 +139,7 @@ public static class Program {
                     logicAccumulator -= 1f;
                     updateGame = true;
                 }
-            }
+            }    
             if (!updateGame) {
                 stage?.PauseTimersForFrameSkip();
                 MainRender.PresentPreviousFrame();
@@ -145,7 +147,7 @@ public static class Program {
             }
 
             bool updateMatch = false;
-            if (state == Battle) {
+            if (state == State.Battle) {
                 float speed = float.IsNaN(match_speed) ? 1f : Math.Max(0.1f, Math.Min(1f, match_speed));
                 matchAccumulator += speed;
                 updateMatch = matchAccumulator >= 1f;
@@ -166,27 +168,27 @@ public static class Program {
             MainRender.BeginFrame();
 
             switch (state) {
-                case Intro:
+                case State.Intro:
                     intro_screen.Render();
                     break;
 
-                case StartScreen:
+                case State.StartScreen:
                     start_screen.Render();
                     break;
 
-                case MainMenu:
+                case State.MainMenu:
                     main_menu_screen.Render();
                     break;
 
-                case SelectStage:
+                case State.SelectStage:
                     select_stage_screen.Render();
                     break;
 
-                case SelectChar:
+                case State.SelectChar:
                     select_char_screen.Render();
                     break;
 
-                case LoadScreen:
+                case State.LoadScreen:
                     stage.LoadStage();
                     stage.LoadCharacters(WGSelectCharacter.charA_selected, WGSelectCharacter.charB_selected);
                     Camera.SetChars(stage.character_A, stage.character_B);
@@ -195,41 +197,41 @@ public static class Program {
                     loading = false;
                     select_char_screen.Reset();
 
-                    ChangeState(Battle);
+                    ChangeState(State.Battle);
                     break;
 
-                case Battle:
+                case State.Battle:
                     battle_screen.Render(updateMatch);
                     break;
 
-                case PostBattle:
+                case State.PostBattle:
                     post_battle_screen.Render();
                     break;
 
-                case Settings:
+                case State.Settings:
                     settings_screen.Render();
                     break;
 
-                case Controls:
+                case State.Controls:
                     controls_screen.Render();
                     break;
 
-                case AccessibilityMenu:
+                case State.AccessibilityMenu:
                     accessibility_screen.Render();
                     break;
                 
-                case AccessibilitySounds:
+                case State.AccessibilitySounds:
                     accessibility_sounds_screen.Render();
                     break;
 
-                case Credits:
+                case State.Credits:
                     credits_screen.Render();
                     break;
             }
 
             // Debug toggle
             if (Input.Key_sequence("Up Up Down Down Left Right Left Right B A Start", 20, flexEntry: false)) Config.debug = !Config.debug;
-
+            
             // Finally
             last_frame_time = frametimer.Elapsed.TotalSeconds;
             framerate = last_frame_time > 0 ? 1d / last_frame_time : 0;
@@ -238,7 +240,7 @@ public static class Program {
         }
     }
 
-    public static void ChangeState(int new_state, bool keep_previous = false) {
+    public static void ChangeState(State new_state, bool keep_previous = false) {
         previous_state = keep_previous ? previous_state : state;
         state = new_state;
     }
@@ -267,6 +269,6 @@ public static class Program {
         }
 
         loading = false;
-        ChangeState(StartScreen);
+        ChangeState(State.StartScreen);
     }
 }

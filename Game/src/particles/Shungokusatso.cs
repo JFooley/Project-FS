@@ -25,8 +25,8 @@ public class Shungokusatso : Character {
         var a = this.animations;
 
         this.states = new Dictionary<string, State> {
-            {"Shungoku", new State(F(a["Shungoku"]), "Remove", 15)},
-            {"Shungoku_text", new State(F(a["Shungoku_text"]), "Remove", 15)},
+            {"Shungoku", new State(F(a["Shungoku"]), "Remove")},
+            {"Shungoku_text", new State(F(a["Shungoku_text"]), "Remove")},
         };
     }
     

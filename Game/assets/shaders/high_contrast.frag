@@ -27,4 +27,6 @@ void main() {
     } else { // Não direcional
         gl_FragColor = vec4(0.7, 0.7, 0.7, pixelColor.a);
     }
+
+    gl_FragColor *= gl_Color;
 }

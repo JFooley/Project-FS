@@ -19,9 +19,9 @@ public class WGControls : Widget {
         MainRender.Draw(bg, MainRender.BackgroundLayer);
         MainRender.Draw(frame, MainRender.InterfaceLayer);
 
-        UI.DrawText(S("Q"), 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: "right");
-        if (UI.DrawButton(S("Return"), 182, 67, tts: false, alignment: "right", action: Input.Key_up("B"), click: Input.Key_hold("B"), hover_font: "default small")) {
-            if (Program.previous_state == Program.Battle) Camera.LockCamera();
+        UI.DrawTextAtlas(S("Q"), 194, 67, spacing: Config.spacing_small, textureName: "icons", alignment: UI.Alignment.Right);
+        if (UI.DrawButton(S("Return"), 182, 67, tts: false, alignment: UI.Alignment.Right, action: Input.Key_up("B"), click: Input.Key_hold("B"), hover_font: "default small")) {
+            if (Program.previous_state == Program.State.Battle) Camera.LockCamera();
             Program.ChangeState(Program.previous_state);
         }
     }

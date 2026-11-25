@@ -1,9 +1,11 @@
 import os
 import struct
 import json
+import re
 
 IMAGE_EXTENSIONS = {".png", ".jpg", ".jpeg", ".bmp"}
 AUDIO_EXTENSIONS = {".wav", ".ogg", ".flac", ".mp3"}
+FONT_EXTENSIONS = {".fnt"}
 
 
 def _save_dat(file_path, data_dict):
@@ -84,6 +86,50 @@ def pack_audio(folder, dat_folder):
 
     print(f"[AUDIO] {len(audio)} packed -> {output}")
 
+def _load_fonts(folder):
+    fonts = {}
+
+    for root, _, files in os.walk(folder):
+        for file in files:
+            if os.path.splitext(file)[1].lower() != ".fnt":
+                continue
+
+            full_path = os.path.join(root, file)
+            rel = os.path.relpath(full_path, folder).replace("\\", "/")
+
+            with open(full_path, "rb") as f:
+                font_data = f.read()
+            fonts[rel] = font_data
+
+            font_text = font_data.decode("utf-8-sig")
+            for line in font_text.splitlines():
+                if not line.startswith("page "):
+                    continue
+
+                match = re.search(r'\bfile="([^"]+)"', line)
+                if match is None:
+                    raise ValueError(f"Missing page file in font metadata: {full_path}")
+
+                page_path = os.path.join(root, match.group(1))
+                if not os.path.isfile(page_path):
+                    raise FileNotFoundError(f"Font page image not found: {page_path}")
+
+                page_rel = os.path.relpath(page_path, folder).replace("\\", "/")
+                if page_rel not in fonts:
+                    with open(page_path, "rb") as f:
+                        fonts[page_rel] = f.read()
+
+    return fonts
+
+def pack_fonts(folder, dat_folder):
+    fonts = _load_fonts(folder)
+    output = os.path.join(dat_folder, "fonts.dat")
+
+    _save_dat(output, fonts)
+
+    font_count = sum(1 for path in fonts if path.lower().endswith(".fnt"))
+    print(f"[FONTS] {font_count} fonts packed -> {output}")
+
 def _write_animation_dat(file_path, data):
     with open(file_path, "wb") as f:
         # quantidade de animações
@@ -151,7 +197,8 @@ def main():
     pack_audio("raw/languages", "assets/languages")
 
     # Fonts
-    pack_textures("raw/fonts", "assets/fonts")
+    pack_textures("raw/fonts/atlas", "assets/fonts/atlas")
+    pack_fonts("raw/fonts", "assets/fonts")
 
     # Stages
     pack_textures("raw/stages/Burning Dojo/sprites", "assets/stages/Burning Dojo")
@@ -208,4 +255,5 @@ def main():
     pack_textures("raw/characters/Remy-Effects/sprites", "assets/characters/Remy-Effects")
     pack_audio("raw/characters/Remy-Effects/sounds", "assets/characters/Remy-Effects")
 
-main()
+if __name__ == "__main__":
+    main()

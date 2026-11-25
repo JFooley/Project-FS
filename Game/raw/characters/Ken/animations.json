@@ -16155,17 +16155,6 @@
             "x": 174,
             "y": 198
           }
-        },
-        {
-          "type": 2,
-          "pA": {
-            "x": 98,
-            "y": 128
-          },
-          "pB": {
-            "x": 135,
-            "y": 181
-          }
         }
       ],
       "lenght": 2,
@@ -16177,19 +16166,7 @@
       "Sprite_index": "15306",
       "DeltaX": 0,
       "DeltaY": 0,
-      "Boxes": [
-        {
-          "type": 2,
-          "pA": {
-            "x": 103,
-            "y": 119
-          },
-          "pB": {
-            "x": 154,
-            "y": 179
-          }
-        }
-      ],
+      "Boxes": [],
       "lenght": 9,
       "facing": 1,
       "Sound_index": "",
@@ -16199,19 +16176,7 @@
       "Sprite_index": "15307",
       "DeltaX": 40,
       "DeltaY": 0,
-      "Boxes": [
-        {
-          "type": 2,
-          "pA": {
-            "x": 70,
-            "y": 113
-          },
-          "pB": {
-            "x": 128,
-            "y": 195
-          }
-        }
-      ],
+      "Boxes": [],
       "lenght": 1,
       "facing": 1,
       "Sound_index": "",

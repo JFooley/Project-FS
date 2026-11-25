@@ -146,7 +146,7 @@ public class Stage {
         }
 
         // Accessibility
-        if (WGBattle.battle_state == WGBattle.Battling && !Stage.pause) {
+        if (WGBattle.battle_state == WGBattle.State.Battling && !Stage.pause) {
             Accessibility.DistanceAudioCue(this.character_A, this.character_B);
             Accessibility.FallWakeUpAudioCue(this.character_A, this.character_B);
         }
@@ -193,16 +193,16 @@ public class Stage {
         
         // Keep characters facing each other
         if (this.character_A.body.position.X < this.character_B.body.position.X) {
-            if (this.character_A.not_acting || this.character_A.not_acting_low) this.character_A.facing = 1;
-            if (this.character_B.not_acting || this.character_B.not_acting_low) this.character_B.facing = -1;
+            if (this.character_A.not_acting_stand || this.character_A.not_acting_low) this.character_A.facing = 1;
+            if (this.character_B.not_acting_stand || this.character_B.not_acting_low) this.character_B.facing = -1;
         } else {
-            if (this.character_A.not_acting || this.character_A.not_acting_low) this.character_A.facing = -1;
-            if (this.character_B.not_acting || this.character_B.not_acting_low) this.character_B.facing = 1;
+            if (this.character_A.not_acting_stand || this.character_A.not_acting_low) this.character_A.facing = -1;
+            if (this.character_B.not_acting_stand || this.character_B.not_acting_low) this.character_B.facing = 1;
         }
         
-        if (WGBattle.battle_state == WGBattle.RoundEnd) {
-            if (this.character_A.not_acting || this.character_A.not_acting_low) this.character_A.ChangeState("Win");
-            if (this.character_B.not_acting || this.character_B.not_acting_low) this.character_B.ChangeState("Win");
+        if (WGBattle.battle_state == WGBattle.State.RoundEnd) {
+            if (this.character_A.not_acting_stand || this.character_A.not_acting_low) this.character_A.ChangeState("Win");
+            if (this.character_B.not_acting_stand || this.character_B.not_acting_low) this.character_B.ChangeState("Win");
         }
     }
     private void UpdateAnimation() {
@@ -232,10 +232,10 @@ public class Stage {
         this.ResetRoundTime();
 
         // Show life points
-        UI.DrawText(S(this.character_A.life_points.X.ToString()), -18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small white");
-        UI.DrawText(S(this.character_B.life_points.X.ToString()), 18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "left", textureName: "default small white");
-        UI.DrawText(S((this.character_A.life_points.Y - this.character_A.life_points.X).ToString()), -Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "left", textureName: "default small red");
-        UI.DrawText(S((this.character_B.life_points.Y - this.character_B.life_points.X).ToString()), Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: "right", textureName: "default small red");
+        UI.DrawTextAtlas(S(this.character_A.life_points.X.ToString()), -18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: UI.Alignment.Right, textureName: "default small white");
+        UI.DrawTextAtlas(S(this.character_B.life_points.X.ToString()), 18, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: UI.Alignment.Left, textureName: "default small white");
+        UI.DrawTextAtlas(S((this.character_A.life_points.Y - this.character_A.life_points.X).ToString()), -Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: UI.Alignment.Left, textureName: "default small red");
+        UI.DrawTextAtlas(S((this.character_B.life_points.Y - this.character_B.life_points.X).ToString()), Config.RenderWidth/2, -Config.RenderHeight/2, spacing: Config.spacing_small, alignment: UI.Alignment.Right, textureName: "default small red");
 
         // Reset frames
         if (this.character_A.hitstop_counter == 0 && this.character_B.hitstop_counter == 0) {
@@ -268,7 +268,7 @@ public class Stage {
 
         // Reset chars life, stun and super bar
         if (Stage.reset_frames >= Config.reset_frames) {
-            if (this.character_B.not_acting_all) {
+            if (this.character_B.not_acting) {
                 if (Stage.block != BlockMode.Always) this.character_B.blocking = false;
                 if (Stage.parry != ParryMode.Always) this.character_B.parring = false;
 
@@ -279,7 +279,7 @@ public class Stage {
                 if (Stage.refil_super) this.character_B.aura_points.X = this.character_B.aura_points.Y;
             }
 
-            if (this.character_A.not_acting_all) {
+            if (this.character_A.not_acting) {
                 if (Stage.block != BlockMode.Always) this.character_A.blocking = false;
                 if (Stage.parry != ParryMode.Always) this.character_A.parring = false;
 
@@ -304,13 +304,12 @@ public class Stage {
         par.Load();
         this.newParticles.Add(par);
     }
-    public void PSHitspark(Character.CollisionType hit, float X, float Y, int facing, string weight = "Light", int X_offset = 0, int Y_offset = 0) {
-        if (weight == "") weight = "Light";
-
+    public void PSHitspark(Character.CollisionType hit, float X, float Y, int facing, State.Hitstop weight = State.Hitstop.Light, int X_offset = 0, int Y_offset = 0) {
         string state;
         if (hit == Character.CollisionType.Parry) {
             state = "Parry";
         } else if (hit == Character.CollisionType.Hit) {
+            if (weight == State.Hitstop.None) weight = State.Hitstop.Light;
             state = "Hit" + weight;
         } else if (hit == Character.CollisionType.Block) {
             state = "Block";
@@ -338,6 +337,9 @@ public class Stage {
     }
 
     // Auxiliary
+    public bool PlayersGrounded() {
+        return !character_A.on_air && !character_B.on_air;
+    }
     public bool CheckRoundEnd() {
         if (Stage.training_mode || Stage.pause ) return false;
         
@@ -415,21 +417,21 @@ public class Stage {
         foreach (Character char_object in this.OnSceneCharacters) char_object.animate = !char_object.animate;
         foreach (Character part_object in this.OnSceneParticles) part_object.animate = ! part_object.animate;
     }
-    public void Hitstop(string amount, Character.CollisionType hit_type, Character on_hit_char, Character hitting_char) {
+    public void Hitstop(State.Hitstop amount, Character.CollisionType hit_type, Character on_hit_char, Character hitting_char) {
         int frames;
 
         if (hit_type == Character.CollisionType.Parry) {
             frames = Config.hit_stop_time * 1/3;
             switch (amount) {
-                case "Light":
+                case State.Hitstop.Light:
                         this.StopFor(lenght: frames + Config.parry_lenght + Config.parry_advantage * 2, target: on_hit_char, target_lenght: frames);
                     break;
 
-                case "Medium":
+                case State.Hitstop.Medium:
                         this.StopFor(lenght: frames + Config.parry_lenght + Config.parry_advantage * 3/2, target: on_hit_char, target_lenght: frames);
                     break;
 
-                case "Heavy":
+                case State.Hitstop.Heavy:
                         this.StopFor(lenght: frames + Config.parry_lenght + Config.parry_advantage * 1, target: on_hit_char, target_lenght: frames);
                     break;
 
@@ -440,17 +442,17 @@ public class Stage {
 
         } else {
             switch (amount) {
-                case "Light":
+                case State.Hitstop.Light:
                     this.StopFor(Config.hit_stop_time * 1/2);
                     frames = Config.hit_stop_time * 1/2;
                     break;
 
-                case "Medium":
+                case State.Hitstop.Medium:
                     this.StopFor(Config.hit_stop_time * 2/3);
                     frames = Config.hit_stop_time * 2/3;
                     break;
 
-                case "Heavy":
+                case State.Hitstop.Heavy:
                     this.StopFor(Config.hit_stop_time);
                     frames = Config.hit_stop_time;
                     break;

@@ -121,14 +121,14 @@ using SFML.System;
 
         // Get methods
         public Vector2f getRealA(Character charA) {
-            float X = charA.facing == -1 ? charA.visual_position.X - this.pB.X + this.quadsize : charA.visual_position.X + this.pA.X;
-            float Y = charA.visual_position.Y + this.pA.Y;
+            float X = charA.facing == -1 ? charA.sprite_position.X - this.pB.X + this.quadsize : charA.sprite_position.X + this.pA.X;
+            float Y = charA.sprite_position.Y + this.pA.Y;
 
             return new Vector2f(X, Y);
         }
         public Vector2f getRealB(Character charA) {
-            float X = charA.facing == -1 ? charA.visual_position.X - this.pA.X + this.quadsize : charA.visual_position.X + this.pB.X;
-            float Y = charA.visual_position.Y + this.pB.Y;
+            float X = charA.facing == -1 ? charA.sprite_position.X - this.pA.X + this.quadsize : charA.sprite_position.X + this.pB.X;
+            float Y = charA.sprite_position.Y + this.pB.Y;
 
             return new Vector2f(X, Y);
         } 

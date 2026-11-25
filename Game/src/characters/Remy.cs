@@ -18,7 +18,7 @@ public class Remy : Character {
     private static Texture? _shared_palette;
     public override Texture palette {get => _shared_palette ?? new Texture(Data.textures["other:placeholder"]); protected set => _shared_palette = value;}
 
-    private bool can_sp1 => this.not_acting_all || this.current_state == "Special1Landing" && this.current_anim_frame_index >= 3;
+    private bool can_sp1 => this.not_acting || this.current_state == "Special1Landing" && this.current_anim_frame_index >= 3;
 
     // Constructors
     public Remy(string initialState, int startX, int startY)
@@ -53,35 +53,35 @@ public class Remy : Character {
             { "OnHit", new State(F(a["onHit1"], a["onHit2"]), "Idle", on_hit: true)},
             { "OnHitLow", new State(F(a["onHitLow1"], a["onHitLow2"]), "Crouching", low: true, on_hit: true)},
             { "Airboned", new State(F(a["airboned"]), "Falling", change_on_ground: true, change_on_end: false, loop: false, air: true, on_hit: true)},
-            { "Parry", new State(F(a["parry"]), "Idle", 6, glow: true, is_parry: true)},
-            { "AirParry", new State(F(a["airParry"]), "JumpFalling", 6, glow: true, air: true, is_parry: true)},
+            { "Parry", new State(F(a["parry"]), "Idle", State.Priority.Parry, glow: true, is_parry: true)},
+            { "AirParry", new State(F(a["airParry"]), "JumpFalling", State.Priority.Parry, glow: true, air: true, is_parry: true)},
             // Normals
-            { "LightP", new State(F(a["LP"]), "Idle", 0, will_hit: true, range: 110)},
-            { "LowLightP", new State(F(a["lowLP"]), "Crouching", 0, low: true, will_hit: true)},
-            { "AirLightP", new State(F(a["airLP"]), "Landing", 0, change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
-            { "FrontLightP", new State(F(a["frontLP"]), "Idle", 0, will_hit: true)},
-            { "LightK", new State(F(a["LK"]), "Idle", 0, will_hit: true)},
-            { "LowLightK", new State(F(a["lowLK"]), "Crouching", 1, hitstop: "Medium", low: true, will_hit: true)},
-            { "AirLightK", new State(F(a["airLK"]), "Landing", 0, change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
-            { "MediumP", new State(F(a["MP"]), "Idle", 1, hitstop: "Medium", will_hit: true, range: 110)},
-            { "LowMediumP", new State(F(a["lowMP"]), "Crouching", 1, hitstop: "Medium", low: true, will_hit: true)},
-            { "AirMediumP", new State(F(a["airMP"]), "Landing", 1, hitstop: "Medium", change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
-            { "MediumK", new State(F(a["MK"]), "Idle", 1, hitstop: "Medium", will_hit: true, range: 130)},
-            { "LowMediumK", new State(F(a["lowMK"]), "Crouching", 2, hitstop: "Light", low: true, will_hit: true)},
-            { "AirMediumK", new State(F(a["airMK"]), "Landing", 1, hitstop: "Medium", change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
-            { "FrontMediumK", new State(F(a["frontMK"]), "Idle", 1, hitstop: "Medium", will_hit: true)},
+            { "LightP", new State(F(a["LP"]), "Idle", State.Priority.Light, will_hit: true, range: 110)},
+            { "LowLightP", new State(F(a["lowLP"]), "Crouching", State.Priority.Light, low: true, will_hit: true)},
+            { "AirLightP", new State(F(a["airLP"]), "Landing", State.Priority.Light, change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
+            { "FrontLightP", new State(F(a["frontLP"]), "Idle", State.Priority.Light, will_hit: true)},
+            { "LightK", new State(F(a["LK"]), "Idle", State.Priority.Light, will_hit: true)},
+            { "LowLightK", new State(F(a["lowLK"]), "Crouching", State.Priority.Medium, hitstop: State.Hitstop.Medium, low: true, will_hit: true)},
+            { "AirLightK", new State(F(a["airLK"]), "Landing", State.Priority.Light, change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
+            { "MediumP", new State(F(a["MP"]), "Idle", State.Priority.Medium, hitstop: State.Hitstop.Medium, will_hit: true, range: 110)},
+            { "LowMediumP", new State(F(a["lowMP"]), "Crouching", State.Priority.Medium, hitstop: State.Hitstop.Medium, low: true, will_hit: true)},
+            { "AirMediumP", new State(F(a["airMP"]), "Landing", State.Priority.Medium, hitstop: State.Hitstop.Medium, change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
+            { "MediumK", new State(F(a["MK"]), "Idle", State.Priority.Medium, hitstop: State.Hitstop.Medium, will_hit: true, range: 130)},
+            { "LowMediumK", new State(F(a["lowMK"]), "Crouching", State.Priority.Heavy, hitstop: State.Hitstop.Light, low: true, will_hit: true)},
+            { "AirMediumK", new State(F(a["airMK"]), "Landing", State.Priority.Medium, hitstop: State.Hitstop.Medium, change_on_end: false, change_on_ground: true, loop: false, air: true, will_hit: true)},
+            { "FrontMediumK", new State(F(a["frontMK"]), "Idle", State.Priority.Medium, hitstop: State.Hitstop.Medium, will_hit: true)},
             // Throw
-            { "Throw", new State(F(a["throw"]), "Idle", 5, will_hit: true, is_grab: true, hitstop: "")},
-            { "ThrowLeft", new State(F(a["throw_left"]), "Idle", 5, will_hit: true, is_grab: true, hitstop: "")},
-            { "ThrowRight", new State(F(a["throw_right"]), "Idle", 4, will_hit: true, is_grab: true, hitstop: "")},
-            { "OnThrowRight_KEN", new State(F(a["on_throw_right_KEN"]), "Falling", 0, has_gravity: false, on_hit: true)},
-            { "OnThrowLeft_KEN", new State(F(a["on_throw_left_KEN"]), "Airboned", 0, has_gravity: false, on_hit: true)},
-            { "OnThrow_REMY", new State(F(a["on_throw_REMY"]), "Falling", 0, has_gravity: false, on_hit: true)},
+            { "Throw", new State(F(a["throw"]), "Idle", State.Priority.Throw, will_hit: true, is_grab: true, hitstop: State.Hitstop.Light)},
+            { "ThrowLeft", new State(F(a["throw_left"]), "Idle", State.Priority.Throw, will_hit: true, is_grab: true, hitstop: State.Hitstop.Light)},
+            { "ThrowRight", new State(F(a["throw_right"]), "Idle", State.Priority.Throw, will_hit: true, is_grab: true, hitstop: State.Hitstop.Light)},
+            { "OnThrowRight_KEN", new State(F(a["on_throw_right_KEN"]), "Falling", State.Priority.Light, has_gravity: false, on_hit: true)},
+            { "OnThrowLeft_KEN", new State(F(a["on_throw_left_KEN"]), "Airboned", State.Priority.Light, has_gravity: false, on_hit: true)},
+            { "OnThrow_REMY", new State(F(a["on_throw_REMY"]), "Falling", State.Priority.Light, has_gravity: false, on_hit: true)},
             // Movement
             { "WalkingForward", new State(F(a["walkingForward"]), "WalkingForward", idle: true)},
             { "WalkingBackward", new State(F(a["walkingBackward"]), "WalkingBackward", idle: true)},
-            { "DashIn", new State(F(a["dashIn"]), "Idle", 20)},
-            { "DashOut", new State(F(a["dashOut"]), "Idle", 20)},
+            { "DashIn", new State(F(a["dashIn"]), "Idle", State.Priority.Particles)},
+            { "DashOut", new State(F(a["dashOut"]), "Idle", State.Priority.Particles)},
             { "Jump", new State(F(a["jump"]), "JumpFalling", idle: true, air: true)},
             { "JumpForward", new State(F(a["jump"]), "JumpFalling", idle: true, air: true)}, 
             { "JumpBackward", new State(F(a["jumpBackward"]), "JumpFalling", idle: true, air: true)},
@@ -91,16 +91,16 @@ public class Remy : Character {
             { "CrouchingOut", new State(F(a["crouchingOut"]), "Idle", idle: true)},
             { "Crouching", new State(F(a["crouching"]), "Crouching", idle: true, low: true)},
             // Super
-            { "SA1", new State(F(a["SA1"]), "Idle", 4, trace: true, drama_wait: true, will_hit: true, hitstop: "", range: 0)},
+            { "SA1", new State(F(a["SA1"]), "Idle", State.Priority.Super, trace: true, drama_wait: true, will_hit: true, hitstop: State.Hitstop.Light, range: 0)},
             // Specials special1_falling
-            { "LightSpecial1", new State(F(a["special1"]), "Special1Falling", 3, hitstop: "Light", air: true, will_hit: true)},
-            { "MediumSpecial1", new State(F(a["special1"]), "Special1Falling", 3, hitstop: "Medium", air: true, will_hit: true)},
-            { "EXSpecial1", new State(F(a["ex_special1"]), "Special1Falling", 3, hitstop: "Heavy", air: true, will_hit: true, can_be_hit: false, glow: true)},
+            { "LightSpecial1", new State(F(a["special1"]), "Special1Falling", State.Priority.Special, hitstop: State.Hitstop.Light, air: true, will_hit: true)},
+            { "MediumSpecial1", new State(F(a["special1"]), "Special1Falling", State.Priority.Special, hitstop: State.Hitstop.Medium, air: true, will_hit: true)},
+            { "EXSpecial1", new State(F(a["ex_special1"]), "Special1Falling", State.Priority.Special, hitstop: State.Hitstop.Heavy, air: true, will_hit: true, can_be_hit: false, glow: true)},
             { "Special1Falling", new State(F(a["jumpFalling"]), "Special1Landing", change_on_end: false, change_on_ground: true, loop: false, air: true)},
             { "Special1Landing", new State(F(a["landing"]), "CrouchingOut")},
-            { "Special2Punch", new State(F(a["special2_punch"]), "Idle", 3, air: true, will_hit: true, range: 0, overhead: true)},
-            { "Special2Kick", new State(F(a["special2_kick"]), "Idle", 3, air: true, will_hit: true, range: 0)},
-            { "Special2EX", new State(F(a["special2_ex"]), "Idle", 3, air: true, will_hit: true, glow: true, range: 0)},
+            { "Special2Punch", new State(F(a["special2_punch"]), "Idle", State.Priority.Special, air: true, will_hit: true, range: 0, overhead: true)},
+            { "Special2Kick", new State(F(a["special2_kick"]), "Idle", State.Priority.Special, air: true, will_hit: true, range: 0)},
+            { "Special2EX", new State(F(a["special2_ex"]), "Idle", State.Priority.Special, air: true, will_hit: true, glow: true, range: 0)},
             // Other
             { "Falling", new State(F(a["falling"]), "OnGround", on_hit: true, can_be_hit: false)},
             { "Sweeped", new State(F(a["sweeped"]), "Falling", on_hit: true, low: true, can_be_hit: false)},
@@ -111,7 +111,7 @@ public class Remy : Character {
     public override void Behave() {
         if (this.behave == false) return;
         // Super
-        if (Input.Key_sequence("Down Down RB", 10, player: this.player_index, facing: this.facing) && !this.on_air && (this.not_acting || this.not_acting_low || (this.has_hit && (this.current_state == "CloseMP" || this.current_state.Contains("Shory") || this.current_state == "LowLightK"))) && Character.CheckAuraPoints(this, 100)) {
+        if (Input.Key_sequence("Down Down RB", 10, player: this.player_index, facing: this.facing) && !this.on_air && (this.not_acting_stand || this.not_acting_low || (this.has_hit && (this.current_state == "CloseMP" || this.current_state.Contains("Shory") || this.current_state == "LowLightK"))) && Character.CheckAuraPoints(this, 100)) {
             Character.UseAuraPoints(this, 100);
             this.ChangeState("SA1");
             this.stage.StopFor(9, 0, this);
@@ -166,19 +166,19 @@ public class Remy : Character {
             return;
         } 
 
-        if (this.not_acting && (Input.Key_sequence("Left Right C", 10, this.player_index, this.facing) || Input.Key_sequence("Left Right D", 10, this.player_index, this.facing))) {
+        if (this.not_acting_stand && (Input.Key_sequence("Left Right C", 10, this.player_index, this.facing) || Input.Key_sequence("Left Right D", 10, this.player_index, this.facing))) {
             this.ChangeState("Special2Punch");
             return;
         } else if (this.current_state == "Special2Punch" && this.current_anim_frame_index == 4 && this.has_frame_changed) {
             this.SpawnEffect("FireballHigh", this.body.position.X, this.body.position.Y, this.facing, X_offset: 35, Y_offset: -57);
         }
-        else if (this.not_acting && (Input.Key_sequence("Left Right A", 10, this.player_index, this.facing) || Input.Key_sequence("Left Right B", 10, this.player_index, this.facing))) {
+        else if (this.not_acting_stand && (Input.Key_sequence("Left Right A", 10, this.player_index, this.facing) || Input.Key_sequence("Left Right B", 10, this.player_index, this.facing))) {
             this.ChangeState("Special2Kick");
             return;
         } else if (this.current_state == "Special2Kick" && this.current_anim_frame_index == 3 && this.has_frame_changed) {
             this.SpawnEffect("FireballLow", this.body.position.X, this.body.position.Y, this.facing, X_offset: 35, Y_offset: 0);
         }
-        else if (this.not_acting && Input.Key_sequence("Left Right RB", 10, this.player_index, this.facing) && Character.CheckAuraPoints(this, 50)) {
+        else if (this.not_acting_stand && Input.Key_sequence("Left Right RB", 10, this.player_index, this.facing) && Character.CheckAuraPoints(this, 50)) {
             Character.UseAuraPoints(this, 50);
             this.ChangeState("Special2EX");
             this.PlaySound("generic:ex");
@@ -190,7 +190,7 @@ public class Remy : Character {
         }
 
         // Throw
-        if ((Input.Key_press("LB", this.player_index, this.facing) || Input.Key_press("A C", this.player_index, this.facing)) && this.not_acting) {
+        if ((Input.Key_press("LB", this.player_index, this.facing) || Input.Key_press("A C", this.player_index, this.facing)) && this.not_acting_stand) {
             this.ChangeState("Throw");
             return;
         }
@@ -201,10 +201,10 @@ public class Remy : Character {
         }
 
         // Normals plus
-        if (this.not_acting && Input.Key_press("C", player: this.player_index, facing: this.facing, input_window: Config.hit_stop_time) && Input.Key_hold("Right", player: this.player_index, facing: this.facing)) {
+        if (this.not_acting_stand && Input.Key_press("C", player: this.player_index, facing: this.facing, input_window: Config.hit_stop_time) && Input.Key_hold("Right", player: this.player_index, facing: this.facing)) {
             this.ChangeState("FrontLightP");
             return;
-        } else if ((this.not_acting || this.has_hit && this.current_state == "LightK") && Input.Key_press("B", player: this.player_index, facing: this.facing, input_window: Config.hit_stop_time) && Input.Key_hold("Right", player: this.player_index, facing: this.facing)) {
+        } else if ((this.not_acting_stand || this.has_hit && this.current_state == "LightK") && Input.Key_press("B", player: this.player_index, facing: this.facing, input_window: Config.hit_stop_time) && Input.Key_hold("Right", player: this.player_index, facing: this.facing)) {
             this.ChangeState("FrontMediumK");
             return;
         }
@@ -229,7 +229,7 @@ public class Remy : Character {
             else if (Input.Key_press("A", player: this.player_index, facing: this.facing)) this.ChangeState("LowLightK");
             else if (Input.Key_press("D", player: this.player_index, facing: this.facing)) this.ChangeState("LowMediumP");
             else if (Input.Key_press("B", player: this.player_index, facing: this.facing)) this.ChangeState("LowMediumK");
-        } else if (this.not_acting) {
+        } else if (this.not_acting_stand) {
             if (Input.Key_press("C", player: this.player_index, facing: this.facing)) this.ChangeState("LightP");     
             else if (Input.Key_press("A", player: this.player_index, facing: this.facing)) this.ChangeState("LightK");     
             else if (Input.Key_press("D", player: this.player_index, facing: this.facing)) this.ChangeState("MediumP");     
@@ -242,7 +242,7 @@ public class Remy : Character {
         }
     
         // Crouching
-        if (Input.Key_hold("Down", player: this.player_index, facing: this.facing) && !Input.Key_hold("Up", player: this.player_index, facing: this.facing) && this.not_acting) {
+        if (Input.Key_hold("Down", player: this.player_index, facing: this.facing) && !Input.Key_hold("Up", player: this.player_index, facing: this.facing) && this.not_acting_stand) {
             this.ChangeState("CrouchingIn");
         }
         if (this.current_state == "Crouching" && !Input.Key_hold("Down", player: this.player_index, facing: this.facing)) {
@@ -260,9 +260,9 @@ public class Remy : Character {
         }
 
         // Walking
-        if (Input.Key_hold("Left", player: this.player_index, facing: this.facing) && !Input.Key_hold("Right", player: this.player_index, facing: this.facing) && this.not_acting && this.current_state != "WalkingBackward") {
+        if (Input.Key_hold("Left", player: this.player_index, facing: this.facing) && !Input.Key_hold("Right", player: this.player_index, facing: this.facing) && this.not_acting_stand && this.current_state != "WalkingBackward") {
             this.ChangeState("WalkingBackward");
-        } else if (Input.Key_hold("Right", player: this.player_index, facing: this.facing) && !Input.Key_hold("Left", player: this.player_index, facing: this.facing) && this.not_acting && this.current_state != "WalkingForward") {
+        } else if (Input.Key_hold("Right", player: this.player_index, facing: this.facing) && !Input.Key_hold("Left", player: this.player_index, facing: this.facing) && this.not_acting_stand && this.current_state != "WalkingForward") {
             this.ChangeState("WalkingForward");
         }
         if (this.current_state == "WalkingForward" && !Input.Key_hold("Right", player: this.player_index, facing: this.facing) || (this.current_state == "WalkingBackward" && !Input.Key_hold("Left", player: this.player_index, facing: this.facing))) {
@@ -276,7 +276,7 @@ public class Remy : Character {
         } else if (this.current_state == "JumpForward" && this.current_anim_frame_index == 1 && this.has_frame_changed) {
             this.SetVelocity(
                 X: 4, 
-                Y: this.jump_hight);
+                Y: this.jump_strenght);
         } 
         else if (this.can_jump && Input.Key_hold("Up", player: this.player_index, facing: this.facing) && Input.Key_hold("Left", player: this.player_index, facing: this.facing) && !Input.Key_hold("Right", player: this.player_index, facing: this.facing)) {
             this.ChangeState("JumpBackward");
@@ -284,16 +284,16 @@ public class Remy : Character {
         } else if (this.current_state == "JumpBackward" && this.current_anim_frame_index == 1 && this.has_frame_changed) {
             this.SetVelocity(
                 X: -4, 
-                Y: this.jump_hight);
+                Y: this.jump_strenght);
         }
         else if (this.can_jump && Input.Key_hold("Up", player: this.player_index, facing: this.facing)) {
             this.ChangeState("Jump");
-            this.SetVelocity(X: 0, Y: this.jump_hight);
+            this.SetVelocity(X: 0, Y: this.jump_strenght);
             return;
         }
 
         // Taunt
-        if (Input.Key_press("RB", player: this.player_index, facing: this.facing) && this.not_acting) {
+        if (Input.Key_press("RB", player: this.player_index, facing: this.facing) && this.not_acting_stand) {
             this.ChangeState("Taunt");
         } else if (this.current_state == "Taunt" && this.has_frame_changed) {
             this.aura_points.X = (int) Math.Min(this.aura_points.Y, this.aura_points.X + 2);

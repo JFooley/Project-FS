@@ -18,6 +18,6 @@ void main() {
     vec3 normalizedColor = fillColor / 255.0;
 
     if (isEdge(gl_TexCoord[0].xy, tex)) {
-        gl_FragColor = vec4(normalizedColor, 1.0);
+        gl_FragColor = vec4(normalizedColor, 1.0) * gl_Color;
     }
 } 

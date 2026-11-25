@@ -34,11 +34,11 @@ public class KenEffects : Character {
         var a = this.animations;
     
         this.states = new Dictionary<string, State> {
-            { "Ken1", new State(F(a["KenFireball"]), "Ken1", 7, will_hit: true, has_gravity: false, range: 60)},
-            { "Ken2", new State(F(a["KenFireball"]), "Ken2", 7, will_hit: true, has_gravity: false, range: 60)},
-            { "Ken3", new State(F(a["KenFireball"]), "Ken3", 7, glow: true, will_hit: true, has_gravity: false, range: 60)},
-            { "KenExit", new State(F(a["KenFireballFinal"]), "Remove", 7, has_gravity: false)},
-            { "Fire", new State(F(a["fire"]), "Remove", 7, has_gravity: false)}
+            { "Ken1", new State(F(a["KenFireball"]), "Ken1", State.Priority.Particles, will_hit: true, has_gravity: false, hitstop: State.Hitstop.Light, range: 60)},
+            { "Ken2", new State(F(a["KenFireball"]), "Ken2", State.Priority.Particles, will_hit: true, has_gravity: false, hitstop: State.Hitstop.Light, range: 60)},
+            { "Ken3", new State(F(a["KenFireball"]), "Ken3", State.Priority.Particles, glow: true, will_hit: true, has_gravity: false, hitstop: State.Hitstop.Light, range: 60)},
+            { "KenExit", new State(F(a["KenFireballFinal"]), "Remove", State.Priority.Particles, has_gravity: false)},
+            { "Fire", new State(F(a["fire"]), "Remove", State.Priority.Particles, has_gravity: false)}
         };
     }
     public override void Behave() {
@@ -48,7 +48,7 @@ public class KenEffects : Character {
             this.current_animation.Reset();
         }
 
-        if (Math.Abs(Camera.X - this.visual_position.X) > Config.RenderWidth) this.remove = true;  
+        if (Math.Abs(Camera.X - this.sprite_position.X) > Config.RenderWidth) this.remove = true;  
         
         switch (this.current_state) {
             case "Ken1":
